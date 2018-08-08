@@ -1,0 +1,49 @@
+! Set up for long name entry points
+Set Names/Entrypoint=32         
+define ztoyim/declar=ztoydc/input
+!
+!    Set bookings:
+dict k$tls:prod2ntu_dict.uic
+!
+dict $KIDF77INC:im_kidin.dict
+!
+!==============================================================================
+Define -
+ SAMPLE/Description="Selection of events "/Parameter_set=2/FILTER
+!==============================================================================
+	Declare  ="SAMDC",
+        Init     ="SAMIN",
+        Talk     ="SAMTK",
+        Book     ="SAMHB",
+        Run_Init ="SAMRI",
+        Event    ="SAMEV",
+        Run_Fin  ="SAMRE"
+OK
+!------------------------------------------------------------------------------
+Set utilities/hbk4 = on
+set utilities/run_condition=on
+Set utilities/geometry=on
+Set utilities/TMS=on
+Set utilities/calibration=on
+!-------------------------------------------------------------------------
+!
+Set size/ybos=600000/hbk4=20000000/database=5000000
+!
+!       Link Modules declared above
+!-----------------------------------------------------------------------------
+Link prod2ntu sample
+!-----------------------------------------------------------------------------
+show link
+write sample_bj.kloe
+quit
+OK
+
+
+
+
+
+
+
+
+
+

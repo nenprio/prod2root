@@ -1,0 +1,2797 @@
+C---------------------------------------------------------------------
+C   ------------  KLOE PRODuction 2(to) NTUple  -----------------------
+C-----------------------------------------------------------------------
+C PROD2NTU :== trasform all Element/Segment/Fit level to a Ntuple;
+C ----------------------------------------------------------------
+C Description:
+C ============
+C Version 1.0
+C ------------
+C     The usage of CWN is a reasonable "intermediate" stage for DSTs
+c     production.
+C     In this module I tried "hard" to give a possible translation at a
+c     ntuplelevel of the relevant information for MC, calorimeter and
+c     track-to-cluster association. Still missing is the translation for
+c     tracks-link to MC,First Hits, Neutral vertex and Global Fit.
+C     If a "common" effort is done in pursuing this final "goal" this
+c     Ntuple can be used at production level both as a monitor and as a
+c     preliminar stage into the analysis.
+C     I also like to remark that all the Unpacking routines called are
+c     nicely existing StandAlone without any intermediate stage of
+c     common blocks.This COULD HELP AVOIDING the unbelievable
+c     proliferation of Cblocks inthe Offline areas to reduce it only at
+c     the useful comunication Common block for PAW.
+C
+C Precondition Necessary before calling
+C -------------------------------------
+C None
+C
+C Author:
+C -------
+C S.Miscetti
+C Jan-1996
+C
+C Version 2.1
+C -----------
+C     Well, it looks like the idea is succesfull. Many people have
+c     contributed to extend/enlarge/modify the N-tuple. All students
+C     seem to like it/use it. I am now proceeding toward the last
+c     changes useful for runI:
+C     - make it working both on data/mc just relying on LRID info. Do
+c        not fill mc information whenever not necessary.
+C     - add EventInfo by LRID/EVCL and an extended TRIGGER block.
+C     - add a simple talk-to to modify the "wanted" block. No selection
+C       available inside the block. Each analysis should keep the "wanted"
+C       selection in order to chain n-tuples in an easy way.
+C     - move then structures to types to make it available on all
+C       machines
+C
+C     S.Miscetti
+C     15-jan-1999
+C
+C CVS revision History:
+C ----------------------
+C $Log: prod2ntu.kloe,v $
+C Revision 1.16  2015/02/23 13:27:00  kloe
+C Added QCALT and CCALT block.
+C
+C Revision 1.15  2003/05/19 16:58:29  miscetti
+C Adding Virmom + Fixing FlagCl  and NeV
+C
+C Revision 1.14  2003/04/04 15:24:13  kloe
+C Add dE/dx
+C
+C Revision 1.13  2002/11/07 16:20:05  kloe
+c
+c adding DC dedx block in ntupla
+c
+C Call gettrigger for MC events
+C
+C Revision 1.12  2002/10/21 11:36:16  miscetti
+C Adding new blocks from charged Kaons grop
+C
+C Revision 1.11  2002/01/24 13:41:07  miscetti
+C missing parenthesys fixed
+C
+C Revision 1.10  2002/01/24 13:31:40  miscetti
+C VerVer + tphased_mc added
+C
+C Revision 1.9  2001/10/26 10:06:22  miscetti
+C PROD2NTU V3 - CSPS CLUO BENE
+C
+C Revision 1.7  2001/01/26 17:32:54  miscetti
+C Fixing triggerelements range in Pizzetta/Tellina
+C
+C-----------------------------------------------------------------------
+C
+C-----------------------------------------------------------------------
+      SUBROUTINE prod2ntu_In
+C-----------------------------------------------------------------------
+C Initialization stage:
+C Just decide Ntuple # and Ntuple Title
+C-----------------------------------------------------------------------
+$$implicit
+$$include 'k$itls:maxstructdim.inc'     ! Structure-dimentioner
+$$include 'k$itrg:maxtrgchan.inc'
+$$include 'k$itls:evtstruct.inc'  	! Event Information
+$$include 'k$itls:emcstruct.inc'        ! Emc Clusters
+$$include 'k$itls:celestruct.inc'	! Calorimeter Elements
+$$include 'k$itls:vtxstru.inc'		! Charge Verticies
+$$include 'k$itls:trkstru.inc'		! Tracks
+$$include 'k$itls:dprs_struct.inc'      ! DPRS patterns
+$$include 'k$itls:tclostruct.inc'	! Tracks-to-Clusters
+$$include 'k$itls:cfhistruct.inc'       ! Calorimeter First Hits
+$$include 'k$itls:geanfistruct.inc'	! Geanfi Information
+$$include 'k$itls:qihistruct.inc'
+$$include 'k$itls:qcalstruct.inc'
+$$include 'k$itls:dhspstru.inc'
+$$include 'k$itrg:telestruct.inc'
+$$include 'k$itrg:pizzastruct.inc'
+$$include 'k$itls:preclustruct.inc'
+$$include 'k$itls:nvostru.inc'
+$$include 'k$itls:eclostru.inc'
+$$include 'k$itls:t0struct.inc'
+$$include 'k$itls:cwrkstruct.inc'
+$$include 'k$itls:tellina.inc'
+$$include 'k$itls:pizzetta.inc'
+$$include 'k$itrg:trgstruct.inc'
+$$include 'k$itls:eclsstru.inc'
+$$include 'k$itls:gdchitstru.inc'
+$$include 'k$itls:bposstruct.inc'
+$$include 'k$itls:trkqstru.inc'
+$$include 'k$itls:dtcestruct.inc'
+$$include 'k$itls:dhrestruct.inc'
+$$include 'k$itls:sec2clustru.inc'
+$$include 'k$itls:cspsstruct.cin'
+$$include 'k$itls:cluostruct.cin'
+$$include 'k$itls:cluomcstruct.cin'
+$$include 'k$itls:dedx2stru.cin'
+$$include 'k$itls:dhitstruct.cin'
+$$INCLUDE 'K$ITLS:eleqcaltstru.inc'    ! QCALT element structure
+c$$INCLUDE 'K$ITLS:qcalthitstru.cin'    ! QCALT hit structure
+$$INCLUDE 'K$ITLS:ele2hitqcalt.cin'    ! QCALT hit structure
+$$INCLUDE 'K$ITLS:CCALTNUM.INC'        ! CCALT stu dimensioner
+$$INCLUDE 'K$ITLS:ccaltstru.inc'       ! CCALT element structure
+$$INCLUDE 'k$itls:letestruct.cin'      ! LET element structure
+c$$INCLUDE 'k$itls:raw2itce.cin'      ! IT element structure
+$$INCLUDE 'k$itls:itcestruct.cin' 
+$$INCLUDE 'k$itls:hetenum.cin'      ! HET max dim
+$$INCLUDE 'k$itls:hetestru.cin'      ! HET element structure
+$$include 'k$itls:prod2ntu.inc' 	! EVT common block for PAW
+$$include 'k$itls:prod2ntu_talk.inc'    ! talk-to-menu
+c
+      character*4 prod2ntu_version
+      character*6 NtuLayout
+c
+      prod2ntu_version = 'V5.0'
+      NtuLayout        = ' LAY01'
+c
+      Params%NtId = prod2ntu_NtId
+      Params%NtTitle = prod2ntu_Title
+     &     //prod2ntu_version(1:4)//NtuLayout(1:6)
+c
+
+      PRECLUSFLAG= .false.
+      CLUSFLAG   = .true.
+      CELEFLAG   = .false.
+      TRIGFLAG   = .true.
+      TRKSFLAG   = .true.
+      TRKVFLAG   = .true.
+      DHSPFLAG   = .false.
+      DPRSFLAG   = .true.
+      TCLOFLAG   = .true.
+      CFHIFLAG   = .false.
+      QCALFLAG   = .true.
+      GEANFIFLAG = .false.
+      TELEFLAG   = .false.
+      NVOFLAG    = .true.
+      ECLOFLAG   = .true.
+      ECLSFLAG   = .true.
+      GDCHITFG   = .true.
+      T0FLAG     = .true.
+      BPOSFLAG   = .true.
+      BENEFLAG   = .false.
+      DTCEFLAG   = .false.
+      DTCE0FLAG  = .false.
+      DCnHitsFlag= .false.
+      DHREFLAG   = .false.
+      C2TRFlag   = .TRUE.  ! By Default --> Misc/Palutan 24-1-02
+      CSPSFlag   = .false.
+      CSPSMCFlag = .false.
+      CLUOFlag   = .false.
+cvp
+      TRKSOLDFLAG   = .false.
+      TRKVOLDFLAG   = .false.
+      TCLOLDFLAG    = .false.
+      DHITFLAG      = .false.
+      DEDXFLAG      = .false.
+cvp
+C
+Cms -- adding 15-1-2000 to separate Hits from Cele and
+Cms    reduce space!
+Cms    Adding also Energy Flag to use Fixene forever
+c
+      cwrkflag   = .true.
+      enecorflag = .false.
+c
+      QCALTELEFLAG = .false.
+      QCALTHITFLAG = .false.
+      CCLEFLAG     = .false.
+      LETEFLAG     = .false. 
+      ITCEFLAG     = .false.
+      HETEFLAG     = .false.
+
+c
+      RETURN
+      END
+
+C
+C-----------------------------------------------------------------------
+      SUBROUTINE prod2ntu_hb
+C-----------------------------------------------------------------------
+C Booking Stage:
+C Define all the Blocks in the CWN ntuple.
+C-----------------------------------------------------------------------
+$$implicit
+$$Include 'A_C$SOURCE:ANCOMM.INC'       ! Analysis Control BCS commons
+$$Include 'A_C$SOURCE:ANPACK.INC'      ! Analysis Control parameters
+$$Include 'YBOS$LIBRARY:ERRCOD.INC'
+$$Include 'K$INC:ERLEVL.INC'
+c$$Include 'maxstructdim.inc'
+$$include 'k$itls:maxstructdim.inc'     ! Structure-dimensioner
+$$include 'k$itrg:maxtrgchan.inc'
+$$include 'k$itls:emcstruct.inc'        ! Emc Clusters
+$$include 'k$itls:celestruct.inc'	! Calorimeter Elements
+$$include 'k$itls:evtstruct.inc'  	! Event Information
+$$include 'k$itls:geanfistruct.inc'	! Geanfi Information
+$$include 'k$itls:vtxstru.inc'		! Charge Verticies
+$$include 'k$itls:trkstru.inc'		! Tracks
+$$include 'k$itls:dprs_struct.inc'      ! DPRS patterns
+$$include 'k$itls:dhspstru.inc'
+$$include 'k$itls:tclostruct.inc'	! Tracks-to-Clusters
+$$include 'k$itls:cfhistruct.inc'       ! Calorimeter First Hit
+$$include 'k$itls:qihistruct.inc'       ! QIHI common block
+$$include 'k$itls:qcalstruct.inc'       ! QCAL common block
+$$include 'k$itrg:telestruct.inc'
+$$include 'k$itrg:pizzastruct.inc'
+$$include 'k$itls:preclustruct.inc'
+$$include 'k$itls:nvostru.inc'
+$$include 'k$itls:eclostru.inc'
+$$include 'k$itls:t0struct.inc'
+$$include 'k$itls:cwrkstruct.inc'
+$$include 'k$itls:tellina.inc'
+$$include 'k$itls:pizzetta.inc'
+$$include 'k$itrg:trgstruct.inc'
+$$include 'k$itls:eclsstru.inc'
+$$include 'k$itls:gdchitstru.inc'
+$$include 'k$itls:bposstruct.inc'
+$$include 'k$itls:trkqstru.inc'
+$$include 'k$itls:dtcestruct.inc'
+$$include 'k$itls:dhrestruct.inc'
+$$include 'k$itls:sec2clustru.cin' 
+$$include 'k$itls:cspsstruct.cin'
+$$include 'k$itls:cluostruct.cin'
+$$include 'k$itls:cluomcstruct.cin'
+$$include 'k$itls:dhitstruct.cin'
+$$INCLUDE 'k$itls:dedx2stru.cin'
+$$INCLUDE 'K$ITLS:eleqcaltstru.inc'    ! QCALT element structure
+c$$INCLUDE 'K$ITLS:qcalthitstru.cin'    ! QCALT hit structure
+$$INCLUDE 'K$ITLS:ele2hitqcalt.cin'    ! QCALT hit structure
+$$INCLUDE 'K$ITLS:CCALTNUM.INC'        ! CCALT stu dimensioner
+$$INCLUDE 'K$ITLS:ccaltstru.inc'       ! CCALT element structure
+$$INCLUDE 'k$itls:letestruct.cin'      ! LET element structure
+c$$INCLUDE 'k$itls:raw2itce.cin'       ! IT element structure
+$$INCLUDE 'k$itls:itcestruct.cin'
+$$INCLUDE 'k$itls:hetenum.cin'      ! HET max dim
+$$INCLUDE 'k$itls:hetestru.cin'      ! HET element structure 
+$$INCLUDE 'k$itls:raw2dtce.cin'
+$$include 'k$itls:prod2ntu.inc'
+$$include 'k$itls:prod2ntu_talk.inc'
+
+C
+      CHARACTER*(*) SubName
+      PARAMETER (SubName = 'prod2ntu_hb')
+      INTEGER BLocat,statuscode
+      INTEGER Analysis_Get_HBook_Params
+C-----------------------------------------------------------------------
+      INTEGER NUL
+      PARAMETER (NUL = 0)
+      INTEGER HBookStream
+      PARAMETER (HBookStream = 1)
+      CHARACTER*80 ErrMessage
+      CHARACTER*32 TopDir
+      CHARACTER*80 FileName
+      CHARACTER*4 OpenOptions
+      CHARACTER*16 Range
+      Integer numdhit
+      Integer trgwrd1,trgwrd2
+      common /trgcom/trgwrd1,trgwrd2,numdhit
+C
+C -- add ECLS + Event Time ---
+C
+      INTEGER  StreamNum, AlgoNum
+      INTEGER  TimeSec,TimeMusec
+      INTEGER  Ndtce
+      INTEGER mcflag_tg
+      REAL    currpos,currele,luminosity
+      Common /EventInfo/StreamNum,AlgoNum,TimeSec,TimeMusec,
+     &      ndtce,mcflag_tg,currpos,currele,luminosity
+      Logical SkipFlag
+c--------------------------
+C TEST FOR EXTENTION
+C
+      LOGICAL PROD2NTU_AUTO
+      DATA PROD2NTU_AUTO /.false./
+      INTEGER  UIGTLU,LUNIT,istat
+      Integer nId
+c
+c     Variables for A_C/HBOOK interface:
+c     ----------------------------------
+c
+      Integer
+     &    STATUS,
+     &    HBINDX,
+     &    HBDATA,
+     &    RZRECL
+
+
+      nId = Params%NtId
+      IF( .not.Prod2ntu_auto) THEN
+c
+
+C-----------------------------------------------------------------------
+C Book n-tuple
+C-----------------------------------------------------------------------
+      StatusCode = Analysis_Get_HBook_Params(HBookStream,
+     &                                       TopDir,FileName,
+     &                                       OpenOptions)
+c
+c------------------------------------------------------------------
+c     Attempt to work some A_C magic to get the record length
+c       with which the Ntuple file was opened by A_C
+c     -------------------------------------------------------
+c------------------------------------------------------------------
+      STATUS = BLOCAT(ANPKI4, ANHBNA, HBookStream, HBINDX, HBDATA)
+      If (STATUS.NE.YESUCC) Then
+        Call ERLOGR ('PROD2NTU_HB', EREROR, 0, STATUS,
+     &      'Can''t get histogram pararmeters from A_C')
+        Return
+      End If
+      RZRECL = ANPKI4(HBDATA + HBRECL)
+c
+c--- Very Useful Comment and explanation of Magic from MAtt ------------
+c     Use this value to set the buffer size for the PROD2NTU Ntuple:
+c       The Ntuple can only use a limited number of buffers due
+c       to limited key storage space in ZEBRA. One buffer is created
+c       for each column in the Ntuple, and is flushed to disk when
+c       enough events have been processed so that it is full.
+c       Making the buffers larger than default means that fewer
+c       buffers are written for the same number of events. Not doing
+c       this results in the classic error message:
+c         RZOUT: current RZ file cannot support > 64K records
+c       at end-of-run, and no-one seems to know what the true effect
+c       of this on Ntuple stability is!
+c       The optimal buffer size for speed is a multiple of the
+c       record length. The optimal size for space allocation is
+c       when the multiple is Nwords/ZEBRA key, currently 4 (?), but
+c       using so much space may require a large PAWC. If HBOOK
+c       runs out of space for this reason, the result will be
+c       a ZFATAL that is absolutley uninfomative. Much worse, PAWC
+c       is adjustable in BUILD_JOB, but only a custom-built PAW
+c       will be able to open an Ntuple made with a large record
+c       length and large PAWC by A_C. A compromise which I have
+c       found useful is to assume Nwords/ZEBRA key = 1. Don't ask
+c       where the -15 comes from. If you don't hate HBOOK/ZEBRA by now,
+c       I can't help you!
+c     ---------------------------------------------------------------
+c
+      Call HBSET ('BSIZE', RZRECL - 15,  STATUS)
+      If (STATUS.NE.0) Then
+        Call ERLOGR ('PROD2NTU_HB', EREROR, 0, STATUS,
+     &      'Error setting buffer size for Ntuple file')
+        Return
+      End If
+c
+c
+c     Now finally book it
+c     -------------------
+c
+      CALL HCDir('//'//TopDir,' ')
+      CALL HBNt(Params%NtId,Params%NtTitle,'D')
+      ELSE
+        STATUS = UIGTLU(LUNIT)
+        call  HROPEN(LunIT,'PROD','PROD2NTU.NTU','N',1024,Istat)
+        CALL HMDIR('//PROD/PROD2NTU', 'S')
+        CALL HCDIR('//PROD/PROD2NTU', ' ')
+        CALL HBNt(Params%NtId,Params%NtTitle,'D')
+      ENDIF
+C-----------------------------------------------------------------------
+C Event info
+C-----------------------------------------------------------------------
+      CALL HBName(Params%NtId,'Info',Evt%Info%RunNumber,'nrun:i')
+      CALL HBName(Params%NtId,'Info',Evt%Info%EventNumber,'nev:i')
+      CALL HBNAME(Params%NtId,'DATA',TimeSec,'TimeSec:i')
+      CALL HBNAME(Params%NtId,'DATA',TimeMusec,'TimeMusec:i')
+      CALL HBName(Params%NtId,'DATA',CurrPos,'Ipos:r')
+      CALL HBName(Params%NtId,'DATA',CurrEle,'Iele:r')
+      CALL HBName(Params%NtId,'DATA',Luminosity,'Lumi:r')
+c-----------------------------------------------------------------------
+      CALL HBName(Params%NtId,'Info',Evt%Info%Pileup,'pileup[0,1]:i')
+      CALL HBName(Params%NtId,'Info',Evt%Info%GenCod,'gcod[0,100]:i')
+      CALL HBName(Params%NtId,'Info',Evt%Info%PhiDecay,'phid[0,100]:i')
+      CALL HBName(Params%NtId,'Info',Evt%Info%A1type,'a1typ[0,100]:i')
+      CALL HBName(Params%NtId,'Info',Evt%Info%A2type,'a2typ[0,100]:i')
+      CALL HBName(Params%NtId,'Info',Evt%Info%A3type,'a3typ[0,100]:i')
+      CALL HBName(Params%NtId,'Info',Evt%Info%B1type,'b1typ[0,100]:i')
+      CALL HBName(Params%NtId,'Info',Evt%Info%B2type,'b2typ[0,100]:i')
+      CALL HBName(Params%NtId,'Info',Evt%Info%B3type,'b3typ[0,100]:i')
+c----------------------------------------------------------------------
+      CALL HBNAME(Params%NtId,'DATA',mcflag_tg,'mcflag:i')
+c
+      IF( BPOSFLAG ) THEN
+        CALL HBName(Params%NtId,'BPOS',Evt%Bpos%px,'Bpx:r')
+        CALL HBName(Params%NtId,'BPOS',Evt%Bpos%py,'Bpy:r')
+        CALL HBName(Params%NtId,'BPOS',Evt%Bpos%pz,'Bpz:r')
+        CALL HBName(Params%NtId,'BPOS',Evt%Bpos%x,'Bx:r')
+        CALL HBName(Params%NtId,'BPOS',Evt%Bpos%y,'By:r')
+        CALL HBName(Params%NtId,'BPOS',Evt%Bpos%z,'Bz:r')
+        CALL HBName(Params%NtId,'BPOS',Evt%Bpos%errpx,'Bwidpx:r')
+        CALL HBName(Params%NtId,'BPOS',Evt%Bpos%errpy,'Bwidpy:r')
+        CALL HBName(Params%NtId,'BPOS',Evt%Bpos%errpz,'Bwidpz:r')
+        CALL HBName(Params%NtId,'BPOS',Evt%Bpos%errx,'Bsx:r')
+        CALL HBName(Params%NtId,'BPOS',Evt%Bpos%erry,'Bsy:r')
+        CALL HBName(Params%NtId,'BPOS',Evt%Bpos%errz,'Bsz:r')
+        CALL HBName(Params%NtId,'BPOS',Evt%Bpos%lumx,'Blumx:r')
+        CALL HBName(Params%Ntid,'BPOS',Evt%Bpos%lumz,'Blumz:r')
+      ENDIF	
+      IF( BENEFLAG ) THEN	
+        CALL HBName(Params%Ntid,'BENE',Evt%Bpos%Ene,'Broots:r')
+	CALL HBName(Params%Ntid,'BENE',Evt%Bpos%ErrEne,'BrootsErr:r')
+      ENDIF
+c
+c new global info from TRK/Pattern HITS ..................
+c
+      IF( GDCHITFG ) THEN
+        CALL HBName(Params%NtId,'GDHIT',NDtce,'dtcehit:i')
+        CALL HBName(Params%NtId,'GDHIT',Evt%Ghit%nhit,'dhrehit:i')
+        CALL HBName(Params%NtId,'GDHIT',Evt%Ghit%nhpr,'dprshit:i')
+        CALL HBName(Params%NtId,'GDHIT',Evt%Ghit%nhtf,'dtfshit:i')
+      ENDIF
+c
+c -- ECLS full unpacking
+c
+      IF( ECLSFLAG ) THEN
+        CALL HBName(Params%NtId,'ECLS',Evt%ecls%n,'necls:i::[0,8]')
+        CALL HBName(Params%NtId,'ECLS',Evt%ecls%trigger,'ECLtrgw:i')
+        CALL HBName(Params%NtId,'ECLS',Evt%ecls%Filfo,'ECLfilfo:i')
+        CALL HBName(Params%NtId,'ECLS',Evt%ecls%totword,
+     &      'ECLword(necls):i')
+        CALL HBname(Params%NtId,'ECLS',Evt%ecls%stream,
+     &     'ECLstream(necls):i')
+        CALL HBname(Params%NtId,'ECLS',Evt%ecls%tagnum,
+     &      'ECLtagnum(necls):i')
+        CALL HBname(Params%NtId,'ECLS',Evt%ecls%evntyp,
+     &      'ECLevtype(necls):i')
+
+CSM        CALL HBname(Params%NtId,'FILFO',FILFOflag,'FILFOflag:i')
+CGS For the ECLS bank num II
+        CALL HBName(Params%NtId,'ECLS2',Evt%ecls%n2,'necls2:i::[0,8]')
+        CALL HBName(Params%NtId,'ECLS2',Evt%ecls%trigger2,'ECLtrgw2:i')
+        CALL HBName(Params%NtId,'ECLS2',Evt%ecls%Filfo2,'ECLfilfo2:i')
+        CALL HBName(Params%NtId,'ECLS2',Evt%ecls%totword2,
+     &      'ECLword2(necls2):i')
+        CALL HBname(Params%NtId,'ECLS2',Evt%ecls%stream2,
+     &     'ECLstream2(necls2):i')
+        CALL HBname(Params%NtId,'ECLS2',Evt%ecls%tagnum2,
+     &      'ECLtagnum2(necls2):i')
+        CALL HBname(Params%NtId,'ECLS2',Evt%ecls%evntyp2,
+     &      'ECLevtype2(necls2):i')
+      ENDIF
+c
+      if( TRIGFLAG ) THEN
+         CALL HBName(Params%NtId,'Trig',trgwrd1,'trgw1:i')
+         CALL HBName(Params%NtId,'Trig',trgwrd2,'trgw2:i')
+
+         IF( C2TRFLAG ) THEN
+C
+C-  C2TRG block -------------------------------------------------
+C
+            CALL prod2ntu_NtRange(0,MaxNumClu,Range)
+            CALL HBNAME(params%ntid,'C2TRG',Evt%S2CLU%nsect,'Nsec')
+            CALL HBNAME(params%ntid,'C2TRG',
+     &           Evt%S2CLU%nsect_noclu,'Nsec_noclu')
+            CALL HBNAME(params%ntid,'C2TRG',
+     &           Evt%S2CLU%nsect_clu,'Nsec2clu')
+            CALL HBNAME(Params%NtId,'C2TRG',Evt%S2CLU%Nclus,
+     $           'nclu2s:i::'//Range)
+            CALL HBNAME(Params%NtId,'C2TRG',Evt%S2CLU%Nnorm,
+     $           'NNorm(nclu2s):i')
+            CALL HBNAME(Params%NtId,'C2TRG',Evt%S2CLU%NormAdd,
+     $           'NormAdd(nclu2s):i')
+            CALL HBNAME(Params%NtId,'C2TRG',Evt%S2CLU%Nover,
+     $           'Nover(nclu2s):i')
+            CALL HBNAME(Params%NtId,'C2TRG',Evt%S2CLU%OverAdd,
+     $           'OverAdd(nclu2s):i')
+            CALL HBNAME(Params%NtId,'C2TRG',Evt%S2CLU%Ncosm,
+     $           'NCosm(nclu2s):i')
+            CALL HBNAME(Params%NtId,'C2TRG',Evt%S2CLU%CosmAdd,
+     $           'CosmAdd(nclu2s):i')
+c---------------------------------------------------------------------
+         ELSE 
+c
+c ----tellina -
+C
+            CALL prod2ntu_NtRange(0,triggerelements,Range)
+            
+            CALL HBName(Params%NtId,'Telli',Evt%Tellina%n
+     &           ,'ntel:i::'//Range)
+            CALL HBNAME(Params%NtId,'Telli',Evt%Tellina%add,
+     &           'add_tel(ntel):i')
+            CALL HBNAME(Params%NtId,'Telli',Evt%Tellina%Bitp,
+     &           'bitp_tel(ntel)[0,1100]:i')
+            CALL HBNAME(Params%NtId,'Telli',Evt%Tellina%Ea,
+     &           'Ea_tel(ntel):r')
+            CALL HBNAME(Params%NtId,'Telli',Evt%Tellina%Eb,
+     &           'Eb_tel(ntel):r')
+            CALL HBNAME(Params%NtId,'Telli',Evt%Tellina%Ta,
+     &           'Ta_tel(ntel):r')
+            CALL HBNAME(Params%NtId,'Telli',Evt%Tellina%Tb,
+     &           'Tb_tel(ntel):r')
+c--- pizzetta ---
+            CALL HBNAME(Params%NtId,'Pizze',Evt%Pizzetta%n,
+     $           'npiz:i::'//Range)
+            CALL HBNAME(Params%NtId,'Pizze',Evt%Pizzetta%add,
+     $           'add_piz(npiz):i')
+            CALL HBNAME(Params%NtId,'Pizze',Evt%Pizzetta%Ea,
+     $           'Ea_piz(npiz):r')
+            CALL HBNAME(Params%NtId,'Pizze',Evt%Pizzetta%Eb,
+     $           'Eb_piz(npiz):r')
+            CALL HBNAME(Params%NtId,'Pizze',Evt%Pizzetta%E_rec,
+     $           'E_piz(npiz):r')
+            CALL HBNAME(Params%NtId,'Pizze',Evt%Pizzetta%Z_mod,
+     $           'Z_piz(npiz):r')
+         ENDIF
+c     
+c--torta from tortastruhb ----------------------------
+	
+         call HBNAME(Params%NtId,'TRG',evt%trg%tspent,
+     # 'tspent:r,tdead:r,type[0,7]:i,bphi[0,3]:i,'//
+     # 'ephi[0,3]:i,wphi[0,3]:i,bbha[0,3]:i,ebha[0,3]:i,wbha[0,3]:i,'//
+     # 'bcos[0,3]:i, ecos[0,3]:i, wcos[0,3]:i, e1w1_dwn[0,1]:i, '//
+     # 'b1_dwn[0,1]:i,t0d_dwn[0,1]:i,vetocos[0,1]:i,vetobha[0,1]:i,'//
+     # 'bdw[0,1]:i,rephasing[0,4096]:i,tdc1_pht1[0,4096]:i,'//
+     # 'dt2_t1[0,4096]:i,fiducial[0,4096]:i,t1c[0,4096]:i,'//
+     # 't1d[0,4096]:i,t2d[0,4096]:i,tcr[0,4096]:i,'//
+     #       'tcaf_tcrd:i,tcaf_t2d:i,moka_t2d:i,moka_t2dsl(10):i')
+c
+      endif
+
+      IF( TELEFLAG ) THEN
+         CALL prod2ntu_NtRange(0,triggerelements,Range)
+C     
+C ............. from Palutan .............................
+C     but using Evt.XXXX
+C
+         CALL HBName(Params%NtId,'TELE',Evt%TELE%ntele
+     $        ,'ntele:i::[0,300]')
+         CALL HBNAME(Params%NtId,'TELE',Evt%TELE%Det,
+     &        'det_trg(ntele)[0,3]:i')
+         CALL HBNAME(Params%NtId,'TELE',Evt%TELE%Bitp,
+     &        'bitp(ntele)[0,1100]:i')
+         CALL HBNAME(Params%NtId,'TELE',Evt%TELE%Sector,
+     &        'sector(ntele)[0,50]:i')
+         CALL HBNAME(Params%NtId,'TELE',Evt%TELE%Serkind,
+     &        'serkind(ntele)[0,3]:i')
+         CALL HBNAME(Params%NtId,'TELE',Evt%TELE%Ea,
+     &        'Ea_trg(ntele):r')
+         CALL HBNAME(Params%NtId,'TELE',Evt%TELE%Eb,
+     &        'Eb_trg(ntele):r')
+         CALL HBNAME(Params%NtId,'TELE',Evt%TELE%Ta,
+     &        'Ta_trg(ntele):r')
+         CALL HBNAME(Params%NtId,'TELE',Evt%TELE%Tb,
+     &        'Tb_trg(ntele):r')
+
+         CALL HBNAME(Params%NtId,'PIZZA',Evt%PIZZA%npizza,
+     $        'npack:i::[0,300]')
+         CALL HBNAME(Params%NtId,'PIZZA',Evt%PIZZA%sector,
+     $        'paksect(npack)[0,50]:i')
+         CALL HBNAME(Params%NtId,'PIZZA',Evt%PIZZA%det,
+     $        'pakdet(npack)[1,3]:i')
+         CALL HBNAME(Params%NtId,'PIZZA',Evt%PIZZA%serkind,
+     $        'pakserk(npack)[0,3]:i')
+         CALL HBNAME(Params%NtId,'PIZZA',Evt%PIZZA%Ea,
+     $        'Ea_pack(npack):r')
+         CALL HBNAME(Params%NtId,'PIZZA',Evt%PIZZA%Eb,
+     $        'Eb_pack(npack):r')
+         CALL HBNAME(Params%NtId,'PIZZA',Evt%PIZZA%E_rec,
+     $        'E_rec(npack):r')
+         CALL HBNAME(Params%NtId,'PIZZA',Evt%PIZZA%Z_mod,
+     $        'Z_mod(npack):r')
+c
+      END IF
+C-----------------------------------------------------------
+C *** T0 Finder
+C-----------------------------------------------------------
+      IF( T0FLAG ) THEN
+CMS per DeSimone
+        CALL HBName(Params%NtId,'Info',Evt%T0stru%tphased_mc,
+     &        'tphased_mc:r')
+        CALL HBName(Params%NtId,'Info',Evt%T0stru%dc_step0,'t0dc0:r')
+        CALL HBName(Params%NtId,'Info',Evt%T0stru%hit_step0,'t0hit0:r')
+        CALL HBName(Params%NtId,'Info',Evt%T0stru%clus_step0,'t0clu0:r')
+        CALL HBname(Params%NtId,'Info',Evt%T0stru%step1,'T0step1:r')
+        CALL HBname(Params%NtId,'Info',Evt%T0stru%cable,'DelayCable:r')
+        CALL HBname(Params%NtId,'Info',Evt%T0stru%tbunch,'Tbunch:r')
+      ENDIF
+C-----------------------------------------------------------------------
+C EMC Clusters
+C-----------------------------------------------------------------------
+      If( CLUSFLAG ) then
+         CALL prod2ntu_NtRange(0,MaxNumClu,Range)
+         CALL HBName(Params%NtId,'Clu',Evt%Clu%n ,'nclu:i::'//Range)
+         CALL HBName(Params%NtId,'Clu',Evt%Clu%E ,'EneCl(nclu):r')
+         CALL HBName(Params%NtId,'Clu',Evt%Clu%T ,'Tcl(nclu):r')
+         CALL HBName(Params%NtId,'Clu',Evt%Clu%X ,'Xcl(nclu):r')
+         CALL HBName(Params%NtId,'Clu',Evt%Clu%Y ,'Ycl(nclu):r')
+         CALL HBName(Params%NtId,'Clu',Evt%Clu%Z ,'Zcl(nclu):r')
+         CALL HBName(Params%NtId,'Clu',Evt%Clu%Xa,'Xacl(nclu):r')
+         CALL HBName(Params%NtId,'Clu',Evt%Clu%Ya,'Yacl(nclu):r')
+         CALL HBName(Params%NtId,'Clu',Evt%Clu%Za,'Zacl(nclu):r')
+         CALL HBName(Params%NtId,'Clu',Evt%Clu%Xrms,'XRmCl(nclu):r')
+         CALL HBName(Params%NtId,'Clu',Evt%Clu%Yrms,'YRmsCl(nclu):r')
+         CALL HBName(Params%NtId,'Clu',Evt%Clu%Zrms,'ZrmsCl(nclu):r')
+         CALL HBName(Params%NtId,'Clu',Evt%Clu%Trms,'TrmsCl(nclu):r')
+         CALL HBName(Params%NtId,'Clu',Evt%Clu%Flag,'FlagCl(nclu):i')
+         CALL HBName(Params%NtId,'CluMC',Evt%Clu%nmc,
+     &        'nclumc:i::'//Range)
+         CALL HBName(Params%NtId,'CluMC',Evt%Clu%Npart
+     $        ,'Npar(nclumc)[0,10]:i')
+         CALL HBName(Params%NtId,'CluMC',Evt%Clu%part1
+     $        ,'Pnum1(nclumc)[0,100]:i')
+         CALL HBName(Params%NtId,'CluMC',Evt%Clu%pid1
+     $        ,'Pid1(nclumc)[0,100]:i')
+         CALL HBName(Params%NtId,'CluMC',Evt%Clu%part2
+     $        ,'Pnum2(nclumc)[0,100]:i')
+         CALL HBName(Params%NtId,'CluMC',Evt%Clu%pid2
+     $        ,'Pid2(nclumc)[0,100]:i')
+         CALL HBName(Params%NtId,'CluMC',Evt%Clu%part3
+     $        ,'Pnum3(nclumc)[0,100]:i')
+         CALL HBName(Params%NtId,'CluMC',Evt%Clu%pid3
+     $        ,'Pid3(nclumc)[0,100]:i')
+      endif
+C-----------------------------------------------------------------------
+C EMC Pre-Clusters
+C-----------------------------------------------------------------------
+      If( PRECLUSFLAG ) then
+         CALL prod2ntu_NtRange(0,MaxNumClu,Range)
+         CALL HBName(Params%NtId,'PClu',Evt%PreClu%n ,
+     &        'npclu:i::'//Range)
+         CALL HBName(Params%NtId,'PClu',Evt%PreClu%E ,'Epre(npclu):r')
+         CALL HBName(Params%NtId,'PClu',Evt%PreClu%T ,'Tpre(npclu):r')
+         CALL HBName(Params%NtId,'PClu',Evt%PreClu%X ,'Xpre(npclu):r')
+         CALL HBName(Params%NtId,'PClu',Evt%PreClu%Y ,'Ypre(npclu):r')
+         CALL HBName(Params%NtId,'PClu',Evt%PreClu%Z ,'Zpre(npclu):r')
+         CALL HBName(Params%NtId,'PClu',Evt%PreClu%TA,'TApre(npclu):r')
+         CALL HBName(Params%NtId,'PClu',Evt%PreClu%TB,'TBpre(npclu):r')
+         CALL HBName(Params%NtId,'PClu',Evt%PreClu%TrmsA,
+     &        'TARpre(npclu):r')
+         CALL HBName(Params%NtId,'PClu',Evt%PreClu%TrmsB,
+     &        'TBRpre(npclu):r')
+      endif
+C-----------------------------------------------------------------------
+C The CWRK
+C-----------------------------------------------------------------------
+      IF( CWRKFLAG ) then
+         CALL prod2ntu_NtRange(0,NeleCluMax,Range)
+         CALL HBName(Params%NtId,'CWR',Evt%CWRK%n ,
+     &        'nchit:i::'//Range)
+         CALL HBName(Params%NtId,'CWR',Evt%CWRK%icl,
+     $        'iclu(nchit):i')
+         CALL HBName(Params%NtId,'CWR',Evt%CWRK%cele,
+     &        'icel(nchit):i')
+         CALL HBNAME(Params%Ntid,'CWR',Evt%CWRK%add,
+     &        'Cadd(nchit):i')
+         CALL HBNAME(Params%Ntid,'CWR',Evt%CWRK%nhit,
+     &        'Cmchit(nchit):i')
+         CALL HBNAME(Params%Ntid,'CWR',Evt%CWRK%kine,
+     &        'Ckine(nchit):i')
+         CALL HBName(Params%NtId,'CWR',Evt%CWRK%E,
+     &        'Ene(nchit):r')
+         CALL HBName(Params%NtId,'CWR',Evt%CWRK%T,
+     &        'T(nchit):r')
+         CALL HBName(Params%NtId,'CWR',Evt%CWRK%X,
+     &        'x(nchit):r')
+         CALL HBName(Params%NtId,'CWR',Evt%CWRK%Y,
+     &        'y(nchit):r')
+         CALL HBName(Params%NtId,'CWR',Evt%CWRK%Z,
+     &        'z(nchit):r')
+      ENDIF
+C-----------------------------------------------------------------------
+C The CELE
+C-----------------------------------------------------------------------
+      If( CELEFLAG) then
+         CALL prod2ntu_NtRange(0,NeleCluMax,Range)
+         CALL HBName(Params%NtId,'Cel',Evt%Cele%n ,'ncel:i::'//Range)
+         CALL HBName(Params%NtId,'Cel',Evt%Cele%icl
+     $        ,'icl(ncel):i')
+         CALL HBName(Params%NtId,'Cel',Evt%Cele%det
+     $        ,'det(ncel)[0,3]:i')
+         CALL HBName(Params%NtId,'Cel',Evt%Cele%wed
+     $        ,'wed(ncel)[0,32]:i')
+         CALL HBName(Params%NtId,'Cel',Evt%Cele%pla
+     $        ,'pla(ncel)[0,5]:i')
+         CALL HBName(Params%NtId,'Cel',Evt%Cele%col
+     $        ,'col(ncel)[0,12]:i')
+c     CALL HBName(Params%NtId,'Cel',Evt%Cele%E,'ECel(ncel):r')
+c     CALL HBName(Params%NtId,'Cel',Evt%Cele%t,'tCel(ncel):r')
+         CALL HBName(Params%NtId,'Cel',Evt%Cele%Ea,'Ea(ncel):r')
+         CALL HBName(Params%NtId,'Cel',Evt%Cele%ta,'ta(ncel):r')
+         CALL HBName(Params%NtId,'Cel',Evt%Cele%Eb,'eb(ncel):r')
+         CALL HBName(Params%NtId,'Cel',Evt%Cele%tb,'tb(ncel):r')
+c     
+         CALL HBNAME(Params%NtId,'Celmc',Evt%Cele%nmc,
+     &        'ncelmc:i::'//Range)
+         CALL HBName(Params%NtId,'Celmc',Evt%Cele%Etrue
+     $        ,'Emc(ncelmc):r')
+         CALL HBName(Params%NtId,'Celmc',Evt%Cele%Ttrue
+     $        ,'Tmc(ncelmc):r')
+         CALL HBName(Params%NtId,'Celmc',Evt%Cele%xtrue
+     $        ,'Xmc(ncelmc):r')
+         CALL HBName(Params%NtId,'Celmc',Evt%Cele%ytrue
+     $        ,'Ymc(ncelmc):r')
+         CALL HBName(Params%NtId,'Celmc',Evt%Cele%ztrue
+     $        ,'Zmc(ncelmc):r')
+         CALL HBName(Params%NtId,'Celmc',Evt%Cele%ptyp
+     $        ,'Ptyp(ncelmc)[0,100]:i')
+         CALL HBName(Params%NtId,'Celmc',Evt%Cele%knum
+     $        ,'Knum(ncelmc)[0,100]:i')
+         CALL HBName(Params%NtId,'Celmc',Evt%Cele%numpar
+     $        ,'Nhit(ncelmc)[0,10]:i')
+      endif
+      
+C-----------------------------------------------------------------------
+C      The DTCE
+C-----------------------------------------------------------------------
+      If (dtceFlag) Then
+         call prod2ntu_NtRange(0,nMaxDC,range)
+         call HBNAME(nId,'DTCE',Evt%DTCE%nDTCE,'nDTCE:I::'//range)
+         call HBNAME(nId,'DTCE',Evt%DTCE%nSmall,'nSmall:I::'//range)
+         call HBNAME(nId,'DTCE',Evt%DTCE%iLayerDTCE
+     +        ,              'iLayerDTCE(nDTCE)[1,58]:I')
+         call HBNAME(nId,'DTCE',Evt%DTCE%iWireDTCE
+     +        ,              'iWireDTCE(nDTCE)[1,378]:I')
+         call HBNAME(nId,'DTCE',Evt%DTCE%tDTCE
+     +        ,              'tDTCE(nDTCE):R')
+      EndIf
+      
+      If (dtce0Flag) Then
+         call prod2ntu_NtRange(0,nMaxDC,range)
+         call HBNAME(nId,'DTCE0',DTCEStru%NEle,'nDTCE0:I::'//range)
+         call HBNAME(nId,'DTCE0',DTCEStru%Lay
+     +        ,              'iLayerDTCE0(nDTCE0)[1,58]:I')
+         call HBNAME(nId,'DTCE0',DTCEStru%Wir
+     +        ,              'iWireDTCE0(nDTCE0)[1,378]:I')
+         call HBNAME(nId,'DTCE0',DTCEStru%Time
+     +        ,              'tDTCE0(nDTCE0):R')
+      EndIf
+      
+      If (DCnHitsFlag) Then
+         call HBNAME(nId,'DCHITS',DTCEStru%nDCHR,'nDCHR:I')
+         call HBNAME(nId,'DCHITS',DTCEStru%nSmallDCm,'nSmallDCm:I')
+         call HBNAME(nId,'DCHITS',DTCEStru%nSmallDCp,'nSmallDCp:I')
+         call HBNAME(nId,'DCHITS',DTCEStru%nBigDCm,'nBigDCm:I')
+         call HBNAME(nId,'DCHITS',DTCEStru%nBigDCp,'nBigDCp:I')
+         call HBNAME(nId,'DCHITS',Evt%DTCE%nDTCE,'nCellDC:I')
+         call HBNAME(nId,'DCHITS',Evt%DTCE%nSmall,'nSmallDC:I')
+      EndIf
+C-----------------------------------------------------------------------
+C     The DHRE
+C-----------------------------------------------------------------------
+      If (dhreFlag) Then
+         call prod2ntu_NtRange(0,nMaxDC,range)
+         call HBNAME(nId,'DHRE',Evt%DHRE%nDHRE,'nDHRE:I::'//range)
+         call HBNAME(nId,'DHRE',Evt%DHRE%iLayerDHRE
+     +        ,              'iLayerDHRE(nDHRE)[1,58]:I')
+         call HBNAME(nId,'DHRE',Evt%DHRE%iWireDHRE
+     +        ,              'iWireDHRE(nDHRE)[1,378]:I')
+         call HBNAME(nId,'DHRE',Evt%DHRE%iTrkDHRE
+     +        ,              'iTrkDHRE(nDHRE):I')
+         call HBNAME(nId,'DHRE',Evt%DHRE%rDHRE
+     +        ,              'rDHRE(nDHRE):R')
+         call HBNAME(nId,'DHRE',Evt%DHRE%eDHRE
+     +        ,              'eDHRE(nDHRE):R')
+      EndIf
+      
+C-----------------------------------------------------------------------
+C      The DHSP
+C-----------------------------------------------------------------------
+      IF( DHSPFLAG ) THEN
+         CALL prod2ntu_NtRange(0,MaxNumDHSP,Range)
+         CALL HBName(Params%NtId,'Dhsp',Evt%DHSP%numDHSP,
+     $        'ndhsp:i::'//Range)
+         CALL HBName(Params%NtId,'Dhsp',Evt%DHSP%itrk
+     $        ,'trkdh(ndhsp)[0,100]:i')
+         CALL HBName(Params%Ntid,'Dhsp',Evt%Dhsp%layer
+     $        ,'layer(ndhsp)[0,60]:i')
+         CALL HBName(Params%Ntid,'Dhsp',Evt%Dhsp%wire
+     $        ,'wire(ndhsp)[0,400]:i')
+         CALL HBName(Params%Ntid,'Dhsp',Evt%Dhsp%time,'time(ndhsp):r'
+     $        )
+         CALL HBName(Params%Ntid,'Dhsp',Evt%Dhsp%drift
+     $        ,'dpar(ndhsp):r')
+         CALL HBName(Params%Ntid,'Dhsp',Evt%Dhsp%res,'res(ndhsp):r')
+         CALL HBName(Params%Ntid,'Dhsp',Evt%Dhsp%x,'xdh(ndhsp):r')
+         CALL HBName(Params%Ntid,'Dhsp',Evt%Dhsp%y,'ydh(ndhsp):r')
+         CALL HBName(Params%Ntid,'Dhsp',Evt%Dhsp%z,'zdh(ndhsp):r')
+      ENDIF
+C-----------------------------------------------------------------------
+C Tracks after Vertex reconstruction
+C-----------------------------------------------------------------------
+      IF( TRKVFLAG ) then
+         CALL prod2ntu_NtRange(0,MaxNumTrkV,Range)
+         CALL HBName(Params%NtId,'TrkV',Evt%Trkv%n,'ntv:i::'//Range)
+         CALL HBName(Params%NtId,'TrkV',Evt%Trkv%iv,'iv(ntv)[0,30]:i'
+     $        )
+         CALL HBName(Params%NtId,'TrkV',Evt%Trkv%trkpoi
+     $        ,'trknumv(ntv)[0,999]:i:')
+         CALL HBName(Params%Ntid,'TrkV',Evt%Trkv%cur,'CurV(ntv):r')
+         CALL HBName(Params%Ntid,'TrkV',Evt%Trkv%phi,'PhiV(ntv):r')
+         CALL HBName(Params%Ntid,'TrkV',Evt%Trkv%cot,'CotV(ntv):r')
+         CALL HBName(Params%Ntid,'TrkV',Evt%Trkv%px,'pxtv(ntv):r')
+         CALL HBName(Params%Ntid,'TrkV',Evt%Trkv%py,'pytv(ntv):r')
+         CALL HBName(Params%Ntid,'TrkV',Evt%Trkv%pz,'pztv(ntv):r')
+         CALL HBName(Params%Ntid,'TrkV',Evt%Trkv%pmod,'pmodv(ntv):r')
+         CALL HBName(Params%Ntid,'TrkV',Evt%Trkv%Length,'lenv(ntv):r'
+     $        )
+         CALL HBName(Params%Ntid,'TrkV',Evt%Trkv%Chi2,'chiv(ntv):r')
+         CALL HBName(Params%Ntid,'TrkV',Evt%Trkv%ipid,'pidtv(ntv):i')
+C     GS
+         CALL HBName(Params%Ntid,'TrkV',Evt%Trkv%cov11
+     $        ,'cov11tv(ntv):r')
+         CALL HBName(Params%Ntid,'TrkV',Evt%Trkv%cov12
+     $        ,'cov12tv(ntv):r')
+         CALL HBName(Params%Ntid,'TrkV',Evt%Trkv%cov13
+     $        ,'cov13tv(ntv):r')
+         CALL HBName(Params%Ntid,'TrkV',Evt%Trkv%cov22
+     $        ,'cov22tv(ntv):r')
+         CALL HBName(Params%Ntid,'TrkV',Evt%Trkv%cov23
+     $        ,'cov23tv(ntv):r')
+         CALL HBName(Params%Ntid,'TrkV',Evt%Trkv%cov33
+     $        ,'cov33tv(ntv):r')
+C     GS
+C-----------------------------------------------------------------------
+C     Verticies
+C-----------------------------------------------------------------------
+         CALL prod2ntu_NtRange(0,MaxNumVtx,Range)
+         CALL HBName(Params%NtId,'Vtx',Evt%vtx%n,'nv:i::'//Range)
+         CALL HBName(Params%NtId,'Vtx',Evt%Vtx%Ntrk,'vtx(nv)[0,10]:i'
+     $        )
+         CALL HBName(Params%NtId,'Vtx',Evt%Vtx%X,'xv(nv):r')
+         CALL HBName(Params%NtId,'Vtx',Evt%Vtx%Y,'yv(nv):r')
+         CALL HBName(Params%NtId,'Vtx',Evt%Vtx%Z,'zv(nv):r')
+         CALL HBName(Params%NtId,'Vtx',Evt%Vtx%Chi2,'chivtx(nv):r')
+         CALL HBName(Params%NtId,'Vtx',Evt%Vtx%Qual,'qualv(nv):i')
+         CALL HBName(Params%NtId,'Vtx',Evt%Vtx%Fitid,'fitidv(nv):i')
+         CALL HBName(Params%NtId,'vtx',Evt%Vtx%Cov1,'VTXcov1(nv):r')
+         CALL HBName(Params%NtId,'vtx',Evt%Vtx%Cov2,'VTXcov2(nv):r')
+         CALL HBName(Params%NtId,'vtx',Evt%Vtx%Cov3,'VTXcov3(nv):r')
+         CALL HBName(Params%NtId,'vtx',Evt%Vtx%Cov4,'VTXcov4(nv):r')
+         CALL HBName(Params%NtId,'vtx',Evt%Vtx%Cov5,'VTXcov5(nv):r')
+         CALL HBName(Params%NtId,'vtx',Evt%Vtx%Cov6,'VTXcov6(nv):r')
+      endif
+C-----------------------------------------------------------------------
+C Trks before Vertex reconstruction
+C-----------------------------------------------------------------------
+      if( TRKSFLAG )then
+         CALL prod2ntu_NtRange(0,MaxNumTrk,Range)
+c     CALL HBName(Params%NtId,'Trk',numdhit,'ndhit:i')
+         CALL HBName(Params%NtId,'Trk',Evt%Trk%n,'nt:i::'//Range)
+         CALL HBName(Params%NtId,'Trk',Evt%Trk%trkind,'trkind(nt):i')
+         CALL HBName(Params%NtId,'Trk',Evt%Trk%version,'trkver(nt):i')
+         CALL HBName(Params%Ntid,'Trk',Evt%Trk%cur,'Cur(nt):r')
+         CALL HBName(Params%Ntid,'Trk',Evt%Trk%phi,'Phi(nt):r')
+         CALL HBName(Params%Ntid,'Trk',Evt%Trk%cot,'Cot(nt):r')
+         CALL HBName(Params%Ntid,'Trk',Evt%Trk%px,'pxt(nt):r')
+         CALL HBName(Params%Ntid,'Trk',Evt%Trk%py,'pyt(nt):r')
+         CALL HBName(Params%Ntid,'Trk',Evt%Trk%pz,'pzt(nt):r')
+         CALL HBName(Params%Ntid,'Trk',Evt%Trk%pmod,'pmod(nt):r')
+         CALL HBName(Params%Ntid,'Trk',Evt%Trk%length,'len(nt):r')
+         CALL HBName(Params%Ntid,'Trk',Evt%Trk%x,'xfirst(nt):r')
+         CALL HBName(Params%Ntid,'Trk',Evt%Trk%y,'yfirst(nt):r')
+         CALL HBName(Params%Ntid,'Trk',Evt%Trk%z,'zfirst(nt):r')
+         CALL HBName(Params%Ntid,'Trk',Evt%Trk%curlast,'Curla(nt):r')
+         CALL HBName(Params%Ntid,'Trk',Evt%Trk%philast,'Phila(nt):r')
+         CALL HBName(Params%Ntid,'Trk',Evt%Trk%cotlast,'Cotla(nt):r')
+         CALL HBName(Params%Ntid,'Trk',Evt%Trk%pxlast,'pxtla(nt):r')
+         CALL HBName(Params%Ntid,'Trk',Evt%Trk%pylast,'pytla(nt):r')
+         CALL HBName(Params%Ntid,'Trk',Evt%Trk%pzlast,'pztla(nt):r')
+         CALL HBName(Params%Ntid,'Trk',Evt%Trk%pmodlast
+     $        ,'pmodla(nt):r')
+         CALL HBName(Params%Ntid,'TRK',Evt%Trk%SigPCA,'spca(nt):r')
+         CALL HBName(Params%Ntid,'TRK',Evt%Trk%SigZeta,'szeta(nt):r')
+         CALL HBName(Params%Ntid,'TRK',Evt%Trk%SigCurv,'scurv(nt):r')
+         CALL HBName(Params%Ntid,'TRK',Evt%Trk%SigCot,'scotg(nt):r')
+         CALL HBName(Params%Ntid,'TRK',Evt%Trk%SigPhi,'sphi(nt):r')
+         
+         CALL HBName(Params%Ntid,'Trk',Evt%Trk%xlast,'xlast(nt):r')
+         CALL HBName(Params%Ntid,'Trk',Evt%Trk%ylast,'ylast(nt):r')
+         CALL HBName(Params%Ntid,'Trk',Evt%Trk%zlast,'zlast(nt):r')
+         CALL HBName(Params%Ntid,'Trk',Evt%Trk%xpca,'xpca2(nt):r')
+         CALL HBName(Params%Ntid,'Trk',Evt%Trk%ypca,'ypca2(nt):r')
+         CALL HBName(Params%Ntid,'Trk',Evt%Trk%zpca,'zpca2(nt):r')
+         
+         CALL HBName(Params%Ntid,'Trk',Evt%Trk%qtrk,'qtrk2(nt):r')
+         CALL HBName(Params%Ntid,'Trk',Evt%Trk%cotpca,'cotpca2(nt):r')
+         CALL HBName(Params%Ntid,'Trk',Evt%Trk%phipca,'phipca2(nt):r')
+         
+         CALL HBName(Params%Ntid,'Trk',Evt%Trk%NumPRhit
+     $        ,'nprhit(nt):i')
+         CALL HBName(Params%Ntid,'Trk',Evt%Trk%NumFitHit
+     $        ,'nfithit(nt):i')
+         CALL HBName(Params%Ntid,'Trk',Evt%Trk%nmskink
+     $        ,'nmskink(nt):i')
+         CALL HBName(Params%Ntid,'Trk',Evt%Trk%chi2fit
+     $        ,'chi2fit(nt):r')
+         CALL HBName(Params%Ntid,'Trk',Evt%Trk%chi2ms,'chi2ms(nt):r')
+      endif
+C-----------------------------------------------------------------------
+C DTFSMC patterns
+C-----------------------------------------------------------------------
+      if(TRKSFLAG)then
+         CALL prod2ntu_NtRange(0,MaxNumTrk,Range)
+         CALL HBName(Params%NtId,'TrkMC',Evt%TrkMC%n,
+     $        'ntfmc:i::'//Range)
+         CALL HBName(Params%Ntid,'TrkMC',Evt%TrkMC%ncontr
+     $        ,'ncontr(ntfmc)[0,10]:i')
+         CALL HBName(Params%Ntid,'TrkMC',Evt%TrkMC%kine1
+     $        ,'trkine1(ntfmc)[0,100]:i')
+         CALL HBName(Params%Ntid,'TrkMC',Evt%TrkMC%type1
+     $        ,'trtype1(ntfmc)[0,100]:i')
+         CALL HBName(Params%Ntid,'TrkMC',Evt%TrkMC%hits1
+     $        ,'trhits1(ntfmc)[0,1000]:i')
+         CALL HBName(Params%Ntid,'TrkMC',Evt%TrkMC%kine2
+     $        ,'trkine2(ntfmc)[0,100]:i')
+         CALL HBName(Params%Ntid,'TrkMC',Evt%TrkMC%type2
+     $        ,'trtype2(ntfmc)[0,100]:i')
+         CALL HBName(Params%Ntid,'TrkMC',Evt%TrkMC%hits2
+     $        ,'trhits2(ntfmc)[0,1000]:i')
+         CALL HBName(Params%Ntid,'TrkMC',Evt%TrkMC%kine3
+     $        ,'trkine3(ntfmc)[0,100]:i')
+         CALL HBName(Params%Ntid,'TrkMC',Evt%TrkMC%type3
+     $        ,'trtype3(ntfmc)[0,100]:i')
+         CALL HBName(Params%Ntid,'TrkMC',Evt%TrkMC%hits3
+     $        ,'trhits3(ntfmc)[0,1000]:i')
+         
+         CALL HBName(Params%Ntid,'TrkMC',Evt%TrkMC%xfirst
+     $        ,'xfmc(ntfmc):r')
+         CALL HBName(Params%Ntid,'TrkMC',Evt%TrkMC%yfirst
+     $        ,'yfmc(ntfmc):r')
+         CALL HBName(Params%Ntid,'TrkMC',Evt%TrkMC%zfirst
+     $        ,'zfmc(ntfmc):r')
+         CALL HBName(Params%Ntid,'TrkMC',Evt%TrkMC%pxfirst
+     $        ,'pxfmc(ntfmc):r')
+         CALL HBName(Params%Ntid,'TrkMC',Evt%TrkMC%pyfirst
+     $        ,'pyfmc(ntfmc):r')
+         CALL HBName(Params%Ntid,'TrkMC',Evt%TrkMC%pzfirst
+     $        ,'pzfmc(ntfmc):r')
+         
+         CALL HBName(Params%Ntid,'TrkMC',Evt%TrkMC%xlast
+     $        ,'xlmc(ntfmc):r')
+         CALL HBName(Params%Ntid,'TrkMC',Evt%TrkMC%ylast
+     $        ,'ylmc(ntfmc):r')
+         CALL HBName(Params%Ntid,'TrkMC',Evt%TrkMC%zlast
+     $           ,'zlmc(ntfmc):r')
+         CALL HBName(Params%Ntid,'TrkMC',Evt%TrkMC%pxlast
+     $        ,'pxlmc(ntfmc):r')
+         CALL HBName(Params%Ntid,'TrkMC',Evt%TrkMC%pylast
+     $        ,'pylmc(ntfmc):r')
+         CALL HBName(Params%Ntid,'TrkMC',Evt%TrkMC%pzlast
+     $        ,'pzlmc(ntfmc):r')
+         
+         CALL HBName(Params%Ntid,'TrkMC',Evt%TrkMC%xmcfirst
+     $        ,'xfmc2(ntfmc):r')
+         CALL HBName(Params%Ntid,'TrkMC',Evt%TrkMC%ymcfirst
+     $        ,'yfmc2(ntfmc):r')
+         CALL HBName(Params%Ntid,'TrkMC',Evt%TrkMC%zmcfirst
+     $        ,'zfmc2(ntfmc):r')
+         CALL HBName(Params%Ntid,'TrkMC',Evt%TrkMC%pxmcfirst
+     $        ,'pxfmc2(ntfmc):r')
+         CALL HBName(Params%Ntid,'TrkMC',Evt%TrkMC%pymcfirst
+     $        ,'pyfmc2(ntfmc):r')
+         CALL HBName(Params%Ntid,'TrkMC',Evt%TrkMC%pzmcfirst
+     $        ,'pzfmc2(ntfmc):r')
+         
+         CALL HBName(Params%Ntid,'TrkMC',Evt%TrkMC%xmclast
+     $        ,'xlmc2(ntfmc):r')
+         CALL HBName(Params%Ntid,'TrkMC',Evt%TrkMC%ymclast
+     $        ,'ylmc2(ntfmc):r')
+         CALL HBName(Params%Ntid,'TrkMC',Evt%TrkMC%zmclast
+     $        ,'zlmc2(ntfmc):r')
+         CALL HBName(Params%Ntid,'TrkMC',Evt%TrkMC%pxmclast
+     $        ,'pxlmc2(ntfmc):r')
+         CALL HBName(Params%Ntid,'TrkMC',Evt%TrkMC%pymclast
+     $        ,'pylmc2(ntfmc):r')
+         CALL HBName(Params%Ntid,'TrkMC',Evt%TrkMC%pzmclast
+     $        ,'pzlmc2(ntfmc):r')
+         
+      EndIF
+cvp
+C-----------------------------------------------------------------------
+C ( KPM Stream ): Tracks after Vertex reconstruction before Retracking
+C-----------------------------------------------------------------------
+         IF( TRKVOLDFLAG ) then
+            CALL prod2ntu_NtRange(0,MaxNumTrkV,Range)
+            CALL HBName(Params%NtId,'TrkVOld',Evt%TrkvOld%n,
+     $           'ntvold:i::'//Range)
+            CALL HBName(Params%NtId,'TrkVOld',Evt%TrkvOld%iv,
+     $           'ivold(ntvold)[0,30]:i')
+            CALL HBName(Params%NtId,'Trkvold',Evt%Trkvold%trkpoi,
+     $           'trknumvold(ntvold)[0,999]:i:')
+            CALL HBName(Params%Ntid,'Trkvold',Evt%Trkvold%cur,
+     $           'CurVold(ntvold):r')
+            CALL HBName(Params%Ntid,'Trkvold',Evt%Trkvold%phi,
+     $           'PhiVold(ntvold):r')
+            CALL HBName(Params%Ntid,'Trkvold',Evt%Trkvold%cot,
+     $           'CotVold(ntvold):r')
+            CALL HBName(Params%Ntid,'Trkvold',Evt%Trkvold%px,
+     $           'pxtvold(ntvold):r')
+            CALL HBName(Params%Ntid,'Trkvold',Evt%Trkvold%py,
+     $           'pytvold(ntvold):r')
+            CALL HBName(Params%Ntid,'Trkvold',Evt%Trkvold%pz,
+     $           'pztvold(ntvold):r')
+            CALL HBName(Params%Ntid,'Trkvold',Evt%Trkvold%pmod,
+     $           'pmodvold(ntvold):r')
+            CALL HBName(Params%Ntid,'Trkvold',Evt%Trkvold%Length,
+     $           'lenvold(ntvold):r')
+            CALL HBName(Params%Ntid,'Trkvold',Evt%Trkvold%Chi2,
+     $           'chivold(ntvold):r')
+            CALL HBName(Params%Ntid,'Trkvold',Evt%Trkvold%ipid,
+     $           'pidtvold(ntvold):i')
+CGS
+            CALL HBName(Params%Ntid,'Trkvold',Evt%Trkvold%cov11
+     $           ,'cov11tvold(ntvold):r')
+            CALL HBName(Params%Ntid,'Trkvold',Evt%Trkvold%cov12
+     $           ,'cov12tvold(ntvold):r')
+            CALL HBName(Params%Ntid,'Trkvold',Evt%Trkvold%cov13
+     $           ,'cov13tvold(ntvold):r')
+            CALL HBName(Params%Ntid,'Trkvold',Evt%Trkvold%cov22
+     $           ,'cov22tvold(ntvold):r')
+            CALL HBName(Params%Ntid,'Trkvold',Evt%Trkvold%cov23
+     $           ,'cov23tvold(ntvold):r')
+            CALL HBName(Params%Ntid,'Trkvold',Evt%Trkvold%cov33
+     $           ,'cov33tvold(ntvold):r')
+CGS
+C-----------------------------------------------------------------------
+C (KPM Stream) Verticies before retracking 
+C-----------------------------------------------------------------------
+            CALL prod2ntu_NtRange(0,MaxNumVtx,Range)
+            CALL HBName(Params%NtId,'Vtxold',Evt%vtxold%n,
+     $           'nvold:i::'//Range)
+            CALL HBName(Params%NtId,'Vtxold',Evt%Vtxold%Ntrk,
+     $           'vtxold(nvold)[0,10]:i')
+            CALL HBName(Params%NtId,'Vtxold',Evt%Vtxold%X,
+     $           'xvold(nvold):r')
+            CALL HBName(Params%NtId,'Vtxold',Evt%Vtxold%Y,
+     $           'yvold(nvold):r')
+            CALL HBName(Params%NtId,'Vtxold',Evt%Vtxold%Z,
+     $           'zvold(nvold):r')
+            CALL HBName(Params%NtId,'Vtxold',Evt%Vtxold%Chi2,
+     $           'chivtxold(nvold):r')
+            CALL HBName(Params%NtId,'Vtxold',Evt%Vtxold%Qual,
+     $           'qualvold(nvold):i')
+            CALL HBName(Params%NtId,'Vtxold',Evt%Vtxold%Fitid,
+     $           'fitidvold(nvold):i')
+            CALL HBName(Params%NtId,'vtxold',Evt%Vtxold%Cov1,
+     $           'VTXcov1old(nvold):r')
+            CALL HBName(Params%NtId,'vtxold',Evt%Vtxold%Cov2,
+     $           'VTXcov2old(nvold):r')
+            CALL HBName(Params%NtId,'vtxold',Evt%Vtxold%Cov3,
+     $           'VTXcov3old(nvold):r')
+            CALL HBName(Params%NtId,'vtxold',Evt%Vtxold%Cov4,
+     $           'VTXcov4old(nvold):r')
+            CALL HBName(Params%NtId,'vtxold',Evt%Vtxold%Cov5,
+     $           'VTXcov5old(nvold):r')
+            CALL HBName(Params%NtId,'vtxold',Evt%Vtxold%Cov6,
+     $           'VTXcov6old(nvold):r')
+         endif
+C-----------------------------------------------------------------------
+C ( KPM Stream ) Trks before Vertex reconstruction before retracking 
+C-----------------------------------------------------------------------
+         if( TRKSOLDFLAG )then
+            CALL prod2ntu_NtRange(0,MaxNumTrk,Range)
+            CALL HBName(Params%NtId,'Trkold',Evt%Trkold%n,
+     $           'ntold:i::'//Range)
+            CALL HBName(Params%NtId,'Trkold',Evt%Trkold%trkind,
+     $           'trkindold(ntold):i')
+            CALL HBName(Params%NtId,'Trkold',Evt%Trkold%version,
+     $           'trkverold(ntold):i')
+            CALL HBName(Params%Ntid,'Trkold',Evt%Trkold%cur,
+     $           'Curold(ntold):r')
+            CALL HBName(Params%Ntid,'Trkold',Evt%Trkold%phi,
+     $           'Phiold(ntold):r')
+            CALL HBName(Params%Ntid,'Trkold',Evt%Trkold%cot,
+     $           'Cotold(ntold):r')
+            CALL HBName(Params%Ntid,'Trkold',Evt%Trkold%px,
+     $           'pxtold(ntold):r')
+            CALL HBName(Params%Ntid,'Trkold',Evt%Trkold%py,
+     $           'pytold(ntold):r')
+            CALL HBName(Params%Ntid,'Trkold',Evt%Trkold%pz,
+     $           'pztold(ntold):r')
+            CALL HBName(Params%Ntid,'Trkold',Evt%Trkold%pmod,
+     $           'pmodold(ntold):r')
+            CALL HBName(Params%Ntid,'Trkold',Evt%Trkold%length,
+     $           'lenold(ntold):r')
+            CALL HBName(Params%Ntid,'Trkold',Evt%Trkold%x,
+     $           'xfirstold(ntold):r')
+            CALL HBName(Params%Ntid,'Trkold',Evt%Trkold%y,
+     $           'yfirstold(ntold):r')
+            CALL HBName(Params%Ntid,'Trkold',Evt%Trkold%z,
+     $           'zfirstold(ntold):r')
+            CALL HBName(Params%Ntid,'Trkold',Evt%Trkold%curlast,
+     $           'Curlaold(ntold):r')
+            CALL HBName(Params%Ntid,'Trkold',Evt%Trkold%philast,
+     $           'Philaold(ntold):r')
+            CALL HBName(Params%Ntid,'Trkold',Evt%Trkold%cotlast,
+     $           'Cotlaold(ntold):r')
+            CALL HBName(Params%Ntid,'Trkold',Evt%Trkold%pxlast,
+     $           'pxtlaold(ntold):r')
+            CALL HBName(Params%Ntid,'Trkold',Evt%Trkold%pylast,
+     $           'pytlaold(ntold):r')
+            CALL HBName(Params%Ntid,'Trkold',Evt%Trkold%pzlast,
+     $           'pztlaold(ntold):r')
+            CALL HBName(Params%Ntid,'Trkold',Evt%Trkold%pmodlast
+     $           ,'pmodlaold(ntold):r')
+            CALL HBName(Params%Ntid,'TRKOLD',Evt%Trkold%SigPCA,
+     $           'spcaold(ntold):r')
+            CALL HBName(Params%Ntid,'TRKOLD',Evt%Trkold%SigZeta,
+     $           'szetaold(ntold):r')
+            CALL HBName(Params%Ntid,'TRKOLD',Evt%Trkold%SigCurv,
+     $           'scurvold(ntold):r')
+            CALL HBName(Params%Ntid,'TRKOLD',Evt%Trkold%SigCot,
+     $           'scotgold(ntold):r')
+            CALL HBName(Params%Ntid,'TRKOLD',Evt%Trkold%SigPhi,
+     $           'sphiold(ntold):r')
+            CALL HBName(Params%Ntid,'Trkold',Evt%Trkold%xlast,
+     $           'xlastold(ntold):r')
+            CALL HBName(Params%Ntid,'Trkold',Evt%Trkold%ylast,
+     $           'ylastold(ntold):r')
+            CALL HBName(Params%Ntid,'Trkold',Evt%Trkold%zlast,
+     $           'zlastold(ntold):r')
+            CALL HBName(Params%Ntid,'Trkold',Evt%Trkold%xpca,
+     $           'xpca2old(ntold):r')
+            CALL HBName(Params%Ntid,'Trkold',Evt%Trkold%ypca,
+     $           'ypca2old(ntold):r')
+            CALL HBName(Params%Ntid,'Trkold',Evt%Trkold%zpca,
+     $           'zpca2old(ntold):r')
+            CALL HBName(Params%Ntid,'Trkold',Evt%Trkold%qtrk,
+     $           'qtrk2old(ntold):r')
+            CALL HBName(Params%Ntid,'Trkold',Evt%Trkold%cotpca,
+     $           'cotpca2old(ntold):r')
+            CALL HBName(Params%Ntid,'Trkold',Evt%Trkold%phipca,
+     $           'phipca2old(ntold):r')
+
+            CALL HBName(Params%Ntid,'Trkold',Evt%Trkold%NumPRhit
+     $           ,'nprhitold(ntold):i')
+            CALL HBName(Params%Ntid,'Trkold',Evt%Trkold%NumFitHit
+     $           ,'nfithitold(ntold):i')
+            CALL HBName(Params%Ntid,'Trkold',Evt%Trkold%nmskink
+     $           ,'nmskinkold(ntold):i')
+            CALL HBName(Params%Ntid,'Trkold',Evt%Trkold%chi2fit
+     $           ,'chi2fitold(ntold):r')
+            CALL HBName(Params%Ntid,'Trkold',Evt%Trkold%chi2ms,
+     $           'chi2msold(ntold):r')
+         endif
+C-----------------------------------------------------------------------
+C KPM Stream : DTFSMC patterns before retracking 
+C-----------------------------------------------------------------------
+         if(TRKSOLDFLAG)then
+            CALL prod2ntu_NtRange(0,MaxNumTrk,Range)
+            CALL HBName(Params%NtId,'Trkmcold',Evt%Trkmcold%n,
+     $           'ntfmcold:i::'//Range)
+            CALL HBName(Params%Ntid,'Trkmcold',Evt%Trkmcold%ncontr
+     $           ,'ncontrold(ntfmcold)[0,10]:i')
+            CALL HBName(Params%Ntid,'Trkmcold',Evt%Trkmcold%kine1
+     $           ,'trkine1old(ntfmcold)[0,100]:i')
+            CALL HBName(Params%Ntid,'Trkmcold',Evt%Trkmcold%type1
+     $           ,'trtype1old(ntfmcold)[0,100]:i')
+            CALL HBName(Params%Ntid,'Trkmcold',Evt%Trkmcold%hits1
+     $           ,'trhits1old(ntfmcold)[0,1000]:i')
+            CALL HBName(Params%Ntid,'Trkmcold',Evt%Trkmcold%kine2
+     $           ,'trkine2old(ntfmcold)[0,100]:i')
+            CALL HBName(Params%Ntid,'Trkmcold',Evt%Trkmcold%type2
+     $           ,'trtype2old(ntfmcold)[0,100]:i')
+            CALL HBName(Params%Ntid,'Trkmcold',Evt%Trkmcold%hits2
+     $           ,'trhits2old(ntfmcold)[0,1000]:i')
+            CALL HBName(Params%Ntid,'Trkmcold',Evt%Trkmcold%kine3
+     $           ,'trkine3old(ntfmcold)[0,100]:i')
+            CALL HBName(Params%Ntid,'Trkmcold',Evt%Trkmcold%type3
+     $           ,'trtype3old(ntfmcold)[0,100]:i')
+            CALL HBName(Params%Ntid,'Trkmcold',Evt%Trkmcold%hits3
+     $           ,'trhits3old(ntfmcold)[0,1000]:i')
+
+            CALL HBName(Params%Ntid,'Trkmcold',Evt%Trkmcold%xfirst
+     $           ,'xfmcold(ntfmcold):r')
+            CALL HBName(Params%Ntid,'Trkmcold',Evt%Trkmcold%yfirst
+     $           ,'yfmcold(ntfmcold):r')
+            CALL HBName(Params%Ntid,'Trkmcold',Evt%Trkmcold%zfirst
+     $           ,'zfmcold(ntfmcold):r')
+            CALL HBName(Params%Ntid,'Trkmcold',Evt%Trkmcold%pxfirst
+     $           ,'pxfmcold(ntfmcold):r')
+            CALL HBName(Params%Ntid,'Trkmcold',Evt%Trkmcold%pyfirst
+     $           ,'pyfmcold(ntfmcold):r')
+            CALL HBName(Params%Ntid,'Trkmcold',Evt%Trkmcold%pzfirst
+     $           ,'pzfmcold(ntfmcold):r')
+
+            CALL HBName(Params%Ntid,'Trkmcold',Evt%Trkmcold%xlast
+     $           ,'xlmcold(ntfmcold):r')
+            CALL HBName(Params%Ntid,'Trkmcold',Evt%Trkmcold%ylast
+     $           ,'ylmcold(ntfmcold):r')
+            CALL HBName(Params%Ntid,'Trkmcold',Evt%Trkmcold%zlast
+     $           ,'zlmcold(ntfmcold):r')
+            CALL HBName(Params%Ntid,'Trkmcold',Evt%Trkmcold%pxlast
+     $           ,'pxlmcold(ntfmcold):r')
+            CALL HBName(Params%Ntid,'Trkmcold',Evt%Trkmcold%pylast
+     $           ,'pylmcold(ntfmcold):r')
+            CALL HBName(Params%Ntid,'Trkmcold',Evt%Trkmcold%pzlast
+     $           ,'pzlmcold(ntfmcold):r')
+
+            CALL HBName(Params%Ntid,'Trkmcold',Evt%Trkmcold%xmcfirst
+     $           ,'xfmc2old(ntfmcold):r')
+            CALL HBName(Params%Ntid,'Trkmcold',Evt%Trkmcold%ymcfirst
+     $           ,'yfmc2old(ntfmcold):r')
+            CALL HBName(Params%Ntid,'Trkmcold',Evt%Trkmcold%zmcfirst
+     $           ,'zfmc2old(ntfmcold):r')
+            CALL HBName(Params%Ntid,'Trkmcold',Evt%Trkmcold%pxmcfirst
+     $           ,'pxfmc2old(ntfmcold):r')
+            CALL HBName(Params%Ntid,'Trkmcold',Evt%Trkmcold%pymcfirst
+     $           ,'pyfmc2old(ntfmcold):r')
+            CALL HBName(Params%Ntid,'Trkmcold',Evt%Trkmcold%pzmcfirst
+     $           ,'pzfmc2old(ntfmcold):r')
+
+            CALL HBName(Params%Ntid,'Trkmcold',Evt%Trkmcold%xmclast
+     $           ,'xlmc2old(ntfmcold):r')
+            CALL HBName(Params%Ntid,'Trkmcold',Evt%Trkmcold%ymclast
+     $           ,'ylmc2old(ntfmcold):r')
+            CALL HBName(Params%Ntid,'Trkmcold',Evt%Trkmcold%zmclast
+     $           ,'zlmc2old(ntfmcold):r')
+            CALL HBName(Params%Ntid,'Trkmcold',Evt%Trkmcold%pxmclast
+     $           ,'pxlmc2old(ntfmcold):r')
+            CALL HBName(Params%Ntid,'Trkmcold',Evt%Trkmcold%pymclast
+     $           ,'pylmc2old(ntfmcold):r')
+            CALL HBName(Params%Ntid,'Trkmcold',Evt%Trkmcold%pzmclast
+     $           ,'pzlmc2old(ntfmcold):r')
+         EndIF
+
+C-----------------------------------------------------------------------
+C MC hits ( DHIT bank )
+C-----------------------------------------------------------------------
+         if (DHITFLAG) then
+            CALL prod2ntu_NtRange(0,maxnumdhit,Range)
+            CALL HBName(Params%NtId,'DHIT',Evt%DHIT%n,'ndhit:i::'//Range
+     $           )
+            CALL HBName(Params%NtId,'DHIT',Evt%DHIT%pid,'dhpid(ndhit):i'
+     $           )
+            CALL HBName(Params%NtId,'DHIT',Evt%DHIT%kinum
+     $           ,'dhkin(ndhit):i')
+            CALL HBName(Params%NtId,'DHIT',Evt%DHIT%celadr,
+     %           'dhadd(ndhit):i')
+            CALL HBName(Params%NtId,'DHIT',Evt%DHIT%x,'dhx(ndhit):r')
+            CALL HBName(Params%NtId,'DHIT',Evt%DHIT%y,'dhy(ndhit):r')
+            CALL HBName(Params%NtId,'DHIT',Evt%DHIT%z,'dhz(ndhit):r')
+            CALL HBName(Params%NtId,'DHIT',Evt%DHIT%px,'dhpx(ndhit):r')
+            CALL HBName(Params%NtId,'DHIT',Evt%DHIT%py,'dhpy(ndhit):r')
+            CALL HBName(Params%NtId,'DHIT',Evt%DHIT%pz,'dhpz(ndhit):r')
+            CALL HBName(Params%NtId,'DHIT',Evt%DHIT%time,'dht(ndhit):r')
+            CALL HBName(Params%NtId,'DHIT',Evt%DHIT%dedx
+     $           ,'dhdedx(ndhit):r')
+            CALL HBName(Params%NtId,'DHIT',Evt%DHIT%tlen
+     $           ,'dhtlen(ndhit):r')
+            CALL HBName(Params%NtId,'DHIT',Evt%DHIT%dtime,
+     %           'dhdtime(ndhit):r')
+            CALL HBName(Params%NtId,'DHIT',Evt%DHIT%dfromw,
+     %           'dhdfromw(ndhit):r')
+            CALL HBName(Params%NtId,'DHIT',Evt%DHIT%flag
+     $           ,'dhflag(ndhit):i')
+         endif
+cvp
+C-----------------------------------------------------------------------
+C DEDX in Drift Chamber ( DEDX bank )
+C-----------------------------------------------------------------------
+         if (DEDXFLAG) then
+            CALL HBName(Params%NtId,'DEDX',Evt%DEDX2STRU%numdedx,
+     $           'ndedx[0,20]:i')
+            CALL HBName(Params%NtId,'DEDX',Evt%DEDX2STRU%numeroadc,
+     $           'nadc(ndedx):i')
+            CALL HBName(Params%NtId,'DEDX',Evt%DEDX2STRU%indicededx,
+     $           'idedx(ndedx):i')
+            CALL HBName(Params%NtId,'DEDX',Evt%DEDX2STRU%lay,
+     $           'adclayer(100,ndedx):i')
+            CALL HBName(Params%NtId,'DEDX',Evt%DEDX2STRU%wir1,
+     $           'adcwi1(100,ndedx):i')
+            CALL HBName(Params%NtId,'DEDX',Evt%DEDX2STRU%wir2,
+     $           'adcwi2(100,ndedx):i')
+            CALL HBName(Params%NtId,'DEDX',Evt%DEDX2STRU%step,
+     $           'adclen(100,ndedx):r')
+            CALL HBName(Params%NtId,'DEDX',Evt%DEDX2STRU%effs,
+     $           'adcleff(100,ndedx):r')
+            CALL HBName(Params%NtId,'DEDX',Evt%DEDX2STRU%tim1,
+     $           'adctim1(100,ndedx):r')
+            CALL HBName(Params%NtId,'DEDX',Evt%DEDX2STRU%tim2,
+     $           'adctim2(100,ndedx):r')
+            CALL HBName(Params%NtId,'DEDX',Evt%DEDX2STRU%carica,
+     $           'adccharge(100,ndedx):r')
+
+         endif
+cvp
+C-----------------------------------------------------------------------
+C DPRS patterns
+C-----------------------------------------------------------------------
+         If (DPRSFLAG) Then
+           Call HBNAME
+     &         (Params%NtId, 'DPRS', Evt%DPRS%NDPRS, DPRS_NTP_STR)
+         End If
+
+C-----------------------------------------------------------------------
+C GEANFI MC Information
+C-----------------------------------------------------------------------
+         if( GEANFIFLAG )then
+            CALL prod2ntu_NtRange(0,MaxNtrkGen,Range)
+            CALL HBName(Params%NtId,'MC',Evt%MC%ntrk,'ntmc:i::'//Range)
+            CALL HBName(Params%NtId,'MC',Evt%MC%kin
+     $           ,'kine(ntmc)[0,100]:i')
+            CALL HBName(Params%NtId,'MC',Evt%MC%pid
+     $           ,'pidmc(ntmc)[0,100]:i')
+            CALL HBName(Params%NtId,'MC',Evt%MC%virmom
+     $           ,'virmom(ntmc)[0,100]:i')
+            CALL HBName(Params%NtId,'MC',Evt%MC%px,'pxmc(ntmc):r')
+            CALL HBName(Params%NtId,'MC',Evt%MC%py,'pymc(ntmc):r')
+            CALL HBName(Params%NtId,'MC',Evt%MC%pz,'pzmc(ntmc):r')
+            CALL HBName(Params%NtId,'MC',Evt%MC%xcv,'xcv(ntmc):r')
+            CALL HBName(Params%NtId,'MC',Evt%MC%ycv,'ycv(ntmc):r')
+            CALL HBName(Params%NtId,'MC',Evt%MC%zcv,'zcv(ntmc):r')
+            CALL HBName(Params%NtId,'MC',Evt%MC%tofcv,'tofcv(ntmc):r')
+            CALL HBName(Params%NtId,'MC',Evt%MC%theta,'themc(ntmc):r')
+            CALL HBName(Params%NtId,'MC',Evt%MC%phi,'phimc(ntmc):r')
+            CALL HBName(Params%NtId,'MC',Evt%MC%Indv,
+     &                             'vtxmc(ntmc)[0,100]:i')
+            CALL HBName(Params%NtId,'MC',Evt%MC%ndchmc
+     $           ,'ndchmc(ntmc):i')
+            CALL HBName(Params%NtId,'MC',Evt%MC%xfhmc,'xfhmc(ntmc):r')
+            CALL HBName(Params%NtId,'MC',Evt%MC%yfhmc,'yfhmc(ntmc):r')
+            CALL HBName(Params%NtId,'MC',Evt%MC%zfhmc,'zfhmc(ntmc):r')
+            CALL HBName(Params%NtId,'MC',Evt%MC%pxfhmc,'pxfhmc(ntmc):r')
+            CALL HBName(Params%NtId,'MC',Evt%MC%pyfhmc,'pyfhmc(ntmc):r')
+            CALL HBName(Params%NtId,'MC',Evt%MC%pzfhmc,'pzfhmc(ntmc):r')
+            CALL HBName(Params%NtId,'MC',Evt%MC%xlhmc,'xlhmc(ntmc):r')
+            CALL HBName(Params%NtId,'MC',Evt%MC%ylhmc,'ylhmc(ntmc):r')
+            CALL HBName(Params%NtId,'MC',Evt%MC%zlhmc,'zlhmc(ntmc):r')
+            CALL HBName(Params%NtId,'MC',Evt%MC%pxlhmc,'pxlhmc(ntmc):r')
+            CALL HBName(Params%NtId,'MC',Evt%MC%pylhmc,'pylhmc(ntmc):r')
+            CALL HBName(Params%NtId,'MC',Evt%MC%pzlhmc,'pzlhmc(ntmc):r')
+            CALL prod2ntu_NtRange(0,MaxNvtxGen,Range)
+            CALL HBName(Params%NtId,'MC',Evt%MC%numvtx,'nvtxmc:i::'/
+     $           /Range)
+            CALL HBName(Params%NtId,'MC',Evt%MC%kinmom
+     $           ,'kinmom(nvtxmc)[0,100]:i')
+            CALL HBName(Params%NtId,'MC',Evt%MC%mother
+     $           ,'mother(nvtxmc)[0,100]:i')
+            CALL HBName(Params%NtId,'MC',Evt%MC%xv,'xvmc(nvtxmc):r')
+            CALL HBName(Params%NtId,'MC',Evt%MC%yv,'yvmc(nvtxmc):r')
+            CALL HBName(Params%NtId,'MC',Evt%MC%zv,'zvmc(nvtxmc):r')
+            CALL HBname(Params%NtId,'MC',Evt%MC%tof,'tofvmc(nvtxmc):r')
+            CALL HBName(Params%NtId,'MC',Evt%MC%trkvtx,'ntvtx(nvtxmc):r'
+     $           )
+         endif
+C-----------------------------------------------------------------------
+C Tracks vs cluster merging ... (BANK TCLO)
+C-----------------------------------------------------------------------
+         if( TCLOFLAG ) then
+            CALL prod2ntu_NtRange(0,NTCLOmax,Range)
+            CALL HBName(Params%NtId,'TCLO',Evt%Tclo%nt,'ntcl:i::'//Range
+     $           )
+            CALL HBName(Params%Ntid,'TCLO',Evt%Tclo%trknum
+     $           ,'Asstr(ntcl)[0,999]:i')
+            CALL HBName(Params%Ntid,'TCLO',Evt%Tclo%clunum
+     $           ,'Asscl(ntcl)[0,100]:i')
+            CALL HBName(Params%Ntid,'TCLO',Evt%Tclo%verver,
+     &           'verver(ntcl):i')
+            CALL HBName(Params%Ntid,'TCLO',Evt%Tclo%xext,'xext(ntcl):r')
+            CALL HBName(Params%Ntid,'TCLO',Evt%Tclo%yext,'yext(ntcl):r')
+            CALL HBName(Params%Ntid,'TCLO',Evt%Tclo%zext,'zext(ntcl):r')
+            CALL HBName(Params%Ntid,'TCLO',Evt%Tclo%leng
+     $           ,'Assleng(ntcl):r')
+            CALL HBName(Params%Ntid,'TCLO',Evt%Tclo%chi,'AssChi(ntcl):r'
+     $           )
+            CALL HBName(Params%Ntid,'TCLO',Evt%Tclo%px,'extPx(ntcl):r')
+            CALL HBName(Params%Ntid,'TCLO',Evt%Tclo%py,'extPy(ntcl):r')
+            CALL HBName(Params%Ntid,'TCLO',Evt%Tclo%pz,'extPz(ntcl):r')
+         endif
+C-----------------------------------------------------------------------
+C Tracks vs cluster merging before retracking ... (BANK TCL1)
+C-----------------------------------------------------------------------
+         if( TCLOLDFLAG ) then
+            CALL prod2ntu_NtRange(0,NTCLOmax,Range)
+            CALL HBName(Params%NtId,'TCLOLD',Evt%Tclold%nt,
+     $           'ntclold:i::'//Range)
+            CALL HBName(Params%Ntid,'TCLOLD',Evt%Tclold%trknum
+     $           ,'Asstrold(ntclold)[0,999]:i')
+            CALL HBName(Params%Ntid,'TCLOLD',Evt%Tclold%clunum
+     $           ,'Assclold(ntclold)[0,100]:i')
+            CALL HBName(Params%Ntid,'TCLOLD',Evt%Tclold%verver,
+     &           'ververold(ntclold):i')
+            CALL HBName(Params%Ntid,'TCLOLD',Evt%Tclold%xext,
+     $           'xextold(ntclold):r')
+            CALL HBName(Params%Ntid,'TCLOLD',Evt%Tclold%yext,
+     $           'yextold(ntclold):r')
+            CALL HBName(Params%Ntid,'TCLOLD',Evt%Tclold%zext,
+     $           'zextold(ntclold):r')
+            CALL HBName(Params%Ntid,'TCLOLD',Evt%Tclold%leng,
+     $           'Asslengold(ntclold):r')
+            CALL HBName(Params%Ntid,'TCLOLD',Evt%Tclold%chi,
+     $           'AssChiold(ntclold):r')
+            CALL HBName(Params%Ntid,'TCLOLD',Evt%Tclold%px,
+     $           'extPxold(ntclold):r')
+            CALL HBName(Params%Ntid,'TCLOLD',Evt%Tclold%py,
+     $           'extPyold(ntclold):r')
+            CALL HBName(Params%Ntid,'TCLOLD',Evt%Tclold%pz,
+     $           'extPzold(ntclold):r')
+         endif
+C-----------------------------------------------------------------------
+C CFHI !
+C-----------------------------------------------------------------------
+         if( CFHIFLAG ) then
+            CALL prod2ntu_NtRange(0,maxnumfirsthit,Range)
+            CALL HBName(Params%NtId,'CFHI',Evt%CFHI%n,'nfhi:i::'//Range)
+            CALL HBName(Params%Ntid,'CFHI',Evt%CFHI%pid
+     $           ,'pidfhi(nfhi)[0,100]:i')
+            CALL HBName(Params%Ntid,'CFHI',Evt%CFHI%kinum
+     $           ,'kinfhi(nfhi)[0,100]:i')
+            CALL HBName(Params%Ntid,'CFHI',Evt%CFHI%celadr
+     $           ,'celfhi(nfhi)[0,4880]:i')
+            CALL HBName(Params%Ntid,'CFHI',Evt%CFHI%convfl
+     $           ,'flgfhi(nfhi)[0,1]:i')
+            CALL HBName(Params%Ntid,'CFHI',Evt%CFHI%x,'xfhi(nfhi):r')
+            CALL HBName(Params%Ntid,'CFHI',Evt%CFHI%y,'yfhi(nfhi):r')
+            CALL HBName(Params%Ntid,'CFHI',Evt%CFHI%z,'zfhi(nfhi):r')
+            CALL HBName(Params%Ntid,'CFHI',Evt%CFHI%px,'pxfhi(nfhi):r')
+            CALL HBName(Params%Ntid,'CFHI',Evt%CFHI%py,'pyfhi(nfhi):r')
+            CALL HBName(Params%Ntid,'CFHI',Evt%CFHI%pz,'pzfhi(nfhi):r')
+            CALL HBName(Params%Ntid,'CFHI',Evt%CFHI%tof,'toffhi(nfhi):r'
+     $           )
+            CALL HBName(Params%Ntid,'CFHI',Evt%CFHI%tlen
+     $           ,'tlenfhi(nfhi):r')
+         endif
+C-----------------------------------------------------------------------
+C QIHI - Quadrupole Instrumentation HIts
+C-----------------------------------------------------------------------
+         if( QCALFLAG ) then
+            IF( GEANFIFLAG )THEN
+              SkipFlag = .true. ! for the moment
+              IF( SkipFLag ) THEN
+               CALL prod2ntu_NtRange(0,NQIHIMAX,Range)
+c               write(*,*)'QIHI-Range:',Range
+               CALL HBName(Params%NtId,'QIHI',Evt%QHIT%n,
+     &              'nqihi:i::'//Range)
+               CALL HBName(Params%Ntid,'QIHI',Evt%QHIT%pty
+     $              ,'pidqihi(nqihi):i')
+               CALL HBName(Params%Ntid,'QIHI',Evt%QHIT%add
+     $              ,'addqihi(nqihi):i')
+               CALL HBName(Params%Ntid,'QIHI',Evt%QHIT%kine
+     $              ,'kinqihi(nqihi):i')
+               CALL HBName(Params%Ntid,'QIHI',Evt%QHIT%x
+     $              ,'xqihi(nqihi):r')
+               CALL HBName(Params%Ntid,'QIHI',Evt%QHIT%Y
+     $              ,'yqihi(nqihi):r')
+               CALL HBName(Params%Ntid,'QIHI',Evt%QHIT%z
+     $              ,'zqihi(nqihi):r')
+               CALL HBName(Params%Ntid,'QIHI',Evt%QHIT%px
+     $              ,'pxqihi(nqihi):r')
+               CALL HBName(Params%Ntid,'QIHI',Evt%QHIT%px
+     $              ,'pyqihi(nqihi):r')
+               CALL HBName(Params%Ntid,'QIHI',Evt%QHIT%pz
+     $              ,'pzqihi(nqihi):r')
+               CALL HBName(Params%Ntid,'QIHI',Evt%QHIT%tof
+     $              ,'tofqihi(nqihi):r')
+               CALL HBName(Params%Ntid,'QIHI',Evt%QHIT%ene
+     $              ,'eneqihi(nqihi):r')
+               CALL HBName(Params%Ntid,'QIHI',Evt%QHIT%trl
+     $              ,'tlenqihi(nqihi):r')
+             ENDIF
+
+            ENDIF
+c
+            IF( TRKSFLAG ) THEN
+              CALL prod2ntu_NtRange(0,MaxNumTrkQ,Range)
+              CALL HBName(Params%Ntid,'TRKQ',Evt%TRKQ%n,
+     +             'ntrkq:i::'//Range)
+              CALL HBName(Params%Ntid,'TRKQ',Evt%TRKQ%flagqt
+     +             ,'flagqt:i')
+              CALL HBName(Params%Ntid,'TRKQ',Evt%TRKQ%det
+     +             ,'detqt(2,ntrkq):i')
+              CALL HBName(Params%Ntid,'TRKQ',Evt%TRKQ%wed
+     +             ,'wedqt(2,ntrkq):i')
+              CALL HBName(Params%Ntid,'TRKQ',Evt%TRKQ%xi,
+     +             'xqt(2,ntrkq):r')
+              CALL HBName(Params%Ntid,'TRKQ',Evt%TRKQ%yi,
+     +             'yqt(2,ntrkq):r')
+              CALL HBName(Params%Ntid,'TRKQ',Evt%TRKQ%zi,
+     +             'zqt(2,ntrkq):r')
+              CALL HBName(Params%Ntid,'TRKQ',Evt%TRKQ%itrk
+     +             ,'itrqt(ntrkq):i')
+            ENDIF
+
+c
+            CALL prod2ntu_NtRange(0,NQCALMAX,Range)
+c            write(*,*)' QELE-Range:',Range
+            CALL HBName(Params%Ntid,'QELE',Evt%QELE%n,
+     &           'nqele:i::'//Range)
+            CALL HBName(Params%Ntid,'QELE',Evt%QELE%wed,'qwed(nqele):i'
+     &           )
+            CALL HBName(Params%Ntid,'QELE',Evt%QELE%det,'qdet(nqele):i')
+            CALL HBName(Params%Ntid,'QELE',Evt%QELE%e,  'qene(nqele):r')
+            CALL HBName(Params%Ntid,'QELE',Evt%QELE%t,  'qtim(nqele):r')
+            CALL prod2ntu_NtRange(0,NQCALMAX,Range)
+            CALL HBName(Params%Ntid,'QCAL',Evt%Qcal%n,
+     &           'nqcal:i::'//Range)
+            CALL HBName(Params%Ntid,'QCAL',Evt%Qcal%x, 'xqcal(nqcal):r')
+            CALL HBName(Params%Ntid,'QCAL',Evt%Qcal%y, 'yqcal(nqcal):r')
+            CALL HBName(Params%Ntid,'QCAL',Evt%Qcal%z, 'zqcal(nqcal):r')
+            CALL HBName(Params%Ntid,'QCAL',Evt%Qcal%ene,'eqcal(nqcal):r'
+     $           )
+            CALL HBName(Params%Ntid,'QCAL',Evt%Qcal%t, 'tqcal(nqcal):r')
+
+         endif
+C-----------------------------------------------------------------------
+cgc     KNVO
+C-----------------------------------------------------------------------
+         IF( NVOFLAG ) then
+            CALL prod2ntu_NtRange(0,MaxNumKNVO,Range)
+
+            CALL HBName(Params%NtId,'KNVO',Evt%KNVO%n,'nknvo:i::'//Range
+     $           )
+            CALL HBName(Params%NtId,'KNVO',Evt%KNVO%iknvo
+     $           ,'iknvo(nknvo):i')
+            CALL HBName(Params%NtId,'KNVO',Evt%KNVO%px
+     $           ,'pxknvo(nknvo):r')
+            CALL HBName(Params%NtId,'KNVO',Evt%KNVO%py
+     $           ,'pyknvo(nknvo):r')
+            CALL HBName(Params%NtId,'KNVO',Evt%KNVO%pz
+     $           ,'pzknvo(nknvo):r')
+            CALL HBName(Params%NtId,'KNVO',Evt%KNVO%pid
+     $           ,'pidknvo(nknvo):i')
+            CALL HBName(Params%NtId,'KNVO',Evt%KNVO%bank
+     $           ,'bankknvo(nknvo):i')
+            CALL HBName(Params%NtId,'KNVO',Evt%KNVO%vlinked
+     $           ,'nvnvknvo(nknvo):i')
+         endif
+C-----------------------------------------------------------------------
+cgc     VNVO
+C-----------------------------------------------------------------------
+         IF( NVOFLAG ) then
+            CALL prod2ntu_NtRange(0,MaxNumVNVO,Range)
+            CALL HBName(Params%NtId,'VNVO',Evt%VNVO%n,'nvnvo:i::'//Range)
+            CALL HBName(Params%NtId,'VNVO',Evt%VNVO%ivnvo
+     $           ,'ivnvo(nvnvo):i')
+            CALL HBName(Params%NtId,'VNVO',Evt%VNVO%vx,'vxvnvo(nvnvo):r'
+     $           )
+            CALL HBName(Params%NtId,'VNVO',Evt%VNVO%vy,'vyvnvo(nvnvo):r'
+     $           )
+            CALL HBName(Params%NtId,'VNVO',Evt%VNVO%vz,'vzvnvo(nvnvo):r'
+     $           )
+            CALL HBName(Params%NtId,'VNVO',Evt%VNVO%kori
+     $           ,'korivnvo(nvnvo):i')
+            CALL HBName(Params%NtId,'VNVO',Evt%VNVO%idvfs
+     $           ,'dvfsvnvo(nvnvo):i')
+            CALL HBName(Params%NtId,'VNVO',Evt%VNVO%nknv
+     $           ,'nbnkvnvo(nvnvo):i')
+            CALL HBName(Params%NtId,'VNVO',Evt%VNVO%fknv
+     $           ,'fbnkvnvo(nvnvo):i')
+         endif
+C-----------------------------------------------------------------------
+csdf     VNVB
+C-----------------------------------------------------------------------
+         IF( NVOFLAG ) then
+            CALL prod2ntu_NtRange(0,MaxNumVNVOb,Range)
+            CALL HBName(Params%NtId,'VNVB',Evt%VNVB%n,'nbnksvnvo:i::'
+     _           //Range)
+            CALL HBName(Params%NtId,'VNVB',Evt%VNVB%ibank
+     $           ,'ibank(nbnksvnvo):i')
+         endif
+
+C-----------------------------------------------------------------------
+cgc     INVO
+C-----------------------------------------------------------------------
+         IF( NVOFLAG ) then
+            CALL prod2ntu_NtRange(0,MaxNumINVO,Range)
+            CALL HBName(Params%NtId,'INVO',Evt%INVO%n,'ninvo:i::'//Range
+     $           )
+            CALL HBName(Params%NtId,'INVO',Evt%INVO%iclps
+     $           ,'iclps(ninvo):i')
+            CALL HBName(Params%NtId,'INVO',Evt%INVO%xi,'xinvo(ninvo):r')
+            CALL HBName(Params%NtId,'INVO',Evt%INVO%yi,'yinvo(ninvo):r')
+            CALL HBName(Params%NtId,'INVO',Evt%INVO%zi,'zinvo(ninvo):r')
+            CALL HBName(Params%NtId,'INVO',Evt%INVO%ti,'tinvo(ninvo):r')
+            CALL HBName(Params%NtId,'INVO',Evt%INVO%lk,'lk(ninvo):r')
+            CALL HBName(Params%NtId,'INVO',Evt%INVO%sigmalk
+     $           ,'sigmalk(ninvo):r')
+         endif
+C-----------------------------------------------------------------------
+c     ECLO  - informatins from ECLO bank
+C-----------------------------------------------------------------------
+         IF( ECLOFLAG ) then
+            CALL prod2ntu_NtRange(0,MaxNumCLINF,Range)
+            CALL HBName(Params%NtId,'ECLO',Evt%eclo%n,
+     +           'ncli:i::'//Range)
+            CALL HBName(Params%NtId,'ECLO',Evt%eclo%totword,
+     +           'ECLOword(ncli):i')
+            CALL HBName(Params%NtId,'ECLO',Evt%eclo%idpart,
+     +           'idpart(ncli):i')
+            CALL HBName(Params%NtId,'ECLO',Evt%eclo%dtclpo,
+     +           'dtclpo(ncli):i')
+            CALL HBName(Params%NtId,'ECLO',Evt%eclo%dvvnpo,
+     +           'dvvnpo(ncli):i')
+            CALL HBName(Params%NtId,'ECLO',Evt%eclo%stre,
+     +           'stre(ncli):i')
+            CALL HBName(Params%NtId,'ECLO',Evt%eclo%algo,
+     +           'algo(ncli):i')
+CGS ECLO BANK 2
+            CALL HBName(Params%NtId,'ECLO2',Evt%eclo%n2,
+     +           'ncli2:i::'//Range)
+            CALL HBName(Params%NtId,'ECLO2',Evt%eclo%totword2,
+     +           'ECLOword2(ncli2):i')
+            CALL HBName(Params%NtId,'ECLO2',Evt%eclo%idpart2,
+     +           'idpart2(ncli2):i')
+            CALL HBName(Params%NtId,'ECLO2',Evt%eclo%dtclpo2,
+     +           'dtclpo2(ncli2):i')
+            CALL HBName(Params%NtId,'ECLO2',Evt%eclo%dvvnpo2,
+     +           'dvvnpo2(ncli2):i')
+            CALL HBName(Params%NtId,'ECLO2',Evt%eclo%stre2,
+     +           'stre2(ncli2):i')
+            CALL HBName(Params%NtId,'ECLO2',Evt%eclo%algo2,
+     +           'algo2(ncli2):i')
+         endif
+
+         IF( CSPSFLAG ) THEN
+            CALL prod2ntu_NtRange(0,NHitCluMax,Range)
+            CALL HBName(Params%NtId,'CSPS',Evt%CSPS%Ncel,
+     +           'ncs:i::'//Range)
+            CALL HBName(Params%NtId,'CSPS',Evt%Csps%Iclu,
+     +           'CSclu(ncs):i')
+            CALL HBName(Params%NtId,'CSPS',Evt%Csps%Icel,
+     &           'CScel(ncs):i')
+            CALL HBName(Params%NtId,'CSPS',Evt%Csps%Flag,
+     &           'CSfla(ncs):i')
+            CALL HBName(Params%NtId,'CSPS',Evt%Csps%Add,
+     &           'CSadd(ncs):i')
+            CALL HBName(Params%NtId,'CSPS',Evt%Csps%Nhit,
+     &           'CSnhi(ncs):i')
+c
+            CALL HBName(Params%NtId,'CSPS',Evt%Csps%Ta,
+     &           'CSta(ncs):r')
+            CALL HBName(Params%NtId,'CSPS',Evt%Csps%Tb,
+     &           'CStb(ncs):r')
+            CALL HBName(Params%NtId,'CSPS',Evt%Csps%Ea,
+     &           'CSEa(ncs):r')
+            CALL HBName(Params%NtId,'CSPS',Evt%Csps%Eb,
+     &           'CSEb(ncs):r')
+            CALL HBName(Params%NtId,'CSPS',Evt%Csps%T,
+     &           'CSt(ncs):r')
+            CALL HBName(Params%NtId,'CSPS',Evt%Csps%E,
+     &           'CSE(ncs):r')
+            CALL HBName(Params%NtId,'CSPS',Evt%Csps%X,
+     &           'CSx(ncs):r')
+            CALL HBName(Params%NtId,'CSPS',Evt%Csps%Y,
+     &           'CSy(ncs):r')
+            CALL HBName(Params%NtId,'CSPS',Evt%Csps%Z,
+     &           'CSz(ncs):r')
+         ENDIF
+C
+         IF( CSPSMCFLAG ) THEN
+            CALL prod2ntu_NtRange(0,NHitCluMax,Range)
+            CALL HBName(Params%NtId,'CSPSMC',Evt%CSPSMC%Ncel,
+     +           'ncsmc:i::'//Range)
+c            write(6,*)'CSPSMC Range',Range
+            CALL HBName(Params%NtId,'CSPSMC',Evt%CSPSMC%Knum,
+     +           'CSMCkine(ncsmc):i')
+            CALL HBName(Params%NtId,'CSPSMC',Evt%CSPSMC%Ihit,
+     &           'CSMCpoi(ncsmc):i')
+            CALL HBName(Params%NtId,'CSPSMC',Evt%CSPSMC%Nhit,
+     &           'CSMCnhit(ncsmc):i')
+            CALL HBName(Params%NtId,'CSPSMC',Evt%CSPSMC%X,
+     &           'CSMCx(ncsmc):r')
+            CALL HBName(Params%NtId,'CSPSMC',Evt%CSPSMC%Y,
+     &           'CSMCy(ncsmc):r')
+            CALL HBName(Params%NtId,'CSPSMC',Evt%CSPSMC%Z,
+     &           'CSMCz(ncsmc):r')
+            CALL HBName(Params%NtId,'CSPSMC',Evt%CSPSMC%T,
+     &           'CSMCt(ncsmc):r')
+            CALL HBName(Params%NtId,'CSPSMC',Evt%CSPSMC%E,
+     &           'CSMCe(ncsmc):r')
+c
+         ENDIF
+
+         IF( CLUOFLAG ) THEN
+            Call Prod2ntu_NTrange(0,NCluoMax,Range)
+            CALL HBName(Params%NtId,'CLUO',Evt%CLUO%N,
+     +           'NCLUO:i::'//Range)
+            CALL HBName(Params%NtId,'CLUO',Evt%CLUO%Ncel,
+     +           'CluCel(ncluo):i')
+            CALL HBName(Params%NtId,'CLUO',Evt%CLUO%Flag,
+     +           'CluFl(ncluo):r')
+C----------------------------------------------------------
+C            CALL HBName(Params%NtId,'CLUO',Evt%CLUO%Ncel,
+C     +           'CluChi(ncluo):i')
+C            CALL HBName(Params%NtId,'CLUO',Evt%CLUO%Ncel,
+C     +           'CluFl(ncluo):i')
+c--------------------------------------------------------------
+            CALL HBName(Params%NtId,'CLUO',Evt%CLUO%E,
+     &           'CluE(Ncluo):r')
+            CALL HBName(Params%NtId,'CLUO',Evt%CLUO%X,
+     &           'CluX(Ncluo):r')
+            CALL HBName(Params%NtId,'CLUO',Evt%CLUO%Y,
+     &           'CluY(Ncluo):r')
+            CALL HBName(Params%NtId,'CLUO',Evt%CLUO%Z,
+     &           'CluZ(Ncluo):r')
+            CALL HBName(Params%NtId,'CLUO',Evt%CLUO%T,
+     &           'CluT(Ncluo):r')
+C
+            Call Prod2ntu_NTrange(0,NCluoMax,Range)
+            CALL HBName(Params%NtId,'CLUOMC',Evt%CLUOMC%Npar,
+     +           'nMCpar:i::'//Range)
+            CALL HBName(Params%NtId,'CLUOMC',Evt%CLUOMC%Ncel,
+     +           'CluMCCel(nmcpar):i')
+            CALL HBName(Params%NtId,'CLUOMC',Evt%CLUOMC%Iclu,
+     +           'CluMCIcl(nmcpar):i')
+            CALL HBName(Params%NtId,'CLUOMC',Evt%CLUOMC%Kine,
+     +           'CluMCkin(nmcpar):i')
+c
+            CALL HBName(Params%NtId,'CLUOMC',Evt%CLUOMC%E,
+     &           'CluMCE(nmcpar):r')
+            CALL HBName(Params%NtId,'CLUOMC',Evt%CLUOMC%X,
+     &           'CluMCX(nmcpar):r')
+            CALL HBName(Params%NtId,'CLUOMC',Evt%CLUOMC%Y,
+     &           'CluMCY(nmcpar):r')
+            CALL HBName(Params%NtId,'CLUOMC',Evt%CLUOMC%Z,
+     &           'CluMCZ(nmcpar):r')
+            CALL HBName(Params%NtId,'CLUOMC',Evt%CLUOMC%T,
+     &           'CluMCT(nmcpar):r')         
+         ENDIF
+C ----------------------------------------------------------------------
+C QCAL-T 
+C ----------------------------------------------------------------------
+         IF ( QCALTELEFLAG ) THEN
+            CALL HBNAME(Params%NtId,'QTELE',Evt%QCALT%NEle
+     &           ,'nqcalt:i::[0,1920]')
+            CALL HBNAME(Params%NtId,'QTELE',Evt%QCALT%Nhit
+     &           ,'qlte_hit(nqcalt)[0,5]:i')
+            CALL HBNAME(Params%NtId,'QTELE',Evt%QCALT%Qdet
+     &           ,'qlte_det(nqcalt)[0,2]:i')
+            CALL HBNAME(Params%NtId,'QTELE',Evt%QCALT%Qmod
+     &           ,'qlte_mod(nqcalt)[0,11]:i')
+            CALL HBNAME(Params%NtId,'QTELE',Evt%QCALT%Qpla
+     &           ,'qlte_pla(nqcalt)[0,4]:i')
+            CALL HBNAME(Params%NtId,'QTELE',Evt%QCALT%Qtil
+     &           ,'qlte_til(nqcalt)[0,15]:i')
+            CALL HBNAME(Params%NtId,'QTELE',Evt%QCALT%Time
+     &           ,'qlte_tim1(nqcalt):r,qlte_tim2(nqcalt):r,'//
+     &           'qlte_tim3(nqcalt):r,'//
+     &           'qlte_tim4(nqcalt):r,qlte_tim5(nqcalt):r')
+         ENDIF
+
+C-----------------------------------------------------------------------
+C ----------------------------------------------------------------------
+C QCAL-T HIT
+C ----------------------------------------------------------------------
+         IF (QCALTHITFLAG) THEN
+            CALL HBNAME(Params%NtId,'QCTH',Evt%QCALTHIT%Nele
+     &           ,'nqcthele:i::[0,1920]')
+            CALL HBNAME(Params%NtId,'QCTH',Evt%QCALTHIT%Nhit
+     &           ,'nhit(nqcthele)[1,5]:i')
+            CALL HBNAME(Params%NtId,'QCTH',Evt%QCALTHIT%X
+     &           ,'X(nqcthele):r')
+            CALL HBNAME(Params%NtId,'QCTH',Evt%QCALTHIT%Y
+     &           ,'Y(nqcthele):r')
+            CALL HBNAME(Params%NtId,'QCTH',Evt%QCALTHIT%Z
+     &           ,'Z(nqcthele):r')
+            CALL HBNAME(Params%NtId,'QCTH',Evt%QCALTHIT%Time
+     &           ,'tim1(nqcthele):r,'//
+     &           'tim2(nqcthele):r, tim3(nqcthele):r,'//
+     &           'tim4(nqcthele):r, tim5(nqcthele):r')
+         ENDIF     
+
+C-----------------------------------------------------------------------
+C ----------------------------------------------------------------------
+C CCAL-T 
+C ----------------------------------------------------------------------
+         IF (CCLEFLAG) THEN
+            CALL HBNAME(Params%NtId,'CCLE',Evt%CCLE%NEle
+     &           ,'nccle:i::[0,96]')
+            CALL HBNAME(Params%NtId,'CCLE',Evt%CCLE%Cry
+     &           ,'ccle_cry(nccle)[0,96]:i')
+            CALL HBNAME(Params%NtId,'CCLE',Evt%CCLE%Det
+     &           ,'ccle_det(nccle):i') 
+            CALL HBNAME(Params%NtId,'CCLE',Evt%CCLE%Col
+     &           ,'ccle_col(nccle)[0,24]:i') 
+            CALL HBNAME(Params%NtId,'CCLE',Evt%CCLE%Pla
+     &           ,'ccle_pla(nccle)[0,2]:i') 
+            CALL HBNAME(Params%NtId,'CCLE',Evt%CCLE%T
+     &           ,'ccle_time(nccle):r')            
+         ENDIF
+C ----------------------------------------------------------------------
+C LET 
+C ----------------------------------------------------------------------
+         IF(LETEFLAG)THEN
+C            CALL HBNAME(Params%NtId,'LETE',Evt%LETE%Iele
+C     &           ,'Iele:r')
+C            CALL HBNAME(Params%NtId,'LETE',Evt%LETE%Ipos
+C     &           ,'Ipos:r')
+C            CALL HBNAME(Params%NtId,'LETE',Evt%LETE%Lumi
+C     &           ,'Lumi:r')
+            CALL HBNAME(Params%NtId,'LETE',Evt%LETE%Calib
+     &           ,'letecalib:i')
+            CALL prod2ntu_NtRange(0,NeleCluMax,Range)
+            CALL HBNAME(Params%NtId,'LETE',Evt%LETE%NEle
+     &           ,'nlete:i::[0,40]')
+            CALL HBNAME(Params%NtId,'LETE',Evt%LETE%Cry
+     &           ,'lete_cry(nlete)[0,40]:i')
+C     LET = old QCAL 
+            CALL HBNAME(Params%NtId,'LETE',Evt%LETE%Det
+     &           , 'lete_det(nlete):i') 
+            CALL HBNAME(Params%NtId,'LETE',Evt%LETE%Col
+     &           , 'lete_col(nlete)[0,4]:i')
+            CALL HBNAME(Params%NtId,'LETE',Evt%LETE%Pla
+     &           , 'lete_pla(nlete)[0,5]:i')           
+            CALL HBNAME(Params%NtId,'LETE',Evt%LETE%E
+     &           ,  'lete_e(nlete):r')
+            CALL HBNAME(Params%NtId,'LETE',Evt%LETE%T
+     &           ,  'lete_time(nlete):r')
+         ENDIF
+
+C-----------------------------------------------------------------------
+C IT
+         IF(ITCEFLAG)THEN
+C             CALL HBNAME(Params%NtId,'Info',NumRun,'nrun:i')
+C             CALL HBNAME(Params%NtId,'Info',NumTrg,'ntrig:i')
+             CALL HBNAME(Params%NtId,'ITCE',Evt%itce%nitce
+     &           ,'nitce:i::[0,4032]')
+         CALL HBNAME(Params%NtId,'ITCE',Evt%itce%foil
+     &            ,'foil(nitce):i')
+             CALL HBNAME(Params%NtId,'ITCE',Evt%itce%layer
+     &            ,'layer(nitce):i')
+             CALL HBNAME(Params%NtId,'ITCE',Evt%itce%strip
+     &            ,'strip(nitce):i')           
+             CALL HBNAME(Params%NtId,'ITCE',Evt%itce%view
+     &            ,'view(nitce):i')
+             CALL HBNAME(Params%NtId,'ITCE',Evt%itce%inditkine
+     &       ,'inditkine(nitce):i')
+
+          ENDIF
+
+
+C-----------------------------------------------------------------------
+C HET
+
+        IF(HETEFLAG)THEN
+             CALL HBNAME(Params%NtId,'HETE',Evt%hete%nhetdcs
+     &           ,'nhetdcs:i::[0,1920]')
+         CALL HBNAME(Params%NtId,'HETE',Evt%hete%hdet
+     &            ,'hdet(nhetdcs):i::[1,2]')
+             CALL HBNAME(Params%NtId,'HETE',Evt%hete%hcol
+     &            ,'hcol(nhetdcs):i::[1,32]')
+             CALL HBNAME(Params%NtId,'HETE',Evt%hete%nturnhet
+     &       ,'nturnhet(nhetdcs):i::[1,4]')
+      CALL HBNAME(Params%NtId,'HETE',Evt%hete%timehet
+     &            ,'timehet(nhetdcs):r')
+
+          ENDIF
+
+
+C-----------------------------------------------------------------------
+C-----------------------------------------------------------------------
+C That's all, folks!
+C-----------------------------------------------------------------------
+      RETURN
+      END
+
+C
+C-----------------------------------------------------------------------
+      SUBROUTINE prod2ntu_NtRange(Min,Max,String)
+C-----------------------------------------------------------------------
+$$implicit
+C-----------------------------------------------------------------------
+      INTEGER Min
+      INTEGER Max
+      CHARACTER*(*) String
+C-----------------------------------------------------------------------
+      WRITE(String,'(A,I4,A,I4,A)') '[',Min,',',Max,']'
+      RETURN
+      END
+C
+C-----------------------------------------------------------------------
+      SUBROUTINE prod2ntu_ev
+C-----------------------------------------------------------------------
+C Retrieving information from element/segment level and transfer it on
+C the EVT common block for PAW.
+C-----------------------------------------------------------------------
+$$implicit
+$$include 'ybos$library:errcod.inc'
+$$include 'c$inc:bcs.inc'
+$$include 'c$inc:erlevl.inc'
+$$include 'k$inc:oferco.inc'
+$$include 'k$inc:jobsta.inc'
+$$include 'k$inc:runtyp.inc'
+$$include 'k$inc:bpoybs.inc'
+c$$Include 'maxstructdim.inc'
+$$include 'k$itls:maxstructdim.inc'
+$$include 'k$itrg:maxtrgchan.inc'
+$$include 'k$itls:emcstruct.inc'        ! Emc Clusters
+$$include 'k$itls:evtstruct.inc'  	! Event Information
+$$include 'k$itls:geanfistruct.inc'            ! Geanfi Information
+$$include 'k$itls:vtxstru.inc'		        ! Charge Verticies
+$$include 'k$itls:celestruct.inc'	! Calorimeter Elements
+$$include 'k$itls:trkstru.inc'		        ! Tracks
+$$include 'k$itls:dprs_struct.inc'             ! DPRS patterns
+$$include 'k$itls:dhspstru.inc'
+$$include 'k$itls:tclostruct.inc'	! Tracks-to-Clusters
+$$include 'k$itls:cfhistruct.inc'       ! Calorimeter First Hit
+$$include 'k$itls:qihistruct.inc'       ! QIHI common block
+$$include 'k$itls:qcalstruct.inc'       ! QCAL common block
+$$include 'k$itrg:telestruct.inc'
+$$include 'k$itrg:pizzastruct.inc'
+$$include 'k$itls:preclustruct.inc'
+$$include 'k$itls:nvostru.inc'
+$$include 'k$itls:eclostru.inc'
+$$include 'k$itls:t0struct.inc'
+$$include 'k$itls:cwrkstruct.inc'
+$$include 'k$itls:tellina.inc'
+$$include 'k$itls:pizzetta.inc'
+$$include 'k$itrg:trgstruct.inc'
+$$include 'k$itls:eclsstru.inc'
+$$include 'k$itls:gdchitstru.inc'
+$$include 'k$itls:bposstruct.inc'
+$$include 'k$itls:trkqstru.inc'
+$$include 'k$itls:dtcestruct.inc'
+$$include 'k$itls:dhrestruct.inc'
+$$include 'k$itls:sec2clustru.inc'
+$$include 'k$itls:cspsstruct.cin'
+$$include 'k$itls:cluostruct.cin'
+$$include 'k$itls:cluomcstruct.cin'
+$$include 'k$itls:dhitstruct.cin'
+$$include 'k$itls:dedx2stru.inc'
+$$INCLUDE 'K$ITLS:eleqcaltstru.inc' !QCALT
+c$$INCLUDE 'K$ITLS:qcalthitstru.cin' !QCALT hit Struc
+$$INCLUDE 'K$ITLS:ele2hitqcalt.cin'    ! QCALT hit structure
+$$INCLUDE 'K$ITLS:CCALTNUM.INC'        ! CCALT stu dimensioner
+$$INCLUDE 'K$ITLS:ccaltstru.inc'   ! CCALT Stru
+$$INCLUDE 'k$itls:letestruct.cin'  !LET Stru
+c$$INCLUDE 'k$itls:raw2itce.cin'  ! IT Stru
+$$INCLUDE 'k$itls:itcestruct.cin'  ! IT Stru
+$$INCLUDE 'k$itls:hetenum.cin'      ! HET max dim
+$$INCLUDE 'k$itls:hetestru.cin'  !LET Stru
+$$include 'k$itls:prod2ntu.inc'
+$$include 'k$itls:prod2ntu_talk.inc'
+
+C-----------------------------------------------------------------------
+      CHARACTER*(*) SubName
+      PARAMETER (SubName = 'prod2ntu_ev')
+      LOGICAL Analysis_Get_Hist_Active
+      REAL    T0G_PHASED_DC, T0G_HIT_STEP0
+      REAL    T0G_CLUSTER, T0G_STEP1
+      REAL    DELTA_CAVI_CALO, BUNCH_PERIOD
+      REAL    TPHASED_MC
+      INTEGER istat, OldRunNumber
+      data OldRunNumber/0/
+      save OldRunNumber
+      integer ind1,inddat
+      Integer trgwrd1,trgwrd2,numdhit
+      common /trgcom/trgwrd1,trgwrd2,numdhit
+      LOGICAL mcflag_1
+      INTEGER mcflag_tg
+C
+C ------------  External Functions ----------------
+C
+      INTEGER GETCLUSTRU,GETMCSTRU,GETCELESTRU,GETEVCL,GETCLUOSTRU
+      INTEGER TRKV2STRU,GETTCLOSTRU,GETCFHISTRU,BLOCAT
+      INTEGER ANGPAR, ParSet, GETQIHISTRU,GETQCALSTRU
+      INTEGER GETQCAESTRU, GETDHSPSTRU
+      INTEGER GETTELESTRU, GETPRECLUSTRU
+      INTEGER GETPIZZASTRU, TPIE_UPK
+      INTEGER pizza_reset,torta_reset,tele_reset
+      Integer GET_DPRS_STRUCT,GETNVO
+      Integer GETECLO,T0GLRD,GETCLUSTRUCORR
+      INTEGER BIGEST,banknum, fillbposcommon
+      INTEGER GETQCALTSTRU,getqcthstru,GETCCALTSTRU,getletestru,itce_upk
+      INTEGER gethetestru, hete_dump
+
+
+c
+      INTEGER AlgoNum,StreamNum,TimeSec,TimeMusec,Ndtce,EventType
+      integer icurr
+      real    currpos,currele,luminosity
+      COMMON /EventInfo/StreamNum,AlgoNum,
+     &     TimeSec,TimeMusec,Ndtce,mcflag_tg,currpos,currele,luminosity
+      INTEGER GETECLS,GETTIME,GETPIZZETTA
+      INTEGER GETTELLINA,GETCWRKSTRU,GETTRIGGER,TRKQ2STRU
+      INTEGER Ncwrkhit,j
+      REAL Rstat,getbpos
+      INTEGER GETSEC2CLUSTRU
+      INTEGER GETCSPSSTRU, GETCLUOMCSTRU
+      INTEGER T0MCRD
+cvp
+      INTEGER TRKVOLD2STRU, GETOLDTCLOSTRU, DHIT_RESET, DHIT_UPK
+      INTEGER DEDX2STRU_GET, DEDX2STRU_RESET
+cvp
+      INTEGER BNKNUM
+C
+C Start of Code:
+C ==============
+
+      IF( exptyp.eq.exofsi )then ! Simulation
+         mcflag_1 = .true.
+      else
+         mcflag_1 = .false.
+      endif
+
+      If (mcflag_1) then
+         mcflag_tg=1
+      Else
+         mcflag_tg=0
+      EndIf
+C-----------------------------------------------------------------------
+C Fill event classification information
+C-----------------------------------------------------------------------
+      IF( mcflag_1 )  THEN
+         istat = GETEVCL(evt%Info)
+         istat = BLOCAT(iw,'EVCL',1,ind1,inddat)
+         IF( TRIGFLAG ) THEN
+           trgwrd1 = IW( inddat+1 )
+           trgwrd2 = IW( inddat+2 )
+         ENDIF
+         
+      ELSE
+         istat = GETTIME(timesec,timemusec)
+         timesec = timesec-946080000  ! Reduce the timing
+         ISTAT = BIGEST(IW,'EVCL',BNKNUM)
+         IF( ISTAT.ne.YESUCC ) THEN
+            Call ERLOGR ('PROD2NTU_EV',ERWARN,0,ISTAT,
+     &           'No EVCL bank found')
+
+         END IF
+         ISTAT = BLOCAT(IW,'EVCL',BNKNUM,IND1,INDDAT )
+         IF( ISTAT.ne.YESUCC ) THEN
+            Call ERLOGR ('PROD2NTU_EV',ERWARN,0,ISTAT,
+     &           'No EVCL bank found')
+            
+
+         END IF
+        
+         icurr = IW(INDDAT+5)
+         currpos=iand(icurr,'FFFF'x)*1.e-4
+         currele=(icurr/2**16)*1.e-4
+         luminosity = iw(inddat+6)*1.e-6         
+      ENDIF
+C-----------------------------------------------------------------------
+C Fill Event Infos
+C-----------------------------------------------------------------------
+      if(mcflag_1)then
+         istat=blocat(iw,'BRID',1,ind1,inddat)
+         Evt%Info%RunNumber = iw(inddat)
+         if(Evt%Info%RunNumber.ne.OldRunNumber)then
+            istat = fillbposcommon(Evt%Info%RunNumber)
+            OldRunNumber = Evt%Info%RunNumber
+         end if
+      else
+         Evt%Info%RunNumber   = Nrun
+      end if
+      Evt%Info%EventNumber = Nev
+cms ----------------------------------------------------
+cms      streamnum = 0
+cms      Algonum = 0
+cms      istat = GETECLS(StreamNum,AlgoNum,EventType)
+cms--- Moving toward a final ECLS unpacking 18-5-2000
+cms-----------------------------------------------------
+      IF( ECLSFLAG ) THEN
+        istat = GETECLS(evt%ecls)
+      ENDIF
+      IF( GDCHITFG ) THEN
+        CALL   Getgdchit(evt%ghit)
+      ENDIF
+c
+c---- to be inserted in GetGDchit ------------------
+c
+      istat = BIGEST(iw,'DTCE',banknum)
+      istat = BLOCAT(iw,'DTCE',banknum,ind1,inddat)
+      IF( istat.ne.YESUCC )THEN
+        NDtce =0
+      else
+        NDtce = IW(inddat+DTCNRO)
+      endif
+c---------------------------------------------------
+      IF( BPOSFLAG ) THEN
+c------- to be filled with Simon's calls to HEPDB ---
+
+      evt%bpos%x     = 0.   ! Average values for X
+      evt%bpos%y     = 0.    ! " "      " "   for Y
+      evt%bpos%z     = 0.   ! " "      " "   for Z
+      evt%bpos%errx  = 0.  ! Error on determination of X
+      evt%bpos%erry  = 0.
+      evt%bpos%errz  = 0.
+      evt%bpos%lumx  = 0.   ! Luminous region  in X
+      evt%bpos%elumx = 0.   ! Error on Lregion in X
+      evt%bpos%lumz  = 0.   ! Luminous region  in Z
+      evt%bpos%elumz = 0.  ! Error on Lregion in Z
+c ----------  fill Beam Momentum -------------------------------
+      evt%bpos%px    = 0.
+      evt%bpos%py    = 0.
+      evt%bpos%pz    = 0.
+      evt%bpos%errpx = 0.
+      evt%bpos%errpy = 0.
+      evt%bpos%errpz = 0.
+      evt%bpos%larpx = 0.
+      evt%bpos%larpy = 0.
+      evt%bpos%larpz = 0.
+      evt%bpos%elarpx= 0.
+      evt%bpos%elarpy= 0.
+      evt%bpos%elarpz= 0.
+      evt%bpos%ene    = 0.
+      evt%bpos%errene = 0.
+      evt%bpos%dum1   = 0.
+      evt%bpos%errdum1= 0.
+      evt%bpos%dum2   = 0.
+      evt%bpos%ErrDum2= 0.
+
+        rstat =  getbpos( evt%Bpos )
+      ENDIF
+c---------------------------------------------------
+      IF( TELEFLAG ) THEN
+c------------------------------------------
+C From Palutan and trigger group
+C-----------------------------------------
+         istat = TELE_RESET(evt%tele)
+         istat = PIZZA_RESET(evt%pizza)
+         istat = GETTELESTRU(evt%tele)
+         istat = GETPIZZASTRU(evt%pizza)
+       ENDIF
+       IF( TRIGFLAG ) THEN
+          istat = GETTRIGGER(evt%trg)
+	  IF( C2TRFLAG ) THEN
+	    istat = GETSEC2CLUSTRU(evt%s2clu)
+	  ELSE
+            istat = GETPIZZETTA (evt%pizzetta)
+            istat = GETTELLINA  (evt%tellina)
+	  ENDIF
+      ENDIF
+C-----------------------------------------------------------------------
+C Fill QCAL Information
+C-----------------------------------------------------------------------
+      if( QCALFLAG ) then
+         if( mcflag_1 ) THEN
+cms           istat = GETQIHISTRU(evt%qhit)
+           istat = GETQCAESTRU(evt%qele)
+         ENDIF
+         istat = GETQCALSTRU(evt%qcal)
+      endif
+C-----------------------------------------------------------------------
+C Fill PreCluster Information
+C-----------------------------------------------------------------------
+      if( PRECLUSFLAG ) then
+c         write(*,*)' Calling GetPreClusStru'
+         istat = GETPRECLUSTRU(evt%preclu)
+      endif
+C-----------------------------------------------------------------------
+C Fill Cluster Information
+C-----------------------------------------------------------------------
+      if( CLUSFLAG ) then
+c         istat = GETCLUSTRUCORR(evt%clu,enecorflag)
+         istat = GETCLUSTRU(evt%clu)
+      endif
+C-----------------------------------------------------------------------
+C Fill Cluster Element Information
+C-----------------------------------------------------------------------
+      if( CELEFLAG ) then
+         istat = GETCELESTRU(evt%cele)
+      endif
+      IF( CWRKFLAG ) THEN
+        istat = GETCWRKSTRU(evt%cwrk)
+      ENDIF
+C------------------------------
+C Fill CSPS + CLUO
+C------------------------------	
+	IF( CSPSFLAG ) THEN
+	   Istat = GETCSPSSTRU(0,evt%CSPS,evt%CSPSMC) 
+	ENDIF
+	IF( CLUOFLAG ) THEN
+           Istat = GETCLUOSTRU(evt%CLUO )
+           IF( exptyp.EQ. EXOFSI ) THEN
+              Istat = GETCLUOMCSTRU(evt%CLUOMC)
+           ENDIF
+	ENDIF
+C-----------------------------------------------------------------------
+C Fill DTCE Information
+C-----------------------------------------------------------------------
+      If (dtceFlag.OR.DCnHitsFlag) Then
+        call getDTCEstru(evt%DTCE)
+      EndIf
+C-----------------------------------------------------------------------
+C Fill DHRE Information
+C-----------------------------------------------------------------------
+      If (dhreFlag) Then
+        call getDHREstru(evt%DHRE)
+      EndIf
+C-----------------------------------------------------------------------
+C Fill Montecarlo Information
+C-----------------------------------------------------------------------
+      if( GEANFIFLAG .and. mcflag_1 )then
+         istat = GETMCSTRU(evt%mc)
+      endif
+C-----------------------------------------------------------------------
+C Fill tracks/verticies Information
+C-----------------------------------------------------------------------
+      IF( TRKSFLAG .or. TRKVFLAG ) then
+         istat = TRKV2STRU(evt%vtx,evt%trkv,evt%trk,evt%trkmc)
+         IF( QCALFLAG ) istat = TRKQ2STRU( evt%trk, evt%trkq )
+C-----------------------------------------------------------------------
+C Fill DHSP
+C-----------------------------------------------------------------------
+         IF( DHSPFLAG )THEN
+            istat =  GETDHSPSTRU(evt%trk%n,evt%dhsp)
+         ENDIF
+      endif
+cvp
+C-----------------------------------------------------------------------
+C ( KPM Stream ) Fill tracks/verticies Information before retracking
+C-----------------------------------------------------------------------
+      IF( TRKSOLDFLAG .or. TRKVOLDFLAG ) then
+         istat = TRKVOLD2STRU(evt%vtxold,evt%trkvold,evt%trkold
+     $        ,evt%trkmcold)
+      endif
+C-----------------------------------------------------------------------
+C (KPM STREAM) Fill TCLO bank before retracking (bank TCL1)
+C-----------------------------------------------------------------------
+      IF( TCLOLDFLAG ) then
+         istat =  GETOLDTCLOSTRU(evt%tclold)
+      endif
+C-----------------------------------------------------------------------
+C Fill the Monte Carlo Drift Chamber hit information (DHIT Bank)
+C-----------------------------------------------------------------------
+      IF( TCLOLDFLAG ) then
+         istat =  GETOLDTCLOSTRU(evt%tclold)
+      endif
+C-----------------------------------------------------------------------
+C Fill the DEDX info in drift chamber (bank DEDX)
+C-----------------------------------------------------------------------
+      IF( DEDXFLAG ) then
+         istat = DEDX2STRU_Reset(Evt%DEDX2STRU)
+         istat = DEDX2STRU_GET(Evt%DEDX2STRU)
+      endif
+cvp-
+C-----------------------------------------------------------------------
+C Fill tracks/verticies Information
+C-----------------------------------------------------------------------
+      If (DPRSFLAG) Then
+        ISTAT = GET_DPRS_STRUCT(Evt%DPRS%NDPRS)
+      End If
+C-----------------------------------------------------------------------
+C Fill TCLO
+C-----------------------------------------------------------------------
+      IF( TCLOFLAG ) then
+         istat =  GETTCLOSTRU(evt%tclo)
+      endif
+C-----------------------------------------------------------------------
+C Fill CFHI
+C-----------------------------------------------------------------------
+      If( CFHIFLAG .and. mcflag_1 )then
+         istat = GETCFHISTRU(evt%cfhi)
+      endif
+C-----------------------------------------------------------------------
+C Fill VNVO
+C-----------------------------------------------------------------------
+      IF( NVOFLAG ) then
+         istat = GETNVO(evt%knvo,evt%vnvo,evt%vnvb,evt%invo)
+      endif
+C-----------------------------------------------------------------------
+C Fill CLINF
+C-----------------------------------------------------------------------
+      IF( ECLOFLAG ) then
+        istat = GETECLO(evt%eclo)
+      endif
+C-----------------------------------------------------------------------
+C Fill T0GLOBAL
+C-----------------------------------------------------------------------
+      IF( T0FLAG ) THEN
+        istat = T0GLRD( T0G_PHASED_DC, T0G_HIT_STEP0,
+     &       T0G_CLUSTER, T0G_STEP1,DELTA_CAVI_CALO, BUNCH_PERIOD )
+        Evt%T0stru%dc_step0   = T0G_PHASED_DC
+        Evt%T0stru%hit_step0  = T0G_HIT_STEP0
+        Evt%T0stru%clus_step0 = T0G_CLUSTER
+        Evt%T0stru%step1      = T0G_STEP1
+        Evt%T0stru%cable      = DELTA_CAVI_CALO
+        Evt%T0stru%tbunch     = BUNCH_PERIOD
+        IF( mcflag_1  ) THEN
+           istat = T0MCRD(tphased_mc)
+           Evt%T0stru%tphased_mc = tphased_mc
+        ELSE
+           Evt%T0stru%tphased_mc = 0.
+        ENDIF
+      ENDIF
+C-----------------------------------------------------------------------
+C Fill QCALTELE
+C-----------------------------------------------------------------------
+      IF( QCALTELEFLAG ) THEN
+         istat = GETQCALTSTRU(Evt%QCALT)
+      ENDIF
+
+
+C-----------------------------------------------------------------------
+C Fill QCALTHIT
+C-----------------------------------------------------------------------
+      IF( QCALTHITFLAG ) THEN
+         istat = GETQCTHSTRU(Evt%QCALTHIT)
+      ENDIF
+
+C-----------------------------------------------------------------------
+C Fill CCLE
+C-----------------------------------------------------------------------
+      IF( CCLEFLAG ) THEN
+         istat = GETCCALTSTRU(Evt%CCLE)
+      ENDIF
+
+C-----------------------------------------------------------------------
+
+C-----------------------------------------------------------------------
+C Fill LET
+C-----------------------------------------------------------------------
+
+      IF(LETEFLAG)THEN
+         istat = getletestru(evt%lete)
+      ENDIF
+
+C-----------------------------------------------------------------------
+
+C-----------------------------------------------------------------------
+C Fill IT 
+
+      IF(ITCEFLAG)THEN
+         istat = ITCE_UPK(evt%itce)    
+      ENDIF
+
+C-----------------------------------------------------------------------
+C Fill HET
+
+      IF(HETEFLAG)THEN
+         istat = gethetestru(evt%hete)
+      ENDIF
+
+C-----------------------------------------------------------------------
+C now fill the NTUPLE
+C-----------------------------------------------------------------------
+      IF (Analysis_Get_Hist_Active()) THEN
+         ParSet = ANGPAR()
+c         IF( ParSet.EQ.1 ) CALL HFNt(Params%NtId) ! fill the ntuple
+         IF( ParSet.EQ.1.and.evt%itce%nitce.le.4032)
+     &        CALL HFNt(Params%NtId) ! fill the ntuple
+      ENDIF
+
+C-----------------------------------------------------------------------
+C Return to caller:
+C-----------------------------------------------------------------------
+
+999   CONTINUE
+      RETURN
+      END
+
+C
+C-----------------------------------------------------------------------
+      SUBROUTINE prod2ntu_FormatBankReport(BankName,N,String)
+C-----------------------------------------------------------------------
+$$implicit
+C-----------------------------------------------------------------------
+      CHARACTER*4 BankName
+      INTEGER N
+      CHARACTER*(*) String
+C-----------------------------------------------------------------------
+      IF (N.LT.0) THEN
+        WRITE(String,'(A)') 'Found '//BankName//' bank'
+      ELSEIF (N.EQ.1) THEN
+        WRITE(String,'(A,I1,A)') 'Found ',N,' '//BankName//' bank'
+      ELSEIF (N.LT.10) THEN
+        WRITE(String,'(A,I1,A)') 'Found ',N,' '//BankName//' banks'
+      ELSEIF (N.LT.100) THEN
+        WRITE(String,'(A,I2,A)') 'Found ',N,' '//BankName//' banks'
+      ELSE
+        WRITE(String,'(A,I3,A)') 'Found ',N,' '//BankName//' banks'
+      ENDIF
+C-----------------------------------------------------------------------
+      RETURN
+      END
+
+c--------
+c----------------------------------------
+      subroutine prod2ntu_rin
+c----------------------------------------
+$$implicit
+$$include 'k$inc:jobsta.inc'
+      integer istat,fillbposcommon
+      istat = fillbposcommon(nrun)
+c
+c----------------------------------------
+      return
+      end
+c
+      subroutine prod2ntu_rfi
+      return
+      end
+      subroutine prod2ntu_end
+      return
+      end
+C
+C------------------------------------------------------------------------
+      subroutine prod2ntu_tk
+C------------------------------------------------------------------------
+C
+C  Description:
+C  ------------
+C===========================================================================
+C
+$$IMPLICIT
+C
+$$INCLUDE 'A_C_LIBRARY:ANERROR.INC'
+$$INCLUDE 'S_I$LIBRARY:NOARGINC.INC'
+$$INCLUDE 'k$itls:prod2ntu_talk.inc'
+C
+C External functions
+C
+      INTEGER   UIDFFI, UIUSGP, UIACME
+      INTEGER   UIGTYE, UIGTRE, UIGTIN
+C
+C Local declarations
+C
+      INTEGER   Status, MENUF, MENUL, IGROUP
+      CHARACTER Verb*40, Prompt*100
+      CHARACTER*3 flag
+c
+      character*3 calosel(5)   ! Clus-Cwrk-Cele-pclu-corr
+      character*3 dchSel (4)   ! DTCE-DTCE0-DCHITS-DHRE
+      character*3 recsel (7)   ! t0g-tclo-eclo-ecls-bpos-neuv-tclold
+cvp
+      character*3 trksel (7)   ! Trkv-TRKS-DPRS-DSPS-trkvold-trksold-dedx
+      character*3 mcsel  (3)   ! Gean-Cfhi-DHIT
+cvp
+      character*3 trigsel(3)   ! Trig-Tele-C2TRG
+      character*3 qcalsel(1)   ! Qcal
+      character*3 newemchit(3) ! CSPS-CSPSMC-CLUO
+      character*3 hetesel(3)   ! Hete
+
+C
+C===========================================================================
+C
+      Status = UIDFFI
+     &         ('k$tls:prod2ntu_v5.uid',
+     &          IGROUP,MENUF,N$A,N$A,MENUL,N$A)
+	Status = UIUSGP(IGROUP,N$A)
+ 10     Status = UIACME(MENUF,Verb,N$A)             ! Display menu
+C
+        IF( Verb.EQ.'CLUS' )THEN
+           write(Prompt,123)'CLUS'
+           Status = UIGTYE(Prompt,CLUSFLAG)
+           GOTO 10
+        ELSE IF( Verb.EQ.'VNVO' )THEN
+           write(Prompt,123)'VNVO'
+           Status = UIGTYE(Prompt,NVOFLAG)
+           GOTO 10
+        ELSE IF( Verb.EQ.'ECLO' )THEN
+           write(Prompt,123)'ECLO'
+           Status = UIGTYE(Prompt,ECLOFLAG)
+           GOTO 10
+        ELSE IF( Verb.EQ.'ECLS' )THEN
+           write(Prompt,123)'ECLS'
+           Status = UIGTYE(Prompt,ECLSFLAG)
+           GOTO 10
+        ELSE IF( Verb.EQ.'GDHI' )THEN
+           write(Prompt,123)'GDHI'
+           Status = UIGTYE(Prompt,GDCHITFG)
+           GOTO 10
+        ELSE IF( Verb.EQ.'BPOS' )THEN
+           write(Prompt,123)'BPOS'
+           Status = UIGTYE(Prompt,BPOSFLAG)
+           GOTO 10
+        ELSE IF( Verb.EQ.'T0GL') THEN
+           write(Prompt,123)'T0GL'
+           Status = UIGTYE(Prompt,T0FLAG )
+           GOTO 10
+        ELSE IF( Verb.EQ.'PREC' )THEN
+           write(Prompt,123)'PREC'
+           Status = UIGTYE(Prompt,PRECLUSFLAG)
+           GOTO 10
+        ELSE IF( Verb.EQ.'CELE' )THEN
+           write(Prompt,123)'CELE'
+           Status = UIGTYE(Prompt,CELEFLAG)
+           GOTO 10
+        ELSE IF( Verb.EQ.'TRIG' )THEN
+           write(Prompt,123)'TRIG'
+           Status = UIGTYE(Prompt,TRIGFLAG)
+           GOTO 10
+        ELSE IF( Verb.EQ.'TELE' )THEN
+           write(Prompt,123)'TELE'
+           Status = UIGTYE(Prompt,TELEFLAG)
+           GOTO 10
+	ELSE IF( Verb.EQ.'C2TRG') THEN
+	   write(Prompt,123)'CTRG'	
+	   Status = UIGTYE(Prompt,C2TRFLAG)
+	   GOTO 10
+        ELSE IF( Verb.EQ.'TRKS' )THEN
+           write(Prompt,123)'TRKS'
+           Status = UIGTYE(Prompt,TRKSFLAG)
+           GOTO 10
+        ELSE IF( Verb.EQ.'TRKV' )THEN
+           write(Prompt,123)'TRKV'
+           Status = UIGTYE(Prompt,TRKVFLAG)
+           GOTO 10
+        ELSE IF( Verb.EQ.'DPRS' )THEN
+           write(Prompt,123)'DPRS'
+           Status = UIGTYE(Prompt,DPRSFLAG)
+           GOTO 10
+        ELSE IF( Verb.EQ.'DHSP' )THEN
+           write(Prompt,123)'DHSP'
+           Status = UIGTYE(Prompt,DHSPFLAG)
+           GOTO 10
+        ELSE IF( Verb.EQ.'DTCE' )THEN
+           write(Prompt,123)'DTCE'
+           Status = UIGTYE(Prompt,DTCEFLAG)
+           GOTO 10
+        ELSE IF( Verb.EQ.'NSDTCE' )THEN
+           write(Prompt,123)'DTCE0'
+           Status = UIGTYE(Prompt,DTCE0FLAG)
+           GOTO 10
+        ELSE IF( Verb.EQ.'DCHITS' )THEN
+           write(Prompt,123)'DCHITS'
+           Status = UIGTYE(Prompt,DCnHitsFlag)
+           GOTO 10
+        ELSE IF( Verb.EQ.'DHRE' )THEN
+           write(Prompt,123)'DHRE'
+           Status = UIGTYE(Prompt,DHREFLAG)
+           GOTO 10
+        ELSE IF( Verb.EQ.'GEAN' )THEN
+           write(Prompt,123)'GEAN'
+           Status = UIGTYE(Prompt,GEANFIFLAG)
+           GOTO 10
+        ELSE IF( Verb.EQ.'TCLO' )THEN
+           write(Prompt,123)'TCLO'
+           Status = UIGTYE(Prompt,TCLOFLAG)
+           GOTO 10
+        ELSE IF( Verb.EQ.'CFHI' )THEN
+           write(Prompt,123)'CFHI'
+           Status = UIGTYE(Prompt,CFHIFLAG)
+           GOTO 10
+        ELSE IF( Verb.EQ.'QCAL' )THEN
+           write(Prompt,123)'QCAL'
+           Status = UIGTYE(Prompt,QCALFLAG)
+           GOTO 10
+        ELSE IF( Verb.EQ.'CWRK') THEN
+          write(Prompt,123)'CWRK'
+          Status = UIGTYE(Prompt,CWRKFLAG)
+          GOTO 10
+	ELSE IF( Verb.EQ.'CSPS') THEN
+	  write(Prompt,123)'CSPS'
+	  Status = UIGTYE(Prompt,CSPSFLAG  )
+	  GOTO 10
+	ELSE IF( Verb.EQ.'MCCSPS') THEN
+	  write(Prompt,123)'MCCSPS'
+	  Status = UIGTYE(Prompt,CSPSMCFLAG )
+	  GOTO 10
+	ELSE IF( Verb.eq.'CLUO') THEN	
+  	  write(Prompt,123)'CLUO'
+	  Status = UIGTYE(Prompt,CLUOFLAG ) 
+	  GOTO 10
+        ELSE IF( Verb.eq.'BENE') THEN
+	  write(Prompt,123)'BENE'
+	  Status = UIGTYE(Prompt,BENEFLAG ) 
+	  goto 10
+ckpm
+        ELSE IF( Verb.EQ.'OTRK' )THEN
+           write(Prompt,123)'OTRK'
+           Status = UIGTYE(Prompt,TRKSOLDFLAG)
+           GOTO 10
+        ELSE IF( Verb.EQ.'OTRV' )THEN
+           write(Prompt,123)'OTRV'
+           Status = UIGTYE(Prompt,TRKVOLDFLAG)
+           GOTO 10
+        ELSE IF( Verb.EQ.'OTCL' )THEN
+           write(Prompt,123)'OTCL'
+           Status = UIGTYE(Prompt,TCLOLDFLAG)
+           GOTO 10
+        ELSE IF( Verb.EQ.'DEDX' )THEN
+           write(Prompt,123)'DEDX'
+           Status = UIGTYE(Prompt,DEDXFLAG)
+           GOTO 10
+        ELSE IF( Verb.EQ.'DHIT' )THEN
+           write(Prompt,123)'DHIT'
+           Status = UIGTYE(Prompt,DHITFLAG)
+           GOTO 10
+        ELSE IF( Verb.EQ.'QLTE' )THEN
+           write(Prompt,123)'QLTE'
+           Status = UIGTYE(Prompt,QCALTELEFLAG)
+           GOTO 10
+        ELSE IF( Verb.EQ.'QCTH' )THEN
+           write(Prompt,123)'QCTH'
+           Status = UIGTYE(Prompt,QCALTHITFLAG)
+           GOTO 10
+        ELSE IF( Verb.EQ.'CCLE' )THEN
+           write(Prompt,123)'CCLE'
+           Status = UIGTYE(Prompt,CCLEFLAG)
+           GOTO 10
+ckpm
+
+        ELSE IF( Verb.EQ.'LETE' )THEN
+           write(Prompt,123)'LETE'
+           Status = UIGTYE(Prompt,LETEFLAG)
+           GOTO 10
+
+        ELSE IF( Verb.EQ.'ITCE' )THEN
+           write(Prompt,123)'ITCE'
+           Status = UIGTYE(Prompt,ITCEFLAG)
+           GOTO 10
+
+        ELSE IF( Verb.EQ.'HETE' )THEN
+           write(Prompt,123)'HETE'
+           Status = UIGTYE(Prompt,HETEFLAG)
+           GOTO 10
+
+
+
+        ELSE IF( Verb.EQ.'DEFA' )THEN
+           write(6,*)' Setting Default Conditions !'
+           PRECLUSFLAG= .false.
+           CLUSFLAG   = .true.
+           CELEFLAG   = .false.
+           TRIGFLAG   = .true.
+           TRKSFLAG   = .true.
+           TRKVFLAG   = .true.
+           DHSPFLAG   = .false.
+           DPRSFLAG   = .true.
+           DTCEFLAG   = .false.
+           DTCE0FLAG  = .false.
+           DCnHitsFlag= .false.
+           DHREFLAG   = .false.
+           TCLOFLAG   = .true.
+           TCLOLDFLAG   = .false.
+           CFHIFLAG   = .false.
+           QCALFLAG   = .true.
+           GEANFIFLAG = .true.
+           TELEFLAG   = .false.
+           NVOFLAG    = .true.
+           ECLOFLAG   = .true.
+           ECLSFLAG   = .true.
+           GDCHITFG   = .true.
+           BPOSFLAG   = .true.
+	   BENEFLAG   = .false.
+           T0FLAG     = .true.
+	   C2TRFLAG   = .true.
+	   ENECORFLAG = .false.
+           CWRKFLAG   = .true.
+	   CSPSFLAG   = .false.
+	   CSPSMCFLAG = .false.
+	   CLUOFLAG   = .false.
+cvp
+           TRKSOLDFLAG   = .false.
+           TRKVOLDFLAG   = .false.
+           TCLOLDFLAG   = .false.
+           DEDXFLAG     = .false.
+           DHITFLAG     = .false.
+cvp
+           QCALTELEFLAG = .FALSE.
+           QCALTHITFLAG = .FALSE.
+           CCLEFLAG = .FALSE.
+           LETEFLAG = .FALSE.
+           ITCEFLAG = .FALSE. 
+           HETEFLAG = .FALSE.
+
+
+           GOTO 10
+
+        ELSE IF( Verb.EQ.'SHOW' )THEN
+c
+          WRITE(6,*)' ************* PRODNTU SELECTED BLOCKS ***********'
+c------------------------------------------------------------------------
+           Calosel(1)= 'OFF'
+           Calosel(2)= 'OFF'
+           Calosel(3)= 'OFF'
+           Calosel(4)= 'OFF'
+           Calosel(5)= 'OFF'
+           IF( CLUSFLAG   )Calosel(1) = 'ON '
+           IF( CWRKFLAG   )Calosel(2) = 'ON '
+           IF( CELEFLAG   )Calosel(3) = 'ON '
+           IF( PRECLUSFLAG)Calosel(4) = 'ON '
+           IF( ENECORFLAG )Calosel(5) = 'ON '
+           WRITE(6,*)' CALO/ Clus: ',calosel(1),' Hits: ',calosel(2),
+     &  ' Cell: ',calosel(3),' Prec: ',calosel(4),' Corr: ',calosel(5)
+c------------------------------------------------------------------------
+           trksel(1) = 'OFF'
+           trksel(2) = 'OFF'
+           trksel(3) = 'OFF'
+           trksel(4) = 'OFF'
+           trksel(5) = 'OFF'
+           trksel(6) = 'OFF'
+           trksel(7) = 'OFF'
+           IF (TRKVFLAG)    trksel(1) = 'ON '
+           IF (TRKSFLAG)    trksel(2) = 'ON '
+           IF (DPRSFLAG)    trksel(3) = 'ON '
+           IF (DHSPFLAG)    trksel(4) = 'ON '
+cvp
+           IF (TRKVOLDFLAG)    trksel(5) = 'ON '
+           IF (TRKSOLDFLAG)    trksel(6) = 'ON '
+           IF (DEDXFLAG)    trksel(7) = 'ON '
+           write(6,*)' TRKS/ Trkv: ',trksel(1),' Trks: ',trksel(2),
+     &               ' Dprs: ',trksel(3),' Dhsp: ',trksel(4),
+     &               ' TrkvOld: ',trksel(5),' TrksOld: ',trksel(6),
+     %               ' Dedx: ',trksel(7)
+cvp
+           dchSel(1) = 'OFF'
+           dchSel(2) = 'OFF'
+           dchSel(3) = 'OFF'
+           dchSel(4) = 'OFF'
+           IF (DTCEFLAG)    dchSel(1) = 'ON '
+           IF (DTCE0FLAG)   dchSel(2) = 'ON '
+           IF (DCnHitsFlag) dchSel(3) = 'ON '
+           IF (DHREFLAG)    dchSel(4) = 'ON '
+           write(6,*)' DCH/  Dtce: ',dchSel(1),' Dtce0:',dchSel(2),
+     +               ' Dchit:',dchSel(2),'Dhre: ',dchSel(4)
+c------------------------------------------------------------------------
+           recsel(1) = 'OFF'
+           recsel(2) = 'OFF'
+           recsel(3) = 'OFF'
+           recsel(4) = 'OFF'
+           recsel(5) = 'OFF'
+           recsel(6) = 'OFF'
+           recsel(7) = 'OFF'
+           IF( T0FLAG   ) recsel(1) = 'ON'
+           IF( TCLOFLAG ) recsel(2) = 'ON'
+           IF( ECLOFLAG ) recsel(3) = 'ON'
+           IF( ECLSFLAG ) recsel(4) = 'ON'
+           IF( BPOSFLAG ) recsel(5) = 'ON'
+           IF( NVOFLAG  ) recsel(6) = 'ON'
+           IF(TCLOLDFLAG) recsel(7) = 'ON'
+
+           write(6,*)' RECO/ T0gl: ',recsel(1),' Tclo: ',recsel(2),
+     &   ' Eclo: ',recsel(3),' Ecls: ',recsel(4),' Bpos: ',recsel(5),
+     &   ' Nvo: ',recsel(6),' TCLOLD: ',recsel(7)
+c-------------------------------------------------------------------------
+           trigsel(1) = 'OFF'
+           trigsel(2) = 'OFF'
+	   trigsel(3) = 'OFF'
+           IF( TRIGFLAG )trigsel(1) = 'ON '
+           IF( TELEFLAG )trigsel(2) = 'ON '
+	   IF( C2TRFLAG  )trigsel(3) = 'ON'
+           write(6,*)' TRIG/ Tort: ',trigsel(1),' Pizz: ',trigsel(2),
+     &	 ' C2tr: ',trigsel(3)
+c--------------------------------------------------------------------------
+cvp
+           mcsel(1) = 'OFF'
+           mcsel(2) = 'OFF'
+           mcsel(3) = 'OFF'
+           IF( GEANFIFLAG )mcsel(1) = 'ON '
+           IF( CFHIFLAG   )mcsel(2) = 'ON '
+           IF( DHITFLAG   )mcsel(3) = 'ON '
+           write(6,*)' GPHI/ Kine: ',mcsel(1),' Fhit: ',mcsel(2),
+     $          ' DHIT: ',mcsel(3)
+cvp
+	   newemchit(1) = 'OFF'
+	   newemchit(2) = 'OFF'
+	   newemchit(3) = 'OFF'
+	   IF( CSPSFLAG  ) newemchit(1) = 'ON'
+	   IF( CSPSMCFLAG) newemchit(2) = 'ON'
+	   IF( CLUOFLAG  ) newemchit(3) = 'ON'
+	   write(6,*)' CSPS/ Hits: ',newemchit(1),' MCHit ', 
+     &	   newemchit(2),' Cluo: ',newemchit(3)
+c------------------------------------------------------------------------
+           qcalsel(1) = 'OFF'
+           IF( QCALFLAG )qcalsel(1)= 'ON '
+           write(6,*)' QCAL/ Qcal: ',qcalsel(1)
+	   
+c------------------------------------------------------------------------
+           hetesel(1) = 'OFF'
+           IF( HETEFLAG )hetesel(1)= 'ON '
+           write(6,*)' HETE: ',hetesel(1)
+
+c------------------------------------------------------------------------
+C -
+         WRITE(6,*)' *******End of Prod2ntu Selected Blocks **********'
+         GOTO 10
+       ENDIF
+cvp
+ 127   FORMAT(1x,'Select ',a7,' Ntuple-block?')
+ 126   FORMAT(1x,'Select ',a6,' Ntuple-block?')
+cvp
+ 123   FORMAT(1x,'Select ',a4,' Ntuple-block?')
+ 125   FORMAT(1x,'Select ',a5,' Ntuple-block?')
+ 124   FORMAT(1x,'Correct Energy for cells-losses?')
+C------------------------------------------------------------------------
+       return
+       end
+
+
+
+
+
+
+

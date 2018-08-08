@@ -1,0 +1,25 @@
+!
+use prod2ntu/par=2 sample
+talk prod2ntu prec no clus yes cele no trig yes tele no c2trg no trks yes trkv yes dhsp no dtce no nsdtce no dchits no dhre no tclo yes cfhi no qcal no gean no dprs no vnvo no eclo no ecls yes gdhi no bpos yes bene yes t0gl no cwrk no csps no mccsps no cluo no otrk no otrv no otcl no dedx no dhit no ccle no lete no qlte no itce no qcth no hete no show exit
+talk sample show exit
+input url "dbdatarec:(run_nr=88220) and (stream_code='ufo') and (version=37)"
+!
+hist open/file="./test.hbook"/max_nrec=60000
+hist on/mod=prod2ntu
+hist on/mod=sample
+beg/nev=1000/rep=500000
+hist write
+hist close
+hist del
+!
+!hist open/file="./test_b.hbook"/max_nrec=60000
+!hist on/mod=prod2ntu
+!hist on/mod=sample
+!cont/nev=1000000/rep=1000
+!hist write
+!hist close
+!hist del
+!
+!
+show all
+exit

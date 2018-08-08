@@ -1,0 +1,35 @@
+include Makefile.arch
+#------------------------------------------------------------------------------
+
+THISPROGRAMS  := $(wildcard *.$(SrcSuf)) 
+THISPROGRAMO  := $(THISPROGRAMS:.$(SrcSuf)=.$(ObjSuf))
+THISPROGRAM    = Fort2C.exe
+
+OBJS          = $(THISPROGRAMO)
+
+PROGRAMS      = $(THISPROGRAM)
+
+HOST         := $(shell echo $(HOST))
+
+#------------------------------------------------------------------------------
+
+.SUFFIXES: .$(SrcSuf) .$(ObjSuf) .$(DllSuf)
+
+all:            $(PROGRAMS)
+
+$(THISPROGRAM):  $(THISPROGRAMO) Fort2C.o
+		$(LD) $(LDFLAGS) $^ $(GLIBS) -lEG -lHtml $(OutPutOpt)$@
+#		$(LD) $(LDFLAGS) $^ $(GLIBS) 
+		@echo "----> $@ done!"
+		@mkdir -p rootfiles
+#		@mkdir db    -p
+#		@mkdir ps    -p
+
+clean:
+		@rm -f $(OBJS) *~ core *.o
+
+###
+
+.$(SrcSuf).$(ObjSuf):
+		$(CXX) $(CXXFLAGS) -c $<
+

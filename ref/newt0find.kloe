@@ -1,0 +1,49 @@
+
+      real function newt0find()
+
+$$implicit
+$$include 'k$itls:maxstructdim.inc'
+$$include 'k$itls:emcstruct.inc'        ! Emc Clusters
+$$include 'k$itls:bposstruct.inc'
+ 
+      real emax, rclu, rf, vlight
+      real xoff, yoff, zoff
+      integer imax, ncl, nbunch
+      integer getclustru, getbpos, istat
+
+      rf=2.715
+      vlight=29.979
+      newt0find=0.
+      emax=0.
+      imax=0
+      ncl=0
+      nbunch=0
+      rclu=0
+
+      xoff=0
+      yoff=0
+      zoff=0
+
+      istat = GETCLUSTRU(cluster)
+      istat =  getbpos( Bpos )
+      if(bpos%x.ne.666)then
+	xoff=bpos%x
+	yoff=bpos%y
+	zoff=bpos%z
+      endif      
+
+      do ncl=1,cluster%n
+      	 if(cluster%e(ncl).gt.emax)then
+		emax=cluster%e(ncl)
+		imax=ncl
+         endif
+      enddo
+
+      rclu=sqrt((cluster%x(imax)-xoff)**2+(cluster%y(imax)-yoff)**2
+     $     +(cluster%z(imax)-zoff)**2)
+      newt0find=cluster%t(imax)-rclu/vlight
+      nbunch=NINT(newt0find/rf)
+      newt0find=nbunch*rf
+
+      return
+      end

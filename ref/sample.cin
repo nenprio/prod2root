@@ -1,0 +1,20 @@
+C====================================================================
+C sample.cin
+C====================================================================
+C
+C     
+      TYPE NeuRadStructure
+      SEQUENCE
+      INTEGER  NTwPh
+      REAL     T0off
+      INTEGER  FlgTW(50)
+      LOGICAL  Flg5ph
+      LOGICAL  FlgBpos
+C     
+      
+      END TYPE
+      TYPE(NeuRadStructure) NRadStru
+C
+      COMMON / sampleHBook / NRadStru
+C     
+

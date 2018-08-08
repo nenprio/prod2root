@@ -1,0 +1,22 @@
+!=============================================================================
+!
+! SAMPLE Definition File for Group/Menu IDs and Verbs
+! -----------------------------------------------------
+!
+!==============================================================================
+Group #+0
+!
+Verb SHOW
+Verb EXIT
+Alias QUIT EXIT
+Alias RETURN EXIT
+!
+MENU #+0/Title="Select your action"/Prompt="SAMTK> "
+!
+Button 1 /Description="Show single process selection"/Response="SHOW"
+Button 2 /Description="Go Back to the AC prompt" /Response="EXIT"
+!==============================================================================
+
+
+
+

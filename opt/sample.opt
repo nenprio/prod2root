@@ -1,0 +1,7 @@
+../ref/sample_bj.o
+../ref/sample.o
+../ref/newt0find.o
+../ref/prod2ntu.o
+../ref/Fort2C.o
+$MYLIBS
+$KIDF77LIBS
