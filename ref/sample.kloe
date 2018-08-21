@@ -1,22 +1,18 @@
+
 C==============================================================================
 C  SAMPLE
 C==============================================================================
 C
 C  Description:
 C  ------------
-C  Elena Perez del Rio
-C  A_C module to select events with more than 1 and less than 11 prompt
-C  clusters in barrel
-C  And more than 0 and less than 3 tracks with R_pca < 6 and 
-C  |z_pca| < 12 
-C  based in etapi0gg.kloe by P. Gauzzi
+C Prod2ntu version for root tuple
 C  Language:
 C  ---------
 C  KLOE Fortran
 C
 C  Author:
 C  -------
-C  
+C Elena Perez del Rio
 C
 C
 C==============================================================================
@@ -34,7 +30,8 @@ $$include 'sample.inc'
 C
 C==============================================================================
 C
-
+      write(*,*)"SAMIN"
+      call inittree()
       RETURN
       END
 C
@@ -63,7 +60,6 @@ C==============================================================================
 C
 C Put A_C Error Code to SUCCESS at Run_Init
 C
-	call inittree()
       Status = ANPIST(ANSUCC)
 C
       RETURN
@@ -75,6 +71,7 @@ C==============================================================================
 C
 $$IMPLICIT
 C
+$$include 'k$itls:evtstruct.inc'  	! Event Information
 $$INCLUDE 'C$INC:ERLEVL.INC'
 $$INCLUDE 'K$INC:OFERCO.INC'            ! OFFLINE error codes
 $$INCLUDE 'K$INC:JOBSTA.INC'
@@ -97,219 +94,24 @@ C
       
 
       INTEGER    getecls
-      REAL       VMOD, VDOTN, VDIST, SQRT
+      INTEGER AlgoNum,StreamNum,TimeSec,TimeMusec,Ndtce,EventType
+      integer icurr
+      real    currpos,currele,luminosity
+      COMMON /EventInfo/StreamNum,AlgoNum,
+     &     TimeSec,TimeMusec,Ndtce,mcflag_tg,currpos,currele,luminosity
+
 C
 C Local declarations
 C
-      INTEGER    Status, InStat, ntwph, parset, TWCluNumb(50), iloop, istat 
-      INTEGER    IClu, recover_splitting,   MinHisId, MaxHisId, iphtw
-      INTEGER    trgwrd, iecls
-      REAL       t0_gl_nr, RClu, TimWind, Tdif
-      REAL       CluVar(5,50), rclu_xy
-      REAL       Tcut, VLight
-      real       tres_a_bar,tres_a_ec,tres_b_bar,tres_b_ec
-      real       CluVarTw(10,50)
-      parameter( tres_a_bar=.055 )
-      parameter( tres_a_ec=.06 )
-      parameter( tres_b_bar=.140 )
-      parameter( tres_b_ec=.140 )
-      real	 Eclu_min, ThetaClu, ThetaClu_min   
-      parameter( Eclu_min=10. )   
-      PARAMETER( Vlight = 29.979 )
-      parameter( ThetaClu_min = 23.)
-      REAL       PI
-
-      INTEGER    IDtfs	
-      real 	 vxy_dtfs
-      real 	 vz_dtfs
-      integer 	 num_good_tracks   
-
       integer bb
-      real 	 newt0find
-      LOGICAL    isph, istrk, hisflg,mcflag
-      Integer trgwrd1,trgwrd2,numdhit
-      common /trgcom/trgwrd1,trgwrd2,numdhit
       common/elena/ bb
-C      common /ijk/ ii, jj, kk
+C
 C=============================================================================
 C
-      bb=nrun
+	bb=nrun
 
 C      write(*,*)'FORTRAN',bb
-      PI = 4.D0*DATAN(1.D0)
-
-      istat =  getbpos( Bpos )
-      IF( exptyp.eq.exofsi )then ! Simulation
-         mcflag = .true.
-      else
-         mcflag = .false.
-      endif
-
-      isph=.FALSE.
-      istrk=.FALSE.
-      NRadStru%flg5ph=.false.
-      NRadStru%flgBpos=.true.	
-
-      nradstru%ntwph = 0
-
-      bpos%x = valuebpos(1)
-      bpos%y = valuebpos(2)
-      bpos%z = valuebpos(3)
-      bpos%erry = valuebpos(5)
-      bpos%lumx = valuebpos(7)
-      bpos%lumz = valuebpos(9)
-      bpos%ene = valuebene(1)
-
-      if(bpos%x.eq.666)then
-	 NRadStru%flgBpos=.false.		
-         goto 999
-      endif
-
-c
-      Status = ANGIST(InStat)         ! IF ANPACK is set to ANYBER (i.e.
-      IF( InStat.EQ.ANYBER ) RETURN   ! YBos ERror), skip the event routine 
-
-      CALL NRadStruReset
-      CALL VZERO(TWCluNumb,50)
-
-C
-C Get clusters and tracks info from TLS functions
-C
-      Status = GetCluStru(Cluster)     ! Calorimeter clusters info
-      status=recover_splitting(cluster)
-
-C If MC check trigger filfo and event classification 
-      if(mcflag)then
-         if(iand(trgwrd1,128).ne.128)goto 999
-      end if
-C event classification
-      status = getecls(ecls)           ! Event Classification info
-      if(iand(ecls%filfo,33554432).ne.33554432.and.iand(ecls%filfo2
-     $        ,33554432).ne.33554432)goto 999
-      do iecls=1,ecls%n
-         if((ecls%stream(iecls).eq.3).or.(ecls%stream(iecls).eq.6))
-C         if((ecls%stream(iecls).eq.6))
-     $         goto 888 
-      end do
-      do iecls=1,ecls%n2
-         if((ecls%stream2(iecls).eq.3).or.(ecls%stream2(iecls).eq.6))
-C         if((ecls%stream2(iecls).eq.6))
-     $         goto 888 
-      end do
-      goto 999
-      
- 888  if(nrun.lt.76020)then
-	t0_gl_nr=0.
-      else
-        t0_gl_nr=newt0find()	
-      end if
-      NRadStru%t0off = t0_gl_nr
-C
-      num_good_tracks = 0
-      status = getdtfsstru(dtfs)
-      do IDtfs = 1, dtfs%ndtfs
-         if((dtfs%xpca(IDtfs).eq.0).and.(dtfs%ypca(IDtfs).eq.0).and.
-     $      (dtfs%zpca(IDtfs).eq.0))then
-            goto 999
-         endif
-C
-      	 vxy_dtfs = sqrt(dtfs%xpca(IDtfs)**2 + dtfs%ypca(IDtfs)**2)
-	 vz_dtfs = dtfs%zpca(IDtfs)
-      	 if((vxy_dtfs.lt.6).and.(ABS(vz_dtfs).lt.12))then
-		num_good_tracks	 = num_good_tracks + 1
-     	 endif
-      enddo
-      if((num_good_tracks.gt.1))then
-         istrk=.TRUE.
-      else
-         goto 999
-      endif
-C      write(*,*)'DTFS ',dtfs%ndtfs
-      		     
-C
-C Get clusters in Time Window 
-C     Since recover_splitting doesn't change the cluster number, but just sets
-c     to zero the variables of the cluster remerged, check that E>0
-C
-         DO IClu = 1,Cluster%N
-            NRadStru%flgtw(iclu)=0
-            if(cluster%e(iclu).gt.0.)then
-               CluVar(1,IClu) = Cluster%E(IClu)
-               CluVar(2,IClu) = Cluster%X(IClu) - bpos%x
-               CluVar(3,IClu) = Cluster%Y(IClu) - bpos%y
-               CluVar(4,IClu) = Cluster%Z(IClu) - bpos%z
-               CluVar(5,IClu) = Cluster%T(IClu) - t0_gl_nr
-C     
-               RClu = SQRT( Cluvar(2,IClu)**2 + 
-     &              Cluvar(3,IClu)**2 + Cluvar(4,IClu)**2 )
-               RClu_xy = SQRT( Cluvar(2,IClu)**2 + 
-     &              Cluvar(3,IClu)**2 )
-
-               Tdif = CluVar(5,IClu) - RClu/Vlight
-               IF( rclu_xy.GT.200. )THEN
-                  timwind=sqrt((tres_a_bar*sqrt(1.e3/cluvar(1,iclu)))**2
-     $                 +tres_b_bar**2)
-               else if( rclu_xy.LT.200. )THEN
-                  timwind=sqrt((tres_a_ec*sqrt(1.e3/cluvar(1,iclu)))**2
-     $                 +tres_b_ec**2)
-               endif
-
-	       ThetaClu = (180./PI)*(acos(CluVar(4,IClu)/RClu))
-
-               timwind=min(5.*timwind,2.)
-C     
-C               IF( ABS(Tdif).LT.TimWind )THEN
-
-               IF( (ABS(Tdif).LT.TimWind).and.
-     $              (Cluster%E(IClu).gt.Eclu_min).and.
-     $              (ThetaClu.gt.ThetaClu_min).and.
-     $              (ThetaClu.lt.(180-ThetaClu_min)) )THEN
-C
-                  Nradstru%Ntwph = Nradstru%Ntwph + 1
-                  NRadStru%flgtw(iclu)=1
-                  TWCluNumb(NRadStru%NTwPh) = IClu
-                  CluVarTw(1,NRadStru%NTwPh) = Cluvar(1,IClu)
-                  CluVarTw(2,NRadStru%NTwPh) = Cluvar(2,IClu)
-                  CluVarTw(3,NRadStru%NTwPh) = Cluvar(3,IClu)
-                  CluVarTw(4,NRadStru%NTwPh) = Cluvar(4,IClu)
-                  CluVarTw(5,NRadStru%NTwPh) = Cluvar(5,iclu)
-               ENDIF
-            endif
-         ENDDO
-C     
-         IF( (Nradstru%Ntwph.GT.1).and.(Nradstru%Ntwph.LT.5) )then
-            isph = .true.
-            NRadStru%flg5ph=.true.
-	 ENDIF
-
-C=============================================================
-
-	isph = .TRUE.
-	istrk =.TRUE.
-         if(isph.and.istrk)then
-	    call fillntu() 	
-            Status = ANGOHS('PROD2NTU',HisFlg,MinHisId,MaxHisId)
-            IF( Status.NE.ANSUCC )THEN
-               CALL ERLOGR('SAMEV',ERWARN,0,Status,
-     &              'Error getting HBook info for PROD2NTU module')
-            ELSE
-               IF( HisFlg )THEN
-                  ParSet = ANGPAR()
-                  IF( ParSet.EQ.1 )THEN
-                     CALL HCDir('//PAWC/PROD2NTU',' ')
-                     CALL HFNT(1)
-                  ENDIF
-               ENDIF
-            ENDIF
-            
-         end if
-
-      status=anptrg(isph)
-      status=anptrg(istrk)
-
-
- 999  continue
-C     
+        call fillntu() 	
       RETURN
       END
 C
@@ -324,6 +126,7 @@ C
       RETURN 
       END
 C
+
 C==============================================================================
       SUBROUTINE SAMHB
 C==============================================================================
@@ -346,27 +149,6 @@ C
       LOGICAL    HisFlg
 C
 C==============================================================================
-C
-      Status = ANGOHS('PROD2NTU',HisFlg,MinHisId,MaxHisId)
-      IF( Status.NE.ANSUCC )THEN
-         CALL ERLOGR('5GAMHB',ERWARN,0,Status,
-     &        'Error getting HBook info for prod2ntu module')
-      ELSE
-         IF( HisFlg )THEN
-C
-            NtuId = 1
-            CALL HCDir('//PAWC/PROD2NTU',' ')
-C
-c            CALL HBName(NtuId,'5GAM',NRadStru%T0off,'T0off:r')
-            CALL HBName(NtuId,'5GAM',NRadStru%flgBpos,'flgBpos:l')
-            CALL HBName(NtuId,'5GAM',NRadStru%flg5ph,'flg5ph:l')
-C            CALL HBName(NtuId,'5GAM',NRadStru%flgtw,'flgtw(50):i')
-
-         ELSE
-            CALL ERLOGR('SAMHB',ERWARN,0,0,
-     &           'prod2ntu ntuple not active')
-         ENDIF
-      ENDIF
 C
       RETURN 
       END
@@ -411,27 +193,16 @@ C
       END
 C     
 
+C=============================================================================
+      SUBROUTINE SAMFI
+C===========================================================================
+	write(*,*)'Run End routine'
+      	call closetree() 
 
-C==============================================================================
-      SUBROUTINE NRadStruReset
-C==============================================================================
+      RETURN
+      END
 C
-$$IMPLICIT
-C
-$$INCLUDE 'sample.inc'
-C
-      INTEGER    ILoop
-C
-C==============================================================================
-C
-      NRadStru%NTwPh        = 0
-      NRadStru%T0off        = 0.
-      do iloop=1,50
-         NRadStru%flgtw(iloop)=2
-      end do
-
-      return
-      end
+C===========================================================================
 
 
 

@@ -37,7 +37,8 @@ setup -e trg development
 #source rootsetup
 #echo "Compiling for $ARCH ..."
 #echo "ROOTLIBS : $ROOTLIBS"
-
+gmake clean
+gmake
 #
 # C++ software linked with AC KLOE Fortran software
 cd ../ref
@@ -60,12 +61,13 @@ echo "Building ..."
 #
 cd ../dict
 build_job sample_bj.uic
+mv sample_bj.kloe ../ref
 #
 # List of the files to be compiled/linked 
 #
 #set listf77 = (build_raw2itce raw2itce itcemaker)
 # to fix B-field problem with IT HV Scan use local dcdbini
-set listf77 = (sample_bj sample newt0find prod2ntu)
+set listf77 = (sample_bj sample newt0find)
 set listf90 = ()
 #
 cd ../ref

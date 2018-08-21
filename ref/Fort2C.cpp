@@ -3,27 +3,33 @@
 #include <iostream>
 #include "Fort2C.hh"
 #include <TROOT.h>
-#include <TFile.h>
-#include <TTree.h>
 #include <TBranch.h>
 
+TreeWriter::TreeWriter(){
+  outfile = new TFile("sample.root","recreate");
+  TTree *fNewTree = new TTree("sample","Event Infos");
+  fNewTree->Branch("nRun",&elena_.bb,"nRun/I");
+  outfile->Write();
+}
+TreeWriter::~TreeWriter(){
+  std::cout << "Destructor " << std::endl;
+  if(outfile){
+    outfile->Write(0,TObject::kOverwrite);
+    outfile->Close();
+    delete outfile;
+  }
+}
+TreeWriter *writer;
+
 void inittree_(){
-   TFile *outfile = new TFile("sample.root","recreate");
-   TTree *fNewTree = new TTree("sample","Event Infos");
-   fNewTree->Branch("nrun",&elena_.bb,"nrun/I");
-   outfile->Write();
-   outfile->Close();
+  writer = new TreeWriter();
 }
 void fillntu_(){
-  TFile *outfile = new TFile("sample.root","update");
-    //    std::cout<<"run number "<<elena_.bb<<std::endl;
-  TTree *tree = (TTree*)outfile->Get("sample");
-  int nrun = -1000;
-  tree->SetBranchAddress("nrun", &nrun);
-  nrun=elena_.bb;
-  tree->Fill();
-  outfile->Write();
-  outfile->Close();
+  writer->FillTtree();
+}
+
+void closetree_(){
+  delete writer;
 }
 #endif
 

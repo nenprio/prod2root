@@ -3,3 +3,8 @@
 README
 *.root
 *.hbook
+*.o
+*.f
+ref/sample_bj.kloe
+*~
+*.cdf

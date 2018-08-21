@@ -3,13 +3,12 @@ Set Names/Entrypoint=32
 define ztoyim/declar=ztoydc/input
 !
 !    Set bookings:
-dict k$tls:prod2ntu_dict.uic
 !
 dict $KIDF77INC:im_kidin.dict
 !
 !==============================================================================
 Define -
- SAMPLE/Description="Selection of events "/Parameter_set=2/FILTER
+ SAMPLE/Description="ROOT NTUPLE"
 !==============================================================================
 	Declare  ="SAMDC",
         Init     ="SAMIN",
@@ -17,7 +16,8 @@ Define -
         Book     ="SAMHB",
         Run_Init ="SAMRI",
         Event    ="SAMEV",
-        Run_Fin  ="SAMRE"
+        Run_Fin  ="SAMRE",
+	Fini     ="SAMFI"
 OK
 !------------------------------------------------------------------------------
 Set utilities/hbk4 = on
@@ -31,7 +31,7 @@ Set size/ybos=600000/hbk4=20000000/database=5000000
 !
 !       Link Modules declared above
 !-----------------------------------------------------------------------------
-Link prod2ntu sample
+Link sample
 !-----------------------------------------------------------------------------
 show link
 write sample_bj.kloe

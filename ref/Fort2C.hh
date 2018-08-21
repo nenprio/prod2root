@@ -1,10 +1,30 @@
 #ifndef FORT2C_HH
 #define FORT2C_HH
 #include <iostream>
+#include <TFile.h>
+#include <TTree.h>
 
-   extern "C" struct{
-     int bb;
-   } elena_;
+
+extern "C" struct{
+  int bb;
+} elena_;
+
+class TreeWriter{
+public:
+  TreeWriter();
+  ~TreeWriter();
+  TFile* GetTFile(){
+    return outfile;
+  }
+  void FillTtree(){
+    TTree *tree = (TTree*)outfile->Get("sample");
+    std::cout <<"CC " << elena_.bb << std::endl;
+    tree->Fill();
+
+  }
+private:
+  TFile *outfile;
+};
 //   // int EventNumber;
     // int McFlag;
     // int EvFlag;
@@ -25,6 +45,7 @@
 
 extern "C" void fillntu_();
 extern "C" void inittree_();
+extern "C" void closetree_();
 
 #endif
 
