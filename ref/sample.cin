@@ -3,18 +3,25 @@ C sample.cin
 C====================================================================
 C
 C     
-      TYPE NeuRadStructure
-      SEQUENCE
-      INTEGER  NTwPh
-      REAL     T0off
-      INTEGER  FlgTW(50)
-      LOGICAL  Flg5ph
-      LOGICAL  FlgBpos
-C     
-      
-      END TYPE
-      TYPE(NeuRadStructure) NRadStru
-C
-      COMMON / sampleHBook / NRadStru
+        integer RunNumber,EventNumber,pileup,GCod,PhiD,A1typ
+        integer A2typ,A3typ,B1typ,B2typ,B3typ
+
+        common /evtinfo/RunNumber,EventNumber,pileup,GCod,PhiD,A1typ
+        1    ,A2typ,A3typ,B1typ,B2typ,B3typ
+
+C        integer dtcehit,dhrehit,dprshit,dtfshit
+
+C        common /evtgdhit/dtcehit,dhrehit,dprshit,dtfshit
+
+        integer necls,iecls,EclTrgw,EclFilfo
+        integer EclWord(8),EclStream(8)
+        integer EclTagNum(8),EclEvType(8)
+
+        common /evtecls/necls,EclTrgw,EclFilfo,EclWord,EclStream
+        1    ,EclTagNum,EclEvType
+
+
+
+
 C     
 
