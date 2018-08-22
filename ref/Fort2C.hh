@@ -3,7 +3,7 @@
 #include <iostream>
 #include <TFile.h>
 #include <TTree.h>
-
+#include <vector>
 
 extern "C" struct{
   int bb;
@@ -49,6 +49,16 @@ extern "C"{
     int EclEvType[8];
   }evtecls_;
 }
+  struct MyStruct{
+    int newEclTrgw;
+    int newEclFilfo;
+    int newEclWord[];
+    int newEclStream[];
+    int newEclTagNum[];
+    int newEclEvType[];
+  };
+
+
 class TreeWriter{
 public:
   TreeWriter();
@@ -58,12 +68,22 @@ public:
   }
   void FillTtree(){
     TTree *tree = (TTree*)outfile->Get("sample");
-    std::cout <<"CC " << elena_.bb << std::endl;
+    for(int i =0; i< evtecls_.necls; ++i)
+      std::cout<<"myArray "<<myArray[i]<<" "<<evtecls_.EclStream[i]<<std::endl;
+    
     tree->Fill();
 
   }
+  void CopyArray(){
+    //myArray = new int[evtecls_.necls];
+    
+    for(int i =0; i< evtecls_.necls; ++i){
+      myArray[i] = evtecls_.EclStream[i];
+    }
+  }
 private:
   TFile *outfile;
+  int myArray[8];  
 };
 //   // int EventNumber;
     // int McFlag;
@@ -86,7 +106,9 @@ private:
 extern "C" void fillntu_();
 extern "C" void inittree_();
 extern "C" void closetree_();
+MyStruct newevtecls_;
 
+void newClass();
 #endif
 
 

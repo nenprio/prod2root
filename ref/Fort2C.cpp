@@ -11,7 +11,8 @@ TreeWriter::TreeWriter(){
   fNewTree->Branch("nRun",&elena_.bb,"nRun/I");
   fNewTree->Branch("Info",&evtinfo_,"RunNumber/I:EventNumber:Pileup:GenCod:PhiDecay:A1type:A2Type:A3type:B1type:B2type:B3type");
   fNewTree->Branch("Data",&eventinfo_,"StreamNum/I:AlgoNum:TimeSec:TimeMusec:Ndtce:Mcflag_tg:Currpos/F:Currele:Luminosity");
-  fNewTree->Branch("Ecls",&evtecls_,"necls/I:EclTrgw:EclFilfo:EclWord[8]:EclStream[8]:EclsTagNum[8]:EclEvType[8]");
+  fNewTree->Branch("nEcls",&evtecls_.necls,"necls/I");
+  fNewTree->Branch("Ecls",myArray,"myArray[necls]/I");
 
   outfile->Write();
 }
@@ -21,6 +22,7 @@ TreeWriter::~TreeWriter(){
     outfile->Write(0,TObject::kOverwrite);
     outfile->Close();
     delete outfile;
+
   }
 }
 TreeWriter *writer;
@@ -29,10 +31,21 @@ void inittree_(){
   writer = new TreeWriter();
 }
 void fillntu_(){
-  std::cout << evtinfo_.PhiD << std::endl;
+  //  newClass();
+  writer->CopyArray();
   writer->FillTtree();
-}
 
+}
+// void newClass(){
+//   newevtecls_.newnecls = evtecls_.necls;
+//   for(int i = 0; i < newevtecls_.newnecls; ++i){
+//     newevtecls_.newEclWord.push_back(evtecls_.EclWord[i]);
+//     newevtecls_.newEclStream.push_back(evtecls_.EclStream[i]);
+//     newevtecls_.newEclTagNum.push_back(evtecls_.EclTagNum[i]);
+//     newevtecls_.newEclEvType.push_back(evtecls_.EclEvType[i]);
+//     std::cout<<"vector "<<newevtecls_.newEclStream[i]<<std::endl;
+//   }
+// }
 void closetree_(){
   delete writer;
 }

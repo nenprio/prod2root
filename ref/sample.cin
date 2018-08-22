@@ -20,8 +20,5 @@ C        common /evtgdhit/dtcehit,dhrehit,dprshit,dtfshit
         common /evtecls/necls,EclTrgw,EclFilfo,EclWord,EclStream
         1    ,EclTagNum,EclEvType
 
-
-
-
 C     
 
