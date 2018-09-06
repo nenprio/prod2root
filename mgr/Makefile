@@ -1,5 +1,5 @@
 CDIR = ../ref
-CC = xlC
+CC = /opt/IBM/xlC/13.1.3/bin/xlC
 CFLAGS = -I$(CDIR) `root-config --cflags --libs`
 _DEPS = Fort2C.hh
 DEPS = $(patsubst %, $(CDIR)/%, $(_DEPS))

@@ -67,10 +67,13 @@ if ( `uname` == 'OSF1' ) then
    set O2spec = "-fast -O"
    set Gspec = "-pg"
 endif
-if ( `uname` == 'AIX' ) then
+if ( `uname` == 'AIX' && `uname -v` == 5) then
 #    set for = "xlf -qcharlen=32767 -qextname"
    set for = "xlf -qarch=604 -O3 -qhsflt -qextname -static -lm -lc -bloadmap:map.txt"
 #   set for = "xlf -qcharlen=32767  "
+   set forl = "-L/usr/xlmass/lib/aix51 -lmass"
+else if( `uname` == 'AIX' && `uname -v` == 7) then
+   set for = "/opt/IBM/xlf/15.1.3/bin/xlf -O3 -qhsflt -qextname -static -lm -lc -bloadmap:map.txt"
    set forl = "-L/usr/xlmass/lib/aix51 -lmass"
 endif
 #
