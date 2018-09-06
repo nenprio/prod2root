@@ -3,6 +3,7 @@
 
 
 set os=`uname -s`
+set versis=`uname -v`
 echo "Compiling for $os ..."
 #
 if (${os} == "OSF1")then
@@ -10,8 +11,13 @@ if (${os} == "OSF1")then
 else if (${os} == "AIX")then
    set path = (  $path /etc /usr/sbin .)
    alias EXPAND  "expaix"
-   alias F77     "xlf -qarch=604 -O3 -qhsflt -qextname -c"
-   alias F90     "xlf -qarch=604 -O3 -qhsflt -qextname -c"
+   if (${versis} == 7)then
+    alias F77     "/opt/IBM/xlf/15.1.3/bin/xlf -O3 -qhsflt -qextname -c"
+    alias F90     "/opt/IBM/xlf/15.1.3/bin/xlf -O3 -qhsflt -qextname -c"
+   else if(${versis} == 5)then
+    alias F77     "xlf -qarch=604 -O3 -qhsflt -qextname -c"
+    alias F90     "xlf -qarch=604 -O3 -qhsflt -qextname -c"
+   endif
 else if (${os} == "SunOS")then
    echo "setting aliases for the ${os} platform"
    alias EXPAND  "expand -env=sunos-option=FORTRAN-comment=SOURCE"
