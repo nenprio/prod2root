@@ -11,7 +11,9 @@ TreeWriter::TreeWriter(){
   fNewTree->Branch("nRun",&elena_.bb,"nRun/I");
   fNewTree->Branch("Info",&evtinfo_,"RunNumber/I:EventNumber:Pileup:GenCod:PhiDecay:A1type:A2Type:A3type:B1type:B2type:B3type");
   fNewTree->Branch("Data",&eventinfo_,"StreamNum/I:AlgoNum:TimeSec:TimeMusec:Ndtce:Mcflag_tg:Currpos/F:Currele:Luminosity");
-  fNewTree->Branch("Ecls",&evtecls_,"necls/I:EclTrgw:EclFilfo:EclWord[8]:EclStream[8]:EclsTagNum[8]:EclEvType[8]");
+  //  fNewTree->Branch("Ecls",&evtecls_,"necls/I:EclTrgw:EclFilfo:EclWord[8]:EclStream[8]:EclsTagNum[8]:EclEvType[8]");
+  fNewTree->Branch("Ecls",&evtecls_.necls,"necls/I");
+  fNewTree->Branch("EclStream",&evtecls_.EclStream,"EclStream[necls]/I");
 
   outfile->Write();
 }
