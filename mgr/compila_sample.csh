@@ -73,7 +73,7 @@ mv sample_bj.kloe ../ref
 #
 #set listf77 = (build_raw2itce raw2itce itcemaker)
 # to fix B-field problem with IT HV Scan use local dcdbini
-set listf77 = (sample_bj sample newt0find)
+set listf77 = (sample_bj sample newt0find prod2ntu)
 set listf90 = ()
 #
 cd ../ref

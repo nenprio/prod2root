@@ -1,8 +1,13 @@
 !
-use sample
+use prod2ntu sample
 talk sample show exit
 input url "dbdatarec:(run_nr=88220) and (stream_code='rad') and (version=37)"
 !
+hist open/file="./test.hbook"/max_nrec=60000
+hist on/mod=prod2ntu
 beg/nev=1000/rep=500000
+hist write
+hist close
+hist del
 show all
 exit

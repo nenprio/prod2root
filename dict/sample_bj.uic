@@ -5,6 +5,7 @@ define ztoyim/declar=ztoydc/input
 !    Set bookings:
 !
 dict $KIDF77INC:im_kidin.dict
+dict $K_TLS:prod2ntu_dict.uic
 !
 !==============================================================================
 Define -
@@ -31,7 +32,7 @@ Set size/ybos=600000/hbk4=20000000/database=5000000
 !
 !       Link Modules declared above
 !-----------------------------------------------------------------------------
-Link sample
+Link prod2ntu sample
 !-----------------------------------------------------------------------------
 show link
 write sample_bj.kloe
