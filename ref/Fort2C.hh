@@ -43,10 +43,10 @@ extern "C"{
     int necls;
     int EclTrgw;
     int EclFilfo;
-    int EclWord[8];
-    int EclStream[8];
-    int EclTagNum[8];
-    int EclEvType[8];
+    int EclWord[];
+    int EclStream[];
+    int EclTagNum[];
+    int EclEvType[];
   }evtecls_;
 }
 class TreeWriter{
