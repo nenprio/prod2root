@@ -24,6 +24,13 @@ TreeWriter::TreeWriter(){
   fNewTree->Branch("EclEvType", &evtecls_.EclEvType,    "EclEvType[necls]/I");
 
   outfile->Write();
+  printf("[Info] Branches created. Constructor ends.\n");
+
+  /** Notes:    
+   *            Why FillTree method is in .hh file? 
+   *            We could create a separated file for TreeWriter class
+   *            and maintain the Fort2C file for the structs, function linked to fortran ...
+   */
 }
 
 TreeWriter::~TreeWriter(){
