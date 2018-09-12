@@ -17,7 +17,6 @@ all: $(CDIR)/TreeWriter.o $(CDIR)/Fort2C.o
 $(CDIR)/Fort2C.o: $(CDIR)/Fort2C.cpp $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-#Not used
 $(CDIR)/TreeWriter.o: $(CDIR)/TreeWriter.cpp $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
