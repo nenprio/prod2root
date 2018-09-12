@@ -3,6 +3,7 @@
 #include <iostream>
 #include "Fort2C.hh"
 #include "TreeWriter.hh"
+#include "Struct.hh"
 
 //Declare the writer object as global
 TreeWriter *writer;
