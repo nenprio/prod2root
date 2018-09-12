@@ -2,5 +2,6 @@
 ../ref/sample.o
 ../ref/newt0find.o
 ../ref/Fort2C.o
+../ref/TreeWriter.o
 $MYLIBS
 $KIDF77LIBS
