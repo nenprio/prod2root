@@ -1,10 +1,14 @@
 #ifndef STRUCT_HH
 #define STRUCT_HH
+// This header contains all the structs needed to 
+// write ntuple data to C++ format.
 
+// Block:   elena
 extern "C" struct{
   int bb;
 } elena_;
 
+// Block:   evtinfo
 extern "C"{
   extern struct{
     int RunNumber;
@@ -21,6 +25,7 @@ extern "C"{
   }evtinfo_;
 }
 
+// Block:  eventinfo 
 extern "C"{
   extern struct{
     int StreamNum;
@@ -35,6 +40,7 @@ extern "C"{
   }eventinfo_;
 }
 
+// Block:   evtecls
 extern "C"{
   extern struct{
     int necls;
@@ -48,9 +54,3 @@ extern "C"{
 }
 
 #endif
-
-
-
-
-
-
