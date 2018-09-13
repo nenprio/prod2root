@@ -1,7 +1,6 @@
-#ifndef OUTPUT_VERIFIER_CXX
-#define OUTPUT_VERIFIER_CXX
 #include <iostream>
-#include <OutputVerifier.hh>
+#include <TFile.h>
+#include "OutputVerifier.hh"
 
 OutputVerifier::OutputVerifier(char* rootFilePath, char* hbConvFilePath) {
     root = new TFile(rootFilePath);
@@ -16,5 +15,3 @@ OutputVerifier::~OutputVerifier() {
 
     std::cout << "[Info] OutputVerifier closed" << std::endl;
 }
-
-#endif
