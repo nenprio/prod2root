@@ -20,6 +20,10 @@ C        common /evtgdhit/dtcehit,dhrehit,dprshit,dtfshit
         common /evtecls/necls,EclTrgw,EclFilfo,EclWord,EclStream
         1    ,EclTagNum,EclEvType
 
+C        common /eventinfo/StreamNum,AlgoNum,TimeSec,TimeMusec,Ndtce
+C        1    ,Mcflag_tg,Currpos, Currele, Luminosity
+
+
 
 
 
