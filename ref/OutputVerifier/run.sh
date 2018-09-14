@@ -3,7 +3,7 @@
 IN_DIR="./root"
 ROOT_FILE="sample.root"
 HBCONV_FILE="hbConv.root"
-SRC_DIR="./src"
+SRC_DIR="./src/macro"
 ROOT_SCRIPT="RootExplorer.cxx"
 HBCONV_SCRIPT="HBConvExplorer.cxx"
 OUT_DIR="./out"
