@@ -8,6 +8,7 @@ class TreeWriter{
          TreeWriter();
          ~TreeWriter();
          void addBlockEcl();
+         void addBlockTime();
          TFile* getTFile();
          void fillTTree();
      private:

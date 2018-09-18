@@ -2,30 +2,33 @@ C====================================================================
 C sample.cin
 C====================================================================
 C
-C     
+C    
+C       Block:  Info
+C
         integer RunNumber,EventNumber,pileup,GCod,PhiD,A1typ
         integer A2typ,A3typ,B1typ,B2typ,B3typ
 
         common /evtinfo/RunNumber,EventNumber,pileup,GCod,PhiD,A1typ
         1    ,A2typ,A3typ,B1typ,B2typ,B3typ
-
-C        integer dtcehit,dhrehit,dprshit,dtfshit
-
-C        common /evtgdhit/dtcehit,dhrehit,dprshit,dtfshit
-
+C
+C       Block:  Ecl
+C
         integer necls,iecls,EclTrgw,EclFilfo
         integer EclWord(8),EclStream(8)
         integer EclTagNum(8),EclEvType(8)
 
         common /evtecls/necls,EclTrgw,EclFilfo,EclWord,EclStream
         1    ,EclTagNum,EclEvType
-
+C
+C       Block:  Time
+C
+        real TPhased_mc,T0Dc0,T0Hit0,T0Clu0,T0Step1,DelayCable,TBunch
+        common /evttime/TPhased_mc,T0Dc0,T0Hit0,T0Clu0,T0Step1,
+        1       DelayCable,TBunch
+C
+C        integer DtceHit,DhreHit,DprsHit,DtfsHit        
+C        common /evtgdhit/DtceHit,DhreHit,DprsHit,DtfsHit       
+C      
 C        common /eventinfo/StreamNum,AlgoNum,TimeSec,TimeMusec,Ndtce
 C        1    ,Mcflag_tg,Currpos, Currele, Luminosity
-
-
-
-
-
 C     
-

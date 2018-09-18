@@ -1,6 +1,5 @@
 #include <string>
 #include <iostream>
-#include <TROOT.h>
 #include <TFile.h>
 #include <TTree.h>
 #include "MyFunctions.hh"
@@ -32,11 +31,10 @@ RootExplorer::RootExplorer(std::string inFile, std::string outDir) {
     }
 
     // Load the input file, the tree and get the number of events
-    println(sampleFilepath); //DEBUG
-
-    TFile* f = new TFile(sampleFilepath.c_str(), "READ");
+    TFile *f = new TFile(sampleFilepath.c_str(), "READ");
+    /* TFile *f = new TFile("root/sample.root","READ"); */
     tree = (TTree*) f->Get("sample");
-
+ 
     // Branches initialization
     /* b_nRun      = tree->GetBranch("nRun"); */
     /* b_Info      = tree->GetBranch("Info"); */

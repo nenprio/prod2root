@@ -53,4 +53,17 @@ extern "C"{
   }evtecls_;
 }
 
+// Block:   evttime
+extern "C"{
+  extern struct{
+    float TPhased_mc;
+    float T0Dc0;
+    float T0Hit0;
+    float T0Clu0;
+    float T0Step1;
+    float DelayCable;
+    float TBunch;
+  }evttime_;
+}
+
 #endif

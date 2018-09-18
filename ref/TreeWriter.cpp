@@ -22,6 +22,8 @@ TreeWriter::TreeWriter() {
    
     // Ecl Block
     addBlockEcl();
+    // DgHit Block
+    addBlockTime();
 
     // Write to the disk
     outfile->Write();
@@ -55,6 +57,20 @@ void TreeWriter::addBlockEcl() {
     fNewTree->Branch("EclWord",   &evtecls_.EclWord,   "EclWord[necls]/I");
     fNewTree->Branch("EclTagNum", &evtecls_.EclTagNum, "EclTagNum[necls]/I");
     fNewTree->Branch("EclEvType", &evtecls_.EclEvType, "EclEvType[necls]/I");
+}
+
+// Add to the tree all the branches related to the block DGHIT.
+//
+// input:   -
+// output:  -
+void TreeWriter::addBlockTime() {
+    fNewTree->Branch("TPhased_mc", &evttime_.TPhased_mc, "TPhased_mc/F");
+    fNewTree->Branch("T0Dc0", &evttime_.T0Dc0, "T0Dc0/F");
+    fNewTree->Branch("T0Hit0", &evttime_.T0Hit0, "T0Hit0/F");
+    fNewTree->Branch("T0Clu0", &evttime_.T0Clu0, "T0Clu0/F");
+    fNewTree->Branch("T0Step1", &evttime_.T0Step1, "T0Step1/F");
+    fNewTree->Branch("DelayCable", &evttime_.DelayCable, "DelayCable/F");
+    fNewTree->Branch("TBunch", &evttime_.TBunch, "TBunch/F");
 }
 
 // Returns the output file object.
