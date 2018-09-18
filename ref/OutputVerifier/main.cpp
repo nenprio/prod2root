@@ -2,7 +2,7 @@
 #include "src/RootExplorer.hh"
 
 int main() {
-    println("Hello world"); 
+    println("Hello world"); //Debug 
     std::string sampleFile="root/sample.root";
     std::string outDir="out/sample_root_out";
     RootExplorer* rootExplorer = new RootExplorer(sampleFile, outDir);

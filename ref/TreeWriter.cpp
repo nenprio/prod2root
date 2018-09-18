@@ -2,7 +2,6 @@
 #include <TROOT.h>
 #include <TBranch.h>
 #include <TTree.h>
-#include <TBranch.h>
 #include "TreeWriter.hh"
 #include "Struct.hh"
 #include <typeinfo>

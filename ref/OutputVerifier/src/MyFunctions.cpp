@@ -5,10 +5,40 @@
 
 // Simple shortcut function to print a single line to stdout
 //
-// input:   line    what you want to print out
+// input:   line        what you want to print out
 // output:  -
 void println(std::string line){
     std::cout << line << std::endl;
+}
+
+// Check the existance of the given input.
+//
+// input:   path        the path to check
+// output:  true        if it exists
+//          false       if it doesn't exist
+bool checkIfExists(std::string path) {
+  struct stat buffer;
+  return (stat (path.c_str(), &buffer) == 0);
+}
+
+// Check if the given input is a regular file and if it exists.
+//
+// input:   filepath    the file to check
+// output:  true        if the file exists
+//          false       if the file doesn't exist
+bool checkIfFileExists(std::string file) {
+  struct stat buffer;
+  return ((stat (file.c_str(), &buffer) == 0) && ( buffer.st_mode & S_IFREG ));
+}
+
+// Check if the given input is a directory and if it exists.
+//
+// input:   dirpath     the directory to check
+// output:  true        if the dir exists
+//          false       if the dir doesn't exist
+bool checkIfDirExists(std::string dir) {
+  struct stat buffer;
+  return ((stat (dir.c_str(), &buffer) == 0) && ( buffer.st_mode & S_IFDIR ));
 }
 
 // Check if the given dir exists and is a dir, otherwise try to create it
@@ -19,11 +49,8 @@ void println(std::string line){
 bool createDirIfNotExists(std::string dirPath) {
      int checkCreated;
      int existsDir=0;
-     struct stat statbuf;
-     if (stat(dirPath.c_str(), &statbuf) != -1) {
-         if (S_ISDIR(statbuf.st_mode)){
-             existsDir=1;
-         }
+     if (checkIfDirExists(dirPath.c_str())==true) {
+         existsDir=1;
      }
 
      if (existsDir==0){
