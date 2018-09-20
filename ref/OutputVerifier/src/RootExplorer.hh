@@ -1,17 +1,16 @@
 #ifndef ROOTEXPLORER_HH
 #define ROOTEXPLORER_HH
-#include <string>
 #include <TLeaf.h>
 
 class RootExplorer {
     public:
-        RootExplorer(std::string inFile, std::string outDir);
+        RootExplorer(const char *inFile, const char *outDir);
         ~RootExplorer();
         void exportEntriesToTxt();
         void printInfo();
     private:
-        std::string sampleFilepath;
-        std::string outputDir;
+        const char *sampleFilepath;
+        const char *outputDir;
        
         // Declaration of tree
         TTree *tree;

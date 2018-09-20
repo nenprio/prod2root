@@ -1,7 +1,7 @@
-#include <string>
 #include <iostream>
 #include <TFile.h>
 #include <TTree.h>
+#include <TBranch.h>
 #include "MyFunctions.hh"
 #include "RootExplorer.hh"
 
@@ -11,12 +11,12 @@
 // input:   inFile      root file with "sample" tree
 //          outDir      directory where write the output files
 // output:  -
-RootExplorer::RootExplorer(std::string inFile, std::string outDir) {
-    std::string errorInputFile="[Error] An error occurs during checking on input file.\n\tVerify that the path given as first argument exists and it refers to a regular file.";
-    std::string errorOutputDir="[Error] An error occurs during the checking on output directory.\n\tVerify that the dir already exists or that the writing permission are allowed and no name mismatch occurs with that path.";
-    std::string tmpLine="";
-    sampleFilepath=inFile;    
-    outputDir=outDir;
+RootExplorer::RootExplorer(const char *inFile, const char *outDir) {
+    println("[Info] RootExplorer constructor");
+    const char *errorInputFile="[Error] An error occurs during checking on input file.\n\tVerify that the path given as first argument exists and it refers to a regular file.";
+    const char *errorOutputDir="[Error] An error occurs during the checking on output directory.\n\tVerify that the dir already exists or that the writing permission are allowed and no name mismatch occurs with that path.";
+    sampleFilepath  = inFile;    
+    outputDir       = outDir;
   
     // Check existance of input file
     if(checkIfFileExists(inFile)==false) {
@@ -31,10 +31,25 @@ RootExplorer::RootExplorer(std::string inFile, std::string outDir) {
     }
 
     // Load the input file, the tree and get the number of events
-    TFile *f = new TFile(sampleFilepath.c_str(), "READ");
-    /* TFile *f = new TFile("root/sample.root","READ"); */
+    TFile *f = new TFile(sampleFilepath, "READ");
+
+    if(f->IsOpen()){
+        println("[Debug] File open");
+    } else{
+        println("[Debug] File close");
+    }
+    
     tree = (TTree*) f->Get("sample");
- 
+    if(tree){
+        println("[Debug] Tree true");
+    } else {
+        println("[Debug] Tree false");
+    } 
+
+    int n = tree->GetEntries(); 
+    std::cout << "[Info] The number of events is ";
+    std::cout << n << std::endl;
+
     // Branches initialization
     /* b_nRun      = tree->GetBranch("nRun"); */
     /* b_Info      = tree->GetBranch("Info"); */
@@ -78,8 +93,8 @@ RootExplorer::RootExplorer(std::string inFile, std::string outDir) {
     /* EclEvType       = b_EclEvType->GetLeaf("EclEvType"); */
 
     f->Close();
-    delete f;
-    delete tree;
+    /* delete f; */
+    /* delete tree; */
 }
 
 RootExplorer::~RootExplorer() {
@@ -133,7 +148,7 @@ RootExplorer::~RootExplorer() {
 //
 // input:    -
 // output:   -
-void exportEntriesToTxt() {
+void RootExplorer::exportEntriesToTxt() {
     //Declare file stream and the output filename
     /* ofstream myfile; */
     /* TString name; */ 
@@ -193,9 +208,12 @@ void exportEntriesToTxt() {
 // input:   -
 // output:  -
 void RootExplorer::printInfo() {
-    std::string line1 = "[Info] ROOT File:\t";
-    std::string line2 = "[Info] Output dir:\t";
-    println(line1 + sampleFilepath);
-    println(line2 + outputDir);
+    const char *line1 = "[Info] ROOT File:\t";
+    const char *line2 = "[Info] Output dir:\t";
+    print(line1);
+    println(sampleFilepath);
+
+    print(line2);
+    println(outputDir);
     println("");
 }

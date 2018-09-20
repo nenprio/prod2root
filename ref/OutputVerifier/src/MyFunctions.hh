@@ -1,11 +1,12 @@
 #ifndef MYFUNCTIONS_HH
 #define MYFUNCTIONS_HH
-#include <string>
 
-void println(std::string line);
-bool checkIfExists(std::string path);
-bool checkIfFileExists(std::string file);
-bool checkIfDirExists(std::string dir);
-bool createDirIfNotExists(std::string dir);
-bool createDirRecursively(std::string dir);
+void println(const char *line);
+void print(const char *line);
+bool checkIfExists(const char *path);
+bool checkIfFileExists(const char *file);
+bool checkIfDirExists(const char *dir);
+bool createDirIfNotExists(const char *dir);
+bool createDirRecursively(const char *dir);
+
 #endif
