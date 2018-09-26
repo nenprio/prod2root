@@ -15,14 +15,16 @@ TreeWriter::TreeWriter() {
     outfile  = new TFile("sample.root", "recreate");    //Open or create file 
     fNewTree = new TTree("sample", "Event Infos");      //Create "sample" tree
 
-    // General Block
-    fNewTree->Branch("nRun", &elena_.bb, "nRun/I");
-    fNewTree->Branch("Info", &evtinfo_, "RunNumber/I:EventNumber:Pileup:GenCod:PhiDecay:A1type:A2Type:A3type:B1type:B2type:B3type");
-    fNewTree->Branch("Data", &eventinfo_, "StreamNum/I:AlgoNum:TimeSec:TimeMusec:Ndtce:Mcflag_tg:Currpos/F:Currele:Luminosity");
    
-    // Ecl Block
+    // Block Info
+    addBlockInfo();
+    // Block Data
+    addBlockData();
+    // Block Ecl
     addBlockEcl();
-    // DgHit Block
+    // Block BPOS
+    addBlockBPOS();
+    // Block Time
     addBlockTime();
 
     // Write to the disk
@@ -45,18 +47,73 @@ TreeWriter::~TreeWriter() {
     }
 }
 
+// Add to the tree all the branches related to the block Info.
+//
+// input:   -
+// output:  -
+void TreeWriter::addBlockInfo() {
+    fNewTree->Branch("NRun",    &evtinfo_.NumRun,   "NumRun/I");
+    fNewTree->Branch("NEv",     &evtinfo_.NumEv,    "NumEv/I");
+    fNewTree->Branch("Pileup",  &evtinfo_.Pileup,   "Pileup/I");
+    fNewTree->Branch("GCod",    &evtinfo_.GCod,     "GCod/I");
+    fNewTree->Branch("PhiD",    &evtinfo_.PhiD,     "PhiD/I");
+    fNewTree->Branch("A1Typ",   &evtinfo_.A1Typ,    "A1Typ/I");
+    fNewTree->Branch("A2Typ",   &evtinfo_.A2Typ,    "A2Typ/I");
+    fNewTree->Branch("A3Typ",   &evtinfo_.A3Typ,    "A3Typ/I");
+    fNewTree->Branch("B1Typ",   &evtinfo_.B1Typ,    "B1Typ/I");
+    fNewTree->Branch("B2Typ",   &evtinfo_.B2Typ,    "B2Typ/I");
+    fNewTree->Branch("B3Typ",   &evtinfo_.B3Typ,    "B3Typ/I");
+}
+
+// Add to the tree all the branches related to the block Data.
+//
+// input:   -
+// output:  -
+void TreeWriter::addBlockData() {
+    fNewTree->Branch("StreamNum",   &eventinfo_.StreamNum,  "StreamNum/I");
+    fNewTree->Branch("AlgoNum",     &eventinfo_.AlgoNum,    "AlgoNum/I");
+    fNewTree->Branch("TimeSec",     &eventinfo_.TimeSec,    "TimeSec/I");
+    fNewTree->Branch("TimeMusec",   &eventinfo_.TimeMusec,  "TimeMusec/I");
+    fNewTree->Branch("Ndtce",       &eventinfo_.Ndtce,      "Ndtce/I");
+    fNewTree->Branch("McFlag",      &eventinfo_.McFlag,     "McFlag/I");
+    fNewTree->Branch("IPos",        &eventinfo_.IPos,       "IPos/F");
+    fNewTree->Branch("IEle",        &eventinfo_.IEle,       "IEle/F");
+    fNewTree->Branch("Lumi",        &eventinfo_.Lumi,       "Lumi/F");
+}
+
 // Add to the tree all the branches related to the block Ecl.
 //
 // input:   -
 // output:  -
 void TreeWriter::addBlockEcl() {
-    fNewTree->Branch("necls",     &evtecls_.necls,     "necls/I");
-    fNewTree->Branch("EclStream", &evtecls_.EclStream, "EclStream[necls]/I");
+    fNewTree->Branch("NEcls",     &evtecls_.NEcls,     "NEcls/I");
+    fNewTree->Branch("EclStream", &evtecls_.EclStream, "EclStream[NEcls]/I");
     fNewTree->Branch("EclTrgw",   &evtecls_.EclTrgw,   "EclTrgw/I");
     fNewTree->Branch("EclFilfo",  &evtecls_.EclFilfo,  "EclFilfo/I");
-    fNewTree->Branch("EclWord",   &evtecls_.EclWord,   "EclWord[necls]/I");
-    fNewTree->Branch("EclTagNum", &evtecls_.EclTagNum, "EclTagNum[necls]/I");
-    fNewTree->Branch("EclEvType", &evtecls_.EclEvType, "EclEvType[necls]/I");
+    fNewTree->Branch("EclWord",   &evtecls_.EclWord,   "EclWord[NEcls]/I");
+    fNewTree->Branch("EclTagNum", &evtecls_.EclTagNum, "EclTagNum[NEcls]/I");
+    fNewTree->Branch("EclEvType", &evtecls_.EclEvType, "EclEvType[NEcls]/I");
+}
+
+// Add to the tree all the branches related to the block BPOS.
+//
+// input:   -
+// output:  -
+void TreeWriter::addBlockBPOS() {
+    fNewTree->Branch("BPx",     &evtbpos_.BPx,      "BPx/F");
+    fNewTree->Branch("BPy",     &evtbpos_.BPy,      "BPy/F");
+    fNewTree->Branch("BPz",     &evtbpos_.BPz,      "BPz/F");
+    fNewTree->Branch("Bx",      &evtbpos_.Bx,       "Bx/F");
+    fNewTree->Branch("By",      &evtbpos_.By,       "By/F");
+    fNewTree->Branch("Bz",      &evtbpos_.Bz,       "Bz/F");
+    fNewTree->Branch("BWidPx",  &evtbpos_.BWidPx,   "BWidPx/F");
+    fNewTree->Branch("BWidPy",  &evtbpos_.BWidPy,   "BWidPy/F");
+    fNewTree->Branch("BWidPz",  &evtbpos_.BWidPz,   "BWidPz/F");
+    fNewTree->Branch("BSx",     &evtbpos_.BSx,      "BSx/F");
+    fNewTree->Branch("BSy",     &evtbpos_.BSy,      "BSy/F");
+    fNewTree->Branch("BSz",     &evtbpos_.BSz,      "BSz/F");
+    fNewTree->Branch("BLumx",   &evtbpos_.BLumx,    "BLumx/F");
+    fNewTree->Branch("BLumz",   &evtbpos_.BLumz,    "BLumz/F");
 }
 
 // Add to the tree all the branches related to the block DGHIT.
@@ -87,6 +144,5 @@ TFile* TreeWriter::getTFile() {
 // output:  -
 void TreeWriter::fillTTree() {
     TTree *tree = (TTree*)outfile->Get("sample");
-    /* std::cout <<"CC " << elena_.bb << std::endl; */
     tree->Fill();
 }

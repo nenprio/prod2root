@@ -3,29 +3,24 @@
 // This header contains all the structs needed to 
 // write ntuple data to C++ format.
 
-// Block:   elena
-extern "C" struct{
-  int bb;
-} elena_;
-
-// Block:   evtinfo
+// Block:   Event Info
 extern "C"{
   extern struct{
-    int RunNumber;
-    int EventNumber;
+    int NumRun;
+    int NumEv;
     int Pileup;
     int GCod;
     int PhiD;
-    int A1typ;
-    int A2typ;
-    int A3typ;
-    int B1typ;
-    int B2typ;
-    int B3typ;
+    int A1Typ;
+    int A2Typ;
+    int A3Typ;
+    int B1Typ;
+    int B2Typ;
+    int B3Typ;
   }evtinfo_;
 }
 
-// Block:  eventinfo 
+// Block:  Event Data
 extern "C"{
   extern struct{
     int StreamNum;
@@ -33,17 +28,17 @@ extern "C"{
     int TimeSec;
     int TimeMusec;
     int Ndtce;
-    int Mcflag_tg;
-    float Currpos;
-    float Currele;
-    float Luminosity;
+    int McFlag;
+    float IPos;
+    float IEle;
+    float Lumi;
   }eventinfo_;
 }
 
-// Block:   evtecls
+// Block:   Event Ecl
 extern "C"{
   extern struct{
-    int necls;
+    int NEcls;
     int EclTrgw;
     int EclFilfo;
     int EclWord[8];
@@ -51,6 +46,26 @@ extern "C"{
     int EclTagNum[8];
     int EclEvType[8];
   }evtecls_;
+}
+
+// Block:   Event BPOS
+extern "C"{
+  extern struct{
+      float BPx;
+      float BPy;
+      float BPz;
+      float Bx;
+      float By;
+      float Bz;
+      float BWidPx;
+      float BWidPy;
+      float BWidPz;
+      float BSx;
+      float BSy;
+      float BSz;
+      float BLumx;
+      float BLumz;
+  }evtbpos_;
 }
 
 // Block:   evttime
