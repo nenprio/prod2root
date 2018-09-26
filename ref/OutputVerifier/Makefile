@@ -1,24 +1,15 @@
 UNAME := $(shell uname -s)
 UVERSIS := $(shell uname -v)
 
-CDIR=.
 ifeq ($(UVERSIS), 7)
-CC = /opt/IBM/xlC/13.1.3/bin/xlC
+	CC = /opt/IBM/xlC/13.1.3/bin/xlC
 else
-CC = xlC
+	CC = xlC
 endif
-CFLAGS = -I$(CDIR) `root-config --cflags --libs`
-_DEPS = $(CDIR)/OutputVerifier.hh
-DEPS = $(patsubst %, $(CDIR)/%, $(_DEPS))
+CFLAGS = -I. `root-config --cflags --libs`
 
-all: $(CDIR)/main.o $(CDIR)/OutputVerifier.o
-
-$(CDIR)/main.o:	$(CDIR)/main.cpp $(DEPS)
-	$(CC) -c -o $@ $< $(CFLAGS)
-
-$(CDIR)/OutputVerifier.o:	$(CDIR)/OutputVerifier.cpp $(DEPS)
-	$(CC) -c -o $@ $< $(CFLAGS)
+main.o: main.cpp src/MyFunctions.cpp src/RootExplorer.cpp src/HBConvExplorer.cpp
+	$(CC) -o $@ $< src/MyFunctions.cpp src/RootExplorer.cpp src/HBConvExplorer.cpp $(CFLAGS)
 
 clean:
-	rm -f $(CDIR)/main.o
-	rm -f $(CDIR)/OutputVerifier.o
+	rm -f main.o

@@ -1,35 +1,32 @@
-#include <iostream>
-#include "OutputVerifier.hh"
+#include "src/MyFunctions.hh"
+#include "src/RootExplorer.hh"
+#include "src/HBConvExplorer.hh"
+#include <TFile.h>
 
-bool DEBUG = true;
+int main() {
+    println("[Debug] Hello World!");
+    println(""); //Debug 
+    
+    // Input/Output definition
+    const char *haddFile    ="root/result.root";
+    const char *hbConvFile  ="root/hbConv.root";
+    const char *sampleFile  ="root/sample.root";
+    const char *outSampleDir="out/sample_root_out";
+    const char *outHbConvDir="out/hb_conv_out";
+    
+    // Create object RootExplorer
+    /* RootExplorer *rootExplorer = new RootExplorer(sampleFile, outSampleDir); */
+    /* rootExplorer->printInfo(); */
 
-int main(int argc, char* argv[]) {
-    //Check input correctness (trivial implementation)
-    std::string USAGE = "Usage: script root_filepath hbook_converted_filepath";
-    if(argc!=4){
-        std::cout << USAGE << std::endl;
-        exit(1);
-    }
+    //Create object HBConvExplorer
+    HBConvExplorer *hbConvExplorer = new HBConvExplorer(hbConvFile, outHbConvDir);
+    hbConvExplorer->printInfo();
+   
+    /* TFile *f = new TFile(haddFile.c_str(), "READ"); */
+    /* if(f->IsOpen()) */
+    /*     println("Hadd file open"); */
+    /* else */
+    /*     println("ERROR during hadd opening"); */
 
-    //Extract input parameters
-    char* scriptFileName    = argv[0];
-    char* rootFilePath      = argv[1];
-    char* hbConvFilePath    = argv[2];
-    char* outDirectoryPath  = argv[3];
-
-    //TODO: check if these files exist, otherwise exit with error
-    //TODO: check if exist output directory, otherwise create it
-
-    //Debug printing
-    if(DEBUG==true) {
-        std::cout << "[Info] Main started." << std::endl;    
-        std::cout << "[Info] ROOT File: " << rootFilePath << std::endl;    
-        std::cout << "[Info] Hbook Conv File: " << hbConvFilePath << std::endl;    
-        std::cout << "[Info] Output Directory: " << outDirectoryPath << std::endl << std::endl;    
-    }
-
-    //OutputVerifier object creation
-    OutputVerifier* verifier = new OutputVerifier(rootFilePath, hbConvFilePath);
-
-    return 0;
+    return(0);
 }

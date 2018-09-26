@@ -22,7 +22,7 @@ void inittree_(){
 // output:  -
 void fillntu_(){
   std::cout << evtinfo_.PhiD << std::endl;
-  writer->FillTTree();
+  writer->fillTTree();
 }
 
 // Deallocate writer variable.
