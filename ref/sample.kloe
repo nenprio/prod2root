@@ -141,6 +141,7 @@ C
 C
 C External functions
 C
+      INTEGER T0GLRD, T0MCRD
       INTEGER GETCLUSTRU,GETMCSTRU,GETCELESTRU,GETEVCL,GETCLUOSTRU
       INTEGER TRKV2STRU,GETTCLOSTRU,GETCFHISTRU,BLOCAT
       INTEGER ParSet, GETQIHISTRU,GETQCALSTRU
@@ -149,7 +150,7 @@ C
       INTEGER GETPIZZASTRU, TPIE_UPK
       INTEGER pizza_reset,torta_reset,tele_reset
       Integer GET_DPRS_STRUCT,GETNVO
-      Integer GETECLO,T0GLRD,GETCLUSTRUCORR
+      Integer GETECLO,GETCLUSTRUCORR
       INTEGER BIGEST,banknum, fillbposcommon
       INTEGER GETQCALTSTRU,getqcthstru,GETCCALTSTRU,getletestru,itce_upk
       INTEGER gethetestru, hete_dump
@@ -161,7 +162,6 @@ C
       REAL Rstat,getbpos
       INTEGER GETSEC2CLUSTRU
       INTEGER GETCSPSSTRU, GETCLUOMCSTRU
-      INTEGER T0MCRD
 
       INTEGER TRKVOLD2STRU, GETOLDTCLOSTRU, DHIT_RESET, DHIT_UPK
       INTEGER DEDX2STRU_GET, DEDX2STRU_RESET
@@ -289,8 +289,18 @@ CPG 270718 To fill the commom for Root
          EclEvType(iecls) = evt%ecls%EvnTyp(iecls)
       end do
 
+      istat = T0GLRD(T0Dc0,T0Hit0,T0Clu0,T0Step1,DelayCable,TBunch)
+      istat = T0MCRD(TPhased_mc)
+CPG 240718 To fill the commom for Root
+      Evt%T0stru%dc_step0   = T0Dc0
+      Evt%T0stru%hit_step0  = T0Hit0
+      Evt%T0stru%clus_step0 = T0Clu0
+      Evt%T0stru%step1      = T0Step1
+      Evt%T0stru%cable      = DelayCable
+      Evt%T0stru%tbunch     = TBunch
+      Evt%T0stru%tphased_mc = TPhased_mc
 
-        call fillntu() 	
+      call fillntu() 	
 
 
 

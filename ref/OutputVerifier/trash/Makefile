@@ -1,25 +1,24 @@
 UNAME := $(shell uname -s)
 UVERSIS := $(shell uname -v)
 
-
-CDIR = ../ref
+CDIR=.
 ifeq ($(UVERSIS), 7)
 CC = /opt/IBM/xlC/13.1.3/bin/xlC
 else
 CC = xlC
 endif
 CFLAGS = -I$(CDIR) `root-config --cflags --libs`
-_DEPS = Fort2C.hh
+_DEPS = $(CDIR)/OutputVerifier.hh
 DEPS = $(patsubst %, $(CDIR)/%, $(_DEPS))
 
-all: $(CDIR)/TreeWriter.o $(CDIR)/Fort2C.o
+all: $(CDIR)/OutputVerifier.o $(CDIR)/main.o
 
-$(CDIR)/Fort2C.o: $(CDIR)/Fort2C.cpp $(DEPS)
+$(CDIR)/main.o:	$(CDIR)/main.cpp $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-$(CDIR)/TreeWriter.o: $(CDIR)/TreeWriter.cpp $(DEPS)
+$(CDIR)/OutputVerifier.o: $(CDIR)/OutputVerifier.cpp $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 clean:
-	rm -f $(CDIR)/Fort2C.o
-	rm -f $(CDIR)/TreeWriter.o
+	rm -f $(CDIR)/main.o
+	rm -f $(CDIR)/OutputVerifier.o
