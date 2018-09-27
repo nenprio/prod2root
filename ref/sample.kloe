@@ -128,9 +128,13 @@ $$INCLUDE 'k$itls:hetenum.cin'      ! HET max dim
 $$INCLUDE 'k$itls:hetestru.cin'  !LET Stru
 $$include 'k$itls:prod2ntu.inc'
 $$include 'k$itls:prod2ntu_talk.inc'
-C
 $$include 'sample.inc'
-    
+   
+C
+C All the declarations are moved in sample.cin
+C What are the following lines? I maintain here at the moment to 
+C let fix the "RunNumber" issue. 
+C TODO: Move them to sample.cin
 C
       INTEGER istat, OldRunNumber
       data OldRunNumber/0/
@@ -141,40 +145,9 @@ C
       LOGICAL mcflag_1
       INTEGER mcflag_tg
 C
-C External functions
-C
-      INTEGER T0GLRD, T0MCRD
-      INTEGER GETCLUSTRU,GETMCSTRU,GETCELESTRU,GETEVCL,GETCLUOSTRU
-      INTEGER TRKV2STRU,GETTCLOSTRU,GETCFHISTRU,BLOCAT
-      INTEGER ParSet, GETQIHISTRU,GETQCALSTRU
-      INTEGER GETQCAESTRU, GETDHSPSTRU
-      INTEGER GETTELESTRU, GETPRECLUSTRU
-      INTEGER GETPIZZASTRU, TPIE_UPK
-      INTEGER pizza_reset,torta_reset,tele_reset
-      Integer GET_DPRS_STRUCT,GETNVO
-      Integer GETECLO,GETCLUSTRUCORR
-      INTEGER BIGEST,banknum, fillbposcommon
-      INTEGER GETQCALTSTRU,getqcthstru,GETCCALTSTRU,getletestru,itce_upk
-      INTEGER gethetestru, hete_dump
-
-      INTEGER    ANGIST, ANGOHS, ANGPAR, anptrg
-      INTEGER GETECLS,GETTIME,GETPIZZETTA
-      INTEGER GETTELLINA,GETCWRKSTRU,GETTRIGGER,TRKQ2STRU
-      INTEGER Ncwrkhit,j
-      REAL Rstat,getbpos
-      INTEGER GETSEC2CLUSTRU
-      INTEGER GETCSPSSTRU, GETCLUOMCSTRU
-
-      INTEGER TRKVOLD2STRU, GETOLDTCLOSTRU, DHIT_RESET, DHIT_UPK
-      INTEGER DEDX2STRU_GET, DEDX2STRU_RESET
-      INTEGER BNKNUM
-      
-      integer icurr
-C
 C=============================================================================
 C Start of Code:
-C ==============
-
+C=============================================================================
       IF( exptyp.eq.exofsi )then ! Simulation
          mcflag_1 = .true.
       else
@@ -186,11 +159,9 @@ C ==============
       Else
          mcflag_tg=0
       EndIf
-C-----------------------------------------------------------------------
+C-----------------------------------------------------------------------------
 C Fill event classification information
-C-----------------------------------------------------------------------
-
-C
+C-----------------------------------------------------------------------------
       IF( mcflag_1 )  THEN
          istat = GETEVCL(evt%Info)
          istat = BLOCAT(iw,'EVCL',1,ind1,inddat)
@@ -237,7 +208,6 @@ C-----------------------------------------------------------------------
       Evt%Info%EventNumber = Nev
 C      istat = GETECLS(evt%ecls)
 
-
 CPG 240718 To fill the commom evtinfo for Root
         NumRun = Evt%Info%RunNumber
         NumEv = Evt%Info%EventNumber
@@ -276,34 +246,44 @@ CPG 270718 To fill the commom evtecls for Root
             EclEvType(iecls) = evt%ecls%EvnTyp(iecls)
         end do
 
-        istat = T0GLRD(T0Dc0,T0Hit0,T0Clu0,T0Step1,DelayCable,TBunch)
-        istat = T0MCRD(TPhased_mc)
 
 CPG 240718 To fill the commom evtbpos for Root
-        BPx = Evt%Bpos%px
-        BPy = Evt%Bpos%py
-        BPz = Evt%Bpos%pz
-        Bx = Evt%Bpos%x
-        By = Evt%Bpos%y
-        Bz = Evt%Bpos%z
+        BPx    = 0.
+        BPy    = 0.
+        BPz    = 0.
+        Bx     = 0.
+        By     = 0.
+        Bz     = 0.
+        BWidPx = 0.
+        BWidPy = 0.
+        BWidPz = 0.
+        BSx    = 0.
+        BSy    = 0.
+        BSz    = 0.
+        BLumx  = 0.
+        BLumz  = 0.
+        
+        rstat = getbpos(Evt%Bpos)
+
+        BPx    = Evt%Bpos%px
+        BPy    = Evt%Bpos%py
+        BPz    = Evt%Bpos%pz
+        Bx     = Evt%Bpos%x
+        By     = Evt%Bpos%y
+        Bz     = Evt%Bpos%z
         BWidPx = Evt%Bpos%errpx
         BWidPy = Evt%Bpos%errpy
         BWidPz = Evt%Bpos%errpz
-        BSx = Evt%Bpos%errx
-        BSy = Evt%Bpos%erry
-        BSz = Evt%Bpos%errz
-        BLumx = Evt%Bpos%lumx
-        BLumz = Evt%Bpos%lumz
+        BSx    = Evt%Bpos%errx
+        BSy    = Evt%Bpos%erry
+        BSz    = Evt%Bpos%errz
+        BLumx  = Evt%Bpos%lumx
+        BLumz  = Evt%Bpos%lumz
 
 CPG 240718 To fill the commom evttime for Root
-        Evt%T0stru%dc_step0   = T0Dc0
-        Evt%T0stru%hit_step0  = T0Hit0
-        Evt%T0stru%clus_step0 = T0Clu0
-        Evt%T0stru%step1      = T0Step1
-        Evt%T0stru%cable      = DelayCable
-        Evt%T0stru%tbunch     = TBunch
-        Evt%T0stru%tphased_mc = TPhased_mc
-
+        istat = T0GLRD(T0Dc0,T0Hit0,T0Clu0,T0Step1,DelayCable,TBunch)
+        istat = T0MCRD(TPhased_mc)
+        
         call fillntu() 	
 
 CC End of code
@@ -332,11 +312,6 @@ C
 $$INCLUDE 'C$INC:ERLEVL.INC'
 $$INCLUDE 'CALIBINC:ANERROR.INC'
 $$include 'sample.inc'
-C
-C
-C External functions
-C
-      INTEGER    ANGOHS
 C
 C Local declarations
 C
