@@ -47,6 +47,7 @@ C
 $$IMPLICIT
 C
 $$INCLUDE 'CALIBINC:ANERROR.INC'
+$$include 'k$inc:jobsta.inc'
 C
 C External functions
 C
@@ -54,13 +55,14 @@ C
 C
 C Local declarations
 C
-      INTEGER    Status
+      INTEGER    Status, istat, fillbposcommon
 C
 C==============================================================================
 C
 C Put A_C Error Code to SUCCESS at Run_Init
 C
       Status = ANPIST(ANSUCC)
+      istat = fibposcommon(nrun)
 C
       RETURN
       END

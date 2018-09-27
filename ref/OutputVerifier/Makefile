@@ -8,8 +8,9 @@ else
 endif
 CFLAGS = -I. `root-config --cflags --libs`
 
-main.o: main.cpp src/MyFunctions.cpp src/RootExplorer.cpp src/HBConvExplorer.cpp
+main: main.cpp src/MyFunctions.cpp src/RootExplorer.cpp src/HBConvExplorer.cpp
 	$(CC) -o $@ $< src/MyFunctions.cpp src/RootExplorer.cpp src/HBConvExplorer.cpp $(CFLAGS)
 
 clean:
-	rm -f main.o
+	rm -f main
+	rm -f *.o

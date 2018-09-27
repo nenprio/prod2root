@@ -9,3 +9,5 @@ ref/sample_bj.kloe
 *~
 *.cdf
 paw*
+/gpfs/user/e/eperez/sample/ref/OutputVerifier/trash
+/gpfs/user/e/eperez/sample/ref/OutputVerifier/out/hb_conv_out
