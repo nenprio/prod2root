@@ -169,18 +169,7 @@ C
       INTEGER DEDX2STRU_GET, DEDX2STRU_RESET
       INTEGER BNKNUM
       
-
-      INTEGER AlgoNum,StreamNum,TimeSec,TimeMusec,Ndtce,EventType
       integer icurr
-      real    currpos,currele,luminosity
-      COMMON /EventInfo/StreamNum,AlgoNum,
-     &     TimeSec,TimeMusec,Ndtce,mcflag_tg,currpos,currele,luminosity
-
-C
-C Local declarations
-C
-      integer bb
-      common/elena/ bb
 C
 C=============================================================================
 C Start of Code:
@@ -202,10 +191,6 @@ C Fill event classification information
 C-----------------------------------------------------------------------
 
 C
-	bb=nrun
-
-C      write(*,*)'FORTRAN',bb
-
       IF( mcflag_1 )  THEN
          istat = GETEVCL(evt%Info)
          istat = BLOCAT(iw,'EVCL',1,ind1,inddat)
@@ -232,9 +217,9 @@ C      write(*,*)'FORTRAN',bb
          END IF
         
          icurr = IW(INDDAT+5)
-         currpos=iand(icurr,'FFFF'x)*1.e-4
-         currele=(icurr/2**16)*1.e-4
-         luminosity = iw(inddat+6)*1.e-6         
+         IPos=iand(icurr,'FFFF'x)*1.e-4
+         IEle=(icurr/2**16)*1.e-4
+         Lumi= iw(inddat+6)*1.e-6         
       ENDIF
 C-----------------------------------------------------------------------
 C Fill Event Infos
@@ -253,58 +238,73 @@ C-----------------------------------------------------------------------
 C      istat = GETECLS(evt%ecls)
 
 
-CPG 240718 To fill the commom for Root
-       RunNumber = Evt%Info%RunNumber
-       EventNumber = Evt%Info%EventNumber
-       pileup = Evt%Info%Pileup
-       gcod = Evt%Info%GenCod
-       phid = Evt%Info%PhiDecay
-       write(*,*)"fortran ", PhiD
-       a1typ = Evt%Info%A1type
-       a2typ = Evt%Info%A2type
-       a3typ = Evt%Info%A3type
-       b1typ = Evt%Info%B1type
-       b2typ = Evt%Info%B2type
-       b3typ = Evt%Info%B3type
+CPG 240718 To fill the commom evtinfo for Root
+        NumRun = Evt%Info%RunNumber
+        NumEv = Evt%Info%EventNumber
+        Pileup = Evt%Info%Pileup
+        GCod = Evt%Info%GenCod
+        PhiD = Evt%Info%PhiDecay
+        A1Typ = Evt%Info%A1type
+        A2Typ = Evt%Info%A2type
+        A3Typ = Evt%Info%A3type
+        B1Typ = Evt%Info%B1type
+        B2Typ = Evt%Info%B2type
+        B3Typ = Evt%Info%B3type
 
 C      IF( ECLSFLAG ) THEN
         istat = GETECLS(evt%ecls)
 C      ENDIF
-CPG 270718 To fill the commom for Root
-      necls = 0
-      EclTrgw = 0
-      EclFilfo = 0
-      do iecls=1,8
-         EclWord(iecls) = 0
-         EclStream(iecls) = 0
-         EclTagNum(iecls) = 0
-         EclEvType(iecls) = 0
-      end do
 
-      necls = evt%ecls%n
-      EclTrgw = evt%ecls%trigger
-      EclFilfo = evt%ecls%filfo
-      do iecls=1,necls
-         EclWord(iecls) = evt%ecls%totword(iecls)
-         EclStream(iecls) = evt%ecls%stream(iecls)
-         EclTagNum(iecls) = evt%ecls%TagNum(iecls)
-         EclEvType(iecls) = evt%ecls%EvnTyp(iecls)
-      end do
+CPG 270718 To fill the commom evtecls for Root
+        necls = 0
+        EclTrgw = 0
+        EclFilfo = 0
+        do iecls=1,8
+            EclWord(iecls) = 0
+            EclStream(iecls) = 0
+            EclTagNum(iecls) = 0
+            EclEvType(iecls) = 0
+        end do
 
-      istat = T0GLRD(T0Dc0,T0Hit0,T0Clu0,T0Step1,DelayCable,TBunch)
-      istat = T0MCRD(TPhased_mc)
-CPG 240718 To fill the commom for Root
-      Evt%T0stru%dc_step0   = T0Dc0
-      Evt%T0stru%hit_step0  = T0Hit0
-      Evt%T0stru%clus_step0 = T0Clu0
-      Evt%T0stru%step1      = T0Step1
-      Evt%T0stru%cable      = DelayCable
-      Evt%T0stru%tbunch     = TBunch
-      Evt%T0stru%tphased_mc = TPhased_mc
+        necls = evt%ecls%n
+        EclTrgw = evt%ecls%trigger
+        EclFilfo = evt%ecls%filfo
+        do iecls=1,necls
+            EclWord(iecls) = evt%ecls%totword(iecls)
+            EclStream(iecls) = evt%ecls%stream(iecls)
+            EclTagNum(iecls) = evt%ecls%TagNum(iecls)
+            EclEvType(iecls) = evt%ecls%EvnTyp(iecls)
+        end do
 
-      call fillntu() 	
+        istat = T0GLRD(T0Dc0,T0Hit0,T0Clu0,T0Step1,DelayCable,TBunch)
+        istat = T0MCRD(TPhased_mc)
 
+CPG 240718 To fill the commom evtbpos for Root
+        BPx = Evt%Bpos%px
+        BPy = Evt%Bpos%py
+        BPz = Evt%Bpos%pz
+        Bx = Evt%Bpos%x
+        By = Evt%Bpos%y
+        Bz = Evt%Bpos%z
+        BWidPx = Evt%Bpos%errpx
+        BWidPy = Evt%Bpos%errpy
+        BWidPz = Evt%Bpos%errpz
+        BSx = Evt%Bpos%errx
+        BSy = Evt%Bpos%erry
+        BSz = Evt%Bpos%errz
+        BLumx = Evt%Bpos%lumx
+        BLumz = Evt%Bpos%lumz
 
+CPG 240718 To fill the commom evttime for Root
+        Evt%T0stru%dc_step0   = T0Dc0
+        Evt%T0stru%hit_step0  = T0Hit0
+        Evt%T0stru%clus_step0 = T0Clu0
+        Evt%T0stru%step1      = T0Step1
+        Evt%T0stru%cable      = DelayCable
+        Evt%T0stru%tbunch     = TBunch
+        Evt%T0stru%tphased_mc = TPhased_mc
+
+        call fillntu() 	
 
 CC End of code
 C============

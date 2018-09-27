@@ -3,17 +3,37 @@ C sample.cin
 C====================================================================
 C
 C    
-C       Block:  Info
+C       Block: Info
 C
-        integer RunNumber,EventNumber,pileup,GCod,PhiD,A1typ
-        integer A2typ,A3typ,B1typ,B2typ,B3typ
+        integer NumRun,NumEv,Pileup,GCod,PhiD
+        integer A1Typ,A2Typ,A3Typ
+        integer B1Typ,B2Typ,B3Typ
 
-        common /evtinfo/RunNumber,EventNumber,pileup,GCod,PhiD,A1typ
-        1    ,A2typ,A3typ,B1typ,B2typ,B3typ
+        common /evtinfo/NumRun,NumEv,Pileup,GCod,PhiD,
+        1      A1Typ,A2Typ,A3Typ,B1Typ,B2Typ,B3Typ
+C
+C       Block: Data
+C
+        integer StreamNum,AlgoNum
+        integer TimeSec,TimeMusec
+        integer Ndtce,McFlag
+        real    IPos,IEle,Lumi
+        
+        common /eventinfo/StreamNum,AlgoNum,TimeSec,TimeMusec,
+        1      Ndtce,McFlag,IPos,IEle,Lumi
+C
+C       Block: BPOS
+C
+        real BPx,BPy,BPz,Bx,By,Bz
+        real BWidPx,BWidPy,BWidPz
+        real BSx,BSy,BSz,BLumx,BLumz
+
+        common /evtbpos/BPx,BPy,BPz,Bx,By,Bz,BWidPx,BWidPy,BWidPz,
+        1       BSx,BSy,BSz,BLumx,BLumz
 C
 C       Block:  Ecl
 C
-        integer necls,iecls,EclTrgw,EclFilfo
+        integer NEcls,iecls,EclTrgw,EclFilfo
         integer EclWord(8),EclStream(8)
         integer EclTagNum(8),EclEvType(8)
 
@@ -29,6 +49,4 @@ C
 C        integer DtceHit,DhreHit,DprsHit,DtfsHit        
 C        common /evtgdhit/DtceHit,DhreHit,DprsHit,DtfsHit       
 C      
-C        common /eventinfo/StreamNum,AlgoNum,TimeSec,TimeMusec,Ndtce
-C        1    ,Mcflag_tg,Currpos, Currele, Luminosity
 C     

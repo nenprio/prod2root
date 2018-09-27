@@ -7,7 +7,10 @@ class TreeWriter{
      public:
          TreeWriter();
          ~TreeWriter();
+         void addBlockInfo();
+         void addBlockData();
          void addBlockEcl();
+         void addBlockBPOS();
          void addBlockTime();
          TFile* getTFile();
          void fillTTree();
