@@ -62,7 +62,7 @@ C
 C Put A_C Error Code to SUCCESS at Run_Init
 C
       Status = ANPIST(ANSUCC)
-      istat = fibposcommon(nrun)
+      istat = fillbposcommon(nrun)
 C
       RETURN
       END
