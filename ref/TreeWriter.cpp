@@ -36,14 +36,16 @@ TreeWriter::TreeWriter() {
 // input:   -
 // return:  -
 TreeWriter::~TreeWriter() {
-    /* std::cout << "Destructor " << std::endl; */
+    if(fNewTree){
+      delete fNewTree;
+      fNewTree = NULL;
+    }
+
     if(outfile) {
         outfile->Write(0,TObject::kOverwrite);
         outfile->Close();
         delete outfile;
-    }
-    if(fNewTree){
-        delete fNewTree;
+	outfile = NULL;
     }
 }
 
