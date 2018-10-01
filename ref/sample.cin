@@ -36,45 +36,51 @@ C BLOCK STRUCTURE DECLARATIONS
 C Follow the declarations of all the variables filled by data
 C and the related common blocks.
 C
-C Block: Info
+C Block: evtinfo
 C
-        integer NumRun,NumEv,Pileup,GCod,PhiD
-        integer A1Typ,A2Typ,A3Typ
-        integer B1Typ,B2Typ,B3Typ
+      integer NumRun,NumEv,Pileup,GCod,PhiD
+      integer A1Typ,A2Typ,A3Typ
+      integer B1Typ,B2Typ,B3Typ
 
-        common /evtinfo/NumRun,NumEv,Pileup,GCod,PhiD,
-        1      A1Typ,A2Typ,A3Typ,B1Typ,B2Typ,B3Typ
+      common /evtinfo/NumRun,NumEv,Pileup,GCod,PhiD,
+     1      A1Typ,A2Typ,A3Typ,B1Typ,B2Typ,B3Typ
 C
-C Block: Data
+C Block: evtdata
 C
-        integer StreamNum,AlgoNum
-        integer TimeSec,TimeMusec
-        integer Ndtce,McFlag
-        real    IPos,IEle,Lumi
+      integer StreamNum,AlgoNum
+      integer TimeSec,TimeMusec
+      integer Ndtce,McFlag
+      real    IPos,IEle,Lumi
         
-        common /eventinfo/StreamNum,AlgoNum,TimeSec,TimeMusec,
-        1      Ndtce,McFlag,IPos,IEle,Lumi
+      common /eventinfo/StreamNum,AlgoNum,TimeSec,TimeMusec,
+     1      Ndtce,McFlag,IPos,IEle,Lumi
 C
-C Block: BPOS
+C Block:  evtecls
 C
-        real BPx,BPy,BPz,Bx,By,Bz
-        real BWidPx,BWidPy,BWidPz
-        real BSx,BSy,BSz,BLumx,BLumz
+      integer NEcls,iEcls,EclTrgw,EclFilfo
+      integer EclWord(8),EclStream(8)
+      integer EclTagNum(8),EclEvType(8)
 
-        common /evtbpos/BPx,BPy,BPz,Bx,By,Bz,BWidPx,BWidPy,BWidPz,
-        1       BSx,BSy,BSz,BLumx,BLumz
+      common /evtecls/NEcls,EclTrgw,EclFilfo,EclWord,EclStream
+     1    ,EclTagNum,EclEvType
 C
-C Block:  Ecl
+C  Block: evtbpos
 C
-        integer NEcls,iEcls,EclTrgw,EclFilfo
-        integer EclWord(8),EclStream(8)
-        integer EclTagNum(8),EclEvType(8)
-
-        common /evtecls/NEcls,EclTrgw,EclFilfo,EclWord,EclStream
-        1    ,EclTagNum,EclEvType
+      real BPx, BPy, BPz, Bx, By, Bz, BWidPx, BWidPy, BWidPz
+      real BSx, BSy, BSz, BLumx, BLumz, Broots, BrootsErr        
+        
+      common /evtbpos/BPx,BPy,BPz,Bx,By,Bz,BWidPx,BWidPy,BWidPz,
+     1       BSx,BSy,BSz,BLumx,BLumz,Broots,BrootsErr
 C
 C Block:  Time
 C
-        real TPhased_mc,T0Dc0,T0Hit0,T0Clu0,T0Step1,DelayCable,TBunch
-        common /evttime/TPhased_mc,T0Dc0,T0Hit0,T0Clu0,T0Step1,
-        1       DelayCable,TBunch
+      real TPhased_mc,T0Dc0,T0Hit0,T0Clu0,T0Step1,DelayCable,TBunch
+
+      common /evttime/TPhased_mc,T0Dc0,T0Hit0,T0Clu0,T0Step1,
+     1       DelayCable,TBunch
+C
+C  Block: evtgdhit
+C
+      integer DtceHit, DhreHit, DprsHit, DtfsHit
+ 
+      common /evtgdhit/DtceHit,DhreHit,DprsHit,DtfsHit

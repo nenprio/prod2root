@@ -8,7 +8,7 @@ README
 *~
 *.cdf
 paw*
-*/ref/OutputVerifier/trash
-*/ref/OutputVerifier/out
-*/ref/sample_bj.kloe
-*/ref/BlockToRootParser/out
+ref/OutputVerifier/trash
+ref/OutputVerifier/out
+ref/sample_bj.kloe
+ref/BlockToRootParser/out

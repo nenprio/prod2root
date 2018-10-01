@@ -14,7 +14,6 @@
 TreeWriter::TreeWriter() {
     outfile  = new TFile("sample.root", "recreate");    //Open or create file 
     fNewTree = new TTree("sample", "Event Infos");      //Create "sample" tree
-
    
     // Block Info
     addBlockInfo();
@@ -24,6 +23,8 @@ TreeWriter::TreeWriter() {
     addBlockEcl();
     // Block BPOS
     addBlockBPOS();
+    // Block GdHit
+    addBlockGdHit();
     // Block Time
     addBlockTime();
 
@@ -102,20 +103,33 @@ void TreeWriter::addBlockEcl() {
 // input:   -
 // output:  -
 void TreeWriter::addBlockBPOS() {
-    fNewTree->Branch("BPx",     &evtbpos_.BPx,      "BPx/F");
-    fNewTree->Branch("BPy",     &evtbpos_.BPy,      "BPy/F");
-    fNewTree->Branch("BPz",     &evtbpos_.BPz,      "BPz/F");
-    fNewTree->Branch("Bx",      &evtbpos_.Bx,       "Bx/F");
-    fNewTree->Branch("By",      &evtbpos_.By,       "By/F");
-    fNewTree->Branch("Bz",      &evtbpos_.Bz,       "Bz/F");
-    fNewTree->Branch("BWidPx",  &evtbpos_.BWidPx,   "BWidPx/F");
-    fNewTree->Branch("BWidPy",  &evtbpos_.BWidPy,   "BWidPy/F");
-    fNewTree->Branch("BWidPz",  &evtbpos_.BWidPz,   "BWidPz/F");
-    fNewTree->Branch("BSx",     &evtbpos_.BSx,      "BSx/F");
-    fNewTree->Branch("BSy",     &evtbpos_.BSy,      "BSy/F");
-    fNewTree->Branch("BSz",     &evtbpos_.BSz,      "BSz/F");
-    fNewTree->Branch("BLumx",   &evtbpos_.BLumx,    "BLumx/F");
-    fNewTree->Branch("BLumz",   &evtbpos_.BLumz,    "BLumz/F");
+    fNewTree->Branch("BPx",       &evtbpos_.BPx,      "BPx/F");
+    fNewTree->Branch("BPy",       &evtbpos_.BPy,      "BPy/F");
+    fNewTree->Branch("BPz",       &evtbpos_.BPz,      "BPz/F");
+    fNewTree->Branch("Bx",        &evtbpos_.Bx,       "Bx/F");
+    fNewTree->Branch("By",        &evtbpos_.By,       "By/F");
+    fNewTree->Branch("Bz",        &evtbpos_.Bz,       "Bz/F");
+    fNewTree->Branch("BWidPx",    &evtbpos_.BWidPx,   "BWidPx/F");
+    fNewTree->Branch("BWidPy",    &evtbpos_.BWidPy,   "BWidPy/F");
+    fNewTree->Branch("BWidPz",    &evtbpos_.BWidPz,   "BWidPz/F");
+    fNewTree->Branch("BSx",       &evtbpos_.BSx,      "BSx/F");
+    fNewTree->Branch("BSy",       &evtbpos_.BSy,      "BSy/F");
+    fNewTree->Branch("BSz",       &evtbpos_.BSz,      "BSz/F");
+    fNewTree->Branch("BLumx",     &evtbpos_.BLumx,    "BLumx/F");
+    fNewTree->Branch("BLumz",     &evtbpos_.BLumz,    "BLumz/F");
+    fNewTree->Branch("Broots",    &evtbpos_.Broots,   "Broots/F");
+    fNewTree->Branch("BrootsErr", &evtbpos_.BrootsErr,"BrootsErr/F");
+}
+
+// Add to the tree all the branches related to the block BPOS.
+//
+// input:   -
+// output:  -
+void TreeWriter::addBlockGdHit() {
+    fNewTree->Branch("DtceHit",   &evtgdhit_.DtceHit,    "DtceHit/I");
+    fNewTree->Branch("DhreHit",   &evtgdhit_.DhreHit,    "DhreHit/I");
+    fNewTree->Branch("DprsHit",   &evtgdhit_.DprsHit,    "DprsHit/I");
+    fNewTree->Branch("DtfsHit",   &evtgdhit_.DtfsHit,    "DtfsHit/I");
 }
 
 // Add to the tree all the branches related to the block DGHIT.

@@ -261,6 +261,8 @@ C-----------------------------------------------------------------------
       BSz = 0.
       BLumx = 0.
       BLumz = 0.
+      Broots = 0.
+      BrootsErr = 0.
 
       rstat = getbpos(Evt%Bpos)
 
@@ -278,7 +280,29 @@ C-----------------------------------------------------------------------
       BSz = Evt%Bpos%errz
       BLumx = Evt%Bpos%lumx
       BLumz = Evt%Bpos%lumz
-        
+C      Broots = Evt%Bpos%Ene
+C      BrootsErr = Evt%Bpos%ErrEne
+C-----------------------------------------------------------------------
+C Fill Block evtgdhit
+C-----------------------------------------------------------------------
+C      DtceHit = 0.
+C      DhreHit = 0.
+C      DprsHit = 0.
+C      DtfsHit = 0.
+C
+C      istat = BIGEST(iw,'DTCE',banknum)
+C      istat = BLOCAT(iw,'DTCE',banknum,ind1,inddat)
+C      IF( istat.ne.YESUCC )THEN
+C        NDtce =0
+C      else
+C        NDtce = IW(inddat+DTCNRO)
+C      endif
+C      CALL Getgdchit(Evt%GHit)
+C
+C      DtceHit = NDtce
+C      DhreHit = Evt%GHit%nhit
+C      DprsHit = Evt%GHit%nhpr
+C      DtfsHit = Evt%GHit%nhtf
 C-----------------------------------------------------------------------
 C Fill Block evttime
 C-----------------------------------------------------------------------

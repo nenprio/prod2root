@@ -3,7 +3,7 @@
 // This header contains all the structs needed to 
 // write ntuple data to C++ format.
 
-// Block:   Event Info
+// Block:   evtinfo
 extern "C"{
   extern struct{
     int NumRun;
@@ -20,7 +20,7 @@ extern "C"{
   }evtinfo_;
 }
 
-// Block:  Event Data
+// Block:   evtdata
 extern "C"{
   extern struct{
     int StreamNum;
@@ -35,7 +35,7 @@ extern "C"{
   }eventinfo_;
 }
 
-// Block:   Event Ecl
+// Block:   evtecls
 extern "C"{
   extern struct{
     int NEcls;
@@ -48,25 +48,27 @@ extern "C"{
   }evtecls_;
 }
 
-// Block:    BPOS
+// Block:    evtbpos
 extern "C" {
-  extern struct {
-    float BPx;
-    float BPy;
-    float BPz;
-    float Bx;
-    float By;
-    float Bz;
-    float BWidPx;
-    float BWidPy;
-    float BWidPz;
-    float BSx;
-    float BSy;
-    float BSz;
-    float BLumx;
-    float BLumz;
-  }evtbpos_;
-}
+   extern struct {
+     float BPx;
+     float BPy;
+     float BPz;
+     float Bx;
+     float By;
+     float Bz;
+     float BWidPx;
+     float BWidPy;
+     float BWidPz;
+     float BSx;
+     float BSy;
+     float BSz;
+     float BLumx;
+     float BLumz;
+     float Broots;
+     float BrootsErr;
+   }evtbpos_;
+ }
 
 // Block:   evttime
 extern "C"{
@@ -79,6 +81,16 @@ extern "C"{
     float DelayCable;
     float TBunch;
   }evttime_;
+}
+
+// Block:   evtgdhit
+extern "C" {
+  extern struct {
+    int DtceHit;
+    int DhreHit;
+    int DprsHit;
+    int DtfsHit;
+  }evtgdhit_;
 }
 
 #endif

@@ -32,7 +32,7 @@ import sys
 
 FORT_TO_ROOT_TYPES = {"r":"F", "i":"I"}
 FORT_TO_C_TYPES = {"r":"float", "i":"integer"}
-C_TO_FORT_TYPES = {"float":"real", "integer":"integer"}
+C_TO_FORT_TYPES = {"float":"real", "integer":"int"}
 
 ERROR_IN_FILE   = "[Error] Input file is not a regular file."
 ERROR_IN_ARGS   = "[Error] Not enough input arguments."
@@ -141,11 +141,11 @@ def main(input_file, output_dir="out"):
             content_cin += "      " + complete_type + " " + line_names + "\n"
     content_cin += "\n"
     content_cin += "      common /" + block_name + "/"
-    for i,n in enumerate(names):
+    for i,name in enumerate(names):
         if i==0:
-            content_cin += n
+            content_cin += name
         else:
-            content_cin += "," + n
+            content_cin += "," + name
     content_cin += "\n"
 
     # Create sample.kloe content
