@@ -88,3 +88,10 @@ C
       integer DtceHit, DhreHit, DprsHit, DtfsHit
  
       common /evtgdhit/DtceHit,DhreHit,DprsHit,DtfsHit
+C
+C  Block: evttrig
+C
+      integer Trgw1, Trgw2
+
+      common /evttrig/Trgw1,Trgw2
+

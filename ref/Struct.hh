@@ -100,4 +100,11 @@ extern "C" {
   }evtgdhit_;
 }
 
+// Block:   evttrig
+extern "C" {
+  extern struct {
+    int Trgw1;
+    int Trgw2;
+  }evttrig_;
+}
 #endif

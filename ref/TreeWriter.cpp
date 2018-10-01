@@ -37,10 +37,10 @@ TreeWriter::TreeWriter() {
 // input:   -
 // return:  -
 TreeWriter::~TreeWriter() {
-    if(fNewTree){
-      delete fNewTree;
-      fNewTree = NULL;
-    }
+    /* if(fNewTree){ */
+      /* delete fNewTree; */
+      /* fNewTree = NULL; */
+    /* } */
 
     if(outfile) {
         outfile->Write(0,TObject::kOverwrite);
@@ -137,6 +137,15 @@ void TreeWriter::addBlockGdHit() {
     fNewTree->Branch("DhreHit",   &evtgdhit_.DhreHit,    "DhreHit/I");
     fNewTree->Branch("DprsHit",   &evtgdhit_.DprsHit,    "DprsHit/I");
     fNewTree->Branch("DtfsHit",   &evtgdhit_.DtfsHit,    "DtfsHit/I");
+}
+
+// Add to the tree all the branches realted to the block EVTTRIG.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockTrig() {
+    fNewTree->Branch("Trgw1", &evttrig_.Trgw1, "Trgw1/I");
+    fNewTree->Branch("Trgw2", &evttrig_.Trgw2, "Trgw2/I");
 }
 
 // Add to the tree all the branches related to the block DGHIT.

@@ -136,12 +136,17 @@ C What are the following lines? I maintain here at the moment to
 C let fix the "RunNumber" issue. 
 C TODO: Move them to sample.cin
 C
+C NOTE1: trgwrd1/2 are used in block EVTTRG and if no other you, 
+C they can be removed. Now they are commented
+C
       INTEGER istat, OldRunNumber
       data OldRunNumber/0/
       save OldRunNumber
       integer ind1,inddat
-      Integer trgwrd1,trgwrd2,numdhit
-      common /trgcom/trgwrd1,trgwrd2,numdhit
+C      Integer trgwrd1,trgwrd2,numdhit
+C      common /trgcom/trgwrd1,trgwrd2,numdhit
+      Integer numdhit
+      common /trgcom/numdhit
       LOGICAL mcflag_1
       INTEGER mcflag_tg
 C
@@ -165,10 +170,11 @@ C-----------------------------------------------------------------------------
       IF( mcflag_1 )  THEN
          istat = GETEVCL(evt%Info)
          istat = BLOCAT(iw,'EVCL',1,ind1,inddat)
-         IF( TRIGFLAG ) THEN
-           trgwrd1 = IW( inddat+1 )
-           trgwrd2 = IW( inddat+2 )
-         ENDIF
+C   Moved to the Block definition
+C         IF( TRIGFLAG ) THEN
+C           trgwrd1 = IW( inddat+1 )
+C           trgwrd2 = IW( inddat+2 )
+C         ENDIF
          
       ELSE
          istat = GETTIME(timesec,timemusec)
@@ -323,6 +329,11 @@ C-----------------------------------------------------------------------
       DhreHit = Evt%GHit%nhit
       DprsHit = Evt%GHit%nhpr
       DtfsHit = Evt%GHit%nhtf
+C-----------------------------------------------------------------------
+C Fill Block evttrig
+C-----------------------------------------------------------------------
+      Trgw1 = IW( inddat+1 )
+      Trgw2 = IW( inddat+2 )
 C-----------------------------------------------------------------------
 C Fill Block evttime
 C-----------------------------------------------------------------------

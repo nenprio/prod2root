@@ -13,6 +13,7 @@ class TreeWriter{
          void addBlockBPOS();
          void addBlockGdHit();
          void addBlockTime();
+         void addBlockTrig();
          TFile* getTFile();
          void fillTTree();
      private:
