@@ -31,6 +31,8 @@ TreeWriter::TreeWriter() {
     addBlockTrig();
     // Block C2Trig
     addBlockC2Trig();
+    // Block Tellina
+    addBlockTellina();
 
     // Write to the disk
     outfile->Write();
@@ -167,6 +169,20 @@ void TreeWriter::addBlockC2Trig() {
     fNewTree->Branch("OverAdd", &evtc2trig_.OverAdd, "OverAdd[NClu2s]/I");
     fNewTree->Branch("NCosm", &evtc2trig_.NCosm, "NCosm[NClu2s]/I");
     fNewTree->Branch("CosmAdd", &evtc2trig_.CosmAdd, "CosmAdd[NClu2s]/I");
+}
+
+// Add to the tree all the branches realted to the block Tellina.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockTellina() {
+    fNewTree->Branch("NTel",     &tellina_.NTel,     "NTel/I");
+    fNewTree->Branch("Add_Tel",  &tellina_.Add_Tel,  "Add_Tel[NTel]/I");
+    fNewTree->Branch("Bitp_Tel", &tellina_.Bitp_Tel, "Bitp_Tel[NTel]/I");
+    fNewTree->Branch("Ea_Tel",   &tellina_.Ea_Tel,   "Ea_Tel[NTel]/F");
+    fNewTree->Branch("Eb_Tel",   &tellina_.Eb_Tel,   "Eb_Tel[NTel]/F");
+    fNewTree->Branch("Ta_Tel",   &tellina_.Ta_Tel,   "Ta_Tel[NTel]/F");
+    fNewTree->Branch("Tb_Tel",   &tellina_.Tb_Tel,   "Tb_Tel[NTel]/F");
 }
 
 // Add to the tree all the branches related to the block DGHIT.

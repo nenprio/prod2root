@@ -105,3 +105,11 @@ C
 
       common /evtc2trig/NSec,NSec_NoClu,NSec2Clu,NClu2s,
      1       NNorm,NormAdd,NOver,OverAdd,NCosm,CosmAdd
+C
+C  Block: tellina
+C
+      integer iTELLINA, NTel, Add_Tel(1000), Bitp_Tel(1000)
+      real Ea_Tel(1000), Eb_Tel(1000), Ta_Tel(1000), Tb_Tel(1000)
+
+      common /tellina/NTel,Add_Tel,Bitp_Tel,
+     1       Ea_Tel,Eb_Tel,Ta_Tel,Tb_Tel

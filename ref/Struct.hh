@@ -5,6 +5,7 @@
 
 const int MaxNumClu  = 100;
 const int MaxEclSize = 8;
+const int MaxTrgChan = 1000;
 
 // Block:   evtinfo
 extern "C"{
@@ -113,17 +114,31 @@ extern "C" {
 
 // Block:   evtc2trig
 extern "C" {
-    extern struct {
-        int NSec;
-        int NSec_NoClu;
-        int NSec2Clu;
-        int NClu2s;
-        int NNorm[MaxNumClu];
-        int NormAdd[MaxNumClu];
-        int NOver[MaxNumClu];
-        int OverAdd[MaxNumClu];
-        int NCosm[MaxNumClu];
-        int CosmAdd[MaxNumClu];
-    }evtc2trig_;
+  extern struct {
+    int NSec;
+    int NSec_NoClu;
+    int NSec2Clu;
+    int NClu2s;
+    int NNorm[MaxNumClu];
+    int NormAdd[MaxNumClu];
+    int NOver[MaxNumClu];
+    int OverAdd[MaxNumClu];
+    int NCosm[MaxNumClu];
+    int CosmAdd[MaxNumClu];
+  }evtc2trig_;
 }
+
+// Block:   tellina
+extern "C" {
+  extern struct {
+    int NTel;
+    int Add_Tel[MaxTrgChan];
+    int Bitp_Tel[MaxTrgChan];
+    float Ea_Tel[MaxTrgChan];
+    float Eb_Tel[MaxTrgChan];
+    float Ta_Tel[MaxTrgChan];
+    float Tb_Tel[MaxTrgChan];
+  }tellina_;
+}
+
 #endif

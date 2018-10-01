@@ -40,10 +40,132 @@ INFO_NAMES_FILE = "[Info] Names file not found. It will be created."
 INFO_OUT_DIR    = "[Info] Output directory created."
 INFO_RESULT     = "[Info] Terminated. You can find the files in output directory."
 
+# Create Struct.hh content
+#
+# input:     -
+# output:    content of Struct.hh as string
+def getStructContent(block_name, names, types, nameIsArray):
+    content = "extern \"C\" {\n"
+    content += "  extern struct {\n"
+    for i,(t,n) in enumerate(zip(types,names)):
+        c_type = FORT_TO_C_TYPES.get(t)
+        if nameIsArray[i]:
+            content += "    " + c_type + " " + n + "[>>>MAX-SIZE<<<];\n"
+        else:
+            content += "    " + c_type + " " + n + ";\n"
+    content += "  }" + block_name + "_;\n"
+    content += "}\n"
+    return content
+
+# Create sample.cin content
+#
+# input:  -
+# output: content of cin file as string.
+def getCinContent(block_name, names, types, nameIsArray):
+    content = "C\n"
+    content += "C  Block: " + block_name + "\n"
+    content += "C\n"
+    if True in nameIsArray:
+        content += "      integer i" + block_name.upper() + "\n"
+    for f_type in FORT_TO_C_TYPES.keys():
+        empty_type = True
+        complete_type = C_TO_FORT_TYPES.get(FORT_TO_C_TYPES.get(f_type))
+        group = []
+        for i,t in enumerate(types):
+            if f_type==t:
+                group.append(i)
+                empty_type = False
+        line_names = ""
+        for i,j in enumerate(group):
+            if nameIsArray[j]:
+                current_name = names[j] + "(>>>MAX-SIZE<<<)"
+            else:
+                current_name = names[j]
+            if i==0:
+                line_names += current_name
+            else:
+                line_names += ", " + current_name
+        if not empty_type:
+            content += "      " + complete_type + " " + line_names + "\n"
+    content += "\n"
+    content += "      common /" + block_name + "/"
+    for i,name in enumerate(names):
+        if i==0:
+            content += name
+        else:
+            content += "," + name
+    content += "\n"
+    return content
+
+# Create sample.kloe content
+#
+# input:  -
+# output: content of kloe file as string.
+def getKloeContent(block_name, names, data, nameIsArray):
+    content = "C-----------------------------------------------------------------------\n"
+    content += "C Fill Block " + block_name + "\n"
+    content += "C-----------------------------------------------------------------------\n"
+    arrays = list()
+    for i,n in enumerate(names):
+        if nameIsArray[i]:
+            arrays.append(i)
+        else:
+            content += "      " + n + " = 0.\n"
+
+    # Initialize all arrays to zero
+    if len(arrays)>0:
+        content += "      do i" + block_name.upper() + "=1, >>>MAX-SIZE<<<\n"
+    for j in arrays:
+        content += "        " +  names[j] + "(i" + block_name.upper() + ") = 0.\n"
+    if len(arrays)>0:
+        content += "      end do\n"
+
+    content += "\n"
+    content += "      >>>INSERT HERE THE GET FUNCTION<<<\n"
+    content += "\n"
+    for i,(n,d) in enumerate(zip(names,data)):
+        if not nameIsArray[i]:
+            content += "      " + n + " = " + d + "\n"
+
+    # Initialize all arrays to zero
+    if len(arrays)>0:
+        content += "      do i" + block_name.upper() + "=1, >>>INDEX-VAR<<<\n"
+    for j in arrays:
+        content += "        " + names[j] + "(i" + block_name.upper() + ") = " + data[j] + "(i" + block_name.upper() + ")\n"
+    if len(arrays)>0:
+        content += "      end do\n"
+    return content
+
+# Create TreeWriter.cpp content
+#
+# input:  -
+# output: content of cpp file as string.
+def getCppContent(block_name, names, types, nameIsArray):
+    content = "// Add to the tree all the branches realted to the block " + block_name.upper() + ".\n"
+    content += "//\n// input:\t-\n// output: -\n"
+    content += "void TreeWriter::addBlock" + block_name.upper() + "() {\n"
+    for i,(name,t) in enumerate(zip(names,types)):
+        if nameIsArray[i]:
+            content += "    fNewTree->Branch(\"" + name + "\", "
+            content += "&" + block_name + "_." + name + ", "
+            content += "\"" + name + "[>>>INDEX-VAR<<<]/" + FORT_TO_ROOT_TYPES.get(t) + "\");\n"
+        else:
+            content += "    fNewTree->Branch(\"" + name + "\", "
+            content += "&" + block_name + "_." + name + ", "
+            content += "\"" + name + "/" + FORT_TO_ROOT_TYPES.get(t) + "\");\n"
+    content += "}\n"
+    return content
+
+# Main method called on running BlockToRootParser.py
+#
+# input:  input_file    file containing the block infos, format explained above (see the file begining)
+#         output_dir    directory where write the output files, if it doesn't exist then it will be created.
+#                       if no output_dir then "./out/" will be used by default.
+# output: -
 def main(input_file, output_dir="out"):
     if output_dir == "":
         output_dir="out"
-    block_name       = input_file.split(".")[0]
+    block_name       = input_file.split("/")[-1].split(".")[0]
     names_file       = output_dir + "/" + block_name + "_names.in"
     output_file_cin  = output_dir + "/" + block_name + "_toSample.cin"
     output_file_kloe = output_dir + "/" + block_name + "_toSample.kloe"
@@ -82,6 +204,7 @@ def main(input_file, output_dir="out"):
     data  = list()
     names = list()
     types = list()
+    nameIsArray = list()
 
     # Open input file and get line
     with open(input_file, "r") as in_file:
@@ -93,82 +216,35 @@ def main(input_file, output_dir="out"):
         # then we have to clean the string and split it
         # to separate name and type
         third_field = splitted_lines[3].replace(")","").replace("'","").replace("\n","").split(":")
+        current_name = third_field[0]
 
         data.append(splitted_lines[2])
 
+        if "(" in current_name:
+            current_name = current_name.split("(")[0]
+            nameIsArray.append(True)
+        else:
+            nameIsArray.append(False)
+
         name_id=-1
         for n,name in enumerate(fortran_names):
-            if name==third_field[0]:
+            if name==current_name:
                 name_id=n
                 break
         if name_id==-1:
-            content_names += third_field[0] + "\n"
-            names.append(third_field[0])
+            content_names += current_name + "\n"
+            names.append(current_name)
         else:
             names.append(C_names[name_id])
 
         # Given Fortran type, take the related C type
         types.append(third_field[1])
 
-    # Create Struct.hh content
-    content_hh = "extern \"C\" {\n"
-    content_hh += "  extern struct {\n"
-    for (t,n) in zip(types,names):
-        c_type = FORT_TO_C_TYPES.get(t)
-        content_hh += "    " + c_type + " " + n + ";\n"
-    content_hh += "  }" + block_name + "_;\n"
-    content_hh += "}\n"
-
-    # Create sample.cin content
-    content_cin = "C\n"
-    content_cin += "C  Block: " + block_name + "\n"
-    content_cin += "C\n"
-    for f_type in FORT_TO_C_TYPES.keys():
-        empty_type = True
-        complete_type = C_TO_FORT_TYPES.get(FORT_TO_C_TYPES.get(f_type))
-        group = []
-        for i,t in enumerate(types):
-            if f_type==t:
-                group.append(i)
-                empty_type = False
-        line_names = ""
-        for i,j in enumerate(group):
-            if i==0:
-                line_names += names[j]
-            else:
-                line_names += ", " + names[j]
-        if not empty_type:
-            content_cin += "      " + complete_type + " " + line_names + "\n"
-    content_cin += "\n"
-    content_cin += "      common /" + block_name + "/"
-    for i,name in enumerate(names):
-        if i==0:
-            content_cin += name
-        else:
-            content_cin += "," + name
-    content_cin += "\n"
-
-    # Create sample.kloe content
-    content_kloe = "C-----------------------------------------------------------------------\n"
-    content_kloe += "C Fill Block " + block_name + "\n"
-    content_kloe += "C-----------------------------------------------------------------------\n"
-    for n in names:
-        content_kloe += "      " + n + " = 0.\n"
-    content_kloe += "\n"
-    content_kloe += "      >>>INSERT HERE THE GET FUNCTION<<<\n"
-    content_kloe += "\n"
-    for (n,d) in zip(names,data):
-        content_kloe += "      " + n + " = " + d + "\n"
-
-    # Create TreeWriter.cpp content
-    content_cpp = "// Add to the tree all the branches realted to the block " + block_name.upper() + ".\n"
-    content_cpp += "//\n// input:\t-\n// output: -\n"
-    content_cpp += "void TreeWriter::addBlock" + block_name.upper() + "() {\n"
-    for name,t in zip(names,types):
-        content_cpp += "    fNewTree->Branch(\"" + name + "\", "
-        content_cpp += "&" + block_name + "_." + name + ", "
-        content_cpp += "\"" + name + "/" + FORT_TO_ROOT_TYPES.get(t) + "\");\n"
-    content_cpp += "}\n"
+    # Create files content
+    content_hh   = getStructContent(block_name, names, types, nameIsArray)
+    content_cin  = getCinContent(block_name, names, types, nameIsArray)
+    content_kloe = getKloeContent(block_name, names, data, nameIsArray)
+    content_cpp  = getCppContent(block_name, names, types, nameIsArray)
 
     # Create output files
     with open(output_file_cin, "w") as cin:

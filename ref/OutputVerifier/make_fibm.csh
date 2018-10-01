@@ -2,7 +2,7 @@
 
 echo "[Info] Starting compilation..."
 gmake -s clean
-gmake
+gmake -s
 echo "[Info] Compilation    DONE"
 
 echo ""

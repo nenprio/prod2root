@@ -290,7 +290,7 @@ C-----------------------------------------------------------------------
       Broots = 0.
       BrootsErr = 0.
 
-      rstat = getbpos(Evt%Bpos)
+      rstat = GETBPOS(Evt%Bpos)
 
       BPx = Evt%Bpos%px
       BPy = Evt%Bpos%py
@@ -365,7 +365,30 @@ C-----------------------------------------------------------------------
         NCosm(iC2Trig)   = Evt%S2CLU%Ncosm(iC2Trig)
         CosmAdd(iC2Trig) = Evt%S2CLU%CosmAdd(iC2Trig)
       end do
+C-----------------------------------------------------------------------
+C Fill Block tellina
+C-----------------------------------------------------------------------
+      NTel = 0.
+      do iTELLINA=1, 1000
+        Add_Tel(iTELLINA) = 0.
+        Bitp_Tel(iTELLINA) = 0.
+        Ea_Tel(iTELLINA) = 0.
+        Eb_Tel(iTELLINA) = 0.
+        Ta_Tel(iTELLINA) = 0.
+        Tb_Tel(iTELLINA) = 0.
+      end do
 
+      istat = GETTELLINA(Evt%Tellina) 
+
+      NTel = Evt%Tellina%n
+      do iTELLINA=1, NTel
+        Add_Tel(iTELLINA) = Evt%Tellina%add(iTELLINA)
+        Bitp_Tel(iTELLINA) = Evt%Tellina%Bitp(iTELLINA)
+        Ea_Tel(iTELLINA) = Evt%Tellina%Ea(iTELLINA)
+        Eb_Tel(iTELLINA) = Evt%Tellina%Eb(iTELLINA)
+        Ta_Tel(iTELLINA) = Evt%Tellina%Ta(iTELLINA)
+        Tb_Tel(iTELLINA) = Evt%Tellina%Tb(iTELLINA)
+      end do
 C-----------------------------------------------------------------------
 C Fill Block evttime
 C-----------------------------------------------------------------------
