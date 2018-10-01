@@ -30,6 +30,7 @@
 import os
 import sys
 
+FORT_TO_ROOT_TYPES = {"r":"F", "i":"I"}
 FORT_TO_C_TYPES = {"r":"float", "i":"integer"}
 C_TO_FORT_TYPES = {"float":"real", "integer":"integer"}
 
@@ -47,6 +48,7 @@ def main(input_file, output_dir="out"):
     output_file_cin  = output_dir + "/" + block_name + "_toSample.cin"
     output_file_kloe = output_dir + "/" + block_name + "_toSample.kloe"
     output_file_hh   = output_dir + "/" + block_name + "_toStruct.hh"
+    output_file_cpp  = output_dir + "/" + block_name + "_toTreeWriter.cpp"
 
     # Check if input file exists
     if not os.path.isfile(input_file):
@@ -138,8 +140,15 @@ def main(input_file, output_dir="out"):
         if not empty_type:
             content_cin += "      " + complete_type + " " + line_names + "\n"
     content_cin += "\n"
+    content_cin += "      common /" + block_name + "/"
+    for i,n in enumerate(names):
+        if i==0:
+            content_cin += n
+        else:
+            content_cin += "," + n
+    content_cin += "\n"
 
-    # Create sample.cin content
+    # Create sample.kloe content
     content_kloe = "C-----------------------------------------------------------------------\n"
     content_kloe += "C Fill Block " + block_name + "\n"
     content_kloe += "C-----------------------------------------------------------------------\n"
@@ -151,6 +160,16 @@ def main(input_file, output_dir="out"):
     for (n,d) in zip(names,data):
         content_kloe += "      " + n + " = " + d + "\n"
 
+    # Create TreeWriter.cpp content
+    content_cpp = "// Add to the tree all the branches realted to the block " + block_name.upper() + ".\n"
+    content_cpp += "//\n// input:\t-\n// output: -\n"
+    content_cpp += "void TreeWriter::addBlock" + block_name.upper() + "() {\n"
+    for name,t in zip(names,types):
+        content_cpp += "    fNewTree->Branch(\"" + name + "\", "
+        content_cpp += "&" + block_name + "_." + name + ", "
+        content_cpp += "\"" + name + "/" + FORT_TO_ROOT_TYPES.get(t) + "\");\n"
+    content_cpp += "}\n"
+
     # Create output files
     with open(output_file_cin, "w") as cin:
         cin.write(content_cin)
@@ -160,6 +179,9 @@ def main(input_file, output_dir="out"):
 
     with open(output_file_hh, "w") as hh:
         hh.write(content_hh)
+
+    with open(output_file_cpp, "w") as cpp:
+        cpp.write(content_cpp)
 
     with open(names_file, "w") as nm:
         nm.write(content_names)

@@ -1,0 +1,4 @@
+CALL HBName(Params%NtId,'GDHIT',NDtce,'dtcehit:i')
+CALL HBName(Params%NtId,'GDHIT',Evt%Ghit%nhit,'dhrehit:i')
+CALL HBName(Params%NtId,'GDHIT',Evt%Ghit%nhpr,'dprshit:i')
+CALL HBName(Params%NtId,'GDHIT',Evt%Ghit%nhtf,'dtfshit:i')

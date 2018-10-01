@@ -1,5 +1,0 @@
-C
-C  Block: evtbpos
-C
-      real BPx, BPy, BPz, Bx, By, Bz, BWidPx, BWidPy, BWidPz, BSx, BSy, BSz, BLumx, BLumz
-
