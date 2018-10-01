@@ -169,7 +169,7 @@ C Fill event classification information
 C-----------------------------------------------------------------------------
       IF( mcflag_1 )  THEN
          istat = GETEVCL(evt%Info)
-         istat = BLOCAT(iw,'EVCL',1,ind1,inddat)
+C         istat = BLOCAT(iw,'EVCL',1,ind1,inddat)
 C   Moved to the Block definition
 C         IF( TRIGFLAG ) THEN
 C           trgwrd1 = IW( inddat+1 )
@@ -332,6 +332,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block evttrig
 C-----------------------------------------------------------------------
+      istat = BLOCAT(iw,'EVCL',1,ind1,inddat)
       Trgw1 = IW( inddat+1 )
       Trgw2 = IW( inddat+2 )
 C-----------------------------------------------------------------------

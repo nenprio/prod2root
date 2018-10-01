@@ -19,14 +19,16 @@ TreeWriter::TreeWriter() {
     addBlockInfo();
     // Block Data
     addBlockData();
-    // Block Ecl
-    addBlockEcl();
+    // Block Time
+    addBlockTime();
     // Block BPOS
     addBlockBPOS();
     // Block GdHit
     addBlockGdHit();
-    // Block Time
-    addBlockTime();
+    // Block Ecl
+    addBlockEcl();
+    // Block Trig
+    addBlockTrig();
 
     // Write to the disk
     outfile->Write();
