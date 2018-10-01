@@ -60,9 +60,13 @@ C
       integer NEcls,iEcls,EclTrgw,EclFilfo
       integer EclWord(8),EclStream(8)
       integer EclTagNum(8),EclEvType(8)
+      integer NEcls2,iEcls2,EclTrgw2,EclFilfo2
+      integer EclWord2(8),EclStream2(8)
+      integer EclTagNum2(8),EclEvType2(8)
 
-      common /evtecls/NEcls,EclTrgw,EclFilfo,EclWord,EclStream
-     1    ,EclTagNum,EclEvType
+      common /evtecls/NEcls,EclTrgw,EclFilfo,EclWord,EclStream,
+     1    EclTagNum,EclEvType,NEcls2,EclTrgw2,EclFilfo2,EclWord2,
+     1    EclStream2,EclTagNum2,EclEvType2
 C
 C  Block: evtbpos
 C

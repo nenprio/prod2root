@@ -45,6 +45,13 @@ extern "C"{
     int EclStream[8];
     int EclTagNum[8];
     int EclEvType[8];
+    int NEcls2;
+    int EclTrgw2;
+    int EclFilfo2;
+    int EclWord2[8];
+    int EclStream2[8];
+    int EclTagNum2[8];
+    int EclEvType2[8];
   }evtecls_;
 }
 

@@ -231,6 +231,16 @@ C-----------------------------------------------------------------------
         EclTagNum(iecls) = 0
         EclEvType(iecls) = 0
       end do
+      
+      necls2 = 0
+      EclTrgw2 = 0
+      EclFilfo2 = 0
+      do iecls2=1,8
+        EclWord2(iecls2) = 0
+        EclStream2(iecls2) = 0
+        EclTagNum2(iecls2) = 0
+        EclEvType2(iecls2) = 0
+      end do
 
       istat = GETECLS(evt%ecls)
         
@@ -238,10 +248,20 @@ C-----------------------------------------------------------------------
       EclTrgw = evt%ecls%trigger
       EclFilfo = evt%ecls%filfo
       do iecls=1,necls
-        EclWord(iecls) = evt%ecls%totword(iecls)
-        EclStream(iecls) = evt%ecls%stream(iecls)
+        EclWord(iecls) = evt%ecls%TotWord(iecls)
+        EclStream(iecls) = evt%ecls%Stream(iecls)
         EclTagNum(iecls) = evt%ecls%TagNum(iecls)
         EclEvType(iecls) = evt%ecls%EvnTyp(iecls)
+      end do
+      
+      necls2 = evt%ecls%n2
+      EclTrgw2 = evt%ecls%trigger2
+      EclFilfo2 = evt%ecls%filfo2
+      do iecls2=1,necls2
+        EclWord2(iecls2) = evt%ecls%TotWord2(iecls2)
+        EclStream2(iecls2) = evt%ecls%Stream2(iecls2)
+        EclTagNum2(iecls2) = evt%ecls%TagNum2(iecls2)
+        EclEvType2(iecls2) = evt%ecls%EvnTyp2(iecls2)
       end do
 
 C-----------------------------------------------------------------------
@@ -280,29 +300,29 @@ C-----------------------------------------------------------------------
       BSz = Evt%Bpos%errz
       BLumx = Evt%Bpos%lumx
       BLumz = Evt%Bpos%lumz
-C      Broots = Evt%Bpos%Ene
-C      BrootsErr = Evt%Bpos%ErrEne
+      Broots = Evt%Bpos%Ene
+      BrootsErr = Evt%Bpos%ErrEne
 C-----------------------------------------------------------------------
 C Fill Block evtgdhit
 C-----------------------------------------------------------------------
-C      DtceHit = 0.
-C      DhreHit = 0.
-C      DprsHit = 0.
-C      DtfsHit = 0.
-C
-C      istat = BIGEST(iw,'DTCE',banknum)
-C      istat = BLOCAT(iw,'DTCE',banknum,ind1,inddat)
-C      IF( istat.ne.YESUCC )THEN
-C        NDtce =0
-C      else
-C        NDtce = IW(inddat+DTCNRO)
-C      endif
-C      CALL Getgdchit(Evt%GHit)
-C
-C      DtceHit = NDtce
-C      DhreHit = Evt%GHit%nhit
-C      DprsHit = Evt%GHit%nhpr
-C      DtfsHit = Evt%GHit%nhtf
+      DtceHit = 0.
+      DhreHit = 0.
+      DprsHit = 0.
+      DtfsHit = 0.
+
+      istat = BIGEST(iw,'DTCE',banknum)
+      istat = BLOCAT(iw,'DTCE',banknum,ind1,inddat)
+      IF( istat.ne.YESUCC )THEN
+        NDtce =0
+      else
+        NDtce = IW(inddat+DTCNRO)
+      endif
+      CALL Getgdchit(Evt%GHit)
+
+      DtceHit = NDtce
+      DhreHit = Evt%GHit%nhit
+      DprsHit = Evt%GHit%nhpr
+      DtfsHit = Evt%GHit%nhtf
 C-----------------------------------------------------------------------
 C Fill Block evttime
 C-----------------------------------------------------------------------
