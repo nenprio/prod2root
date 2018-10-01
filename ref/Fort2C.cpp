@@ -21,7 +21,6 @@ void inittree_(){
 // input:   -
 // output:  -
 void fillntu_(){
-  std::cout << evtinfo_.PhiD << std::endl;
   writer->fillTTree();
 }
 
@@ -31,6 +30,7 @@ void fillntu_(){
 // output:  -
 void closetree_(){
   delete writer;
+  writer = NULL;
 }
 
 #endif
