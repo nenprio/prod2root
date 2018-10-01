@@ -111,7 +111,7 @@ extern "C" {
   }evttrig_;
 }
 
-// Block:   evtc2trg
+// Block:   evtc2trig
 extern "C" {
     extern struct {
         int NSec;
@@ -124,6 +124,6 @@ extern "C" {
         int OverAdd[MaxNumClu];
         int NCosm[MaxNumClu];
         int CosmAdd[MaxNumClu];
-    }evtc2trg_;
+    }evtc2trig_;
 }
 #endif

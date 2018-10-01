@@ -14,6 +14,7 @@ class TreeWriter{
          void addBlockGdHit();
          void addBlockTime();
          void addBlockTrig();
+         void addBlockC2Trig();
          TFile* getTFile();
          void fillTTree();
      private:

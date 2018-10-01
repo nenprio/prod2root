@@ -29,6 +29,8 @@ TreeWriter::TreeWriter() {
     addBlockEcl();
     // Block Trig
     addBlockTrig();
+    // Block C2Trig
+    addBlockC2Trig();
 
     // Write to the disk
     outfile->Write();
@@ -148,6 +150,23 @@ void TreeWriter::addBlockGdHit() {
 void TreeWriter::addBlockTrig() {
     fNewTree->Branch("Trgw1", &evttrig_.Trgw1, "Trgw1/I");
     fNewTree->Branch("Trgw2", &evttrig_.Trgw2, "Trgw2/I");
+}
+
+// Add to the tree all the branches realted to the block EVTC2TRIG.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockC2Trig() {
+    fNewTree->Branch("NSec", &evtc2trig_.NSec, "NSec/I");
+    fNewTree->Branch("NSec_NoClu", &evtc2trig_.NSec_NoClu, "NSec_NoClu/I");
+    fNewTree->Branch("NSec2Clu", &evtc2trig_.NSec2Clu, "NSec2Clu/I");
+    fNewTree->Branch("NClu2s", &evtc2trig_.NClu2s, "NClu2s/I");
+    fNewTree->Branch("NNorm", &evtc2trig_.NNorm, "NNorm[NClu2s]/I");
+    fNewTree->Branch("NormAdd", &evtc2trig_.NormAdd, "NormAdd[NClu2s]/I");
+    fNewTree->Branch("NOver", &evtc2trig_.NOver, "NOver[NClu2s]/I");
+    fNewTree->Branch("OverAdd", &evtc2trig_.OverAdd, "OverAdd[NClu2s]/I");
+    fNewTree->Branch("NCosm", &evtc2trig_.NCosm, "NCosm[NClu2s]/I");
+    fNewTree->Branch("CosmAdd", &evtc2trig_.CosmAdd, "CosmAdd[NClu2s]/I");
 }
 
 // Add to the tree all the branches related to the block DGHIT.

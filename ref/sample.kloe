@@ -336,6 +336,37 @@ C-----------------------------------------------------------------------
       Trgw1 = IW( inddat+1 )
       Trgw2 = IW( inddat+2 )
 C-----------------------------------------------------------------------
+C Fill Block evtc2trig
+C-----------------------------------------------------------------------
+      NSec = 0.
+      NSec_NoClu = 0.
+      NSec2Clu = 0.
+      NClu2s = 0.
+      do iC2Trig=1,100
+        NNorm(iC2Trig)   = 0.
+        NormAdd(iC2Trig) = 0.
+        NOver(iC2Trig)   = 0.
+        OverAdd(iC2Trig) = 0.
+        NCosm(iC2Trig)   = 0.
+        CosmAdd(iC2Trig) = 0.
+      end do
+
+      istat = GETSEC2CLUSTRU(evt%s2clu)
+
+      NSec = Evt%S2CLU%nsect
+      NSec_NoClu = Evt%S2CLU%nsect_noclu
+      NSec2Clu = Evt%S2CLU%nsect_clu
+      NClu2s = Evt%S2CLU%Nclus
+      do iC2Trig=1,NClu2s
+        NNorm(iC2Trig)   = Evt%S2CLU%Nnorm(iC2Trig)
+        NormAdd(iC2Trig) = Evt%S2CLU%NormAdd(iC2Trig)
+        NOver(iC2Trig)   = Evt%S2CLU%Nover(iC2Trig)
+        OverAdd(iC2Trig) = Evt%S2CLU%OverAdd(iC2Trig)
+        NCosm(iC2Trig)   = Evt%S2CLU%Ncosm(iC2Trig)
+        CosmAdd(iC2Trig) = Evt%S2CLU%CosmAdd(iC2Trig)
+      end do
+
+C-----------------------------------------------------------------------
 C Fill Block evttime
 C-----------------------------------------------------------------------
       istat = T0GLRD(T0Dc0,T0Hit0,T0Clu0,T0Step1,DelayCable,TBunch)

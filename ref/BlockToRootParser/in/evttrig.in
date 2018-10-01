@@ -1,0 +1,2 @@
+CALL HBName(Params%NtId,'Trig',trgwrd1,'trgw1:i')
+CALL HBName(Params%NtId,'Trig',trgwrd2,'trgw2:i')

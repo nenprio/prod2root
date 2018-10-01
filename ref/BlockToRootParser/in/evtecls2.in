@@ -1,0 +1,7 @@
+CALL HBName(Params%NtId,'ECLS2',Evt%ecls%n2,'necls2:i::[0,8]')
+CALL HBName(Params%NtId,'ECLS2',Evt%ecls%trigger2,'ECLtrgw2:i')
+CALL HBName(Params%NtId,'ECLS2',Evt%ecls%Filfo2,'ECLfilfo2:i')
+CALL HBName(Params%NtId,'ECLS2',Evt%ecls%totword2,'ECLword2(necls2):i')
+CALL HBname(Params%NtId,'ECLS2',Evt%ecls%stream2,'ECLstream2(necls2):i')
+CALL HBname(Params%NtId,'ECLS2',Evt%ecls%tagnum2,'ECLtagnum2(necls2):i')
+CALL HBname(Params%NtId,'ECLS2',Evt%ecls%evntyp2,'ECLevtype2(necls2):i')

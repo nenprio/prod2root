@@ -36,6 +36,8 @@ C BLOCK STRUCTURE DECLARATIONS
 C Follow the declarations of all the variables filled by data
 C and the related common blocks.
 C
+
+C
 C Block: evtinfo
 C
       integer NumRun,NumEv,Pileup,GCod,PhiD
@@ -94,4 +96,12 @@ C
       integer Trgw1, Trgw2
 
       common /evttrig/Trgw1,Trgw2
+C
+C  Block: evtc2trig
+C
+      integer iC2Trig, NSec, NSec_NoClu, NSec2Clu, NClu2s
+      integer NNorm(100), NormAdd(100), NOver(100)
+      integer OverAdd(100), NCosm(100), CosmAdd(100)
 
+      common /evtc2trig/NSec,NSec_NoClu,NSec2Clu,NClu2s,
+     1       NNorm,NormAdd,NOver,OverAdd,NCosm,CosmAdd
