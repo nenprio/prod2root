@@ -3,6 +3,9 @@
 // This header contains all the structs needed to 
 // write ntuple data to C++ format.
 
+const int MaxNumClu  = 100;
+const int MaxEclSize = 8;
+
 // Block:   evtinfo
 extern "C"{
   extern struct{
@@ -41,17 +44,17 @@ extern "C"{
     int NEcls;
     int EclTrgw;
     int EclFilfo;
-    int EclWord[8];
-    int EclStream[8];
-    int EclTagNum[8];
-    int EclEvType[8];
+    int EclWord[MaxEclSize];
+    int EclStream[MaxEclSize];
+    int EclTagNum[MaxEclSize];
+    int EclEvType[MaxEclSize];
     int NEcls2;
     int EclTrgw2;
     int EclFilfo2;
-    int EclWord2[8];
-    int EclStream2[8];
-    int EclTagNum2[8];
-    int EclEvType2[8];
+    int EclWord2[MaxEclSize];
+    int EclStream2[MaxEclSize];
+    int EclTagNum2[MaxEclSize];
+    int EclEvType2[MaxEclSize];
   }evtecls_;
 }
 
@@ -106,5 +109,21 @@ extern "C" {
     int Trgw1;
     int Trgw2;
   }evttrig_;
+}
+
+// Block:   evtc2trg
+extern "C" {
+    extern struct {
+        int NSec;
+        int NSec_NoClu;
+        int NSec2Clu;
+        int NClu2s;
+        int NNorm[MaxNumClu];
+        int NormAdd[MaxNumClu];
+        int NOver[MaxNumClu];
+        int OverAdd[MaxNumClu];
+        int NCosm[MaxNumClu];
+        int CosmAdd[MaxNumClu];
+    }evtc2trg_;
 }
 #endif
