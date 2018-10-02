@@ -1,0 +1,520 @@
+      INTEGER FUNCTION ANSTUP(MODE,INLUN,OUTLUN,DEVICE)
+C     =================================================
+C
+C       Description:-
+C       =============
+C       This Function is used by Analysis_Control
+C       to setup and allocate work space for the
+C       standard Utilities used by this program.
+C       These standard utilities are:-
+C
+C       Analysis_Control Configuration
+C       UIPack Configuration
+C       Database Work Area
+C       Primary YBOS Array
+C       Primary YHIST Array
+C       HBOOK PAWC Common Array
+C
+C       where only those utilities used in this program
+C       are initialised.
+C
+C       Author:-
+C       ========
+C       BUILD_JOB Program Version  3.01
+C
+C       Declarations:-
+C       ==============
+C
+$$Implicit
+      INTEGER MODE, INLUN,OUTLUN,DEVICE
+C
+      COMMON/ANCOMM/ANPKI4
+      INTEGER       ANPKI4
+      DIMENSION     ANPKI4(    131072)
+      COMMON/MENUCO/MENUI4
+      INTEGER       MENUI4
+      DIMENSION     MENUI4(    131072)
+      COMMON/KLDBBK/CALII4
+      INTEGER       CALII4
+      DIMENSION     CALII4(   5000000)
+      COMMON/BCS   /YBOSI4
+      INTEGER       YBOSI4
+      DIMENSION     YBOSI4(    600000)
+      COMMON/PAWC  /HBK4I4
+      INTEGER       HBK4I4
+      DIMENSION     HBK4I4(  20000000)
+      INTEGER       ANPKIN, ANSTIN
+      INTEGER       UIINIT
+C
+      INTEGER       ZDBINI
+C
+$$Include 'RTDB$Library:HDBERR.Inc'
+      INTEGER       BOS77
+C
+C
+      INTEGER       APRIHEPDB
+C
+
+C
+$$Include 'A_C$Library:ANError.Inc'
+$$Include 'UIPack$Library:UIError.Inc'
+$$Include 'YBOS$Library:ErrCod.Inc'
+$$Include 'C$Inc:Erlevl.Inc'
+      EXTERNAL ANFIN
+C
+C       Executable Code:-
+C       =================
+C
+      ANSTUP = ANSUCC
+C
+C
+C       Initialise Analysis_Control
+C       ===========================
+C
+      IF (ANSTUP .EQ. ANSUCC) THEN
+         ANSTUP = ANPKIN(ANPKI4,    131072,'/ANCOMM/', 128)
+         IF (ANSTUP .EQ. YESUCC) ANSTUP = ANSUCC
+      ENDIF
+C
+C       Initialise UIPack
+C       =================
+C
+      IF (ANSTUP .EQ. ANSUCC) THEN
+         ANSTUP = UIINIT(MODE,INLUN,OUTLUN,DEVICE,    131072, 256)
+         IF (ANSTUP .EQ. UISUCC) ANSTUP = ANSUCC
+      ENDIF
+C
+C       Initialise Primary YBOS Array
+C       =============================
+C
+      IF (ANSTUP .EQ. ANSUCC) THEN
+         ANSTUP = BOS77(    600000, 256)
+         IF (ANSTUP .EQ. YESUCC) ANSTUP = ANSUCC
+      ENDIF
+C
+C       Initialise HBOOK Histogram Package
+C       ==================================
+C
+      IF (ANSTUP .EQ. ANSUCC) THEN
+         CALL HLIMIT(  20000000)
+      ENDIF
+C
+C       Initialise Database ZEBRA Array
+C       ===============================
+C
+      IF (ANSTUP .EQ. ANSUCC) THEN
+         ANSTUP = ZDBINI(   5000000,-3)
+         IF (ANSTUP .EQ. CESUCC) ANSTUP = ANSUCC
+      ENDIF
+C
+C       Initialise    CALIB Database
+C       ============================
+C
+      IF (ANSTUP .EQ. ANSUCC) THEN
+         ANSTUP = APRIHEPDB('CALI')
+         IF (ANSTUP .EQ. CESUCC) ANSTUP = ANSUCC
+      ENDIF
+C
+C       Initialise GEOMETRY Database
+C       ============================
+C
+      IF (ANSTUP .EQ. ANSUCC) THEN
+         ANSTUP = APRIHEPDB('GEOM')
+         IF (ANSTUP .EQ. CESUCC) ANSTUP = ANSUCC
+      ENDIF
+C
+C       Initialise RUN_COND Database
+C       ============================
+C
+      IF (ANSTUP .EQ. ANSUCC) THEN
+         ANSTUP = APRIHEPDB('RUNC')
+         IF (ANSTUP .EQ. CESUCC) ANSTUP = ANSUCC
+      ENDIF
+C
+C       Initialise      TMS Database
+C       ============================
+C
+      IF (ANSTUP .EQ. ANSUCC) THEN
+         ANSTUP = APRIHEPDB('  TP')
+         IF (ANSTUP .EQ. CESUCC) ANSTUP = ANSUCC
+      ENDIF
+C
+C       Initialise Analysis_Control Status Bank
+C       =======================================
+C
+      ANSTUP = ANSTIN(INLUN,OUTLUN)
+C
+C       Return to Caller
+C       ================
+C
+      IF(ANSTUP.NE.ANSUCC)   CALL ANEROR(ANSTUP)
+      RETURN
+      END
+      SUBROUTINE ANLGEO
+C     =================
+C
+C       Description:-
+C       =============
+C       This Routine is used by Analysis_Control
+C       to Load the geometry data base when needed.
+C       If offline is not enabled it is dummied.
+C       Author:-
+C       ========
+C       BUILD_JOB Program Version  3.01
+C
+C       Declarations:-
+C       ==============
+C
+$$Implicit
+C
+C
+C       Return to Caller
+C       ================
+C
+        RETURN
+        END
+      INTEGER FUNCTION ANFIN(DUMMY)
+C     =============================
+C
+C       Description:-
+C       =============
+C       This Function is used by Analysis_Control
+C       to close the standard  databases upon program
+C       termination
+C       These standard database are:-
+C
+C       Calibration Database
+C       Geometry Database
+C       Run Conditions Database
+C       TMS Database
+C
+C       where only those databases used in this program
+C       are closed.
+C
+C       Author:-
+C       ========
+C       BUILD_JOB Program Version  3.01
+C
+C       Declarations:-
+C       ==============
+C
+$$Implicit
+      INTEGER DUMMY
+C
+C
+      INTEGER CHIUDIHEPDB
+C
+$$Include 'RTDB$Library:HDBERR.Inc'
+C
+      INTEGER ANHCCL
+C
+$$Include 'A_C$Library:ANError.Inc'
+C
+C       Executable Code:-
+C       =================
+C
+      ANFIN = ANSUCC
+C
+C
+C       Close Calibration databases
+C       =====================
+      IF(ANFIN.EQ.ANSUCC)   THEN
+         ANFIN = CHIUDIHEPDB('CALI')
+         IF(ANFIN.EQ.CESUCC)   ANFIN=ANSUCC
+      ENDIF
+C
+C       Close Geometry databases
+C       =====================
+      IF(ANFIN.EQ.ANSUCC)   THEN
+         ANFIN = CHIUDIHEPDB('GEOM')
+         IF(ANFIN.EQ.CESUCC)   ANFIN=ANSUCC
+      ENDIF
+C
+C       Close Run Conditions databases
+C       =====================
+      IF(ANFIN.EQ.ANSUCC)   THEN
+         ANFIN = CHIUDIHEPDB('RUNC')
+         IF(ANFIN.EQ.CESUCC)   ANFIN=ANSUCC
+      ENDIF
+C
+C       Close TMS databases
+C       =====================
+      IF(ANFIN.EQ.ANSUCC)   THEN
+         ANFIN = CHIUDIHEPDB('  TP')
+         IF(ANFIN.EQ.CESUCC)   ANFIN=ANSUCC
+      ENDIF
+C
+C       Cleanup (close) HBOOK4 Histogram Files
+C       ======================================
+C
+      IF (ANFIN .EQ. ANSUCC)
+     &   ANFIN = ANHCCL(-1)
+C
+C       Return to Caller
+C       ================
+C
+      IF(ANFIN.NE.ANSUCC)   CALL ANEROR(ANFIN)
+      RETURN
+      END
+C
+      SUBROUTINE ANGEN_DEF(TEXT1,TEXT2,TEXT3,INT1,INT2,INT3,DEFTYPE)
+C     ==============================================================
+C       Description:-
+C       =============
+C       This Subprogram is called by UIPACK to pass
+C       certain definitions to X-Windows subprograms
+C
+C       Author:-
+C       ========
+C       BUILD_JOB Program Version  3.01
+C
+C       Declarations:-
+$$Implicit
+      CHARACTER*(*) TEXT1,TEXT2,TEXT3,DEFTYPE
+      INTEGER INT1,INT2,INT3
+C
+C
+C       Executable Code:-
+C       =================
+C
+C
+C       Dummy Routine  X-Windows Interface not used
+C
+      RETURN
+      END
+C
+C
+      SUBROUTINE ANGEN_PARS
+C     =====================
+C       Description:-
+C       =============
+C       This Subprogram is called by Analysis_Control 
+C       to start X-Windows Interface
+C       Calls ANPARS
+C
+C       Author:-
+C       ========
+C       BUILD_JOB Program Version  3.01
+C
+C       Declarations:-
+$$Implicit
+C
+C
+C       Executable Code:-
+C       =================
+C
+C
+C       Dummy Routine  X-Windows Interface not used
+C
+      CALL ANPARS
+      RETURN
+      END
+C
+      INTEGER FUNCTION ANMDEC(DUMMY)
+C     ==============================
+C
+C       Description:-
+C       =============
+C       This Subprogram is called by Analysis_Control to
+C       declare the Modules in the current Executable
+C       Program
+C
+C       Author:-
+C       ========
+C       BUILD_JOB Program Version  3.01
+C
+C       Declarations:-
+C       ==============
+C
+$$Implicit
+      INTEGER DUMMY
+$$Include 'A_C$Library:ANError.Inc'
+C
+      INTEGER IM_KID_IN_DEC
+      INTEGER prod2ntu_dec
+      INTEGER SAMDC
+C
+C       Executable Code:-
+C       =================
+C
+      ANMDEC = ANSUCC
+C
+      IF (ANMDEC .EQ. ANSUCC) THEN
+         ANMDEC = IM_KID_IN_DEC(DUMMY)
+      ENDIF
+      IF (ANMDEC .EQ. ANSUCC) THEN
+         ANMDEC = prod2ntu_dec(DUMMY)
+      ENDIF
+      IF (ANMDEC .EQ. ANSUCC) THEN
+         ANMDEC = SAMDC(DUMMY)
+      ENDIF
+C
+C       Return to Caller
+C       ================
+      IF(ANMDEC.NE.ANSUCC)   CALL ANEROR(ANMDEC)
+C
+      RETURN
+      END
+      INTEGER FUNCTION prod2ntu_dec(DUMMY)
+C     ==============================
+C
+C       Description:-
+C       =============
+C       This Function is the Module Declaration
+C       Subprogram for Module PROD2NTU. It defines
+C       the Module Entrypoints and Characteristics.
+C
+C       Author:-
+C       ========
+C       BUILD_JOB Program Version  3.01
+C
+C       Declarations:-
+C       ==============
+C
+$$Implicit
+      INTEGER DUMMY
+C
+$$Include 'A_C$Library:ANError.Inc'
+$$Include 'A_C$Library:ANParam.Inc'
+C
+      INTEGER ANDMOD,ANDENT,ANDBOO
+      INTEGER ANUMOD
+      INTEGER ANDFIL
+      INTEGER ANDMPA
+C
+      LOGICAL DONE
+C
+      EXTERNAL prod2ntu_in
+      EXTERNAL prod2ntu_rin
+      EXTERNAL prod2ntu_ev
+      EXTERNAL prod2ntu_rfi
+      EXTERNAL prod2ntu_end
+      EXTERNAL prod2ntu_tk
+      EXTERNAL prod2ntu_hb
+      SAVE DONE
+      DATA DONE/.FALSE./ 
+C
+C       Executable Code:-
+C       =================
+C
+      prod2ntu_dec = ANSUCC
+C
+      IF (prod2ntu_dec .EQ. ANSUCC) THEN
+         IF(.NOT.DONE)   THEN
+            prod2ntu_dec = ANDMOD('PROD2NTU',
+     &      'Production to Ntuple ')
+            DONE = .TRUE.
+         ELSE
+            prod2ntu_dec = ANUMOD('PROD2NTU')
+         ENDIF
+      ENDIF
+      IF (prod2ntu_dec .EQ. ANSUCC) THEN
+         prod2ntu_dec = ANDFIL(DUMMY)
+      ENDIF
+      IF (prod2ntu_dec .EQ. ANSUCC) THEN
+         prod2ntu_dec = ANDENT(prod2ntu_in,ANMEIN)
+      ENDIF
+      IF (prod2ntu_dec .EQ. ANSUCC) THEN
+         prod2ntu_dec = ANDENT(prod2ntu_rin,ANMERI)
+      ENDIF
+      IF (prod2ntu_dec .EQ. ANSUCC) THEN
+         prod2ntu_dec = ANDENT(prod2ntu_ev,ANMEEV)
+      ENDIF
+      IF (prod2ntu_dec .EQ. ANSUCC) THEN
+         prod2ntu_dec = ANDENT(prod2ntu_rfi,ANMERF)
+      ENDIF
+      IF (prod2ntu_dec .EQ. ANSUCC) THEN
+         prod2ntu_dec = ANDENT(prod2ntu_end,ANMEFI)
+      ENDIF
+      IF (prod2ntu_dec .EQ. ANSUCC) THEN
+         prod2ntu_dec = ANDENT(prod2ntu_tk,ANMETA)
+      ENDIF
+      IF (prod2ntu_dec .EQ. ANSUCC) THEN
+         prod2ntu_dec = ANDBOO(prod2ntu_hb,     0,     0)
+      ENDIF
+      IF (prod2ntu_dec .EQ. ANSUCC) THEN
+         prod2ntu_dec = ANDMPA(  2)
+      ENDIF
+C
+C       Return to Caller
+C       ================
+C
+      RETURN
+      END
+      INTEGER FUNCTION SAMDC(DUMMY)
+C     ==============================
+C
+C       Description:-
+C       =============
+C       This Function is the Module Declaration
+C       Subprogram for Module SAMPLE. It defines
+C       the Module Entrypoints and Characteristics.
+C
+C       Author:-
+C       ========
+C       BUILD_JOB Program Version  3.01
+C
+C       Declarations:-
+C       ==============
+C
+$$Implicit
+      INTEGER DUMMY
+C
+$$Include 'A_C$Library:ANError.Inc'
+$$Include 'A_C$Library:ANParam.Inc'
+C
+      INTEGER ANDMOD,ANDENT,ANDBOO
+      INTEGER ANUMOD
+C
+      LOGICAL DONE
+C
+      EXTERNAL SAMIN
+      EXTERNAL SAMRI
+      EXTERNAL SAMEV
+      EXTERNAL SAMRE
+      EXTERNAL SAMFI
+      EXTERNAL SAMTK
+      EXTERNAL SAMHB
+      SAVE DONE
+      DATA DONE/.FALSE./ 
+C
+C       Executable Code:-
+C       =================
+C
+      SAMDC = ANSUCC
+C
+      IF (SAMDC .EQ. ANSUCC) THEN
+         IF(.NOT.DONE)   THEN
+            SAMDC = ANDMOD('SAMPLE','ROOT NTUPLE')
+            DONE = .TRUE.
+         ELSE
+            SAMDC = ANUMOD('SAMPLE')
+         ENDIF
+      ENDIF
+      IF (SAMDC .EQ. ANSUCC) THEN
+         SAMDC = ANDENT(SAMIN,ANMEIN)
+      ENDIF
+      IF (SAMDC .EQ. ANSUCC) THEN
+         SAMDC = ANDENT(SAMRI,ANMERI)
+      ENDIF
+      IF (SAMDC .EQ. ANSUCC) THEN
+         SAMDC = ANDENT(SAMEV,ANMEEV)
+      ENDIF
+      IF (SAMDC .EQ. ANSUCC) THEN
+         SAMDC = ANDENT(SAMRE,ANMERF)
+      ENDIF
+      IF (SAMDC .EQ. ANSUCC) THEN
+         SAMDC = ANDENT(SAMFI,ANMEFI)
+      ENDIF
+      IF (SAMDC .EQ. ANSUCC) THEN
+         SAMDC = ANDENT(SAMTK,ANMETA)
+      ENDIF
+      IF (SAMDC .EQ. ANSUCC) THEN
+         SAMDC = ANDBOO(SAMHB,     0,     0)
+      ENDIF
+C
+C       Return to Caller
+C       ================
+C
+      RETURN
+      END

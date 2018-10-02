@@ -51,50 +51,49 @@ RootExplorer::RootExplorer(const char *inFile, const char *outDir) {
     std::cout << n << std::endl;
 
     // Branches initialization
-    /* b_nRun      = tree->GetBranch("nRun"); */
-    /* b_Info      = tree->GetBranch("Info"); */
-    /* b_Data      = tree->GetBranch("Data"); */
-    /* b_necls     = tree->GetBranch("necls"); */
-    /* b_EclStream = tree->GetBranch("EclStream"); */
-    /* b_EclTrgw   = tree->GetBranch("EclTrgw"); */
-    /* b_EclFilfo  = tree->GetBranch("EclFilfo"); */
-    /* b_EclWord   = tree->GetBranch("EclWord"); */
-    /* b_EclTagNum = tree->GetBranch("EclTagNum"); */
-    /* b_EclEvType = tree->GetBranch("EclEvType"); */
+    b_nRun      = tree->GetBranch("nRun");
+    b_Info      = tree->GetBranch("Info");
+    b_Data      = tree->GetBranch("Data");
+    b_necls     = tree->GetBranch("necls");
+    b_EclStream = tree->GetBranch("EclStream");
+    b_EclTrgw   = tree->GetBranch("EclTrgw");
+    b_EclFilfo  = tree->GetBranch("EclFilfo");
+    b_EclWord   = tree->GetBranch("EclWord");
+    b_EclTagNum = tree->GetBranch("EclTagNum");
+    b_EclEvType = tree->GetBranch("EclEvType");
 
     // Leaves initialization
-    /* nRun            = b_nRun->GetLeaf("nRun"); */
-    /* Info_RunNumber  = b_Info->GetLeaf("RunNumber"); */
-    /* Info_EventNumber= b_Info->GetLeaf("EventNumber"); */
-    /* Info_Pileup     = b_Info->GetLeaf("Pileup"); */
-    /* Info_GenCod     = b_Info->GetLeaf("GenCod"); */
-    /* Info_PhiDecay   = b_Info->GetLeaf("PhiDecay"); */
-    /* Info_A1type     = b_Info->GetLeaf("A1type"); */
-    /* Info_A2Type     = b_Info->GetLeaf("A2Type"); */
-    /* Info_A3type     = b_Info ->GetLeaf("A3type"); */
-    /* Info_B1type     = b_Info->GetLeaf("B1type"); */
-    /* Info_B2type     = b_Info ->GetLeaf("B2type"); */
-    /* Info_B3type     = b_Info ->GetLeaf("B3type"); */
-    /* Data_StreamNum  = b_Data->GetLeaf("StreamNum"); */
-    /* Data_AlgoNum    = b_Data->GetLeaf("AlgoNum"); */
-    /* Data_TimeSec    = b_Data->GetLeaf("TimeSec"); */
-    /* Data_TimeMusec  = b_Data->GetLeaf("TimeMusec"); */
-    /* Data_Ndtce      = b_Data->GetLeaf("Ndtce"); */
-    /* Data_Mcflag_tg  = b_Data->GetLeaf("Mcflag_tg"); */
-    /* Data_Currpos    = b_Data->GetLeaf("Currpos"); */
-    /* Data_Currele    = b_Data->GetLeaf("Currele"); */
-    /* Data_Luminosity = b_Data->GetLeaf("Luminosity"); */
-    /* necls           = b_necls->GetLeaf("necls"); */
-    /* EclStream       = b_EclStream->GetLeaf("EclStream"); */
-    /* EclTrgw         = b_EclTrgw->GetLeaf("EclTrgw"); */
-    /* EclFilfo        = b_EclFilfo->GetLeaf("EclFilfo"); */
-    /* EclWord         = b_EclWord->GetLeaf("EclWord"); */
-    /* EclTagNum       = b_EclTagNum->GetLeaf("EclTagNum"); */
-    /* EclEvType       = b_EclEvType->GetLeaf("EclEvType"); */
+    nRun            = b_nRun->GetLeaf("nRun");
+    Info_RunNumber  = b_Info->GetLeaf("RunNumber");
+    Info_EventNumber= b_Info->GetLeaf("EventNumber");
+    Info_Pileup     = b_Info->GetLeaf("Pileup");
+    Info_GenCod     = b_Info->GetLeaf("GenCod");
+    Info_PhiDecay   = b_Info->GetLeaf("PhiDecay");
+    Info_A1type     = b_Info->GetLeaf("A1type");
+    Info_A2Type     = b_Info->GetLeaf("A2Type");
+    Info_A3type     = b_Info ->GetLeaf("A3type");
+    Info_B1type     = b_Info->GetLeaf("B1type");
+    Info_B2type     = b_Info ->GetLeaf("B2type");
+    Info_B3type     = b_Info ->GetLeaf("B3type");
+    Data_StreamNum  = b_Data->GetLeaf("StreamNum");
+    Data_AlgoNum    = b_Data->GetLeaf("AlgoNum");
+    Data_TimeSec    = b_Data->GetLeaf("TimeSec");
+    Data_TimeMusec  = b_Data->GetLeaf("TimeMusec");
+    Data_Ndtce      = b_Data->GetLeaf("Ndtce");
+    Data_Mcflag_tg  = b_Data->GetLeaf("Mcflag_tg");
+    Data_Currpos    = b_Data->GetLeaf("Currpos");
+    Data_Currele    = b_Data->GetLeaf("Currele");
+    Data_Luminosity = b_Data->GetLeaf("Luminosity");
+    necls           = b_necls->GetLeaf("necls");
+    EclStream       = b_EclStream->GetLeaf("EclStream");
+    EclTrgw         = b_EclTrgw->GetLeaf("EclTrgw");
+    EclFilfo        = b_EclFilfo->GetLeaf("EclFilfo");
+    EclWord         = b_EclWord->GetLeaf("EclWord");
+    EclTagNum       = b_EclTagNum->GetLeaf("EclTagNum");
+    EclEvType       = b_EclEvType->GetLeaf("EclEvType");
 
     f->Close();
-    /* delete f; */
-    /* delete tree; */
+    delete f;
 }
 
 RootExplorer::~RootExplorer() {

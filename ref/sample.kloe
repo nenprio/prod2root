@@ -128,53 +128,31 @@ $$INCLUDE 'k$itls:hetenum.cin'      ! HET max dim
 $$INCLUDE 'k$itls:hetestru.cin'  !LET Stru
 $$include 'k$itls:prod2ntu.inc'
 $$include 'k$itls:prod2ntu_talk.inc'
-C
 $$include 'sample.inc'
-    
+   
+C
+C All the declarations are moved in sample.cin
+C What are the following lines? I maintain here at the moment to 
+C let fix the "RunNumber" issue. 
+C TODO: Move them to sample.cin
+C
+C NOTE1: trgwrd1/2 are used in block EVTTRG and if no other you, 
+C they can be removed. Now they are commented
 C
       INTEGER istat, OldRunNumber
       data OldRunNumber/0/
       save OldRunNumber
       integer ind1,inddat
-      Integer trgwrd1,trgwrd2,numdhit
-      common /trgcom/trgwrd1,trgwrd2,numdhit
+C      Integer trgwrd1,trgwrd2,numdhit
+C      common /trgcom/trgwrd1,trgwrd2,numdhit
+      Integer numdhit
+      common /trgcom/numdhit
       LOGICAL mcflag_1
       INTEGER mcflag_tg
 C
-C External functions
-C
-      INTEGER T0GLRD, T0MCRD
-      INTEGER GETCLUSTRU,GETMCSTRU,GETCELESTRU,GETEVCL,GETCLUOSTRU
-      INTEGER TRKV2STRU,GETTCLOSTRU,GETCFHISTRU,BLOCAT
-      INTEGER ParSet, GETQIHISTRU,GETQCALSTRU
-      INTEGER GETQCAESTRU, GETDHSPSTRU
-      INTEGER GETTELESTRU, GETPRECLUSTRU
-      INTEGER GETPIZZASTRU, TPIE_UPK
-      INTEGER pizza_reset,torta_reset,tele_reset
-      Integer GET_DPRS_STRUCT,GETNVO
-      Integer GETECLO,GETCLUSTRUCORR
-      INTEGER BIGEST,banknum, fillbposcommon
-      INTEGER GETQCALTSTRU,getqcthstru,GETCCALTSTRU,getletestru,itce_upk
-      INTEGER gethetestru, hete_dump
-
-      INTEGER    ANGIST, ANGOHS, ANGPAR, anptrg
-      INTEGER GETECLS,GETTIME,GETPIZZETTA
-      INTEGER GETTELLINA,GETCWRKSTRU,GETTRIGGER,TRKQ2STRU
-      INTEGER Ncwrkhit,j
-      REAL Rstat,getbpos
-      INTEGER GETSEC2CLUSTRU
-      INTEGER GETCSPSSTRU, GETCLUOMCSTRU
-
-      INTEGER TRKVOLD2STRU, GETOLDTCLOSTRU, DHIT_RESET, DHIT_UPK
-      INTEGER DEDX2STRU_GET, DEDX2STRU_RESET
-      INTEGER BNKNUM
-      
-      integer icurr
-C
 C=============================================================================
 C Start of Code:
-C ==============
-
+C=============================================================================
       IF( exptyp.eq.exofsi )then ! Simulation
          mcflag_1 = .true.
       else
@@ -186,18 +164,17 @@ C ==============
       Else
          mcflag_tg=0
       EndIf
-C-----------------------------------------------------------------------
+C-----------------------------------------------------------------------------
 C Fill event classification information
-C-----------------------------------------------------------------------
-
-C
+C-----------------------------------------------------------------------------
       IF( mcflag_1 )  THEN
          istat = GETEVCL(evt%Info)
-         istat = BLOCAT(iw,'EVCL',1,ind1,inddat)
-         IF( TRIGFLAG ) THEN
-           trgwrd1 = IW( inddat+1 )
-           trgwrd2 = IW( inddat+2 )
-         ENDIF
+C         istat = BLOCAT(iw,'EVCL',1,ind1,inddat)
+C   Moved to the Block definition
+C         IF( TRIGFLAG ) THEN
+C           trgwrd1 = IW( inddat+1 )
+C           trgwrd2 = IW( inddat+2 )
+C         ENDIF
          
       ELSE
          istat = GETTIME(timesec,timemusec)
@@ -222,90 +199,248 @@ C
          Lumi= iw(inddat+6)*1.e-6         
       ENDIF
 C-----------------------------------------------------------------------
-C Fill Event Infos
+C Fill Block evtinfo
 C-----------------------------------------------------------------------
-      if(mcflag_1)then
+      IF(mcflag_1)THEN
          istat=blocat(iw,'BRID',1,ind1,inddat)
          Evt%Info%RunNumber = iw(inddat)
-         if(Evt%Info%RunNumber.ne.OldRunNumber)then
+         IF(Evt%Info%RunNumber.ne.OldRunNumber)THEN
             istat = fillbposcommon(Evt%Info%RunNumber)
             OldRunNumber = Evt%Info%RunNumber
-         end if
-      else
-         Evt%Info%RunNumber   = Nrun
-      end if
+         END IF
+      ELSE
+         Evt%Info%RunNumber = Nrun
+      END IF
       Evt%Info%EventNumber = Nev
-C      istat = GETECLS(evt%ecls)
+        
+      NumRun = Evt%Info%RunNumber
+      NumEv = Evt%Info%EventNumber
+      Pileup = Evt%Info%Pileup
+      GCod = Evt%Info%GenCod
+      PhiD = Evt%Info%PhiDecay
+      A1Typ = Evt%Info%A1type
+      A2Typ = Evt%Info%A2type
+      A3Typ = Evt%Info%A3type
+      B1Typ = Evt%Info%B1type
+      B2Typ = Evt%Info%B2type
+      B3Typ = Evt%Info%B3type
 
+C-----------------------------------------------------------------------
+C Fill Block evtecls 
+C-----------------------------------------------------------------------
+      nEcls = 0
+      EclTrgw = 0
+      EclFilfo = 0
+      DO iecls=1,8
+        EclWord(iecls) = 0
+        EclStream(iecls) = 0
+        EclTagNum(iecls) = 0
+        EclEvType(iecls) = 0
+      END DO
+      
+      nEcls2 = 0
+      EclTrgw2 = 0
+      EclFilfo2 = 0
+      DO iecls2=1,8
+        EclWord2(iecls2) = 0
+        EclStream2(iecls2) = 0
+        EclTagNum2(iecls2) = 0
+        EclEvType2(iecls2) = 0
+      END DO
 
-CPG 240718 To fill the commom evtinfo for Root
-        NumRun = Evt%Info%RunNumber
-        NumEv = Evt%Info%EventNumber
-        Pileup = Evt%Info%Pileup
-        GCod = Evt%Info%GenCod
-        PhiD = Evt%Info%PhiDecay
-        A1Typ = Evt%Info%A1type
-        A2Typ = Evt%Info%A2type
-        A3Typ = Evt%Info%A3type
-        B1Typ = Evt%Info%B1type
-        B2Typ = Evt%Info%B2type
-        B3Typ = Evt%Info%B3type
-
-C      IF( ECLSFLAG ) THEN
-        istat = GETECLS(evt%ecls)
-C      ENDIF
-
-CPG 270718 To fill the commom evtecls for Root
-        necls = 0
-        EclTrgw = 0
-        EclFilfo = 0
-        do iecls=1,8
-            EclWord(iecls) = 0
-            EclStream(iecls) = 0
-            EclTagNum(iecls) = 0
-            EclEvType(iecls) = 0
-        end do
-
-        necls = evt%ecls%n
+      istat = GETECLS(evt%ecls)
+        
+      necls = evt%ecls%n
+      IF (nEcls > 0 .OR. nEcls <= 8) THEN
         EclTrgw = evt%ecls%trigger
         EclFilfo = evt%ecls%filfo
-        do iecls=1,necls
-            EclWord(iecls) = evt%ecls%totword(iecls)
-            EclStream(iecls) = evt%ecls%stream(iecls)
-            EclTagNum(iecls) = evt%ecls%TagNum(iecls)
-            EclEvType(iecls) = evt%ecls%EvnTyp(iecls)
-        end do
+        DO iecls=1,necls
+          EclWord(iecls) = evt%ecls%TotWord(iecls)
+          EclStream(iecls) = evt%ecls%Stream(iecls)
+          EclTagNum(iecls) = evt%ecls%TagNum(iecls)
+          EclEvType(iecls) = evt%ecls%EvnTyp(iecls)
+        END DO
+      ELSE
+        WRITE(*,*) 'ERROR EVTC2TRIG - NClu2s Out of bound : ', NClu2s
+      END IF
+      
+      nEcls2 = evt%ecls%n2
 
-        istat = T0GLRD(T0Dc0,T0Hit0,T0Clu0,T0Step1,DelayCable,TBunch)
-        istat = T0MCRD(TPhased_mc)
+      IF (nEcls2 > 0 .OR. nEcls <= 8) THEN
+        EclTrgw2 = evt%ecls%trigger2
+        EclFilfo2 = evt%ecls%filfo2
+        DO iecls2=1,necls2
+          EclWord2(iecls2) = evt%ecls%TotWord2(iecls2)
+          EclStream2(iecls2) = evt%ecls%Stream2(iecls2)
+          EclTagNum2(iecls2) = evt%ecls%TagNum2(iecls2)
+          EclEvType2(iecls2) = evt%ecls%EvnTyp2(iecls2)
+        END DO
+      ELSE
+        WRITE(*,*) 'ERROR EVTC2TRIG - NClu2s Out of bound : ', NClu2s
+      END IF
 
-CPG 240718 To fill the commom evtbpos for Root
-        BPx = Evt%Bpos%px
-        BPy = Evt%Bpos%py
-        BPz = Evt%Bpos%pz
-        Bx = Evt%Bpos%x
-        By = Evt%Bpos%y
-        Bz = Evt%Bpos%z
-        BWidPx = Evt%Bpos%errpx
-        BWidPy = Evt%Bpos%errpy
-        BWidPz = Evt%Bpos%errpz
-        BSx = Evt%Bpos%errx
-        BSy = Evt%Bpos%erry
-        BSz = Evt%Bpos%errz
-        BLumx = Evt%Bpos%lumx
-        BLumz = Evt%Bpos%lumz
+C-----------------------------------------------------------------------
+C Fill Block evtbpos
+C-----------------------------------------------------------------------
+      BPx = 0.
+      BPy = 0.
+      BPz = 0.
+      Bx = 0.
+      By = 0.
+      Bz = 0.
+      BWidPx = 0.
+      BWidPy = 0.
+      BWidPz = 0.
+      BSx = 0.
+      BSy = 0.
+      BSz = 0.
+      BLumx = 0.
+      BLumz = 0.
+      Broots = 0.
+      BrootsErr = 0.
 
-CPG 240718 To fill the commom evttime for Root
-        Evt%T0stru%dc_step0   = T0Dc0
-        Evt%T0stru%hit_step0  = T0Hit0
-        Evt%T0stru%clus_step0 = T0Clu0
-        Evt%T0stru%step1      = T0Step1
-        Evt%T0stru%cable      = DelayCable
-        Evt%T0stru%tbunch     = TBunch
-        Evt%T0stru%tphased_mc = TPhased_mc
+      rstat = GETBPOS(Evt%Bpos)
 
-        call fillntu() 	
+      BPx = Evt%Bpos%px
+      BPy = Evt%Bpos%py
+      BPz = Evt%Bpos%pz
+      Bx = Evt%Bpos%x
+      By = Evt%Bpos%y
+      Bz = Evt%Bpos%z
+      BWidPx = Evt%Bpos%errpx
+      BWidPy = Evt%Bpos%errpy
+      BWidPz = Evt%Bpos%errpz
+      BSx = Evt%Bpos%errx
+      BSy = Evt%Bpos%erry
+      BSz = Evt%Bpos%errz
+      BLumx = Evt%Bpos%lumx
+      BLumz = Evt%Bpos%lumz
+      Broots = Evt%Bpos%Ene
+      BrootsErr = Evt%Bpos%ErrEne
+C-----------------------------------------------------------------------
+C Fill Block evtgdhit
+C-----------------------------------------------------------------------
+      DtceHit = 0.
+      DhreHit = 0.
+      DprsHit = 0.
+      DtfsHit = 0.
 
+      istat = BIGEST(iw,'DTCE',banknum)
+      istat = BLOCAT(iw,'DTCE',banknum,ind1,inddat)
+      IF( istat.ne.YESUCC ) THEN
+        NDtce =0
+      ELSE
+        NDtce = IW(inddat+DTCNRO)
+      ENDIF
+      CALL GETGDCHIT(Evt%GHit)
+
+      DtceHit = NDtce
+      DhreHit = Evt%GHit%nhit
+      DprsHit = Evt%GHit%nhpr
+      DtfsHit = Evt%GHit%nhtf
+C-----------------------------------------------------------------------
+C Fill Block evttrig
+C-----------------------------------------------------------------------
+      istat = BLOCAT(iw,'EVCL',1,ind1,inddat)
+      Trgw1 = IW( inddat+1 )
+      Trgw2 = IW( inddat+2 )
+C-----------------------------------------------------------------------
+C Fill Block evtc2trig
+C-----------------------------------------------------------------------
+      NSec = 0.
+      NSec_NoClu = 0.
+      NSec2Clu = 0.
+      NClu2s = 0.
+      DO iC2Trig=1,100
+        NNorm(iC2Trig)   = 0.
+        NormAdd(iC2Trig) = 0.
+        NOver(iC2Trig)   = 0.
+        OverAdd(iC2Trig) = 0.
+        NCosm(iC2Trig)   = 0.
+        CosmAdd(iC2Trig) = 0.
+      END DO
+
+      istat = GETSEC2CLUSTRU(evt%s2clu)
+
+      NSec = Evt%S2CLU%nsect
+      NSec_NoClu = Evt%S2CLU%nsect_noclu
+      NSec2Clu = Evt%S2CLU%nsect_clu
+      NClu2s = Evt%S2CLU%Nclus
+
+      IF (NClu2s > 0 .OR. NClu2s <= 100) THEN
+        DO iC2Trig=1,NClu2s
+          NNorm(iC2Trig)   = Evt%S2CLU%Nnorm(iC2Trig)
+          NormAdd(iC2Trig) = Evt%S2CLU%NormAdd(iC2Trig)
+          NOver(iC2Trig)   = Evt%S2CLU%Nover(iC2Trig)
+          OverAdd(iC2Trig) = Evt%S2CLU%OverAdd(iC2Trig)
+          NCosm(iC2Trig)   = Evt%S2CLU%Ncosm(iC2Trig)
+          CosmAdd(iC2Trig) = Evt%S2CLU%CosmAdd(iC2Trig)
+        END DO
+      ELSE
+        WRITE(*,*) 'ERROR EVTC2TRIG - NClu2s Out of bound : ', NClu2s
+      END IF
+C-----------------------------------------------------------------------
+C Fill Block tellina
+C-----------------------------------------------------------------------
+      NTel = 0.
+      DO iTELLINA=1, 1000
+        Add_Tel(iTELLINA) = 0.
+        Bitp_Tel(iTELLINA) = 0.
+        Ea_Tel(iTELLINA) = 0.
+        Eb_Tel(iTELLINA) = 0.
+        Ta_Tel(iTELLINA) = 0.
+        Tb_Tel(iTELLINA) = 0.
+      END DO
+
+      istat = GETTELLINA(Evt%Tellina) 
+
+      NTel = Evt%Tellina%n
+      IF (NTel > 0 .OR. NTel <= 1000) THEN
+        DO iTELLINA=1, NTel
+          Add_Tel(iTELLINA) = Evt%Tellina%add(iTELLINA)
+          Bitp_Tel(iTELLINA) = Evt%Tellina%Bitp(iTELLINA)
+          Ea_Tel(iTELLINA) = Evt%Tellina%Ea(iTELLINA)
+          Eb_Tel(iTELLINA) = Evt%Tellina%Eb(iTELLINA)
+          Ta_Tel(iTELLINA) = Evt%Tellina%Ta(iTELLINA)
+          Tb_Tel(iTELLINA) = Evt%Tellina%Tb(iTELLINA)
+        END DO
+      ELSE
+        WRITE(*,*) 'ERROR TELLINA - NTel Out of bound : ', NTel
+      END IF
+
+C-----------------------------------------------------------------------
+C Fill Block pizzetta
+C-----------------------------------------------------------------------
+      NPiz = 0.
+      DO iPIZZETTA=1, 1000
+        Add_Piz(iPIZZETTA) = 0.
+        Ea_Piz(iPIZZETTA)  = 0.
+        Eb_Piz(iPIZZETTA)  = 0.
+        E_Piz(iPIZZETTA)   = 0.
+        Z_Piz(iPIZZETTA)   = 0.
+      END DO
+
+      istat = GETPIZZETTA(Evt%Pizzetta)
+
+      NPiz = Evt%Pizzetta%n
+      IF (NPiz > 0 .OR. NPiz <= 1000) THEN
+        DO iPIZZETTA=1, NPiz
+          Add_Piz(iPIZZETTA) = Evt%Pizzetta%Add(iPIZZETTA)
+          Ea_Piz(iPIZZETTA)  = Evt%Pizzetta%Ea(iPIZZETTA)
+          Eb_Piz(iPIZZETTA)  = Evt%Pizzetta%Eb(iPIZZETTA)
+          E_Piz(iPIZZETTA)   = Evt%Pizzetta%E_Rec(iPIZZETTA)
+          Z_Piz(iPIZZETTA)   = Evt%Pizzetta%Z_Mod(iPIZZETTA)
+        END DO
+      ELSE
+        WRITE(*,*) 'ERROR PIZZETTA - NPiz Out of bound : ', NPiz
+      END IF
+C-----------------------------------------------------------------------
+C Fill Block evttime
+C-----------------------------------------------------------------------
+      istat = T0GLRD(T0Dc0,T0Hit0,T0Clu0,T0Step1,DelayCable,TBunch)
+      istat = T0MCRD(TPhased_mc)
+        
+      call fillntu() 	
 CC End of code
 C============
       RETURN
@@ -332,11 +467,6 @@ C
 $$INCLUDE 'C$INC:ERLEVL.INC'
 $$INCLUDE 'CALIBINC:ANERROR.INC'
 $$include 'sample.inc'
-C
-C
-C External functions
-C
-      INTEGER    ANGOHS
 C
 C Local declarations
 C

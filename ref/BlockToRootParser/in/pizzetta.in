@@ -1,0 +1,6 @@
+CALL HBNAME(Params%NtId,'Pizze',Evt%Pizzetta%n,'npiz:i')
+CALL HBNAME(Params%NtId,'Pizze',Evt%Pizzetta%add,'add_piz(npiz):i')
+CALL HBNAME(Params%NtId,'Pizze',Evt%Pizzetta%Ea,'Ea_piz(npiz):r')
+CALL HBNAME(Params%NtId,'Pizze',Evt%Pizzetta%Eb,'Eb_piz(npiz):r')
+CALL HBNAME(Params%NtId,'Pizze',Evt%Pizzetta%E_rec,'E_piz(npiz):r')
+CALL HBNAME(Params%NtId,'Pizze',Evt%Pizzetta%Z_mod,'Z_piz(npiz):r')

@@ -15,8 +15,8 @@ int main() {
     const char *outHbConvDir="out/hb_conv_out";
     
     // Create object RootExplorer
-    /* RootExplorer *rootExplorer = new RootExplorer(sampleFile, outSampleDir); */
-    /* rootExplorer->printInfo(); */
+    RootExplorer *rootExplorer = new RootExplorer(sampleFile, outSampleDir);
+    rootExplorer->printInfo();
 
     //Create object HBConvExplorer
     HBConvExplorer *hbConvExplorer = new HBConvExplorer(hbConvFile, outHbConvDir);

@@ -1,0 +1,7 @@
+CALL HBName(Params%NtId,'Telli',Evt%Tellina%n,'ntel:i')
+CALL HBNAME(Params%NtId,'Telli',Evt%Tellina%add,'add_tel(ntel):i')
+CALL HBNAME(Params%NtId,'Telli',Evt%Tellina%Bitp,'bitp_tel(ntel):i')
+CALL HBNAME(Params%NtId,'Telli',Evt%Tellina%Ea,'Ea_tel(ntel):r')
+CALL HBNAME(Params%NtId,'Telli',Evt%Tellina%Eb,'Eb_tel(ntel):r')
+CALL HBNAME(Params%NtId,'Telli',Evt%Tellina%Ta,'Ta_tel(ntel):r')
+CALL HBNAME(Params%NtId,'Telli',Evt%Tellina%Tb,'Tb_tel(ntel):r')

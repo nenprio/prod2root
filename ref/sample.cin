@@ -2,51 +2,122 @@ C====================================================================
 C sample.cin
 C====================================================================
 C
-C    
-C       Block: Info
+C INITIAL DECLARATIONS
+C Follow the declarations of external functions 
+C and return variables used in sample.kloe to fill the data.
 C
-        integer NumRun,NumEv,Pileup,GCod,PhiD
-        integer A1Typ,A2Typ,A3Typ
-        integer B1Typ,B2Typ,B3Typ
+        real    rstat, getbpos
+        integer t0glrd, t0mcrd
+        integer getclustru, getmcstru, getcelestru
+        integer getevcl, getcluostru
+        integer trkv2stru, gettclostru, getcfhistru, blocat
+        integer parset, getqihistru, getqcalstru
+        integer getqcaestru, getdhspstru
+        integer gettelestru, getpreclustru
+        integer getpizzastru, tpie_upk
+        integer pizza_reset, torta_reset, tele_reset
+        integer get_dprs_struct, getnvo
+        integer geteclo, getclustrucorr
+        integer bigest, banknum, fillbposcommon
+        integer getqcaltstru, getqcthstru, getccaltstru
+        integer getletestru, itce_upk
+        integer gethetestru, hete_dump
+        integer angist, angohs, angpar, anptrg
+        integer getecls, gettime, getpizzetta
+        integer gettellina, getcwrkstru, gettrigger, trkq2stru
+        integer ncwrkhit, j
+        integer getsec2clustru
+        integer getcspsstru, getcluomcstru
+        integer trkvold2stru, getoldtclostru, dhit_reset, dhit_upk
+        integer dedx2stru_get, dedx2stru_reset
+        integer bnknum, icurr
+C
+C BLOCK STRUCTURE DECLARATIONS
+C Follow the declarations of all the variables filled by data
+C and the related common blocks.
+C
 
-        common /evtinfo/NumRun,NumEv,Pileup,GCod,PhiD,
-        1      A1Typ,A2Typ,A3Typ,B1Typ,B2Typ,B3Typ
 C
-C       Block: Data
+C Block: evtinfo
 C
-        integer StreamNum,AlgoNum
-        integer TimeSec,TimeMusec
-        integer Ndtce,McFlag
-        real    IPos,IEle,Lumi
+      integer NumRun,NumEv,Pileup,GCod,PhiD
+      integer A1Typ,A2Typ,A3Typ
+      integer B1Typ,B2Typ,B3Typ
+
+      common /evtinfo/NumRun,NumEv,Pileup,GCod,PhiD,
+     1      A1Typ,A2Typ,A3Typ,B1Typ,B2Typ,B3Typ
+C
+C Block: evtdata
+C
+      integer StreamNum,AlgoNum
+      integer TimeSec,TimeMusec
+      integer Ndtce,McFlag
+      real    IPos,IEle,Lumi
         
-        common /eventinfo/StreamNum,AlgoNum,TimeSec,TimeMusec,
-        1      Ndtce,McFlag,IPos,IEle,Lumi
+      common /eventinfo/StreamNum,AlgoNum,TimeSec,TimeMusec,
+     1      Ndtce,McFlag,IPos,IEle,Lumi
 C
-C       Block: BPOS
+C Block:  evtecls
 C
-        real BPx,BPy,BPz,Bx,By,Bz
-        real BWidPx,BWidPy,BWidPz
-        real BSx,BSy,BSz,BLumx,BLumz
+      integer NEcls,iEcls,EclTrgw,EclFilfo
+      integer EclWord(8),EclStream(8)
+      integer EclTagNum(8),EclEvType(8)
+      integer NEcls2,iEcls2,EclTrgw2,EclFilfo2
+      integer EclWord2(8),EclStream2(8)
+      integer EclTagNum2(8),EclEvType2(8)
 
-        common /evtbpos/BPx,BPy,BPz,Bx,By,Bz,BWidPx,BWidPy,BWidPz,
-        1       BSx,BSy,BSz,BLumx,BLumz
+      common /evtecls/NEcls,EclTrgw,EclFilfo,EclWord,EclStream,
+     1    EclTagNum,EclEvType,NEcls2,EclTrgw2,EclFilfo2,EclWord2,
+     1    EclStream2,EclTagNum2,EclEvType2
 C
-C       Block:  Ecl
+C  Block: evtbpos
 C
-        integer NEcls,iecls,EclTrgw,EclFilfo
-        integer EclWord(8),EclStream(8)
-        integer EclTagNum(8),EclEvType(8)
+      real BPx, BPy, BPz, Bx, By, Bz, BWidPx, BWidPy, BWidPz
+      real BSx, BSy, BSz, BLumx, BLumz, Broots, BrootsErr        
+        
+      common /evtbpos/BPx,BPy,BPz,Bx,By,Bz,BWidPx,BWidPy,BWidPz,
+     1       BSx,BSy,BSz,BLumx,BLumz,Broots,BrootsErr
+C
+C Block:  Time
+C
+      real TPhased_mc,T0Dc0,T0Hit0,T0Clu0,T0Step1,DelayCable,TBunch
 
-        common /evtecls/necls,EclTrgw,EclFilfo,EclWord,EclStream
-        1    ,EclTagNum,EclEvType
+      common /evttime/TPhased_mc,T0Dc0,T0Hit0,T0Clu0,T0Step1,
+     1       DelayCable,TBunch
 C
-C       Block:  Time
+C  Block: evtgdhit
 C
-        real TPhased_mc,T0Dc0,T0Hit0,T0Clu0,T0Step1,DelayCable,TBunch
-        common /evttime/TPhased_mc,T0Dc0,T0Hit0,T0Clu0,T0Step1,
-        1       DelayCable,TBunch
+      integer DtceHit, DhreHit, DprsHit, DtfsHit
+ 
+      common /evtgdhit/DtceHit,DhreHit,DprsHit,DtfsHit
 C
-C        integer DtceHit,DhreHit,DprsHit,DtfsHit        
-C        common /evtgdhit/DtceHit,DhreHit,DprsHit,DtfsHit       
-C      
-C     
+C  Block: evttrig
+C
+      integer Trgw1, Trgw2
+
+      common /evttrig/Trgw1,Trgw2
+C
+C  Block: evtc2trig
+C
+      integer iC2Trig, NSec, NSec_NoClu, NSec2Clu, NClu2s
+      integer NNorm(100), NormAdd(100), NOver(100)
+      integer OverAdd(100), NCosm(100), CosmAdd(100)
+
+      common /evtc2trig/NSec,NSec_NoClu,NSec2Clu,NClu2s,
+     1       NNorm,NormAdd,NOver,OverAdd,NCosm,CosmAdd
+C
+C  Block: tellina
+C
+      integer iTELLINA, NTel, Add_Tel(1000), Bitp_Tel(1000)
+      real Ea_Tel(1000), Eb_Tel(1000), Ta_Tel(1000), Tb_Tel(1000)
+
+      common /tellina/NTel,Add_Tel,Bitp_Tel,
+     1       Ea_Tel,Eb_Tel,Ta_Tel,Tb_Tel
+C
+C  Block: pizzetta
+C
+      integer iPIZZETTA
+      integer NPiz, Add_Piz(1000)
+      real Ea_Piz(1000), Eb_Piz(1000), E_Piz(1000), Z_Piz(1000)
+
+      common /pizzetta/NPiz,Add_Piz,Ea_Piz,Eb_Piz,E_Piz,Z_Piz

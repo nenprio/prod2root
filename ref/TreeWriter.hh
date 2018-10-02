@@ -11,7 +11,12 @@ class TreeWriter{
          void addBlockData();
          void addBlockEcl();
          void addBlockBPOS();
+         void addBlockGdHit();
          void addBlockTime();
+         void addBlockTrig();
+         void addBlockC2Trig();
+         void addBlockTellina();
+         void addBlockPizzetta();
          TFile* getTFile();
          void fillTTree();
      private:

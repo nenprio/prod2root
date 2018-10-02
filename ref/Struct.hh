@@ -3,7 +3,11 @@
 // This header contains all the structs needed to 
 // write ntuple data to C++ format.
 
-// Block:   Event Info
+const int MaxNumClu  = 100;
+const int MaxEclSize = 8;
+const int MaxTrgChan = 1000;
+
+// Block:   evtinfo
 extern "C"{
   extern struct{
     int NumRun;
@@ -20,7 +24,7 @@ extern "C"{
   }evtinfo_;
 }
 
-// Block:  Event Data
+// Block:   evtdata
 extern "C"{
   extern struct{
     int StreamNum;
@@ -35,38 +39,47 @@ extern "C"{
   }eventinfo_;
 }
 
-// Block:   Event Ecl
+// Block:   evtecls
 extern "C"{
   extern struct{
     int NEcls;
     int EclTrgw;
     int EclFilfo;
-    int EclWord[8];
-    int EclStream[8];
-    int EclTagNum[8];
-    int EclEvType[8];
+    int EclWord[MaxEclSize];
+    int EclStream[MaxEclSize];
+    int EclTagNum[MaxEclSize];
+    int EclEvType[MaxEclSize];
+    int NEcls2;
+    int EclTrgw2;
+    int EclFilfo2;
+    int EclWord2[MaxEclSize];
+    int EclStream2[MaxEclSize];
+    int EclTagNum2[MaxEclSize];
+    int EclEvType2[MaxEclSize];
   }evtecls_;
 }
 
-// Block:   Event BPOS
-extern "C"{
-  extern struct{
-      float BPx;
-      float BPy;
-      float BPz;
-      float Bx;
-      float By;
-      float Bz;
-      float BWidPx;
-      float BWidPy;
-      float BWidPz;
-      float BSx;
-      float BSy;
-      float BSz;
-      float BLumx;
-      float BLumz;
-  }evtbpos_;
-}
+// Block:    evtbpos
+extern "C" {
+   extern struct {
+     float BPx;
+     float BPy;
+     float BPz;
+     float Bx;
+     float By;
+     float Bz;
+     float BWidPx;
+     float BWidPy;
+     float BWidPz;
+     float BSx;
+     float BSy;
+     float BSz;
+     float BLumx;
+     float BLumz;
+     float Broots;
+     float BrootsErr;
+   }evtbpos_;
+ }
 
 // Block:   evttime
 extern "C"{
@@ -79,6 +92,65 @@ extern "C"{
     float DelayCable;
     float TBunch;
   }evttime_;
+}
+
+// Block:   evtgdhit
+extern "C" {
+  extern struct {
+    int DtceHit;
+    int DhreHit;
+    int DprsHit;
+    int DtfsHit;
+  }evtgdhit_;
+}
+
+// Block:   evttrig
+extern "C" {
+  extern struct {
+    int Trgw1;
+    int Trgw2;
+  }evttrig_;
+}
+
+// Block:   evtc2trig
+extern "C" {
+  extern struct {
+    int NSec;
+    int NSec_NoClu;
+    int NSec2Clu;
+    int NClu2s;
+    int NNorm[MaxNumClu];
+    int NormAdd[MaxNumClu];
+    int NOver[MaxNumClu];
+    int OverAdd[MaxNumClu];
+    int NCosm[MaxNumClu];
+    int CosmAdd[MaxNumClu];
+  }evtc2trig_;
+}
+
+// Block:   tellina
+extern "C" {
+  extern struct {
+    int NTel;
+    int Add_Tel[MaxTrgChan];
+    int Bitp_Tel[MaxTrgChan];
+    float Ea_Tel[MaxTrgChan];
+    float Eb_Tel[MaxTrgChan];
+    float Ta_Tel[MaxTrgChan];
+    float Tb_Tel[MaxTrgChan];
+  }tellina_;
+}
+
+// Block:   pizzetta
+extern "C" {
+  extern struct {
+    int NPiz;
+    int Add_Piz[MaxTrgChan];
+    float Ea_Piz[MaxTrgChan];
+    float Eb_Piz[MaxTrgChan];
+    float E_Piz[MaxTrgChan];
+    float Z_Piz[MaxTrgChan];
+  }pizzetta_;
 }
 
 #endif
