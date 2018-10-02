@@ -50,7 +50,7 @@ def getStructContent(block_name, names, types, nameIsArray):
     for i,(t,n) in enumerate(zip(types,names)):
         c_type = FORT_TO_C_TYPES.get(t)
         if nameIsArray[i]:
-            content += "    " + c_type + " " + n + "[>>>MAX-SIZE<<<];\n"
+            content += "    " + c_type + " " + n + "[>MAX-VALUE<];\n"
         else:
             content += "    " + c_type + " " + n + ";\n"
     content += "  }" + block_name + "_;\n"
@@ -114,11 +114,11 @@ def getKloeContent(block_name, names, data, nameIsArray):
 
     # Initialize all arrays to zero
     if len(arrays)>0:
-        content += "      do i" + block_name.upper() + "=1, >>>MAX-SIZE<<<\n"
+        content += "      DO i" + block_name.upper() + "=1, >>>MAX-SIZE<<<\n"
     for j in arrays:
         content += "        " +  names[j] + "(i" + block_name.upper() + ") = 0.\n"
     if len(arrays)>0:
-        content += "      end do\n"
+        content += "      END DO\n"
 
     content += "\n"
     content += "      >>>INSERT HERE THE GET FUNCTION<<<\n"
@@ -129,11 +129,15 @@ def getKloeContent(block_name, names, data, nameIsArray):
 
     # Initialize all arrays to zero
     if len(arrays)>0:
-        content += "      do i" + block_name.upper() + "=1, >>>INDEX-VAR<<<\n"
+        content += "      IF (>INDEX-VAR< <= 0 .OR >INDEX-VAR< > >MAX-VALUE<) THEN\n"
+        content += "        DO i" + block_name.upper() + "=1, >INDEX-VAR<\n"
     for j in arrays:
-        content += "        " + names[j] + "(i" + block_name.upper() + ") = " + data[j] + "(i" + block_name.upper() + ")\n"
+        content += "          " + names[j] + "(i" + block_name.upper() + ") = " + data[j] + "(i" + block_name.upper() + ")\n"
     if len(arrays)>0:
-        content += "      end do\n"
+        content += "        END DO\n"
+        content += "      ELSE\n"
+        content += "        WRITE(*,*) \'ERROR " + block_name.upper() + " - >INDEX-VAR< Out of bound : \', >INDEX-VAR<\n"
+        content += "      END IF\n"
     return content
 
 # Create TreeWriter.cpp content
@@ -148,7 +152,7 @@ def getCppContent(block_name, names, types, nameIsArray):
         if nameIsArray[i]:
             content += "    fNewTree->Branch(\"" + name + "\", "
             content += "&" + block_name + "_." + name + ", "
-            content += "\"" + name + "[>>>INDEX-VAR<<<]/" + FORT_TO_ROOT_TYPES.get(t) + "\");\n"
+            content += "\"" + name + "[>INDEX-VAR<]/" + FORT_TO_ROOT_TYPES.get(t) + "\");\n"
         else:
             content += "    fNewTree->Branch(\"" + name + "\", "
             content += "&" + block_name + "_." + name + ", "
