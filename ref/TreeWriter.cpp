@@ -35,6 +35,8 @@ TreeWriter::TreeWriter() {
     addBlockTellina();
     // Block Pizzetta
     addBlockPizzetta();
+    // Block Tele
+    addBlockTele();
 
     // Write to the disk
     outfile->Write();
@@ -198,6 +200,22 @@ void TreeWriter::addBlockPizzetta() {
     fNewTree->Branch("Eb_Piz",  &pizzetta_.Eb_Piz,  "Eb_Piz[NPiz]/F");
     fNewTree->Branch("E_Piz",   &pizzetta_.E_Piz,   "E_Piz[NPiz]/F");
     fNewTree->Branch("Z_Piz",   &pizzetta_.Z_Piz,   "Z_Piz[NPiz]/F");
+}
+
+// Add to the tree all the branches realted to the block EVTTELE.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockTele() {
+    fNewTree->Branch("NTele",   &EvtTele_.NTele,    "NTele/I");
+    fNewTree->Branch("Det_Trg", &EvtTele_.Det_Trg,  "Det_Trg[NTele]/I");
+    fNewTree->Branch("BitP",    &EvtTele_.BitP,     "BitP[NTele]/I");
+    fNewTree->Branch("Sector",  &EvtTele_.Sector,   "Sector[NTele]/I");
+    fNewTree->Branch("SerKind", &EvtTele_.SerKind,  "SerKind[NTele]/I");
+    fNewTree->Branch("Ea_Trg",  &EvtTele_.Ea_Trg,   "Ea_Trg[NTele]/F");
+    fNewTree->Branch("Eb_Trg",  &EvtTele_.Eb_Trg,   "Eb_Trg[NTele]/F");
+    fNewTree->Branch("Ta_Trg",  &EvtTele_.Ta_Trg,   "Ta_Trg[NTele]/F");
+    fNewTree->Branch("Tb_Trg",  &EvtTele_.Tb_Trg,   "Tb_Trg[NTele]/F");
 }
 
 // Add to the tree all the branches related to the block DGHIT.

@@ -6,6 +6,7 @@
 const int MaxNumClu  = 100;
 const int MaxEclSize = 8;
 const int MaxTrgChan = 1000;
+const int MaxNTele   = 300;
 
 // Block:   evtinfo
 extern "C"{
@@ -151,6 +152,21 @@ extern "C" {
     float E_Piz[MaxTrgChan];
     float Z_Piz[MaxTrgChan];
   }pizzetta_;
+}
+
+// Block:   evttele
+extern "C" {
+  extern struct {
+    int NTele;
+    int Det_Trg[MaxNTele];
+    int BitP[MaxNTele];
+    int Sector[MaxNTele];
+    int SerKind[MaxNTele];
+    float Ea_Trg[MaxNTele];
+    float Eb_Trg[MaxNTele];
+    float Ta_Trg[MaxNTele];
+    float Tb_Trg[MaxNTele];
+  }EvtTele_;
 }
 
 #endif

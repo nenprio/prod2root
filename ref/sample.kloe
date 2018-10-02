@@ -435,6 +435,44 @@ C-----------------------------------------------------------------------
         WRITE(*,*) 'ERROR PIZZETTA - NPiz Out of bound : ', NPiz
       END IF
 C-----------------------------------------------------------------------
+C Fill Block Torta
+C-----------------------------------------------------------------------
+C
+C NOT IMPLEMENTED
+C
+C-----------------------------------------------------------------------
+C Fill Block EvtTele
+C-----------------------------------------------------------------------
+      NTele = 0.
+      DO iEVTTELE=1, 300
+        Det_Trg(iEVTTELE) = 0.
+        BitP(iEVTTELE) = 0.
+        Sector(iEVTTELE) = 0.
+        SerKind(iEVTTELE) = 0.
+        Ea_Trg(iEVTTELE) = 0.
+        Eb_Trg(iEVTTELE) = 0.
+        Ta_Trg(iEVTTELE) = 0.
+        Tb_Trg(iEVTTELE) = 0.
+      END DO
+
+      istat = GETTELESTRU(Evt%TELE)
+
+      NTele = Evt%TELE%ntele
+      IF (NTele > 0 .OR. NTele <= 300) THEN
+        DO iEVTTELE=1, NTele
+          Det_Trg(iEVTTELE) = Evt%TELE%Det(iEVTTELE)
+          BitP(iEVTTELE) = Evt%TELE%Bitp(iEVTTELE)
+          Sector(iEVTTELE) = Evt%TELE%Sector(iEVTTELE)
+          SerKind(iEVTTELE) = Evt%TELE%Serkind(iEVTTELE)
+          Ea_Trg(iEVTTELE) = Evt%TELE%Ea(iEVTTELE)
+          Eb_Trg(iEVTTELE) = Evt%TELE%Eb(iEVTTELE)
+          Ta_Trg(iEVTTELE) = Evt%TELE%Ta(iEVTTELE)
+          Tb_Trg(iEVTTELE) = Evt%TELE%Tb(iEVTTELE)
+        END DO
+      ELSE
+        WRITE(*,*) 'ERROR EVTTELE - NTele Out of bound : ', NTele
+      END IF
+C-----------------------------------------------------------------------
 C Fill Block evttime
 C-----------------------------------------------------------------------
       istat = T0GLRD(T0Dc0,T0Hit0,T0Clu0,T0Step1,DelayCable,TBunch)

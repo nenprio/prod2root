@@ -6,31 +6,31 @@ C INITIAL DECLARATIONS
 C Follow the declarations of external functions 
 C and return variables used in sample.kloe to fill the data.
 C
-        real    rstat, getbpos
-        integer t0glrd, t0mcrd
-        integer getclustru, getmcstru, getcelestru
-        integer getevcl, getcluostru
-        integer trkv2stru, gettclostru, getcfhistru, blocat
-        integer parset, getqihistru, getqcalstru
-        integer getqcaestru, getdhspstru
-        integer gettelestru, getpreclustru
-        integer getpizzastru, tpie_upk
-        integer pizza_reset, torta_reset, tele_reset
-        integer get_dprs_struct, getnvo
-        integer geteclo, getclustrucorr
-        integer bigest, banknum, fillbposcommon
-        integer getqcaltstru, getqcthstru, getccaltstru
-        integer getletestru, itce_upk
-        integer gethetestru, hete_dump
-        integer angist, angohs, angpar, anptrg
-        integer getecls, gettime, getpizzetta
-        integer gettellina, getcwrkstru, gettrigger, trkq2stru
-        integer ncwrkhit, j
-        integer getsec2clustru
-        integer getcspsstru, getcluomcstru
-        integer trkvold2stru, getoldtclostru, dhit_reset, dhit_upk
-        integer dedx2stru_get, dedx2stru_reset
-        integer bnknum, icurr
+        REAL    rstat, GETBPOS
+        INTEGER T0GLRD, T0MCRD
+        INTEGER GETCLUSTRU, GETMCSTRU, GETCELESTRU
+        INTEGER GETEVCL, GETCLUOSTRU
+        INTEGER TRKV2STRU, GETTCLOSTRU, GETCFHISTRU, BLOCAT
+        INTEGER PARSET, GETQIHISTRU, GETQCALSTRU
+        INTEGER GETQCAESTRU, GETDHSPSTRU
+        INTEGER GETTELESTRU, GETPRECLUSTRU
+        INTEGER GETPIZZASTRU, TPIE_UPK
+        INTEGER PIZZA_RESET, TORTA_RESET, TELE_RESET
+        INTEGER GET_DPRS_STRUCT, GETNVO
+        INTEGER GETECLO, GETCLUSTRUCORR
+        INTEGER BIGEST, BANKNUM, FILLBPOSCOMMON
+        INTEGER GETQCALTSTRU, GETQCTHSTRU, GETCCALTSTRU
+        INTEGER GETLETESTRU, ITCE_UPK
+        INTEGER GETHETESTRU, HETE_DUMP
+        INTEGER ANGIST, ANGOHS, ANGPAR, ANPTRG
+        INTEGER GETECLS, GETTIME, GETPIZZETTA
+        INTEGER GETTELLINA, GETCWRKSTRU, GETTRIGGER, TRKQ2STRU
+        INTEGER NCWRKHIT, J
+        INTEGER GETSEC2CLUSTRU
+        INTEGER GETCSPSSTRU, GETCLUOMCSTRU
+        INTEGER TRKVOLD2STRU, GETOLDTCLOSTRU, DHIT_RESET, DHIT_UPK
+        INTEGER DEDX2STRU_GET, DEDX2STRU_RESET
+        INTEGER BNKNUM, ICURR
 C
 C BLOCK STRUCTURE DECLARATIONS
 C Follow the declarations of all the variables filled by data
@@ -121,3 +121,12 @@ C
       real Ea_Piz(1000), Eb_Piz(1000), E_Piz(1000), Z_Piz(1000)
 
       common /pizzetta/NPiz,Add_Piz,Ea_Piz,Eb_Piz,E_Piz,Z_Piz
+C
+C  Block: EvtTele
+C
+      integer iEVTTELE
+      integer NTele,Det_Trg(300),BitP(300),Sector(300),SerKind(300)
+      real Ea_Trg(300), Eb_Trg(300), Ta_Trg(300), Tb_Trg(300)
+
+      common /EvtTele/NTele,Det_Trg,BitP,Sector,SerKind,Ea_Trg,Eb_Trg,Ta_Trg,Tb_Trg
+

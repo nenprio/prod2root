@@ -45,7 +45,8 @@ INFO_RESULT     = "[Info] Terminated. You can find the files in output directory
 # input:     -
 # output:    content of Struct.hh as string
 def getStructContent(block_name, names, types, nameIsArray):
-    content = "extern \"C\" {\n"
+    content = "// Block:   " + block_name + "\n"
+    content += "extern \"C\" {\n"
     content += "  extern struct {\n"
     for i,(t,n) in enumerate(zip(types,names)):
         c_type = FORT_TO_C_TYPES.get(t)
@@ -78,7 +79,7 @@ def getCinContent(block_name, names, types, nameIsArray):
         line_names = ""
         for i,j in enumerate(group):
             if nameIsArray[j]:
-                current_name = names[j] + "(>>>MAX-SIZE<<<)"
+                current_name = names[j] + "(>MAX-VALUE<)"
             else:
                 current_name = names[j]
             if i==0:
@@ -114,7 +115,7 @@ def getKloeContent(block_name, names, data, nameIsArray):
 
     # Initialize all arrays to zero
     if len(arrays)>0:
-        content += "      DO i" + block_name.upper() + "=1, >>>MAX-SIZE<<<\n"
+        content += "      DO i" + block_name.upper() + "=1, >MAX-VALUE<\n"
     for j in arrays:
         content += "        " +  names[j] + "(i" + block_name.upper() + ") = 0.\n"
     if len(arrays)>0:
@@ -135,7 +136,7 @@ def getKloeContent(block_name, names, data, nameIsArray):
         content += "          " + names[j] + "(i" + block_name.upper() + ") = " + data[j] + "(i" + block_name.upper() + ")\n"
     if len(arrays)>0:
         content += "        END DO\n"
-        content += "      ELSE THEN\n"
+        content += "      ELSE\n"
         content += "        WRITE(*,*) \'ERROR " + block_name.upper() + " - >INDEX-VAR< Out of bound : \', >INDEX-VAR<\n"
         content += "      END IF\n"
     return content
