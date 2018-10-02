@@ -141,4 +141,16 @@ extern "C" {
   }tellina_;
 }
 
+// Block:   pizzetta
+extern "C" {
+  extern struct {
+    int NPiz;
+    int Add_Piz[MaxTrgChan];
+    float Ea_Piz[MaxTrgChan];
+    float Eb_Piz[MaxTrgChan];
+    float E_Piz[MaxTrgChan];
+    float Z_Piz[MaxTrgChan];
+  }pizzetta_;
+}
+
 #endif

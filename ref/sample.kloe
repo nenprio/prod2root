@@ -390,6 +390,28 @@ C-----------------------------------------------------------------------
         Tb_Tel(iTELLINA) = Evt%Tellina%Tb(iTELLINA)
       end do
 C-----------------------------------------------------------------------
+C Fill Block pizzetta
+C-----------------------------------------------------------------------
+      NPiz = 0.
+      do iPIZZETTA=1, 1000
+        Add_Piz(iPIZZETTA) = 0.
+        Ea_Piz(iPIZZETTA) = 0.
+        Eb_Piz(iPIZZETTA) = 0.
+        E_Piz(iPIZZETTA) = 0.
+        Z_Piz(iPIZZETTA) = 0.
+      end do
+
+      istat = GETPIZZETTA(Evt%Pizzetta)
+
+      NPiz = Evt%Pizzetta%n
+      do iPIZZETTA=1, NPiz
+        Add_Piz(iPIZZETTA) = Evt%Pizzetta%Add(iPIZZETTA)
+        Ea_Piz(iPIZZETTA) = Evt%Pizzetta%Ea(iPIZZETTA)
+        Eb_Piz(iPIZZETTA) = Evt%Pizzetta%Eb(iPIZZETTA)
+        E_Piz(iPIZZETTA) = Evt%Pizzetta%E_Rec(iPIZZETTA)
+        Z_Piz(iPIZZETTA) = Evt%Pizzetta%Z_Mod(iPIZZETTA)
+      end do
+C-----------------------------------------------------------------------
 C Fill Block evttime
 C-----------------------------------------------------------------------
       istat = T0GLRD(T0Dc0,T0Hit0,T0Clu0,T0Step1,DelayCable,TBunch)

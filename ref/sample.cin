@@ -113,3 +113,11 @@ C
 
       common /tellina/NTel,Add_Tel,Bitp_Tel,
      1       Ea_Tel,Eb_Tel,Ta_Tel,Tb_Tel
+C
+C  Block: pizzetta
+C
+      integer iPIZZETTA
+      integer NPiz, Add_Piz(1000)
+      real Ea_Piz(1000), Eb_Piz(1000), E_Piz(1000), Z_Piz(1000)
+
+      common /pizzetta/NPiz,Add_Piz,Ea_Piz,Eb_Piz,E_Piz,Z_Piz

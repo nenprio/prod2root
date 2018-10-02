@@ -16,6 +16,7 @@ class TreeWriter{
          void addBlockTrig();
          void addBlockC2Trig();
          void addBlockTellina();
+         void addBlockPizzetta();
          TFile* getTFile();
          void fillTTree();
      private:

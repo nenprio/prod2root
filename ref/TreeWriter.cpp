@@ -33,6 +33,8 @@ TreeWriter::TreeWriter() {
     addBlockC2Trig();
     // Block Tellina
     addBlockTellina();
+    // Block Pizzetta
+    addBlockPizzetta();
 
     // Write to the disk
     outfile->Write();
@@ -171,7 +173,7 @@ void TreeWriter::addBlockC2Trig() {
     fNewTree->Branch("CosmAdd", &evtc2trig_.CosmAdd, "CosmAdd[NClu2s]/I");
 }
 
-// Add to the tree all the branches realted to the block Tellina.
+// Add to the tree all the branches realted to the block TELLINA.
 //
 // input:	-
 // output: -
@@ -183,6 +185,19 @@ void TreeWriter::addBlockTellina() {
     fNewTree->Branch("Eb_Tel",   &tellina_.Eb_Tel,   "Eb_Tel[NTel]/F");
     fNewTree->Branch("Ta_Tel",   &tellina_.Ta_Tel,   "Ta_Tel[NTel]/F");
     fNewTree->Branch("Tb_Tel",   &tellina_.Tb_Tel,   "Tb_Tel[NTel]/F");
+}
+
+// Add to the tree all the branches realted to the block PIZZETTA.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockPizzetta() {
+    fNewTree->Branch("NPiz",    &pizzetta_.NPiz,    "NPiz/I");
+    fNewTree->Branch("Add_Piz", &pizzetta_.Add_Piz, "Add_Piz[NPiz]/I");
+    fNewTree->Branch("Ea_Piz",  &pizzetta_.Ea_Piz,  "Ea_Piz[NPiz]/F");
+    fNewTree->Branch("Eb_Piz",  &pizzetta_.Eb_Piz,  "Eb_Piz[NPiz]/F");
+    fNewTree->Branch("E_Piz",   &pizzetta_.E_Piz,   "E_Piz[NPiz]/F");
+    fNewTree->Branch("Z_Piz",   &pizzetta_.Z_Piz,   "Z_Piz[NPiz]/F");
 }
 
 // Add to the tree all the branches related to the block DGHIT.
