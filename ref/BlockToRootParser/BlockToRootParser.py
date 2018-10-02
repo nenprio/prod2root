@@ -129,13 +129,13 @@ def getKloeContent(block_name, names, data, nameIsArray):
 
     # Initialize all arrays to zero
     if len(arrays)>0:
-        content += "      IF (>INDEX-VAR< <= 0 .OR >INDEX-VAR< > >MAX-VALUE<) THEN\n"
+        content += "      IF (>INDEX-VAR< > 0 .OR. >INDEX-VAR< <= >MAX-VALUE<) THEN\n"
         content += "        DO i" + block_name.upper() + "=1, >INDEX-VAR<\n"
     for j in arrays:
         content += "          " + names[j] + "(i" + block_name.upper() + ") = " + data[j] + "(i" + block_name.upper() + ")\n"
     if len(arrays)>0:
         content += "        END DO\n"
-        content += "      ELSE\n"
+        content += "      ELSE THEN\n"
         content += "        WRITE(*,*) \'ERROR " + block_name.upper() + " - >INDEX-VAR< Out of bound : \', >INDEX-VAR<\n"
         content += "      END IF\n"
     return content

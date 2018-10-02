@@ -201,16 +201,16 @@ C         ENDIF
 C-----------------------------------------------------------------------
 C Fill Block evtinfo
 C-----------------------------------------------------------------------
-      if(mcflag_1)then
+      IF(mcflag_1)THEN
          istat=blocat(iw,'BRID',1,ind1,inddat)
          Evt%Info%RunNumber = iw(inddat)
-         if(Evt%Info%RunNumber.ne.OldRunNumber)then
+         IF(Evt%Info%RunNumber.ne.OldRunNumber)THEN
             istat = fillbposcommon(Evt%Info%RunNumber)
             OldRunNumber = Evt%Info%RunNumber
-         end if
-      else
-         Evt%Info%RunNumber   = Nrun
-      end if
+         END IF
+      ELSE
+         Evt%Info%RunNumber = Nrun
+      END IF
       Evt%Info%EventNumber = Nev
         
       NumRun = Evt%Info%RunNumber
@@ -228,47 +228,56 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block evtecls 
 C-----------------------------------------------------------------------
-      necls = 0
+      nEcls = 0
       EclTrgw = 0
       EclFilfo = 0
-      do iecls=1,8
+      DO iecls=1,8
         EclWord(iecls) = 0
         EclStream(iecls) = 0
         EclTagNum(iecls) = 0
         EclEvType(iecls) = 0
-      end do
+      END DO
       
-      necls2 = 0
+      nEcls2 = 0
       EclTrgw2 = 0
       EclFilfo2 = 0
-      do iecls2=1,8
+      DO iecls2=1,8
         EclWord2(iecls2) = 0
         EclStream2(iecls2) = 0
         EclTagNum2(iecls2) = 0
         EclEvType2(iecls2) = 0
-      end do
+      END DO
 
       istat = GETECLS(evt%ecls)
         
       necls = evt%ecls%n
-      EclTrgw = evt%ecls%trigger
-      EclFilfo = evt%ecls%filfo
-      do iecls=1,necls
-        EclWord(iecls) = evt%ecls%TotWord(iecls)
-        EclStream(iecls) = evt%ecls%Stream(iecls)
-        EclTagNum(iecls) = evt%ecls%TagNum(iecls)
-        EclEvType(iecls) = evt%ecls%EvnTyp(iecls)
-      end do
+      IF (nEcls > 0 .OR. nEcls <= 8) THEN
+        EclTrgw = evt%ecls%trigger
+        EclFilfo = evt%ecls%filfo
+        DO iecls=1,necls
+          EclWord(iecls) = evt%ecls%TotWord(iecls)
+          EclStream(iecls) = evt%ecls%Stream(iecls)
+          EclTagNum(iecls) = evt%ecls%TagNum(iecls)
+          EclEvType(iecls) = evt%ecls%EvnTyp(iecls)
+        END DO
+      ELSE
+        WRITE(*,*) 'ERROR EVTC2TRIG - NClu2s Out of bound : ', NClu2s
+      END IF
       
-      necls2 = evt%ecls%n2
-      EclTrgw2 = evt%ecls%trigger2
-      EclFilfo2 = evt%ecls%filfo2
-      do iecls2=1,necls2
-        EclWord2(iecls2) = evt%ecls%TotWord2(iecls2)
-        EclStream2(iecls2) = evt%ecls%Stream2(iecls2)
-        EclTagNum2(iecls2) = evt%ecls%TagNum2(iecls2)
-        EclEvType2(iecls2) = evt%ecls%EvnTyp2(iecls2)
-      end do
+      nEcls2 = evt%ecls%n2
+
+      IF (nEcls2 > 0 .OR. nEcls <= 8) THEN
+        EclTrgw2 = evt%ecls%trigger2
+        EclFilfo2 = evt%ecls%filfo2
+        DO iecls2=1,necls2
+          EclWord2(iecls2) = evt%ecls%TotWord2(iecls2)
+          EclStream2(iecls2) = evt%ecls%Stream2(iecls2)
+          EclTagNum2(iecls2) = evt%ecls%TagNum2(iecls2)
+          EclEvType2(iecls2) = evt%ecls%EvnTyp2(iecls2)
+        END DO
+      ELSE
+        WRITE(*,*) 'ERROR EVTC2TRIG - NClu2s Out of bound : ', NClu2s
+      END IF
 
 C-----------------------------------------------------------------------
 C Fill Block evtbpos
@@ -318,12 +327,12 @@ C-----------------------------------------------------------------------
 
       istat = BIGEST(iw,'DTCE',banknum)
       istat = BLOCAT(iw,'DTCE',banknum,ind1,inddat)
-      IF( istat.ne.YESUCC )THEN
+      IF( istat.ne.YESUCC ) THEN
         NDtce =0
-      else
+      ELSE
         NDtce = IW(inddat+DTCNRO)
-      endif
-      CALL Getgdchit(Evt%GHit)
+      ENDIF
+      CALL GETGDCHIT(Evt%GHit)
 
       DtceHit = NDtce
       DhreHit = Evt%GHit%nhit
@@ -342,14 +351,14 @@ C-----------------------------------------------------------------------
       NSec_NoClu = 0.
       NSec2Clu = 0.
       NClu2s = 0.
-      do iC2Trig=1,100
+      DO iC2Trig=1,100
         NNorm(iC2Trig)   = 0.
         NormAdd(iC2Trig) = 0.
         NOver(iC2Trig)   = 0.
         OverAdd(iC2Trig) = 0.
         NCosm(iC2Trig)   = 0.
         CosmAdd(iC2Trig) = 0.
-      end do
+      END DO
 
       istat = GETSEC2CLUSTRU(evt%s2clu)
 
@@ -357,60 +366,74 @@ C-----------------------------------------------------------------------
       NSec_NoClu = Evt%S2CLU%nsect_noclu
       NSec2Clu = Evt%S2CLU%nsect_clu
       NClu2s = Evt%S2CLU%Nclus
-      do iC2Trig=1,NClu2s
-        NNorm(iC2Trig)   = Evt%S2CLU%Nnorm(iC2Trig)
-        NormAdd(iC2Trig) = Evt%S2CLU%NormAdd(iC2Trig)
-        NOver(iC2Trig)   = Evt%S2CLU%Nover(iC2Trig)
-        OverAdd(iC2Trig) = Evt%S2CLU%OverAdd(iC2Trig)
-        NCosm(iC2Trig)   = Evt%S2CLU%Ncosm(iC2Trig)
-        CosmAdd(iC2Trig) = Evt%S2CLU%CosmAdd(iC2Trig)
-      end do
+
+      IF (NClu2s > 0 .OR. NClu2s <= 100) THEN
+        DO iC2Trig=1,NClu2s
+          NNorm(iC2Trig)   = Evt%S2CLU%Nnorm(iC2Trig)
+          NormAdd(iC2Trig) = Evt%S2CLU%NormAdd(iC2Trig)
+          NOver(iC2Trig)   = Evt%S2CLU%Nover(iC2Trig)
+          OverAdd(iC2Trig) = Evt%S2CLU%OverAdd(iC2Trig)
+          NCosm(iC2Trig)   = Evt%S2CLU%Ncosm(iC2Trig)
+          CosmAdd(iC2Trig) = Evt%S2CLU%CosmAdd(iC2Trig)
+        END DO
+      ELSE
+        WRITE(*,*) 'ERROR EVTC2TRIG - NClu2s Out of bound : ', NClu2s
+      END IF
 C-----------------------------------------------------------------------
 C Fill Block tellina
 C-----------------------------------------------------------------------
       NTel = 0.
-      do iTELLINA=1, 1000
+      DO iTELLINA=1, 1000
         Add_Tel(iTELLINA) = 0.
         Bitp_Tel(iTELLINA) = 0.
         Ea_Tel(iTELLINA) = 0.
         Eb_Tel(iTELLINA) = 0.
         Ta_Tel(iTELLINA) = 0.
         Tb_Tel(iTELLINA) = 0.
-      end do
+      END DO
 
       istat = GETTELLINA(Evt%Tellina) 
 
       NTel = Evt%Tellina%n
-      do iTELLINA=1, NTel
-        Add_Tel(iTELLINA) = Evt%Tellina%add(iTELLINA)
-        Bitp_Tel(iTELLINA) = Evt%Tellina%Bitp(iTELLINA)
-        Ea_Tel(iTELLINA) = Evt%Tellina%Ea(iTELLINA)
-        Eb_Tel(iTELLINA) = Evt%Tellina%Eb(iTELLINA)
-        Ta_Tel(iTELLINA) = Evt%Tellina%Ta(iTELLINA)
-        Tb_Tel(iTELLINA) = Evt%Tellina%Tb(iTELLINA)
-      end do
+      IF (NTel > 0 .OR. NTel <= 1000) THEN
+        DO iTELLINA=1, NTel
+          Add_Tel(iTELLINA) = Evt%Tellina%add(iTELLINA)
+          Bitp_Tel(iTELLINA) = Evt%Tellina%Bitp(iTELLINA)
+          Ea_Tel(iTELLINA) = Evt%Tellina%Ea(iTELLINA)
+          Eb_Tel(iTELLINA) = Evt%Tellina%Eb(iTELLINA)
+          Ta_Tel(iTELLINA) = Evt%Tellina%Ta(iTELLINA)
+          Tb_Tel(iTELLINA) = Evt%Tellina%Tb(iTELLINA)
+        END DO
+      ELSE
+        WRITE(*,*) 'ERROR TELLINA - NTel Out of bound : ', NTel
+      END IF
+
 C-----------------------------------------------------------------------
 C Fill Block pizzetta
 C-----------------------------------------------------------------------
       NPiz = 0.
-      do iPIZZETTA=1, 1000
+      DO iPIZZETTA=1, 1000
         Add_Piz(iPIZZETTA) = 0.
-        Ea_Piz(iPIZZETTA) = 0.
-        Eb_Piz(iPIZZETTA) = 0.
-        E_Piz(iPIZZETTA) = 0.
-        Z_Piz(iPIZZETTA) = 0.
-      end do
+        Ea_Piz(iPIZZETTA)  = 0.
+        Eb_Piz(iPIZZETTA)  = 0.
+        E_Piz(iPIZZETTA)   = 0.
+        Z_Piz(iPIZZETTA)   = 0.
+      END DO
 
       istat = GETPIZZETTA(Evt%Pizzetta)
 
       NPiz = Evt%Pizzetta%n
-      do iPIZZETTA=1, NPiz
-        Add_Piz(iPIZZETTA) = Evt%Pizzetta%Add(iPIZZETTA)
-        Ea_Piz(iPIZZETTA) = Evt%Pizzetta%Ea(iPIZZETTA)
-        Eb_Piz(iPIZZETTA) = Evt%Pizzetta%Eb(iPIZZETTA)
-        E_Piz(iPIZZETTA) = Evt%Pizzetta%E_Rec(iPIZZETTA)
-        Z_Piz(iPIZZETTA) = Evt%Pizzetta%Z_Mod(iPIZZETTA)
-      end do
+      IF (NPiz > 0 .OR. NPiz <= 1000) THEN
+        DO iPIZZETTA=1, NPiz
+          Add_Piz(iPIZZETTA) = Evt%Pizzetta%Add(iPIZZETTA)
+          Ea_Piz(iPIZZETTA)  = Evt%Pizzetta%Ea(iPIZZETTA)
+          Eb_Piz(iPIZZETTA)  = Evt%Pizzetta%Eb(iPIZZETTA)
+          E_Piz(iPIZZETTA)   = Evt%Pizzetta%E_Rec(iPIZZETTA)
+          Z_Piz(iPIZZETTA)   = Evt%Pizzetta%Z_Mod(iPIZZETTA)
+        END DO
+      ELSE
+        WRITE(*,*) 'ERROR PIZZETTA - NPiz Out of bound : ', NPiz
+      END IF
 C-----------------------------------------------------------------------
 C Fill Block evttime
 C-----------------------------------------------------------------------
