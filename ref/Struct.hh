@@ -246,4 +246,29 @@ extern "C" {
   }cwrk_;
 }
 
+// Block:   cele
+extern "C" {
+  extern struct {
+    int NCel;
+    int ICl[NeleCluMax];
+    int Det[NeleCluMax];
+    int Wed[NeleCluMax];
+    int Pla[NeleCluMax];
+    int Col[NeleCluMax];
+    float Ea[NeleCluMax];
+    float Ta[NeleCluMax];
+    float Eb[NeleCluMax];
+    float Tb[NeleCluMax];
+    int NCelMc;
+    float EMc[NeleCluMax];
+    float TMc[NeleCluMax];
+    float XMc[NeleCluMax];
+    float YMc[NeleCluMax];
+    float ZMc[NeleCluMax];
+    int PTyp[NeleCluMax];
+    int KNum[NeleCluMax];
+    int NHit[NeleCluMax];
+  }cele_;
+}
+
 #endif

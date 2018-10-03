@@ -45,6 +45,8 @@ TreeWriter::TreeWriter() {
     addBlockPreClu();
     // Block CWRK
     addBlockCWRK();
+    // Block Cele
+    addBlockCele();
 
     // Write to the disk
     outfile->Write();
@@ -317,6 +319,32 @@ void TreeWriter::addBlockCWRK() {
     fNewTree->Branch("X", &cwrk_.X, "X[NCHit]/F");
     fNewTree->Branch("Y", &cwrk_.Y, "Y[NCHit]/F");
     fNewTree->Branch("Z", &cwrk_.Z, "Z[NCHit]/F");
+}
+
+// Add to the tree all the branches realted to the block Cele.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockCele() {
+    fNewTree->Branch("NCel", &cele_.NCel, "NCel/I");
+    fNewTree->Branch("ICl", &cele_.ICl, "ICl[NCel]/I");
+    fNewTree->Branch("Det", &cele_.Det, "Det[NCel]/I");
+    fNewTree->Branch("Wed", &cele_.Wed, "Wed[NCel]/I");
+    fNewTree->Branch("Pla", &cele_.Pla, "Pla[NCel]/I");
+    fNewTree->Branch("Col", &cele_.Col, "Col[NCel]/I");
+    fNewTree->Branch("Ea", &cele_.Ea, "Ea[NCel]/F");
+    fNewTree->Branch("Ta", &cele_.Ta, "Ta[NCel]/F");
+    fNewTree->Branch("Eb", &cele_.Eb, "Eb[NCel]/F");
+    fNewTree->Branch("Tb", &cele_.Tb, "Tb[NCel]/F");
+    fNewTree->Branch("NCelMc", &cele_.NCelMc, "NCelMc/I");
+    fNewTree->Branch("EMc", &cele_.EMc, "EMc[NCelMc]/F");
+    fNewTree->Branch("TMc", &cele_.TMc, "TMc[NCelMc]/F");
+    fNewTree->Branch("XMc", &cele_.XMc, "XMc[NCelMc]/F");
+    fNewTree->Branch("YMc", &cele_.YMc, "YMc[NCelMc]/F");
+    fNewTree->Branch("ZMc", &cele_.ZMc, "ZMc[NCelMc]/F");
+    fNewTree->Branch("PTyp", &cele_.PTyp, "PTyp[NCelMc]/I");
+    fNewTree->Branch("KNum", &cele_.KNum, "KNum[NCelMc]/I");
+    fNewTree->Branch("NHit", &cele_.NHit, "NHit[NCelMc]/I");
 }
 
 // Returns the output file object.

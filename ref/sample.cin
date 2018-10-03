@@ -166,3 +166,13 @@ C
       real Ene(300), T(300), X(300), Y(300), Z(300)
 
       common /cwrk/NCHit,IClu,ICel,CAdd,CmcHit,Ckine,Ene,T,X,Y,Z
+C
+C  Block: cele
+C
+      integer iCELE, NCel, ICl(300), Det(300), Wed(300), Pla(300)
+      integer Col(300), NCelMc, PTyp(300), KNum(300), NHit(300)
+      real Ea(300), Ta(300), Eb(300), Tb(300), EMc(300)
+      real TMc(300), XMc(300), YMc(300), ZMc(300)
+
+      common /cele/NCel,ICl,Det,Wed,Pla,Col,Ea,Ta,Eb,Tb,NCelMc,EMc,
+     1       TMc,XMc,YMc,ZMc,PTyp,KNum,NHit

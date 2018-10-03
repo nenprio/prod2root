@@ -22,6 +22,7 @@ class TreeWriter{
          void addBlockClu();
          void addBlockPreClu();
          void addBlockCWRK();
+         void addBlockCele();
          TFile* getTFile();
          void fillTTree();
      private:

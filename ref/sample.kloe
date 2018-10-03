@@ -643,6 +643,65 @@ C-----------------------------------------------------------------------
       ELSE
         WRITE(*,*) 'ERROR CWRK - NCHit Out of bound : ', NCHit
       END IF
+C-----------------------------------------------------------------------
+C Fill Block cele
+C-----------------------------------------------------------------------
+      NCel = 0.
+      NCelMc = 0.
+      DO iCELE=1, 300
+        ICl(iCELE) = 0.
+        Det(iCELE) = 0.
+        Wed(iCELE) = 0.
+        Pla(iCELE) = 0.
+        Col(iCELE) = 0.
+        Ea(iCELE) = 0.
+        Ta(iCELE) = 0.
+        Eb(iCELE) = 0.
+        Tb(iCELE) = 0.
+        EMc(iCELE) = 0.
+        TMc(iCELE) = 0.
+        XMc(iCELE) = 0.
+        YMc(iCELE) = 0.
+        ZMc(iCELE) = 0.
+        PTyp(iCELE) = 0.
+        KNum(iCELE) = 0.
+        NHit(iCELE) = 0.
+      END DO
+
+      istat = GETCELESTRU(Evt%Cele)
+
+      NCel = Evt%Cele%n 
+      NCelMc = Evt%Cele%nmc
+      IF (NCel > 0 .OR. NCel <= 300) THEN
+        DO iCELE=1, NCel
+          ICl(iCELE) = Evt%Cele%icl(iCELE)
+          Det(iCELE) = Evt%Cele%det(iCELE)
+          Wed(iCELE) = Evt%Cele%wed(iCELE)
+          Pla(iCELE) = Evt%Cele%pla(iCELE)
+          Col(iCELE) = Evt%Cele%col(iCELE)
+          Ea(iCELE) = Evt%Cele%Ea(iCELE)
+          Ta(iCELE) = Evt%Cele%ta(iCELE)
+          Eb(iCELE) = Evt%Cele%Eb(iCELE)
+          Tb(iCELE) = Evt%Cele%tb(iCELE)
+        END DO
+      ELSE
+        WRITE(*,*) 'ERROR CELE - NCel Out of bound : ', NCel
+      END IF
+
+      IF (NCelMc > 0 .OR. NCelMc <= 300) THEN
+        DO iCELE=1, NCelMc
+          EMc(iCELE) = Evt%Cele%Etrue(iCELE)
+          TMc(iCELE) = Evt%Cele%Ttrue(iCELE)
+          XMc(iCELE) = Evt%Cele%xtrue(iCELE)
+          YMc(iCELE) = Evt%Cele%ytrue(iCELE)
+          ZMc(iCELE) = Evt%Cele%ztrue(iCELE)
+          PTyp(iCELE) = Evt%Cele%ptyp(iCELE)
+          KNum(iCELE) = Evt%Cele%knum(iCELE)
+          NHit(iCELE) = Evt%Cele%numpar(iCELE)
+        END DO
+      ELSE
+        WRITE(*,*) 'ERROR CELE - NCelMc Out of bound : ', NCelMc
+      END IF
 C
 C Fill Root
 C
