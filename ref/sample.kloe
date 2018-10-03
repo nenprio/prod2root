@@ -536,7 +536,7 @@ C-----------------------------------------------------------------------
         Pid3(iEVTCLU) = 0.
       END DO
 
-      >>>INSERT HERE THE GET FUNCTION<<<
+      istat = GETCLUSTRU(Evt%Clu)
 
       NClu = Evt%Clu%n 
       NCluMc = Evt%Clu%nmc
@@ -572,6 +572,40 @@ C-----------------------------------------------------------------------
         END DO
       ELSE
         WRITE(*,*) 'ERROR EVTCLU - NCluMc Out of bound : ', NCluMc
+      END IF
+C-----------------------------------------------------------------------
+C Fill Block preclu
+C-----------------------------------------------------------------------
+      NPClu = 0.
+      DO iPRECLU=1, 100
+        EPre(iPRECLU) = 0.
+        TPre(iPRECLU) = 0.
+        XPre(iPRECLU) = 0.
+        YPre(iPRECLU) = 0.
+        ZPre(iPRECLU) = 0.
+        TAPre(iPRECLU) = 0.
+        TBPre(iPRECLU) = 0.
+        TARPre(iPRECLU) = 0.
+        TBRPre(iPRECLU) = 0.
+      END DO
+
+      istat = GETPRECLUSTRU(Evt%PreClu)
+
+      NPClu = Evt%PreClu%n 
+      IF (NPClu > 0 .OR. NPClu <= 100) THEN
+        DO iPRECLU=1, NPClu
+          EPre(iPRECLU) = Evt%PreClu%E (iPRECLU)
+          TPre(iPRECLU) = Evt%PreClu%T (iPRECLU)
+          XPre(iPRECLU) = Evt%PreClu%X (iPRECLU)
+          YPre(iPRECLU) = Evt%PreClu%Y (iPRECLU)
+          ZPre(iPRECLU) = Evt%PreClu%Z (iPRECLU)
+          TAPre(iPRECLU) = Evt%PreClu%TA(iPRECLU)
+          TBPre(iPRECLU) = Evt%PreClu%TB(iPRECLU)
+          TARPre(iPRECLU) = Evt%PreClu%TrmsA(iPRECLU)
+          TBRPre(iPRECLU) = Evt%PreClu%TrmsB(iPRECLU)
+        END DO
+      ELSE
+        WRITE(*,*) 'ERROR PRECLU - NPClu Out of bound : ', NPClu
       END IF
 
       call fillntu() 	

@@ -141,8 +141,7 @@ C
 C
 C  Block: evtclu
 C
-      integer iEVTCLU
-      integer NClu, FlagCl(100), NCluMc, NPar(100), PNum1(100),
+      integer iEVTCLU,NClu,FlagCl(100),NCluMc,NPar(100),PNum1(100),
       integer Pid1(100), PNum2(100), Pid2(100), PNum3(100), Pid3(100)
       real EneCl(100), TCl(100), XCl(100), YCl(100), ZCl(100), 
       real XaCl(100), YaCl(100), ZaCl(100), XRmCl(100), 
@@ -151,3 +150,12 @@ C
       common /evtclu/NClu,EneCl,TCl,XCl,YCl,ZCl,XaCl,YaCl,ZaCl,XRmCl,
      1       YRmsCl,ZrmsCl,TrmsCl,FlagCl,NCluMc,NPar,PNum1,Pid1,PNum2,
      1       Pid2,PNum3,Pid3
+C
+C  Block: preclu
+C
+      integer iPRECLU, NPClu
+      real EPre(100), TPre(100), XPre(100), YPre(100), ZPre(100),
+      real TAPre(100), TBPre(100), TARPre(100), TBRPre(100)
+
+      common /preclu/NPClu,EPre,TPre,XPre,YPre,ZPre,TAPre,TBPre,
+     1       TARPre,TBRPre

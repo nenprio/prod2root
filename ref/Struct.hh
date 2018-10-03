@@ -212,4 +212,20 @@ extern "C" {
   }evtclu_;
 }
 
+// Block:   preclu
+extern "C" {
+  extern struct {
+    int NPClu;
+    float EPre[MaxNumClu];
+    float TPre[MaxNumClu];
+    float XPre[MaxNumClu];
+    float YPre[MaxNumClu];
+    float ZPre[MaxNumClu];
+    float TAPre[MaxNumClu];
+    float TBPre[MaxNumClu];
+    float TARPre[MaxNumClu];
+    float TBRPre[MaxNumClu];
+  }preclu_;
+}
+
 #endif

@@ -20,6 +20,7 @@ class TreeWriter{
          void addBlockTele();
          void addBlockPizza();
          void addBlockClu();
+         void addBlockPreClu();
          TFile* getTFile();
          void fillTTree();
      private:
