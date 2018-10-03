@@ -37,6 +37,10 @@ TreeWriter::TreeWriter() {
     addBlockPizzetta();
     // Block Tele
     addBlockTele();
+    // Block Pizza
+    addBlockPizza();
+    // Block Clu
+    addBlockClu();
 
     // Write to the disk
     outfile->Write();
@@ -246,6 +250,35 @@ void TreeWriter::addBlockTime() {
     fNewTree->Branch("DelayCable", &evttime_.DelayCable, "DelayCable/F");
     fNewTree->Branch("TBunch", &evttime_.TBunch, "TBunch/F");
 }
+
+// Add to the tree all the branches realted to the block Clu.
+ //
+ // input:   -
+ // output: -
+ void TreeWriter::addBlockClu() {
+     fNewTree->Branch("NClu", &evtclu_.NClu, "NClu/I");
+     fNewTree->Branch("EneCl", &evtclu_.EneCl, "EneCl[NClu]/F");
+     fNewTree->Branch("TCl", &evtclu_.TCl, "TCl[NClu]/F");
+     fNewTree->Branch("XCl", &evtclu_.XCl, "XCl[NClu]/F");
+     fNewTree->Branch("YCl", &evtclu_.YCl, "YCl[NClu]/F");
+     fNewTree->Branch("ZCl", &evtclu_.ZCl, "ZCl[NClu]/F");
+     fNewTree->Branch("XaCl", &evtclu_.XaCl, "XaCl[NClu]/F");
+     fNewTree->Branch("YaCl", &evtclu_.YaCl, "YaCl[NClu]/F");
+     fNewTree->Branch("ZaCl", &evtclu_.ZaCl, "ZaCl[NClu]/F");
+     fNewTree->Branch("XRmCl", &evtclu_.XRmCl, "XRmCl[NClu]/F");
+     fNewTree->Branch("YRmsCl", &evtclu_.YRmsCl, "YRmsCl[NClu]/F");
+     fNewTree->Branch("ZrmsCl", &evtclu_.ZrmsCl, "ZrmsCl[NClu]/F");
+     fNewTree->Branch("TrmsCl", &evtclu_.TrmsCl, "TrmsCl[NClu]/F");
+     fNewTree->Branch("FlagCl", &evtclu_.FlagCl, "FlagCl[NClu]/I");
+     fNewTree->Branch("NCluMc", &evtclu_.NCluMc, "NCluMc/I");
+     fNewTree->Branch("NPar", &evtclu_.NPar, "NPar[NCluMc]/I");
+     fNewTree->Branch("PNum1", &evtclu_.PNum1, "PNum1[NCluMc]/I");
+     fNewTree->Branch("Pid1", &evtclu_.Pid1, "Pid1[NCluMc]/I");
+     fNewTree->Branch("PNum2", &evtclu_.PNum2, "PNum2[NCluMc]/I");
+     fNewTree->Branch("Pid2", &evtclu_.Pid2, "Pid2[NCluMc]/I");
+     fNewTree->Branch("PNum3", &evtclu_.PNum3, "PNum3[NCluMc]/I");
+     fNewTree->Branch("Pid3", &evtclu_.Pid3, "Pid3[NCluMc]/I");
+ }
 
 // Returns the output file object.
 //

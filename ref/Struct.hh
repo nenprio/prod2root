@@ -184,4 +184,32 @@ extern "C" {
   }pizza_;
 }
 
+// Block:   evtclu
+extern "C" {
+  extern struct {
+    int NClu;
+    float EneCl[MaxNumClu];
+    float TCl[MaxNumClu];
+    float XCl[MaxNumClu];
+    float YCl[MaxNumClu];
+    float ZCl[MaxNumClu];
+    float XaCl[MaxNumClu];
+    float YaCl[MaxNumClu];
+    float ZaCl[MaxNumClu];
+    float XRmCl[MaxNumClu];
+    float YRmsCl[MaxNumClu];
+    float ZrmsCl[MaxNumClu];
+    float TrmsCl[MaxNumClu];
+    int FlagCl[MaxNumClu];
+    int NCluMc;
+    int NPar[MaxNumClu];
+    int PNum1[MaxNumClu];
+    int Pid1[MaxNumClu];
+    int PNum2[MaxNumClu];
+    int Pid2[MaxNumClu];
+    int PNum3[MaxNumClu];
+    int Pid3[MaxNumClu];
+  }evtclu_;
+}
+
 #endif

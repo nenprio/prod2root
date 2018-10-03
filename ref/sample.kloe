@@ -508,7 +508,72 @@ C Fill Block evttime
 C-----------------------------------------------------------------------
       istat = T0GLRD(T0Dc0,T0Hit0,T0Clu0,T0Step1,DelayCable,TBunch)
       istat = T0MCRD(TPhased_mc)
-        
+C-----------------------------------------------------------------------
+C Fill Block evtclu
+C-----------------------------------------------------------------------
+      NClu = 0.
+      NCluMc = 0.
+      DO iEVTCLU=1, 100
+        EneCl(iEVTCLU) = 0.
+        TCl(iEVTCLU) = 0.
+        XCl(iEVTCLU) = 0.
+        YCl(iEVTCLU) = 0.
+        ZCl(iEVTCLU) = 0.
+        XaCl(iEVTCLU) = 0.
+        YaCl(iEVTCLU) = 0.
+        ZaCl(iEVTCLU) = 0.
+        XRmCl(iEVTCLU) = 0.
+        YRmsCl(iEVTCLU) = 0.
+        ZrmsCl(iEVTCLU) = 0.
+        TrmsCl(iEVTCLU) = 0.
+        FlagCl(iEVTCLU) = 0.
+        NPar(iEVTCLU) = 0.
+        PNum1(iEVTCLU) = 0.
+        Pid1(iEVTCLU) = 0.
+        PNum2(iEVTCLU) = 0.
+        Pid2(iEVTCLU) = 0.
+        PNum3(iEVTCLU) = 0.
+        Pid3(iEVTCLU) = 0.
+      END DO
+
+      >>>INSERT HERE THE GET FUNCTION<<<
+
+      NClu = Evt%Clu%n 
+      NCluMc = Evt%Clu%nmc
+      IF (NClu > 0 .OR. NClu <= 100) THEN
+        DO iEVTCLU=1, NClu
+          EneCl(iEVTCLU) = Evt%Clu%E (iEVTCLU)
+          TCl(iEVTCLU) = Evt%Clu%T (iEVTCLU)
+          XCl(iEVTCLU) = Evt%Clu%X (iEVTCLU)
+          YCl(iEVTCLU) = Evt%Clu%Y (iEVTCLU)
+          ZCl(iEVTCLU) = Evt%Clu%Z (iEVTCLU)
+          XaCl(iEVTCLU) = Evt%Clu%Xa(iEVTCLU)
+          YaCl(iEVTCLU) = Evt%Clu%Ya(iEVTCLU)
+          ZaCl(iEVTCLU) = Evt%Clu%Za(iEVTCLU)
+          XRmCl(iEVTCLU) = Evt%Clu%Xrms(iEVTCLU)
+          YRmsCl(iEVTCLU) = Evt%Clu%Yrms(iEVTCLU)
+          ZrmsCl(iEVTCLU) = Evt%Clu%Zrms(iEVTCLU)
+          TrmsCl(iEVTCLU) = Evt%Clu%Trms(iEVTCLU)
+          FlagCl(iEVTCLU) = Evt%Clu%Flag(iEVTCLU)
+        END DO
+      ELSE
+        WRITE(*,*) 'ERROR EVTCLU - NClu Out of bound : ', NClu
+      END IF
+
+      IF (NCluMc > 0 .OR. NCluMc <= 100) THEN
+        DO iEVTCLU=1, NCluMc
+          NPar(iEVTCLU) = Evt%Clu%Npart(iEVTCLU)
+          PNum1(iEVTCLU) = Evt%Clu%part1(iEVTCLU)
+          Pid1(iEVTCLU) = Evt%Clu%pid1(iEVTCLU)
+          PNum2(iEVTCLU) = Evt%Clu%part2(iEVTCLU)
+          Pid2(iEVTCLU) = Evt%Clu%pid2(iEVTCLU)
+          PNum3(iEVTCLU) = Evt%Clu%part3(iEVTCLU)
+          Pid3(iEVTCLU) = Evt%Clu%pid3(iEVTCLU) 
+        END DO
+      ELSE
+        WRITE(*,*) 'ERROR EVTCLU - NCluMc Out of bound : ', NCluMc
+      END IF
+
       call fillntu() 	
 CC End of code
 C============
