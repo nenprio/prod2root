@@ -217,15 +217,15 @@ void TreeWriter::addBlockPizzetta() {
 // input:	-
 // output: -
 void TreeWriter::addBlockTele() {
-    fNewTree->Branch("NTele",   &EvtTele_.NTele,    "NTele/I");
-    fNewTree->Branch("Det_Trg", &EvtTele_.Det_Trg,  "Det_Trg[NTele]/I");
-    fNewTree->Branch("BitP",    &EvtTele_.BitP,     "BitP[NTele]/I");
-    fNewTree->Branch("Sector",  &EvtTele_.Sector,   "Sector[NTele]/I");
-    fNewTree->Branch("SerKind", &EvtTele_.SerKind,  "SerKind[NTele]/I");
-    fNewTree->Branch("Ea_Trg",  &EvtTele_.Ea_Trg,   "Ea_Trg[NTele]/F");
-    fNewTree->Branch("Eb_Trg",  &EvtTele_.Eb_Trg,   "Eb_Trg[NTele]/F");
-    fNewTree->Branch("Ta_Trg",  &EvtTele_.Ta_Trg,   "Ta_Trg[NTele]/F");
-    fNewTree->Branch("Tb_Trg",  &EvtTele_.Tb_Trg,   "Tb_Trg[NTele]/F");
+    fNewTree->Branch("NTele",   &tele_.NTele,    "NTele/I");
+    fNewTree->Branch("Det_Trg", &tele_.Det_Trg,  "Det_Trg[NTele]/I");
+    fNewTree->Branch("BitP",    &tele_.BitP,     "BitP[NTele]/I");
+    fNewTree->Branch("Sector",  &tele_.Sector,   "Sector[NTele]/I");
+    fNewTree->Branch("SerKind", &tele_.SerKind,  "SerKind[NTele]/I");
+    fNewTree->Branch("Ea_Trg",  &tele_.Ea_Trg,   "Ea_Trg[NTele]/F");
+    fNewTree->Branch("Eb_Trg",  &tele_.Eb_Trg,   "Eb_Trg[NTele]/F");
+    fNewTree->Branch("Ta_Trg",  &tele_.Ta_Trg,   "Ta_Trg[NTele]/F");
+    fNewTree->Branch("Tb_Trg",  &tele_.Tb_Trg,   "Tb_Trg[NTele]/F");
 }
 
 // Add to the tree all the branches realted to the block Pizza.
@@ -233,28 +233,28 @@ void TreeWriter::addBlockTele() {
 // input:	-
 // output: -
 void TreeWriter::addBlockPizza() {
-    fNewTree->Branch("NPack", &pizza_.NPack, "NPack/I");
+    fNewTree->Branch("NPack",   &pizza_.NPack,   "NPack/I");
     fNewTree->Branch("PakSect", &pizza_.PakSect, "PakSect[NPack]/I");
-    fNewTree->Branch("PakDet", &pizza_.PakDet, "PakDet[NPack]/I");
+    fNewTree->Branch("PakDet",  &pizza_.PakDet,  "PakDet[NPack]/I");
     fNewTree->Branch("PakSerk", &pizza_.PakSerk, "PakSerk[NPack]/I");
     fNewTree->Branch("Ea_Pack", &pizza_.Ea_Pack, "Ea_Pack[NPack]/F");
-    fNewTree->Branch("Ea_Pack", &pizza_.Ea_Pack, "Ea_Pack[NPack]/F");
-    fNewTree->Branch("E_Rec", &pizza_.E_Rec, "E_Rec[NPack]/F");
-    fNewTree->Branch("Z_mod", &pizza_.Z_mod, "Z_mod[NPack]/F");
+    fNewTree->Branch("Eb_Pack", &pizza_.Eb_Pack, "Eb_Pack[NPack]/F");
+    fNewTree->Branch("E_Rec",   &pizza_.E_Rec,   "E_Rec[NPack]/F");
+    fNewTree->Branch("Z_mod",   &pizza_.Z_mod,   "Z_mod[NPack]/F");
 }
 
-// Add to the tree all the branches related to the block DGHIT.
+// Add to the tree all the branches related to the block T0.
 //
 // input:   -
 // output:  -
 void TreeWriter::addBlockTime() {
     fNewTree->Branch("TPhased_mc", &evttime_.TPhased_mc, "TPhased_mc/F");
-    fNewTree->Branch("T0Dc0", &evttime_.T0Dc0, "T0Dc0/F");
-    fNewTree->Branch("T0Hit0", &evttime_.T0Hit0, "T0Hit0/F");
-    fNewTree->Branch("T0Clu0", &evttime_.T0Clu0, "T0Clu0/F");
-    fNewTree->Branch("T0Step1", &evttime_.T0Step1, "T0Step1/F");
+    fNewTree->Branch("T0Dc0",      &evttime_.T0Dc0,      "T0Dc0/F");
+    fNewTree->Branch("T0Hit0",     &evttime_.T0Hit0,     "T0Hit0/F");
+    fNewTree->Branch("T0Clu0",     &evttime_.T0Clu0,     "T0Clu0/F");
+    fNewTree->Branch("T0Step1",    &evttime_.T0Step1,    "T0Step1/F");
     fNewTree->Branch("DelayCable", &evttime_.DelayCable, "DelayCable/F");
-    fNewTree->Branch("TBunch", &evttime_.TBunch, "TBunch/F");
+    fNewTree->Branch("TBunch",     &evttime_.TBunch,     "TBunch/F");
 }
 
 // Add to the tree all the branches realted to the block Clu.
@@ -262,28 +262,28 @@ void TreeWriter::addBlockTime() {
 // input:   -
 // output: -
 void TreeWriter::addBlockClu() {
-    fNewTree->Branch("NClu", &evtclu_.NClu, "NClu/I");
-    fNewTree->Branch("EneCl", &evtclu_.EneCl, "EneCl[NClu]/F");
-    fNewTree->Branch("TCl", &evtclu_.TCl, "TCl[NClu]/F");
-    fNewTree->Branch("XCl", &evtclu_.XCl, "XCl[NClu]/F");
-    fNewTree->Branch("YCl", &evtclu_.YCl, "YCl[NClu]/F");
-    fNewTree->Branch("ZCl", &evtclu_.ZCl, "ZCl[NClu]/F");
-    fNewTree->Branch("XaCl", &evtclu_.XaCl, "XaCl[NClu]/F");
-    fNewTree->Branch("YaCl", &evtclu_.YaCl, "YaCl[NClu]/F");
-    fNewTree->Branch("ZaCl", &evtclu_.ZaCl, "ZaCl[NClu]/F");
-    fNewTree->Branch("XRmCl", &evtclu_.XRmCl, "XRmCl[NClu]/F");
+    fNewTree->Branch("NClu",   &evtclu_.NClu,   "NClu/I");
+    fNewTree->Branch("EneCl",  &evtclu_.EneCl,  "EneCl[NClu]/F");
+    fNewTree->Branch("TCl",    &evtclu_.TCl,    "TCl[NClu]/F");
+    fNewTree->Branch("XCl",    &evtclu_.XCl,    "XCl[NClu]/F");
+    fNewTree->Branch("YCl",    &evtclu_.YCl,    "YCl[NClu]/F");
+    fNewTree->Branch("ZCl",    &evtclu_.ZCl,    "ZCl[NClu]/F");
+    fNewTree->Branch("XaCl",   &evtclu_.XaCl,   "XaCl[NClu]/F");
+    fNewTree->Branch("YaCl",   &evtclu_.YaCl,   "YaCl[NClu]/F");
+    fNewTree->Branch("ZaCl",   &evtclu_.ZaCl,   "ZaCl[NClu]/F");
+    fNewTree->Branch("XRmCl",  &evtclu_.XRmCl,  "XRmCl[NClu]/F");
     fNewTree->Branch("YRmsCl", &evtclu_.YRmsCl, "YRmsCl[NClu]/F");
     fNewTree->Branch("ZrmsCl", &evtclu_.ZrmsCl, "ZrmsCl[NClu]/F");
     fNewTree->Branch("TrmsCl", &evtclu_.TrmsCl, "TrmsCl[NClu]/F");
     fNewTree->Branch("FlagCl", &evtclu_.FlagCl, "FlagCl[NClu]/I");
     fNewTree->Branch("NCluMc", &evtclu_.NCluMc, "NCluMc/I");
-    fNewTree->Branch("NPar", &evtclu_.NPar, "NPar[NCluMc]/I");
-    fNewTree->Branch("PNum1", &evtclu_.PNum1, "PNum1[NCluMc]/I");
-    fNewTree->Branch("Pid1", &evtclu_.Pid1, "Pid1[NCluMc]/I");
-    fNewTree->Branch("PNum2", &evtclu_.PNum2, "PNum2[NCluMc]/I");
-    fNewTree->Branch("Pid2", &evtclu_.Pid2, "Pid2[NCluMc]/I");
-    fNewTree->Branch("PNum3", &evtclu_.PNum3, "PNum3[NCluMc]/I");
-    fNewTree->Branch("Pid3", &evtclu_.Pid3, "Pid3[NCluMc]/I");
+    fNewTree->Branch("NPar",   &evtclu_.NPar,   "NPar[NCluMc]/I");
+    fNewTree->Branch("PNum1",  &evtclu_.PNum1,  "PNum1[NCluMc]/I");
+    fNewTree->Branch("Pid1",   &evtclu_.Pid1,   "Pid1[NCluMc]/I");
+    fNewTree->Branch("PNum2",  &evtclu_.PNum2,  "PNum2[NCluMc]/I");
+    fNewTree->Branch("Pid2",   &evtclu_.Pid2,   "Pid2[NCluMc]/I");
+    fNewTree->Branch("PNum3",  &evtclu_.PNum3,  "PNum3[NCluMc]/I");
+    fNewTree->Branch("Pid3",   &evtclu_.Pid3,   "Pid3[NCluMc]/I");
 }
 
 // Add to the tree all the branches realted to the block PreClu.

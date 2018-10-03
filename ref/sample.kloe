@@ -481,7 +481,7 @@ C-----------------------------------------------------------------------
         PakDet(iPIZZA) = 0.
         PakSerk(iPIZZA) = 0.
         Ea_Pack(iPIZZA) = 0.
-        Ea_Pack(iPIZZA) = 0.
+        Eb_Pack(iPIZZA) = 0.
         E_Rec(iPIZZA) = 0.
         Z_mod(iPIZZA) = 0.
       END DO
@@ -496,7 +496,7 @@ C-----------------------------------------------------------------------
           PakDet(iPIZZA) = Evt%PIZZA%det(iPIZZA)
           PakSerk(iPIZZA) = Evt%PIZZA%serkind(iPIZZA)
           Ea_Pack(iPIZZA) = Evt%PIZZA%Ea(iPIZZA)
-          Ea_Pack(iPIZZA) = Evt%PIZZA%Eb(iPIZZA)
+          Eb_Pack(iPIZZA) = Evt%PIZZA%Eb(iPIZZA)
           E_Rec(iPIZZA) = Evt%PIZZA%E_rec(iPIZZA)
           Z_mod(iPIZZA) = Evt%PIZZA%Z_mod(iPIZZA)
         END DO

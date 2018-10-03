@@ -1,0 +1,9 @@
+call prod2ntu_NtRange(0,nMaxDC,range)
+          call HBNAME(nId,'DTCE',Evt%DTCE%nDTCE,'nDTCE:I::'//range)
+          call HBNAME(nId,'DTCE',Evt%DTCE%nSmall,'nSmall:I::'//range)
+          call HBNAME(nId,'DTCE',Evt%DTCE%iLayerDTCE
+      +        ,              'iLayerDTCE(nDTCE)[1,58]:I')
+          call HBNAME(nId,'DTCE',Evt%DTCE%iWireDTCE
+      +        ,              'iWireDTCE(nDTCE)[1,378]:I')
+          call HBNAME(nId,'DTCE',Evt%DTCE%tDTCE
+      +        ,              'tDTCE(nDTCE):R')

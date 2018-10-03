@@ -64,25 +64,25 @@ extern "C"{
 
 // Block:    evtbpos
 extern "C" {
-   extern struct {
-     float BPx;
-     float BPy;
-     float BPz;
-     float Bx;
-     float By;
-     float Bz;
-     float BWidPx;
-     float BWidPy;
-     float BWidPz;
-     float BSx;
-     float BSy;
-     float BSz;
-     float BLumx;
-     float BLumz;
-     float Broots;
-     float BrootsErr;
-   }evtbpos_;
- }
+  extern struct {
+    float BPx;
+    float BPy;
+    float BPz;
+    float Bx;
+    float By;
+    float Bz;
+    float BWidPx;
+    float BWidPy;
+    float BWidPz;
+    float BSx;
+    float BSy;
+    float BSz;
+    float BLumx;
+    float BLumz;
+    float Broots;
+    float BrootsErr;
+  }evtbpos_;
+}
 
 // Block:   evttime
 extern "C"{
@@ -168,7 +168,7 @@ extern "C" {
     float Eb_Trg[MaxNTele];
     float Ta_Trg[MaxNTele];
     float Tb_Trg[MaxNTele];
-  }EvtTele_;
+  }tele_;
 }
 
 // Block:   pizza
@@ -179,7 +179,7 @@ extern "C" {
     int PakDet[MaxNPack];
     int PakSerk[MaxNPack];
     float Ea_Pack[MaxNPack];
-    float Ea_Pack[MaxNPack];
+    float Eb_Pack[MaxNPack];
     float E_Rec[MaxNPack];
     float Z_mod[MaxNPack];
   }pizza_;
