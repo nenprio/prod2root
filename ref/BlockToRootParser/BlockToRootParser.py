@@ -170,7 +170,7 @@ def getCppContent(block_name, names, types, nameIsArray):
 def main(input_file, output_dir="out"):
     if output_dir == "":
         output_dir="out"
-    block_name       = input_file.split("/")[-1].split(".")[0]
+    block_name       = input_file.split("/")[-1].split(".")[0].lower()
     names_file       = output_dir + "/" + block_name + "_names.in"
     output_file_cin  = output_dir + "/" + block_name + "_toSample.cin"
     output_file_kloe = output_dir + "/" + block_name + "_toSample.kloe"
