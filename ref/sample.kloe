@@ -473,6 +473,37 @@ C-----------------------------------------------------------------------
         WRITE(*,*) 'ERROR EVTTELE - NTele Out of bound : ', NTele
       END IF
 C-----------------------------------------------------------------------
+C Fill Block pizza
+C-----------------------------------------------------------------------
+      NPack = 0.
+      DO iPIZZA=1, 300
+        PakSect(iPIZZA) = 0.
+        PakDet(iPIZZA) = 0.
+        PakSerk(iPIZZA) = 0.
+        Ea_Pack(iPIZZA) = 0.
+        Ea_Pack(iPIZZA) = 0.
+        E_Rec(iPIZZA) = 0.
+        Z_mod(iPIZZA) = 0.
+      END DO
+
+      istat = PIZZA_RESET(Evt%PIZZA)
+      istat = GETPIZZASTRU(Evt%PIZZA)
+
+      NPack = Evt%PIZZA%npizza
+      IF (NPack > 0 .OR. NPack <= 300) THEN
+        DO iPIZZA=1, NPack
+          PakSect(iPIZZA) = Evt%PIZZA%sector(iPIZZA)
+          PakDet(iPIZZA) = Evt%PIZZA%det(iPIZZA)
+          PakSerk(iPIZZA) = Evt%PIZZA%serkind(iPIZZA)
+          Ea_Pack(iPIZZA) = Evt%PIZZA%Ea(iPIZZA)
+          Ea_Pack(iPIZZA) = Evt%PIZZA%Eb(iPIZZA)
+          E_Rec(iPIZZA) = Evt%PIZZA%E_rec(iPIZZA)
+          Z_mod(iPIZZA) = Evt%PIZZA%Z_mod(iPIZZA)
+        END DO
+      ELSE
+        WRITE(*,*) 'ERROR PIZZA - NPack Out of bound : ', NPack
+      END IF
+C-----------------------------------------------------------------------
 C Fill Block evttime
 C-----------------------------------------------------------------------
       istat = T0GLRD(T0Dc0,T0Hit0,T0Clu0,T0Step1,DelayCable,TBunch)

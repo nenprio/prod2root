@@ -129,4 +129,12 @@ C
       real Ea_Trg(300), Eb_Trg(300), Ta_Trg(300), Tb_Trg(300)
 
       common /EvtTele/NTele,Det_Trg,BitP,Sector,SerKind,Ea_Trg,Eb_Trg,Ta_Trg,Tb_Trg
+C
+C  Block: pizza
+C
+      integer iPIZZA
+      integer NPack, PakSect(300), PakDet(300), PakSerk(300)
+      real Ea_Pack(300), Ea_Pack(300), E_Rec(300), Z_mod(300)
 
+      common /pizza/NPack,PakSect,PakDet,PakSerk,
+     1              Ea_Pack,Ea_Pack,E_Rec,Z_mod

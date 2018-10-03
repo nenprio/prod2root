@@ -18,6 +18,7 @@ class TreeWriter{
          void addBlockTellina();
          void addBlockPizzetta();
          void addBlockTele();
+         void addBlockPizza();
          TFile* getTFile();
          void fillTTree();
      private:

@@ -218,6 +218,21 @@ void TreeWriter::addBlockTele() {
     fNewTree->Branch("Tb_Trg",  &EvtTele_.Tb_Trg,   "Tb_Trg[NTele]/F");
 }
 
+// Add to the tree all the branches realted to the block Pizza.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockPizza() {
+    fNewTree->Branch("NPack", &pizza_.NPack, "NPack/I");
+    fNewTree->Branch("PakSect", &pizza_.PakSect, "PakSect[NPack]/I");
+    fNewTree->Branch("PakDet", &pizza_.PakDet, "PakDet[NPack]/I");
+    fNewTree->Branch("PakSerk", &pizza_.PakSerk, "PakSerk[NPack]/I");
+    fNewTree->Branch("Ea_Pack", &pizza_.Ea_Pack, "Ea_Pack[NPack]/F");
+    fNewTree->Branch("Ea_Pack", &pizza_.Ea_Pack, "Ea_Pack[NPack]/F");
+    fNewTree->Branch("E_Rec", &pizza_.E_Rec, "E_Rec[NPack]/F");
+    fNewTree->Branch("Z_mod", &pizza_.Z_mod, "Z_mod[NPack]/F");
+}
+
 // Add to the tree all the branches related to the block DGHIT.
 //
 // input:   -
