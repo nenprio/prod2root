@@ -17,6 +17,7 @@ int main() {
     // Create object RootExplorer
     RootExplorer *rootExplorer = new RootExplorer(sampleFile, outSampleDir);
     rootExplorer->printInfo();
+    rootExplorer->exportEntriesToTxt();
 
     //Create object HBConvExplorer
     HBConvExplorer *hbConvExplorer = new HBConvExplorer(hbConvFile, outHbConvDir);
