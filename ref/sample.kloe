@@ -607,7 +607,45 @@ C-----------------------------------------------------------------------
       ELSE
         WRITE(*,*) 'ERROR PRECLU - NPClu Out of bound : ', NPClu
       END IF
+C-----------------------------------------------------------------------
+C Fill Block cwrk
+C-----------------------------------------------------------------------
+      NCHit = 0.
+      DO iCWRK=1, 300
+        IClu(iCWRK) = 0.
+        ICel(iCWRK) = 0.
+        CAdd(iCWRK) = 0.
+        CmcHit(iCWRK) = 0.
+        Ckine(iCWRK) = 0.
+        Ene(iCWRK) = 0.
+        T(iCWRK) = 0.
+        X(iCWRK) = 0.
+        Y(iCWRK) = 0.
+        Z(iCWRK) = 0.
+      END DO
 
+      istat = GETCWRKSTRU(Evt%Cwrk)
+
+      NCHit = Evt%CWRK%n 
+      IF (NCHit > 0 .OR. NCHit <= 300) THEN
+        DO iCWRK=1, NCHit
+          IClu(iCWRK) = Evt%CWRK%icl(iCWRK)
+          ICel(iCWRK) = Evt%CWRK%cele(iCWRK)
+          CAdd(iCWRK) = Evt%CWRK%add(iCWRK)
+          CmcHit(iCWRK) = Evt%CWRK%nhit(iCWRK)
+          Ckine(iCWRK) = Evt%CWRK%kine(iCWRK)
+          Ene(iCWRK) = Evt%CWRK%E(iCWRK)
+          T(iCWRK) = Evt%CWRK%T(iCWRK)
+          X(iCWRK) = Evt%CWRK%X(iCWRK)
+          Y(iCWRK) = Evt%CWRK%Y(iCWRK)
+          Z(iCWRK) = Evt%CWRK%Z(iCWRK)
+        END DO
+      ELSE
+        WRITE(*,*) 'ERROR CWRK - NCHit Out of bound : ', NCHit
+      END IF
+C
+C Fill Root
+C
       call fillntu() 	
 CC End of code
 C============

@@ -43,6 +43,8 @@ TreeWriter::TreeWriter() {
     addBlockClu();
     // Block PreClu
     addBlockPreClu();
+    // Block CWRK
+    addBlockCWRK();
 
     // Write to the disk
     outfile->Write();
@@ -297,6 +299,24 @@ void TreeWriter::addBlockPreClu() {
     fNewTree->Branch("TBPre", &preclu_.TBPre, "TBPre[NPClu]/F");
     fNewTree->Branch("TARPre", &preclu_.TARPre, "TARPre[NPClu]/F");
     fNewTree->Branch("TBRPre", &preclu_.TBRPre, "TBRPre[NPClu]/F");
+}
+
+// Add to the tree all the branches realted to the block CWRK.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockCWRK() {
+    fNewTree->Branch("NCHit", &cwrk_.NCHit, "NCHit/I");
+    fNewTree->Branch("IClu", &cwrk_.IClu, "IClu[NCHit]/I");
+    fNewTree->Branch("ICel", &cwrk_.ICel, "ICel[NCHit]/I");
+    fNewTree->Branch("CAdd", &cwrk_.CAdd, "CAdd[NCHit]/I");
+    fNewTree->Branch("CmcHit", &cwrk_.CmcHit, "CmcHit[NCHit]/I");
+    fNewTree->Branch("Ckine", &cwrk_.Ckine, "Ckine[NCHit]/I");
+    fNewTree->Branch("Ene", &cwrk_.Ene, "Ene[NCHit]/F");
+    fNewTree->Branch("T", &cwrk_.T, "T[NCHit]/F");
+    fNewTree->Branch("X", &cwrk_.X, "X[NCHit]/F");
+    fNewTree->Branch("Y", &cwrk_.Y, "Y[NCHit]/F");
+    fNewTree->Branch("Z", &cwrk_.Z, "Z[NCHit]/F");
 }
 
 // Returns the output file object.

@@ -8,6 +8,7 @@ const int MaxEclSize = 8;
 const int MaxTrgChan = 1000;
 const int MaxNTele   = 300;
 const int MaxNPack   = 300;
+const int NeleCluMax = 300;
 
 // Block:   evtinfo
 extern "C"{
@@ -226,6 +227,23 @@ extern "C" {
     float TARPre[MaxNumClu];
     float TBRPre[MaxNumClu];
   }preclu_;
+}
+
+// Block:   cwrk
+extern "C" {
+  extern struct {
+    int NCHit;
+    int IClu[NeleCluMax];
+    int ICel[NeleCluMax];
+    int CAdd[NeleCluMax];
+    int CmcHit[NeleCluMax];
+    int Ckine[NeleCluMax];
+    float Ene[NeleCluMax];
+    float T[NeleCluMax];
+    float X[NeleCluMax];
+    float Y[NeleCluMax];
+    float Z[NeleCluMax];
+  }cwrk_;
 }
 
 #endif

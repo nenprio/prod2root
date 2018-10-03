@@ -21,6 +21,7 @@ class TreeWriter{
          void addBlockPizza();
          void addBlockClu();
          void addBlockPreClu();
+         void addBlockCWRK();
          TFile* getTFile();
          void fillTTree();
      private:

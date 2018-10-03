@@ -132,8 +132,7 @@ C
 C
 C  Block: pizza
 C
-      integer iPIZZA
-      integer NPack, PakSect(300), PakDet(300), PakSerk(300)
+      integer iPIZZA, NPack, PakSect(300), PakDet(300), PakSerk(300)
       real Ea_Pack(300), Ea_Pack(300), E_Rec(300), Z_mod(300)
 
       common /pizza/NPack,PakSect,PakDet,PakSerk,
@@ -141,10 +140,10 @@ C
 C
 C  Block: evtclu
 C
-      integer iEVTCLU,NClu,FlagCl(100),NCluMc,NPar(100),PNum1(100),
+      integer iEVTCLU,NClu,FlagCl(100),NCluMc,NPar(100),PNum1(100)
       integer Pid1(100), PNum2(100), Pid2(100), PNum3(100), Pid3(100)
-      real EneCl(100), TCl(100), XCl(100), YCl(100), ZCl(100), 
-      real XaCl(100), YaCl(100), ZaCl(100), XRmCl(100), 
+      real EneCl(100), TCl(100), XCl(100), YCl(100), ZCl(100)
+      real XaCl(100), YaCl(100), ZaCl(100), XRmCl(100)
       real YRmsCl(100), ZrmsCl(100), TrmsCl(100)
 
       common /evtclu/NClu,EneCl,TCl,XCl,YCl,ZCl,XaCl,YaCl,ZaCl,XRmCl,
@@ -154,8 +153,16 @@ C
 C  Block: preclu
 C
       integer iPRECLU, NPClu
-      real EPre(100), TPre(100), XPre(100), YPre(100), ZPre(100),
+      real EPre(100), TPre(100), XPre(100), YPre(100), ZPre(100)
       real TAPre(100), TBPre(100), TARPre(100), TBRPre(100)
 
       common /preclu/NPClu,EPre,TPre,XPre,YPre,ZPre,TAPre,TBPre,
      1       TARPre,TBRPre
+C
+C  Block: cwrk
+C
+      integer iCWRK, NCHit, IClu(300), ICel(300), CAdd(300) 
+      integer CmcHit(300), Ckine(300)
+      real Ene(300), T(300), X(300), Y(300), Z(300)
+
+      common /cwrk/NCHit,IClu,ICel,CAdd,CmcHit,Ckine,Ene,T,X,Y,Z
