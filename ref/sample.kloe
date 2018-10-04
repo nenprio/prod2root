@@ -122,12 +122,13 @@ $$INCLUDE 'K$ITLS:ele2hitqcalt.cin'    ! QCALT hit structure
 $$INCLUDE 'K$ITLS:CCALTNUM.INC'        ! CCALT stu dimensioner
 $$INCLUDE 'K$ITLS:ccaltstru.inc'   ! CCALT Stru
 $$INCLUDE 'k$itls:letestruct.cin'  !LET Stru
-c$$INCLUDE 'k$itls:raw2itce.cin'  ! IT Stru
+C$$INCLUDE 'k$itls:raw2itce.cin'  ! IT Stru
 $$INCLUDE 'k$itls:itcestruct.cin'  ! IT Stru
 $$INCLUDE 'k$itls:hetenum.cin'      ! HET max dim
 $$INCLUDE 'k$itls:hetestru.cin'  !LET Stru
 $$include 'k$itls:prod2ntu.inc'
 $$include 'k$itls:prod2ntu_talk.inc'
+$$INCLUDE 'k$itls:raw2dtce.cin'
 $$include 'sample.inc'
    
 C
@@ -328,13 +329,13 @@ C-----------------------------------------------------------------------
       istat = BIGEST(iw,'DTCE',banknum)
       istat = BLOCAT(iw,'DTCE',banknum,ind1,inddat)
       IF( istat.ne.YESUCC ) THEN
-        NDtce =0
+        NDtce_copy =0
       ELSE
-        NDtce = IW(inddat+DTCNRO)
+        NDtce_copy = IW(inddat+DTCNRO)
       ENDIF
       CALL GETGDCHIT(Evt%GHit)
 
-      DtceHit = NDtce
+      DtceHit = NDtce_copy
       DhreHit = Evt%GHit%nhit
       DprsHit = Evt%GHit%nhpr
       DtfsHit = Evt%GHit%nhtf
@@ -863,7 +864,7 @@ C
 C Local declarations
 C
       INTEGER    Status, MinHisId, MaxHisId
-      INTEGER    NtuId
+C      INTEGER    NtuId ! Comment to avoid conflict with raw2dtce.cin
       LOGICAL    HisFlg
 C
 C==============================================================================

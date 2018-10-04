@@ -36,7 +36,7 @@ extern "C"{
     int AlgoNum;
     int TimeSec;
     int TimeMusec;
-    int Ndtce;
+    int Ndtce_copy;
     int McFlag;
     float IPos;
     float IEle;

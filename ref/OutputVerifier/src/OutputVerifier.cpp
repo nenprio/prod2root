@@ -6,73 +6,87 @@
 #include <TBranch.h>
 #include <TLeaf.h>
 #include "MyFunctions.hh"
-#include "RootExplorer.hh"
+#include "OutputVerifier.hh"
 
-// Create the object RootExplorer. 
+// Create the object OutputVerifier. 
 // Pre-condition: the input file is a root file containing a tree with id "sample".
 //
 // input:   inFile      root file with "sample" tree
 //          outDir      directory where write the output files
 // output:  -
-RootExplorer::RootExplorer(const char *inFile, const char *outDir) {
-    println("[Info] RootExplorer constructor");
+OutputVerifier::OutputVerifier(const char *rFile, const char *hbFile, const char *outDir) {
+    println("[Info] OutputVerifier constructor");
     const char *errorInputFile="[Error] An error occurs during checking on input file.\n\tVerify that the path given as first argument exists and it refers to a regular file.";
     const char *errorOutputDir="[Error] An error occurs during the checking on output directory.\n\tVerify that the dir already exists or that the writing permission are allowed and no name mismatch occurs with that path.";
     const char *errorOpenFile="[Error] An error occurs during the opening of input file.\n\tVerify that you can open the file as ROOT TFile.";
     const char *errorOpenTree="[Error] An error occurs during the extraction of tree.\n\tVerify that the input file contains a tree with id \"sample\".";
-    sampleFilepath  = inFile;    
-    outputDir       = outDir;
+
+    rootFile   = rFile;    
+    hbConvFile = hbFile;    
+    outputDir  = outDir;
   
-    // Check existance of input file
-    if(checkIfFileExists(inFile)==false) {
+    // Check existance of input root file
+    if(checkIfFileExists(rootFile)==false) {
+        println(errorInputFile);
+        exit(1);
+    }
+    
+    // Check existance of input hb file
+    if(checkIfFileExists(hbConvFile)==false) {
         println(errorInputFile);
         exit(1);
     }
 
     // Create output dir if it doesn't exist
-    if(createDirRecursively(outDir)==false) {
+    if(createDirRecursively(outputDir)==false) {
         println(errorOutputDir);
         exit(1);
     }
 
     // Test if you can open the file
-    f = new TFile(sampleFilepath, "READ");
+    TFile *fRoot = new TFile(rootFile, "READ");
+    TFile *fHB   = new TFile(hbConvFile, "READ");
 
-    if(f->IsOpen()){
-        println("[Debug] Open Input file.");
+    if(fRoot->IsOpen() & fHB->IsOpen()){
+        println("[Debug] Open Input files.");
     } else{
         println(errorOpenFile);
         exit(1);
     }
    
     // Test if you can open the tree
-    fTree = (TTree*) f->Get("sample");
-    if(fTree){
-        println("[Debug] Get Sample tree.");
+    TTree *tRoot = (TTree*) fRoot->Get("sample");
+    TTree *tHB   = (TTree*) fHB->Get("PROD2NTU/h1");
+    
+    if((tRoot!=0) & (tHB!=0)){
+        println("[Debug] Get Sample trees.");
     } else {
         println(errorOpenTree);
         exit(1);
     } 
+    
+    // Close the files
+    fRoot->Close();
+    fHB->Close();
 }
 
-// Destruct the RootExplorer object.
+// Destruct the OutputVerifier object.
 // Free the memory. Let the manage of fTree to ROOT.
 //
 // input:   -
 // output:  -
-RootExplorer::~RootExplorer() {
-    if(sampleFilepath) {
-        delete sampleFilepath;
-        sampleFilepath = NULL;
+OutputVerifier::~OutputVerifier() {
+    if(rootFile) {
+        delete rootFile;
+        rootFile = NULL;
+    }
+    if(hbConvFile) {
+        delete hbConvFile;
+        hbConvFile = NULL;
     }
     if(outputDir) {
         delete outputDir;
         outputDir = NULL;
-    }
-    if(f) {
-        f->Close();
-        delete f;
-        f = NULL;
     }
 
     println("[Info] Run ends. Memory released.");
@@ -84,7 +98,7 @@ RootExplorer::~RootExplorer() {
 //
 // input:    -
 // output:   -
-void RootExplorer::exportEntriesToTxt() {
+void OutputVerifier::exportTreeToTxt(TTree *fTree) {
     ofstream myfile;
     TString name; 
     std::string currentFile;
@@ -94,7 +108,7 @@ void RootExplorer::exportEntriesToTxt() {
     Int_t nLeaves = leaves ? leaves->GetEntriesFast() : 0;
     
     for(Int_t i=0; i<nEntries; i++) {
-        name.Form("%s/entry%d.out", outputDir, i); 
+        name.Form("%s/%sentry%d.out", outputDir, fTree->GetName(), i); 
         currentFile = name.Data();
         fTree->GetEntry(i);
         
@@ -113,17 +127,41 @@ void RootExplorer::exportEntriesToTxt() {
     }
 }
 
+// Export content of tree in root file and
+// write it to files in output directory.
+//
+// input:  -
+// output: -
+void OutputVerifier::exportRootTree() {
+    TFile *fRoot = new TFile(rootFile, "READ");
+    TTree *rTree = (TTree*) fRoot->Get("sample");
+    exportTreeToTxt(rTree);
+}
+
+// Export content of tree in hb converted file and
+// write it to files in output directory.
+//
+// input:  -
+// output: -
+void OutputVerifier::exportHBConvTree() {
+    TFile *fHB = new TFile(hbConvFile, "READ");
+    TTree *hbTree = (TTree*) fHB->Get("PROD2NTU/h1");
+    exportTreeToTxt(hbTree);
+}
+
 // Print information about internal variables.
 //
 // input:   -
 // output:  -
-void RootExplorer::printInfo() {
+void OutputVerifier::printInfo() {
     const char *line1 = "[Info] ROOT File:\t";
-    const char *line2 = "[Info] Output dir:\t";
+    const char *line2 = "[Info] HBConv File:\t";
+    const char *line3 = "[Info] Output dir:\t";
     print(line1);
-    println(sampleFilepath);
-
+    println(rootFile);
     print(line2);
+    println(hbConvFile);
+    print(line3);
     println(outputDir);
     println("");
 }

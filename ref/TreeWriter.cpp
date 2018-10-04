@@ -83,8 +83,8 @@ TreeWriter::~TreeWriter() {
 // input:   -
 // output:  -
 void TreeWriter::addBlockInfo() {
-    fNewTree->Branch("NRun",    &evtinfo_.NumRun,   "NumRun/I");
-    fNewTree->Branch("NEv",     &evtinfo_.NumEv,    "NumEv/I");
+    fNewTree->Branch("nRun",    &evtinfo_.NumRun,   "NumRun/I");
+    fNewTree->Branch("nEv",     &evtinfo_.NumEv,    "NumEv/I");
     fNewTree->Branch("Pileup",  &evtinfo_.Pileup,   "Pileup/I");
     fNewTree->Branch("GCod",    &evtinfo_.GCod,     "GCod/I");
     fNewTree->Branch("PhiD",    &evtinfo_.PhiD,     "PhiD/I");
@@ -105,10 +105,10 @@ void TreeWriter::addBlockData() {
     fNewTree->Branch("AlgoNum",     &eventinfo_.AlgoNum,    "AlgoNum/I");
     fNewTree->Branch("TimeSec",     &eventinfo_.TimeSec,    "TimeSec/I");
     fNewTree->Branch("TimeMusec",   &eventinfo_.TimeMusec,  "TimeMusec/I");
-    fNewTree->Branch("Ndtce",       &eventinfo_.Ndtce,      "Ndtce/I");
-    fNewTree->Branch("McFlag",      &eventinfo_.McFlag,     "McFlag/I");
-    fNewTree->Branch("IPos",        &eventinfo_.IPos,       "IPos/F");
-    fNewTree->Branch("IEle",        &eventinfo_.IEle,       "IEle/F");
+    fNewTree->Branch("nDTCE",       &eventinfo_.Ndtce_copy, "Ndtce/I");
+    fNewTree->Branch("MCFlag",      &eventinfo_.McFlag,     "McFlag/I");
+    fNewTree->Branch("iPos",        &eventinfo_.IPos,       "IPos/F");
+    fNewTree->Branch("iEle",        &eventinfo_.IEle,       "IEle/F");
     fNewTree->Branch("Lumi",        &eventinfo_.Lumi,       "Lumi/F");
 }
 
@@ -117,14 +117,14 @@ void TreeWriter::addBlockData() {
 // input:   -
 // output:  -
 void TreeWriter::addBlockEcl() {
-    fNewTree->Branch("NEcls",     &evtecls_.NEcls,     "NEcls/I");
+    fNewTree->Branch("nEcls",     &evtecls_.NEcls,     "NEcls/I");
     fNewTree->Branch("EclStream", &evtecls_.EclStream, "EclStream[NEcls]/I");
     fNewTree->Branch("EclTrgw",   &evtecls_.EclTrgw,   "EclTrgw/I");
     fNewTree->Branch("EclFilfo",  &evtecls_.EclFilfo,  "EclFilfo/I");
     fNewTree->Branch("EclWord",   &evtecls_.EclWord,   "EclWord[NEcls]/I");
     fNewTree->Branch("EclTagNum", &evtecls_.EclTagNum, "EclTagNum[NEcls]/I");
     fNewTree->Branch("EclEvType", &evtecls_.EclEvType, "EclEvType[NEcls]/I");
-    fNewTree->Branch("NEcls2",    &evtecls_.NEcls2,     "NEcls2/I");
+    fNewTree->Branch("nEcls2",    &evtecls_.NEcls2,     "NEcls2/I");
     fNewTree->Branch("EclStream2",&evtecls_.EclStream2, "EclStream2[NEcls2]/I");
     fNewTree->Branch("EclTrgw2",  &evtecls_.EclTrgw2,   "EclTrgw2/I");
     fNewTree->Branch("EclFilfo2", &evtecls_.EclFilfo2,  "EclFilfo2/I");
@@ -161,10 +161,10 @@ void TreeWriter::addBlockBPOS() {
 // input:   -
 // output:  -
 void TreeWriter::addBlockGdHit() {
-    fNewTree->Branch("DtceHit",   &evtgdhit_.DtceHit,    "DtceHit/I");
-    fNewTree->Branch("DhreHit",   &evtgdhit_.DhreHit,    "DhreHit/I");
-    fNewTree->Branch("DprsHit",   &evtgdhit_.DprsHit,    "DprsHit/I");
-    fNewTree->Branch("DtfsHit",   &evtgdhit_.DtfsHit,    "DtfsHit/I");
+    fNewTree->Branch("DTCEHit",   &evtgdhit_.DtceHit,    "DtceHit/I");
+    fNewTree->Branch("DHREHit",   &evtgdhit_.DhreHit,    "DhreHit/I");
+    fNewTree->Branch("DPRSHit",   &evtgdhit_.DprsHit,    "DprsHit/I");
+    fNewTree->Branch("DTFSHit",   &evtgdhit_.DtfsHit,    "DtfsHit/I");
 }
 
 // Add to the tree all the branches realted to the block EVTTRIG.
@@ -172,8 +172,8 @@ void TreeWriter::addBlockGdHit() {
 // input:	-
 // output: -
 void TreeWriter::addBlockTrig() {
-    fNewTree->Branch("Trgw1", &evttrig_.Trgw1, "Trgw1/I");
-    fNewTree->Branch("Trgw2", &evttrig_.Trgw2, "Trgw2/I");
+    fNewTree->Branch("TrgW1", &evttrig_.Trgw1, "Trgw1/I");
+    fNewTree->Branch("TrgW2", &evttrig_.Trgw2, "Trgw2/I");
 }
 
 // Add to the tree all the branches realted to the block EVTC2TRIG.
@@ -181,15 +181,15 @@ void TreeWriter::addBlockTrig() {
 // input:	-
 // output: -
 void TreeWriter::addBlockC2Trig() {
-    fNewTree->Branch("NSec", &evtc2trig_.NSec, "NSec/I");
-    fNewTree->Branch("NSec_NoClu", &evtc2trig_.NSec_NoClu, "NSec_NoClu/I");
-    fNewTree->Branch("NSec2Clu", &evtc2trig_.NSec2Clu, "NSec2Clu/I");
-    fNewTree->Branch("NClu2s", &evtc2trig_.NClu2s, "NClu2s/I");
-    fNewTree->Branch("NNorm", &evtc2trig_.NNorm, "NNorm[NClu2s]/I");
+    fNewTree->Branch("nSec", &evtc2trig_.NSec, "NSec/I");
+    fNewTree->Branch("nSec_NoClu", &evtc2trig_.NSec_NoClu, "NSec_NoClu/I");
+    fNewTree->Branch("nSec2Clu", &evtc2trig_.NSec2Clu, "NSec2Clu/I");
+    fNewTree->Branch("nClu2s", &evtc2trig_.NClu2s, "NClu2s/I");
+    fNewTree->Branch("nNorm", &evtc2trig_.NNorm, "NNorm[NClu2s]/I");
     fNewTree->Branch("NormAdd", &evtc2trig_.NormAdd, "NormAdd[NClu2s]/I");
-    fNewTree->Branch("NOver", &evtc2trig_.NOver, "NOver[NClu2s]/I");
+    fNewTree->Branch("nOver", &evtc2trig_.NOver, "NOver[NClu2s]/I");
     fNewTree->Branch("OverAdd", &evtc2trig_.OverAdd, "OverAdd[NClu2s]/I");
-    fNewTree->Branch("NCosm", &evtc2trig_.NCosm, "NCosm[NClu2s]/I");
+    fNewTree->Branch("nCosm", &evtc2trig_.NCosm, "NCosm[NClu2s]/I");
     fNewTree->Branch("CosmAdd", &evtc2trig_.CosmAdd, "CosmAdd[NClu2s]/I");
 }
 
@@ -198,7 +198,7 @@ void TreeWriter::addBlockC2Trig() {
 // input:	-
 // output: -
 void TreeWriter::addBlockTellina() {
-    fNewTree->Branch("NTel",     &tellina_.NTel,     "NTel/I");
+    fNewTree->Branch("nTel",     &tellina_.NTel,     "NTel/I");
     fNewTree->Branch("Add_Tel",  &tellina_.Add_Tel,  "Add_Tel[NTel]/I");
     fNewTree->Branch("Bitp_Tel", &tellina_.Bitp_Tel, "Bitp_Tel[NTel]/I");
     fNewTree->Branch("Ea_Tel",   &tellina_.Ea_Tel,   "Ea_Tel[NTel]/F");
@@ -212,7 +212,7 @@ void TreeWriter::addBlockTellina() {
 // input:	-
 // output: -
 void TreeWriter::addBlockPizzetta() {
-    fNewTree->Branch("NPiz",    &pizzetta_.NPiz,    "NPiz/I");
+    fNewTree->Branch("nPiz",    &pizzetta_.NPiz,    "NPiz/I");
     fNewTree->Branch("Add_Piz", &pizzetta_.Add_Piz, "Add_Piz[NPiz]/I");
     fNewTree->Branch("Ea_Piz",  &pizzetta_.Ea_Piz,  "Ea_Piz[NPiz]/F");
     fNewTree->Branch("Eb_Piz",  &pizzetta_.Eb_Piz,  "Eb_Piz[NPiz]/F");
@@ -225,7 +225,7 @@ void TreeWriter::addBlockPizzetta() {
 // input:	-
 // output: -
 void TreeWriter::addBlockTele() {
-    fNewTree->Branch("NTele",   &tele_.NTele,    "NTele/I");
+    fNewTree->Branch("nTele",   &tele_.NTele,    "NTele/I");
     fNewTree->Branch("Det_Trg", &tele_.Det_Trg,  "Det_Trg[NTele]/I");
     fNewTree->Branch("BitP",    &tele_.BitP,     "BitP[NTele]/I");
     fNewTree->Branch("Sector",  &tele_.Sector,   "Sector[NTele]/I");
@@ -241,7 +241,7 @@ void TreeWriter::addBlockTele() {
 // input:	-
 // output: -
 void TreeWriter::addBlockPizza() {
-    fNewTree->Branch("NPack",   &pizza_.NPack,   "NPack/I");
+    fNewTree->Branch("nPack",   &pizza_.NPack,   "NPack/I");
     fNewTree->Branch("PakSect", &pizza_.PakSect, "PakSect[NPack]/I");
     fNewTree->Branch("PakDet",  &pizza_.PakDet,  "PakDet[NPack]/I");
     fNewTree->Branch("PakSerk", &pizza_.PakSerk, "PakSerk[NPack]/I");
@@ -256,7 +256,7 @@ void TreeWriter::addBlockPizza() {
 // input:   -
 // output:  -
 void TreeWriter::addBlockTime() {
-    fNewTree->Branch("TPhased_mc", &evttime_.TPhased_mc, "TPhased_mc/F");
+    fNewTree->Branch("TPhased_MC", &evttime_.TPhased_mc, "TPhased_mc/F");
     fNewTree->Branch("T0Dc0",      &evttime_.T0Dc0,      "T0Dc0/F");
     fNewTree->Branch("T0Hit0",     &evttime_.T0Hit0,     "T0Hit0/F");
     fNewTree->Branch("T0Clu0",     &evttime_.T0Clu0,     "T0Clu0/F");
@@ -270,7 +270,7 @@ void TreeWriter::addBlockTime() {
 // input:   -
 // output: -
 void TreeWriter::addBlockClu() {
-    fNewTree->Branch("NClu",   &evtclu_.NClu,   "NClu/I");
+    fNewTree->Branch("nClu",   &evtclu_.NClu,   "NClu/I");
     fNewTree->Branch("EneCl",  &evtclu_.EneCl,  "EneCl[NClu]/F");
     fNewTree->Branch("TCl",    &evtclu_.TCl,    "TCl[NClu]/F");
     fNewTree->Branch("XCl",    &evtclu_.XCl,    "XCl[NClu]/F");
@@ -284,8 +284,8 @@ void TreeWriter::addBlockClu() {
     fNewTree->Branch("ZrmsCl", &evtclu_.ZrmsCl, "ZrmsCl[NClu]/F");
     fNewTree->Branch("TrmsCl", &evtclu_.TrmsCl, "TrmsCl[NClu]/F");
     fNewTree->Branch("FlagCl", &evtclu_.FlagCl, "FlagCl[NClu]/I");
-    fNewTree->Branch("NCluMc", &evtclu_.NCluMc, "NCluMc/I");
-    fNewTree->Branch("NPar",   &evtclu_.NPar,   "NPar[NCluMc]/I");
+    fNewTree->Branch("nCluMC", &evtclu_.NCluMc, "NCluMc/I");
+    fNewTree->Branch("nPar",   &evtclu_.NPar,   "NPar[NCluMc]/I");
     fNewTree->Branch("PNum1",  &evtclu_.PNum1,  "PNum1[NCluMc]/I");
     fNewTree->Branch("Pid1",   &evtclu_.Pid1,   "Pid1[NCluMc]/I");
     fNewTree->Branch("PNum2",  &evtclu_.PNum2,  "PNum2[NCluMc]/I");
@@ -299,7 +299,7 @@ void TreeWriter::addBlockClu() {
 // input:	-
 // output: -
 void TreeWriter::addBlockPreClu() {
-    fNewTree->Branch("NPClu",  &preclu_.NPClu,  "NPClu/I");
+    fNewTree->Branch("nPClu",  &preclu_.NPClu,  "NPClu/I");
     fNewTree->Branch("EPre",   &preclu_.EPre,   "EPre[NPClu]/F");
     fNewTree->Branch("TPre",   &preclu_.TPre,   "TPre[NPClu]/F");
     fNewTree->Branch("XPre",   &preclu_.XPre,   "XPre[NPClu]/F");
@@ -316,11 +316,11 @@ void TreeWriter::addBlockPreClu() {
 // input:	-
 // output: -
 void TreeWriter::addBlockCWRK() {
-    fNewTree->Branch("NCHit",   &cwrk_.NCHit,  "NCHit/I");
-    fNewTree->Branch("IClu",    &cwrk_.IClu,   "IClu[NCHit]/I");
-    fNewTree->Branch("ICel",    &cwrk_.ICel,   "ICel[NCHit]/I");
+    fNewTree->Branch("nCHit",   &cwrk_.NCHit,  "NCHit/I");
+    fNewTree->Branch("iClu",    &cwrk_.IClu,   "IClu[NCHit]/I");
+    fNewTree->Branch("iCel",    &cwrk_.ICel,   "ICel[NCHit]/I");
     fNewTree->Branch("CAdd",    &cwrk_.CAdd,   "CAdd[NCHit]/I");
-    fNewTree->Branch("CmcHit",  &cwrk_.CmcHit, "CmcHit[NCHit]/I");
+    fNewTree->Branch("CMCHit",  &cwrk_.CmcHit, "CmcHit[NCHit]/I");
     fNewTree->Branch("Ckine",   &cwrk_.Ckine,  "Ckine[NCHit]/I");
     fNewTree->Branch("Ene",     &cwrk_.Ene,    "Ene[NCHit]/F");
     fNewTree->Branch("T",       &cwrk_.T,      "T[NCHit]/F");
@@ -334,8 +334,8 @@ void TreeWriter::addBlockCWRK() {
 // input:	-
 // output: -
 void TreeWriter::addBlockCele() {
-    fNewTree->Branch("NCel",    &cele_.NCel,    "NCel/I");
-    fNewTree->Branch("ICl",     &cele_.ICl,     "ICl[NCel]/I");
+    fNewTree->Branch("nCel",    &cele_.NCel,    "NCel/I");
+    fNewTree->Branch("iCl",     &cele_.ICl,     "ICl[NCel]/I");
     fNewTree->Branch("Det",     &cele_.Det,     "Det[NCel]/I");
     fNewTree->Branch("Wed",     &cele_.Wed,     "Wed[NCel]/I");
     fNewTree->Branch("Pla",     &cele_.Pla,     "Pla[NCel]/I");
@@ -344,7 +344,7 @@ void TreeWriter::addBlockCele() {
     fNewTree->Branch("Ta",      &cele_.Ta,      "Ta[NCel]/F");
     fNewTree->Branch("Eb",      &cele_.Eb,      "Eb[NCel]/F");
     fNewTree->Branch("Tb",      &cele_.Tb,      "Tb[NCel]/F");
-    fNewTree->Branch("NCelMc",  &cele_.NCelMc,  "NCelMc/I");
+    fNewTree->Branch("nCelMc",  &cele_.NCelMc,  "NCelMc/I");
     fNewTree->Branch("EMc",     &cele_.EMc,     "EMc[NCelMc]/F");
     fNewTree->Branch("TMc",     &cele_.TMc,     "TMc[NCelMc]/F");
     fNewTree->Branch("XMc",     &cele_.XMc,     "XMc[NCelMc]/F");
@@ -352,7 +352,7 @@ void TreeWriter::addBlockCele() {
     fNewTree->Branch("ZMc",     &cele_.ZMc,     "ZMc[NCelMc]/F");
     fNewTree->Branch("PTyp",    &cele_.PTyp,    "PTyp[NCelMc]/I");
     fNewTree->Branch("KNum",    &cele_.KNum,    "KNum[NCelMc]/I");
-    fNewTree->Branch("NHit",    &cele_.NHit,    "NHit[NCelMc]/I");
+    fNewTree->Branch("nHit",    &cele_.NHit,    "NHit[NCelMc]/I");
 }
 
 // Add to the tree all the branches realted to the block DTCE.
@@ -378,7 +378,7 @@ void TreeWriter::addBlockDTCE0() {
     fNewTree->Branch("tDTCE0", &dtce0_.tDTCE0, "tDTCE0[nDTCE0]/F");
 }
 
-/ Add to the tree all the branches realted to the block DCHits.
+// Add to the tree all the branches realted to the block DCHits.
 //
 // input:	-
 // output: -

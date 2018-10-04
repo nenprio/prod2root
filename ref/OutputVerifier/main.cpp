@@ -1,33 +1,21 @@
 #include "src/MyFunctions.hh"
-#include "src/RootExplorer.hh"
-#include "src/HBConvExplorer.hh"
-#include <TFile.h>
+#include "src/OutputVerifier.hh"
 
 int main() {
     println("[Debug] Hello World!");
     println(""); //Debug 
     
     // Input/Output definition
-    const char *haddFile    ="root/result.root";
-    const char *hbConvFile  ="root/hbConv.root";
-    const char *sampleFile  ="root/sample.root";
-    const char *outSampleDir="out/sample_root_out";
-    const char *outHbConvDir="out/hb_conv_out";
-    
-    // Create object RootExplorer
-    RootExplorer *rootExplorer = new RootExplorer(sampleFile, outSampleDir);
-    rootExplorer->printInfo();
-    rootExplorer->exportEntriesToTxt();
-
-    //Create object HBConvExplorer
-    HBConvExplorer *hbConvExplorer = new HBConvExplorer(hbConvFile, outHbConvDir);
-    hbConvExplorer->printInfo();
+    const char *rFile   ="root/sample.root";
+    const char *hbFile  ="root/hbConv.root";
+    const char *outDir  ="out/";
    
-    /* TFile *f = new TFile(haddFile.c_str(), "READ"); */
-    /* if(f->IsOpen()) */
-    /*     println("Hadd file open"); */
-    /* else */
-    /*     println("ERROR during hadd opening"); */
+    OutputVerifier *verifier = new OutputVerifier(rFile, hbFile, outDir);
+    
+    verifier->printInfo();
+    
+    verifier->exportRootTree();
+    verifier->exportHBConvTree();
 
     return(0);
 }
