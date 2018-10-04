@@ -369,9 +369,23 @@ void TreeWriter::addBlockDTCE() {
 // output: -
 void TreeWriter::addBlockDTCE0() {
     fNewTree->Branch("nDTCE0", &dtce0_.nDTCE0, "nDTCE0/I");
-    fNewTree->Branch("", &dtce0_., "[nDTCE0]/I");
+    fNewTree->Branch("iLayerDTCE0", &dtce0_.iLayerDTCE0, "iLayerDTCE0[nDTCE0]/I");
     fNewTree->Branch("iWireDTCE0", &dtce0_.iWireDTCE0, "iWireDTCE0[nDTCE0]/I");
     fNewTree->Branch("tDTCE0", &dtce0_.tDTCE0, "tDTCE0[nDTCE0]/F");
+}
+
+/ Add to the tree all the branches realted to the block DCNHITS.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockDCNHits() {
+    fNewTree->Branch("nDCHR", &dcnhits_.nDCHR, "nDCHR/I");
+    fNewTree->Branch("nSmallDCm", &dcnhits_.nSmallDCm, "nSmallDCm/I");
+    fNewTree->Branch("nSmallDCp", &dcnhits_.nSmallDCp, "nSmallDCp/I");
+    fNewTree->Branch("nBigDCm", &dcnhits_.nBigDCm, "nBigDCm/I");
+    fNewTree->Branch("nBigDCp", &dcnhits_.nBigDCp, "nBigDCp/I");
+    fNewTree->Branch("nCellDC", &dcnhits_.nCellDC, "nCellDC/I");
+    fNewTree->Branch("nSmallDC", &dcnhits_.nSmallDC, "nSmallDC/I");
 }
 
 // Returns the output file object.

@@ -25,6 +25,7 @@ class TreeWriter{
          void addBlockCele();
          void addBlockDTCE();
          void addBlockDTCE0();
+         void addBlockDCNHits();
          TFile* getTFile();
          void fillTTree();
      private:

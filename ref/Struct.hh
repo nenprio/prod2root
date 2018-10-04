@@ -287,10 +287,23 @@ extern "C" {
 extern "C" {
   extern struct {
     int nDTCE0;
-    int [NMaxDC];
+    int iLayerDTCE0[NMaxDC];
     int iWireDTCE0[NMaxDC];
     float tDTCE0[NMaxDC];
   }dtce0_;
+}
+
+// Block:   dcnhits
+extern "C" {
+  extern struct {
+    int nDCHR;
+    int nSmallDCm;
+    int nSmallDCp;
+    int nBigDCm;
+    int nBigDCp;
+    int nCellDC;
+    int nSmallDC;
+  }dcnhits_;
 }
 
 #endif

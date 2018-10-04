@@ -187,7 +187,15 @@ C
 C
 C  Block: dtce0
 C
-      integer iDTCE0, nDTCE0, (1500), iWireDTCE0(1500)
+      integer iDTCE0, nDTCE0, iLayerDTCE0(1500), iWireDTCE0(1500)
       real tDTCE0(1500)
 
       common /dtce0/nDTCE0,,iWireDTCE0,tDTCE0
+C
+C  Block: dcnhits
+C
+      integer nDCHR, nSmallDCm, nSmallDCp, nBigDCm, nBigDCp
+      integer nCellDC, nSmallDC
+
+      common /dcnhits/nDCHR,nSmallDCm,nSmallDCp,nBigDCm,nBigDCp,
+     1       nCellDC,nSmallDC
