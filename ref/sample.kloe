@@ -702,6 +702,43 @@ C-----------------------------------------------------------------------
       ELSE
         WRITE(*,*) 'ERROR CELE - NCelMc Out of bound : ', NCelMc
       END IF
+C-----------------------------------------------------------------------
+C Fill Block dtce
+C-----------------------------------------------------------------------
+      NDTCE = 0.
+      NSmall = 0.
+      DO iDTCE=1, 1500
+        ILayerDTCE(iDTCE) = 0.
+        IWireDTCE(iDTCE) = 0.
+        TDTCE(iDTCE) = 0.
+      END DO
+
+      CALL GETDTCESTRU(Evt%DTCE)
+
+      NDTCE = Evt%DTCE%nDTCE
+      IF ( NDTCE < 0 .OR. NDTCE > 1500 ) THEN
+        WRITE(*,*) 'ERROR DTCE - NDTCE Out of bound : ', NDTCE
+      END IF
+      NSmall = Evt%DTCE%nSmall
+      IF ( NSmall < 0 .OR. NSmall > 1500 ) THEN
+        WRITE(*,*) 'ERROR DTCE - NSmall Out of bound : ', NSmall
+      END IF
+
+      IF (NDTCE > 0 .AND. NDTCE <= 1500) THEN
+        DO iDTCE=1, NDTCE
+          ILayerDTCE(iDTCE) = Evt%DTCE%iLayerDTCE(iDTCE)
+          IF ( ILayerDTCE(iDTCE) < 1 .OR. ILayerDTCE(iDTCE) > 58 ) THEN
+            WRITE(*,*) 'ERROR DTCE - ILayerDTCE[2] Out of bound : ', ILayerDTCE(iDTCE)
+          END IF
+          IWireDTCE(iDTCE) = Evt%DTCE%iWireDTCE(iDTCE)
+          IF ( IWireDTCE(iDTCE) < 1 .OR. IWireDTCE(iDTCE) > 378 ) THEN
+            WRITE(*,*) 'ERROR DTCE - IWireDTCE[3] Out of bound : ', IWireDTCE(iDTCE)
+          END IF
+          TDTCE(iDTCE) = Evt%DTCE%tDTCE(iDTCE)
+        END DO
+      ELSE
+        WRITE(*,*) 'ERROR DTCE - NDTCE Index not valid: ', NDTCE
+      END IF
 C
 C Fill Root
 C

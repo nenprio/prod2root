@@ -9,6 +9,7 @@ const int MaxTrgChan = 1000;
 const int MaxNTele   = 300;
 const int MaxNPack   = 300;
 const int NeleCluMax = 300;
+const int NMaxDC     = 1500;
 
 // Block:   evtinfo
 extern "C"{
@@ -269,6 +270,17 @@ extern "C" {
     int KNum[NeleCluMax];
     int NHit[NeleCluMax];
   }cele_;
+}
+
+// Block:   dtce
+extern "C" {
+  extern struct {
+    int NDTCE;
+    int NSmall;
+    int ILayerDTCE[NMaxDC];
+    int IWireDTCE[NMaxDC];
+    float TDTCE[NMaxDC];
+  }dtce_;
 }
 
 #endif

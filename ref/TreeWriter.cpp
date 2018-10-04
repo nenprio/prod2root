@@ -47,6 +47,8 @@ TreeWriter::TreeWriter() {
     addBlockCWRK();
     // Block Cele
     addBlockCele();
+    // Block DTCE
+    addBlockDTCE();
 
     // Write to the disk
     outfile->Write();
@@ -345,6 +347,18 @@ void TreeWriter::addBlockCele() {
     fNewTree->Branch("PTyp",    &cele_.PTyp,    "PTyp[NCelMc]/I");
     fNewTree->Branch("KNum",    &cele_.KNum,    "KNum[NCelMc]/I");
     fNewTree->Branch("NHit",    &cele_.NHit,    "NHit[NCelMc]/I");
+}
+
+// Add to the tree all the branches realted to the block DTCE.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockDTCE() {
+    fNewTree->Branch("NDTCE",      &dtce_.NDTCE,      "NDTCE/I");
+    fNewTree->Branch("NSmall",     &dtce_.NSmall,     "NSmall/I");
+    fNewTree->Branch("ILayerDTCE", &dtce_.ILayerDTCE, "ILayerDTCE[NDTCE]/I");
+    fNewTree->Branch("IWireDTCE",  &dtce_.IWireDTCE,  "IWireDTCE[NDTCE]/I");
+    fNewTree->Branch("TDTCE",      &dtce_.TDTCE,      "TDTCE[NDTCE]/F");
 }
 
 // Returns the output file object.

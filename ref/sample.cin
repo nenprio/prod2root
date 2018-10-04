@@ -177,3 +177,10 @@ C
 
       common /cele/NCel,ICl,Det,Wed,Pla,Col,Ea,Ta,Eb,Tb,NCelMc,EMc,
      1       TMc,XMc,YMc,ZMc,PTyp,KNum,NHit
+C
+C  Block: dtce
+C
+      integer iDTCE, NDTCE, NSmall, ILayerDTCE(1500), IWireDTCE(1500)
+      real TDTCE(1500)
+
+      common /dtce/NDTCE,NSmall,ILayerDTCE,IWireDTCE,TDTCE
