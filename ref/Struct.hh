@@ -7,6 +7,18 @@ const int MaxNumClu  = 100;
 const int MaxEclSize = 8;
 const int MaxTrgChan = 1000;
 
+//Verb for Talk_to module
+extern "C"{
+  extern struct{
+    bool trigFlag;
+    bool teleFlag;
+    bool c2trgFlag;
+    bool tellinaFlag;
+    bool pizzaFlag;
+    bool eclsFlag;
+    bool bposFlag;
+  }sammenu_;
+}
 // Block:   evtinfo
 extern "C"{
   extern struct{

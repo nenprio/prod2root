@@ -6,15 +6,32 @@
 !==============================================================================
 Group #+0
 !
+Verb TRIG
+Verb C2TRG
+Verb TELLINA
+Verb PIZZA
+Verb TORTA
+Verb TELE
+Verb ECLS
+Verb BPOS
 Verb SHOW
 Verb EXIT
+!
 Alias QUIT EXIT
 Alias RETURN EXIT
 !
 MENU #+0/Title="Select your action"/Prompt="SAMTK> "
 !
-Button 1 /Description="Show single process selection"/Response="SHOW"
-Button 2 /Description="Go Back to the AC prompt" /Response="EXIT"
+Button 1   /Description="Select TRIGGER  CWN block"/Response="TRIG"
+Button 2   /Description="Select CLUS2TRG CWN block"/Response="C2TRG"
+Button 3   /Description="Select TELLINA  CWN block"/Response="TELLINA"
+Button 4   /Description="Select PIZZA    CWN block"/Response="PIZZA"
+Button 5   /Description="Select TORTA  CWN block"/Response="TORTA"
+Button 6   /Description="Select TRIG-ELE CWN block"/Response="TELE"
+Button 7   /Description="Select ECLS     CWN block"/Response="ECLS"
+Button 8   /Description="Select BPOS     CWN block"/Response="BPOS"
+Button 9   /Description="Show single process selection"/Response="SHOW"
+Button 10  /Description="Go Back to the AC prompt" /Response="EXIT"
 !==============================================================================
 
 
