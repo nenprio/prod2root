@@ -10,6 +10,7 @@ const int MaxNTele   = 300;
 const int MaxNPack   = 300;
 const int NeleCluMax = 300;
 const int NMaxDC     = 1500;
+const int MaxNumDHSP = 500;
 
 // Block:   evtinfo
 extern "C"{
@@ -316,6 +317,22 @@ extern "C" {
     float rDHRE[NMaxDC];
     float eDHRE[NMaxDC];
   }dhre_;
+}
+
+// Block:   dhsp
+extern "C" {
+  extern struct {
+    int nDHSP;
+    int TrkDh[MaxNumDHSP];
+    int Layer[MaxNumDHSP];
+    int Wire[MaxNumDHSP];
+    float Time[MaxNumDHSP];
+    float DPar[MaxNumDHSP];
+    float Res[MaxNumDHSP];
+    float XDh[MaxNumDHSP];
+    float YDh[MaxNumDHSP];
+    float ZDh[MaxNumDHSP];
+  }dhsp_;
 }
 
 #endif

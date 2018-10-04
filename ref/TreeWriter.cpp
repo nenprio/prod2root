@@ -53,6 +53,8 @@ TreeWriter::TreeWriter() {
     addBlockDTCE0();
     // Block DHRE
     addBlockDHRE();
+    // Block DHSP
+    addBlockDHSP();
 
     // Write to the disk
     outfile->Write();
@@ -401,6 +403,23 @@ void TreeWriter::addBlockDHRE() {
     fNewTree->Branch("iTrkDHRE", &dhre_.iTrkDHRE, "iTrkDHRE[nDHRE]/I");
     fNewTree->Branch("rDHRE", &dhre_.rDHRE, "rDHRE[nDHRE]/F");
     fNewTree->Branch("eDHRE", &dhre_.eDHRE, "eDHRE[nDHRE]/F");
+}
+
+// Add to the tree all the branches realted to the block DHSP.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockDHSP() {
+    fNewTree->Branch("nDHSP", &dhsp_.nDHSP, "nDHSP/I");
+    fNewTree->Branch("TrkDh", &dhsp_.TrkDh, "TrkDh[nDHSP]/I");
+    fNewTree->Branch("Layer", &dhsp_.Layer, "Layer[nDHSP]/I");
+    fNewTree->Branch("Wire", &dhsp_.Wire, "Wire[nDHSP]/I");
+    fNewTree->Branch("Time", &dhsp_.Time, "Time[nDHSP]/F");
+    fNewTree->Branch("DPar", &dhsp_.DPar, "DPar[nDHSP]/F");
+    fNewTree->Branch("Res", &dhsp_.Res, "Res[nDHSP]/F");
+    fNewTree->Branch("XDh", &dhsp_.XDh, "XDh[nDHSP]/F");
+    fNewTree->Branch("YDh", &dhsp_.YDh, "YDh[nDHSP]/F");
+    fNewTree->Branch("ZDh", &dhsp_.ZDh, "ZDh[nDHSP]/F");
 }
 
 // Returns the output file object.

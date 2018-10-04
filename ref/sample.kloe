@@ -792,34 +792,42 @@ C     Already filled Evt%DTCE and DTCEStru in previous blocks
       nCellDC = Evt%DTCE%nDTCE
       nSmallDC = Evt%DTCE%nSmall
 C-----------------------------------------------------------------------
-C Fill Block dhre
+C Fill Block dhsp
 C-----------------------------------------------------------------------
-      nDHRE = 0.
-      DO iDHRE=1, 1500
-        iLayerDHRE(iDHRE) = 0.
-        iWireDHRE(iDHRE) = 0.
-        iTrkDHRE(iDHRE) = 0.
-        rDHRE(iDHRE) = 0.
-        eDHRE(iDHRE) = 0.
+      nDHSP = 0.
+      DO iDHSP=1, 500
+        TrkDh(iDHSP) = 0.
+        Layer(iDHSP) = 0.
+        Wire(iDHSP) = 0.
+        Time(iDHSP) = 0.
+        DPar(iDHSP) = 0.
+        Res(iDHSP) = 0.
+        XDh(iDHSP) = 0.
+        YDh(iDHSP) = 0.
+        ZDh(iDHSP) = 0.
       END DO
 
-     CALL GETDHRESTRU(Evt%DHRE) 
+      CALL GETDHRESTRU(Evt%DHRE) 
 
-      nDHRE = Evt%DHRE%nDHRE
-      IF ( nDHRE < 0 .OR. nDHRE > 1500 ) THEN
-        WRITE(*,*) 'ERROR DHRE - nDHRE Out of bound : ', nDHRE
+      nDHSP = Evt%DHSP%numDHSP
+      IF ( nDHSP < 0 .OR. nDHSP > 1500 ) THEN
+        WRITE(*,*) 'ERROR DHSP - nDHSP Out of bound : ', nDHSP
       END IF
 
-      IF ( nDHRE > 0 .AND. nDHRE <= 1500 ) THEN
-        DO iDHRE=1, nDHRE
-          iLayerDHRE(iDHRE) = Evt%DHRE%iLayerDHRE(iDHRE)
-          iWireDHRE(iDHRE) = Evt%DHRE%iWireDHRE(iDHRE)
-          iTrkDHRE(iDHRE) = Evt%DHRE%iTrkDHRE(iDHRE)
-          rDHRE(iDHRE) = Evt%DHRE%rDHRE(iDHRE)
-          eDHRE(iDHRE) = Evt%DHRE%eDHRE(iDHRE)
+      IF (nDHSP > 0 .AND. nDHSP <= 500) THEN
+        DO iDHSP=1, nDHSP
+          TrkDh(iDHSP) = Evt%DHSP%itrk(iDHSP)
+          Layer(iDHSP) = Evt%Dhsp%layer(iDHSP)
+          Wire(iDHSP) = Evt%Dhsp%wire(iDHSP)
+          Time(iDHSP) = Evt%Dhsp%time(iDHSP)
+          DPar(iDHSP) = Evt%Dhsp%drift(iDHSP)
+          Res(iDHSP) = Evt%Dhsp%res(iDHSP)
+          XDh(iDHSP) = Evt%Dhsp%x(iDHSP)
+          YDh(iDHSP) = Evt%Dhsp%y(iDHSP)
+          ZDh(iDHSP) = Evt%Dhsp%z(iDHSP)
         END DO
       ELSE
-        WRITE(*,*) 'ERROR DHRE - nDHRE Index not valid: ', nDHRE
+        WRITE(*,*) 'ERROR DHSP - nDHSP Index not valid: ', nDHSP
       END IF
 C
 C Fill Root

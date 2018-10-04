@@ -207,3 +207,10 @@ C
       real rDHRE(1500), eDHRE(1500)
 
       common /dhre/nDHRE,iLayerDHRE,iWireDHRE,iTrkDHRE,rDHRE,eDHRE
+C
+C  Block: dhsp
+C
+      integer iDHSP, nDHSP, TrkDh(500), Layer(500), Wire(500)
+      real Time(500),DPar(500),Res(500),XDh(500),YDh(500),ZDh(500)
+
+      common /dhsp/NDhsp,TrkDh,Layer,Wire,Time,DPar,Res,XDh,YDh,ZDh
