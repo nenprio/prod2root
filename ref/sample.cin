@@ -192,12 +192,12 @@ C
 
       common /dtce0/nDTCE0,,iWireDTCE0,tDTCE0
 C
-C  Block: dcnhits
+C  Block: dchits
 C
       integer nDCHR, nSmallDCm, nSmallDCp, nBigDCm, nBigDCp
       integer nCellDC, nSmallDC
 
-      common /dcnhits/nDCHR,nSmallDCm,nSmallDCp,nBigDCm,nBigDCp,
+      common /dchits/nDCHR,nSmallDCm,nSmallDCp,nBigDCm,nBigDCp,
      1       nCellDC,nSmallDC
 C
 C  Block: dhre

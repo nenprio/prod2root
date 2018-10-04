@@ -772,7 +772,7 @@ C     Where is initialized DTCEStru?
         WRITE(*,*) 'ERROR DTCE0 - nDTCE0 Index not valid: ', nDTCE0
       END IF
 C-----------------------------------------------------------------------
-C Fill Block dcnhits
+C Fill Block dchits
 C-----------------------------------------------------------------------
       nDCHR = 0.
       nSmallDCm = 0.

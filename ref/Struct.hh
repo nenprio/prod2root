@@ -304,7 +304,7 @@ extern "C" {
     int nBigDCp;
     int nCellDC;
     int nSmallDC;
-  }dcnhits_;
+  }dchits_;
 }
 
 // Block:   dhre

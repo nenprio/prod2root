@@ -378,18 +378,18 @@ void TreeWriter::addBlockDTCE0() {
     fNewTree->Branch("tDTCE0", &dtce0_.tDTCE0, "tDTCE0[nDTCE0]/F");
 }
 
-/ Add to the tree all the branches realted to the block DCNHITS.
+/ Add to the tree all the branches realted to the block DCHits.
 //
 // input:	-
 // output: -
-void TreeWriter::addBlockDCNHits() {
-    fNewTree->Branch("nDCHR", &dcnhits_.nDCHR, "nDCHR/I");
-    fNewTree->Branch("nSmallDCm", &dcnhits_.nSmallDCm, "nSmallDCm/I");
-    fNewTree->Branch("nSmallDCp", &dcnhits_.nSmallDCp, "nSmallDCp/I");
-    fNewTree->Branch("nBigDCm", &dcnhits_.nBigDCm, "nBigDCm/I");
-    fNewTree->Branch("nBigDCp", &dcnhits_.nBigDCp, "nBigDCp/I");
-    fNewTree->Branch("nCellDC", &dcnhits_.nCellDC, "nCellDC/I");
-    fNewTree->Branch("nSmallDC", &dcnhits_.nSmallDC, "nSmallDC/I");
+void TreeWriter::addBlockDCHits() {
+    fNewTree->Branch("nDCHR", &dchits_.nDCHR, "nDCHR/I");
+    fNewTree->Branch("nSmallDCm", &dchits_.nSmallDCm, "nSmallDCm/I");
+    fNewTree->Branch("nSmallDCp", &dchits_.nSmallDCp, "nSmallDCp/I");
+    fNewTree->Branch("nBigDCm", &dchits_.nBigDCm, "nBigDCm/I");
+    fNewTree->Branch("nBigDCp", &dchits_.nBigDCp, "nBigDCp/I");
+    fNewTree->Branch("nCellDC", &dchits_.nCellDC, "nCellDC/I");
+    fNewTree->Branch("nSmallDC", &dchits_.nSmallDC, "nSmallDC/I");
 }
 
 // Add to the tree all the branches realted to the block DHRE.
