@@ -705,39 +705,39 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block dtce
 C-----------------------------------------------------------------------
-      NDTCE = 0.
-      NSmall = 0.
+      nDTCE = 0.
+      nSmall = 0.
       DO iDTCE=1, 1500
-        ILayerDTCE(iDTCE) = 0.
-        IWireDTCE(iDTCE) = 0.
-        TDTCE(iDTCE) = 0.
+        iLayerDTCE(iDTCE) = 0.
+        iWireDTCE(iDTCE) = 0.
+        tDTCE(iDTCE) = 0.
       END DO
 
       CALL GETDTCESTRU(Evt%DTCE)
 
-      NDTCE = Evt%DTCE%nDTCE
-      IF ( NDTCE < 0 .OR. NDTCE > 1500 ) THEN
-        WRITE(*,*) 'ERROR DTCE - NDTCE Out of bound : ', NDTCE
+      nDTCE = Evt%DTCE%nDTCE
+      IF ( nDTCE < 0 .OR. nDTCE > 1500 ) THEN
+        WRITE(*,*) 'ERROR DTCE - nDTCE Out of bound : ', nDTCE
       END IF
-      NSmall = Evt%DTCE%nSmall
-      IF ( NSmall < 0 .OR. NSmall > 1500 ) THEN
-        WRITE(*,*) 'ERROR DTCE - NSmall Out of bound : ', NSmall
+      nSmall = Evt%DTCE%nSmall
+      IF ( nSmall < 0 .OR. nSmall > 1500 ) THEN
+        WRITE(*,*) 'ERROR DTCE - nSmall Out of bound : ', nSmall
       END IF
 
-      IF (NDTCE > 0 .AND. NDTCE <= 1500) THEN
-        DO iDTCE=1, NDTCE
-          ILayerDTCE(iDTCE) = Evt%DTCE%iLayerDTCE(iDTCE)
-          IF ( ILayerDTCE(iDTCE) < 1 .OR. ILayerDTCE(iDTCE) > 58 ) THEN
-            WRITE(*,*) 'ERROR DTCE - ILayerDTCE[2] Out of bound : ', ILayerDTCE(iDTCE)
+      IF (nDTCE > 0 .AND. nDTCE <= 1500) THEN
+        DO iDTCE=1, nDTCE
+          iLayerDTCE(iDTCE) = Evt%DTCE%iLayerDTCE(iDTCE)
+          IF ( iLayerDTCE(iDTCE) < 1 .OR. iLayerDTCE(iDTCE) > 58 ) THEN
+            WRITE(*,*) 'ERROR DTCE - iLayerDTCE[2] Out of bound : ', iLayerDTCE(iDTCE)
           END IF
-          IWireDTCE(iDTCE) = Evt%DTCE%iWireDTCE(iDTCE)
-          IF ( IWireDTCE(iDTCE) < 1 .OR. IWireDTCE(iDTCE) > 378 ) THEN
-            WRITE(*,*) 'ERROR DTCE - IWireDTCE[3] Out of bound : ', IWireDTCE(iDTCE)
+          iWireDTCE(iDTCE) = Evt%DTCE%iWireDTCE(iDTCE)
+          IF ( iWireDTCE(iDTCE) < 1 .OR. iWireDTCE(iDTCE) > 378 ) THEN
+            WRITE(*,*) 'ERROR DTCE - iWireDTCE[3] Out of bound : ', iWireDTCE(iDTCE)
           END IF
-          TDTCE(iDTCE) = Evt%DTCE%tDTCE(iDTCE)
+          tDTCE(iDTCE) = Evt%DTCE%tDTCE(iDTCE)
         END DO
       ELSE
-        WRITE(*,*) 'ERROR DTCE - NDTCE Index not valid: ', NDTCE
+        WRITE(*,*) 'ERROR DTCE - nDTCE Index not valid: ', nDTCE
       END IF
 C
 C Fill Root

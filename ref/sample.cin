@@ -180,7 +180,7 @@ C
 C
 C  Block: dtce
 C
-      integer iDTCE, NDTCE, NSmall, ILayerDTCE(1500), IWireDTCE(1500)
-      real TDTCE(1500)
+      integer iDTCE, nDTCE, nSmall, iLayerDTCE(1500), iWireDTCE(1500)
+      real tDTCE(1500)
 
-      common /dtce/NDTCE,NSmall,ILayerDTCE,IWireDTCE,TDTCE
+      common /dtce/nDTCE,nSmall,iLayerDTCE,iWireDTCE,tDTCE

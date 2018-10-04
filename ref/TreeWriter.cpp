@@ -354,11 +354,11 @@ void TreeWriter::addBlockCele() {
 // input:	-
 // output: -
 void TreeWriter::addBlockDTCE() {
-    fNewTree->Branch("NDTCE",      &dtce_.NDTCE,      "NDTCE/I");
-    fNewTree->Branch("NSmall",     &dtce_.NSmall,     "NSmall/I");
-    fNewTree->Branch("ILayerDTCE", &dtce_.ILayerDTCE, "ILayerDTCE[NDTCE]/I");
-    fNewTree->Branch("IWireDTCE",  &dtce_.IWireDTCE,  "IWireDTCE[NDTCE]/I");
-    fNewTree->Branch("TDTCE",      &dtce_.TDTCE,      "TDTCE[NDTCE]/F");
+    fNewTree->Branch("nDTCE", &dtce_.nDTCE, "nDTCE/I");
+    fNewTree->Branch("nSmall", &dtce_.nSmall, "nSmall/I");
+    fNewTree->Branch("iLayerDTCE", &dtce_.iLayerDTCE, "iLayerDTCE[nDTCE]/I");
+    fNewTree->Branch("iWireDTCE", &dtce_.iWireDTCE, "iWireDTCE[nDTCE]/I");
+    fNewTree->Branch("tDTCE", &dtce_.tDTCE, "tDTCE[nDTCE]/F");
 }
 
 // Returns the output file object.

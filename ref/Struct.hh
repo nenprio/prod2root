@@ -275,11 +275,11 @@ extern "C" {
 // Block:   dtce
 extern "C" {
   extern struct {
-    int NDTCE;
-    int NSmall;
-    int ILayerDTCE[NMaxDC];
-    int IWireDTCE[NMaxDC];
-    float TDTCE[NMaxDC];
+    int nDTCE;
+    int nSmall;
+    int iLayerDTCE[1500];
+    int iWireDTCE[1500];
+    float tDTCE[1500];
   }dtce_;
 }
 
