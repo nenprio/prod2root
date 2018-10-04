@@ -27,11 +27,26 @@ C
 $$IMPLICIT
 
 $$include 'sample.inc'
+$$include 'sample_talk.inc'
 C
 C==============================================================================
 C
       write(*,*)"SAMIN"
+
+      TRIGFLAG    = .false.
+      TELEFLAG    = .false.
+      C2TRGFLAG   = .false.
+      TELLINAFLAG = .false.
+      PIZZAFLAG   = .false.
+      ECLSFLAG    = .true.
+      BPOSFLAG    = .false.
+      
+      write(*,*)'ECLSFLAG', ECLSFLAG
+
+C    Initialization tree for ROOT
       call inittree()
+
+
       RETURN
       END
 C
@@ -129,8 +144,9 @@ $$INCLUDE 'k$itls:hetestru.cin'  !LET Stru
 $$include 'k$itls:prod2ntu.inc'
 $$include 'k$itls:prod2ntu_talk.inc'
 $$INCLUDE 'k$itls:raw2dtce.cin'
+
 $$include 'sample.inc'
-   
+$$include 'sample_talk.inc'
 C
 C All the declarations are moved in sample.cin
 C What are the following lines? I maintain here at the moment to 
@@ -182,13 +198,13 @@ C         ENDIF
          timesec = timesec-946080000  ! Reduce the timing
          ISTAT = BIGEST(IW,'EVCL',BNKNUM)
          IF( ISTAT.ne.YESUCC ) THEN
-            Call ERLOGR ('PROD2NTU_EV',ERWARN,0,ISTAT,
+            Call ERLOGR ('SAME_EV',ERWARN,0,ISTAT,
      &           'No EVCL bank found')
 
          END IF
          ISTAT = BLOCAT(IW,'EVCL',BNKNUM,IND1,INDDAT )
          IF( ISTAT.ne.YESUCC ) THEN
-            Call ERLOGR ('PROD2NTU_EV',ERWARN,0,ISTAT,
+            Call ERLOGR ('SAME_EV',ERWARN,0,ISTAT,
      &           'No EVCL bank found')
             
 
@@ -229,95 +245,98 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block evtecls 
 C-----------------------------------------------------------------------
-      nEcls = 0
-      EclTrgw = 0
-      EclFilfo = 0
-      DO iecls=1,8
-        EclWord(iecls) = 0
-        EclStream(iecls) = 0
-        EclTagNum(iecls) = 0
-        EclEvType(iecls) = 0
-      END DO
-      
-      nEcls2 = 0
-      EclTrgw2 = 0
-      EclFilfo2 = 0
-      DO iecls2=1,8
-        EclWord2(iecls2) = 0
-        EclStream2(iecls2) = 0
-        EclTagNum2(iecls2) = 0
-        EclEvType2(iecls2) = 0
-      END DO
+      IF (ECLSFLAG) THEN
+         nEcls = 0
+         EclTrgw = 0
+         EclFilfo = 0
+         DO iecls=1,8
+            EclWord(iecls) = 0
+            EclStream(iecls) = 0
+            EclTagNum(iecls) = 0
+            EclEvType(iecls) = 0
+         END DO
+         
+         nEcls2 = 0
+         EclTrgw2 = 0
+         EclFilfo2 = 0
+         DO iecls2=1,8
+            EclWord2(iecls2) = 0
+            EclStream2(iecls2) = 0
+            EclTagNum2(iecls2) = 0
+            EclEvType2(iecls2) = 0
+         END DO
 
-      istat = GETECLS(evt%ecls)
-        
-      necls = evt%ecls%n
-      IF (nEcls > 0 .AND. nEcls <= 8) THEN
-        EclTrgw = evt%ecls%trigger
-        EclFilfo = evt%ecls%filfo
-        DO iecls=1,necls
-          EclWord(iecls) = evt%ecls%TotWord(iecls)
-          EclStream(iecls) = evt%ecls%Stream(iecls)
-          EclTagNum(iecls) = evt%ecls%TagNum(iecls)
-          EclEvType(iecls) = evt%ecls%EvnTyp(iecls)
-        END DO
-      ELSE
-        WRITE(*,*) 'ERROR EVTC2TRIG - NClu2s Out of bound : ', NClu2s
+         istat = GETECLS(evt%ecls)
+         
+         necls = evt%ecls%n
+         IF (nEcls > 0 .OR. nEcls <= 8) THEN
+            EclTrgw = evt%ecls%trigger
+            EclFilfo = evt%ecls%filfo
+            DO iecls=1,necls
+               EclWord(iecls) = evt%ecls%TotWord(iecls)
+               EclStream(iecls) = evt%ecls%Stream(iecls)
+               EclTagNum(iecls) = evt%ecls%TagNum(iecls)
+               EclEvType(iecls) = evt%ecls%EvnTyp(iecls)
+            END DO
+         ELSE
+            WRITE(*,*) 'ERROR EVTC2TRIG - NClu2s Out of bound : ', NClu2s
+         END IF
+         
+         nEcls2 = evt%ecls%n2
+
+         IF (nEcls2 > 0 .OR. nEcls <= 8) THEN
+            EclTrgw2 = evt%ecls%trigger2
+            EclFilfo2 = evt%ecls%filfo2
+            DO iecls2=1,necls2
+               EclWord2(iecls2) = evt%ecls%TotWord2(iecls2)
+               EclStream2(iecls2) = evt%ecls%Stream2(iecls2)
+               EclTagNum2(iecls2) = evt%ecls%TagNum2(iecls2)
+               EclEvType2(iecls2) = evt%ecls%EvnTyp2(iecls2)
+            END DO
+         ELSE
+            WRITE(*,*) 'ERROR EVTC2TRIG - NClu2s Out of bound : ', NClu2s
+         END IF
       END IF
-      
-      nEcls2 = evt%ecls%n2
-
-      IF (nEcls2 > 0 .AND. nEcls <= 8) THEN
-        EclTrgw2 = evt%ecls%trigger2
-        EclFilfo2 = evt%ecls%filfo2
-        DO iecls2=1,necls2
-          EclWord2(iecls2) = evt%ecls%TotWord2(iecls2)
-          EclStream2(iecls2) = evt%ecls%Stream2(iecls2)
-          EclTagNum2(iecls2) = evt%ecls%TagNum2(iecls2)
-          EclEvType2(iecls2) = evt%ecls%EvnTyp2(iecls2)
-        END DO
-      ELSE
-        WRITE(*,*) 'ERROR EVTC2TRIG - NClu2s Out of bound : ', NClu2s
-      END IF
-
 C-----------------------------------------------------------------------
 C Fill Block evtbpos
 C-----------------------------------------------------------------------
-      BPx = 0.
-      BPy = 0.
-      BPz = 0.
-      Bx = 0.
-      By = 0.
-      Bz = 0.
-      BWidPx = 0.
-      BWidPy = 0.
-      BWidPz = 0.
-      BSx = 0.
-      BSy = 0.
-      BSz = 0.
-      BLumx = 0.
-      BLumz = 0.
-      Broots = 0.
-      BrootsErr = 0.
+      if(BPOSFLAG)then
+         BPx = 0.
+         BPy = 0.
+         BPz = 0.
+         Bx = 0.
+         By = 0.
+         Bz = 0.
+         BWidPx = 0.
+         BWidPy = 0.
+         BWidPz = 0.
+         BSx = 0.
+         BSy = 0.
+         BSz = 0.
+         BLumx = 0.
+         BLumz = 0.
+         Broots = 0.
+         BrootsErr = 0.
 
-      rstat = GETBPOS(Evt%Bpos)
+         rstat = GETBPOS(Evt%Bpos)
 
-      BPx = Evt%Bpos%px
-      BPy = Evt%Bpos%py
-      BPz = Evt%Bpos%pz
-      Bx = Evt%Bpos%x
-      By = Evt%Bpos%y
-      Bz = Evt%Bpos%z
-      BWidPx = Evt%Bpos%errpx
-      BWidPy = Evt%Bpos%errpy
-      BWidPz = Evt%Bpos%errpz
-      BSx = Evt%Bpos%errx
-      BSy = Evt%Bpos%erry
-      BSz = Evt%Bpos%errz
-      BLumx = Evt%Bpos%lumx
-      BLumz = Evt%Bpos%lumz
-      Broots = Evt%Bpos%Ene
-      BrootsErr = Evt%Bpos%ErrEne
+         BPx = Evt%Bpos%px
+         BPy = Evt%Bpos%py
+         BPz = Evt%Bpos%pz
+         Bx = Evt%Bpos%x
+         By = Evt%Bpos%y
+         Bz = Evt%Bpos%z
+         BWidPx = Evt%Bpos%errpx
+         BWidPy = Evt%Bpos%errpy
+         BWidPz = Evt%Bpos%errpz
+         BSx = Evt%Bpos%errx
+         BSy = Evt%Bpos%erry
+         BSz = Evt%Bpos%errz
+         BLumx = Evt%Bpos%lumx
+         BLumz = Evt%Bpos%lumz
+         Broots = Evt%Bpos%Ene
+         BrootsErr = Evt%Bpos%ErrEne
+      end if
 C-----------------------------------------------------------------------
 C Fill Block evtgdhit
 C-----------------------------------------------------------------------
@@ -342,98 +361,105 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block evttrig
 C-----------------------------------------------------------------------
-      istat = BLOCAT(iw,'EVCL',1,ind1,inddat)
-      Trgw1 = IW( inddat+1 )
-      Trgw2 = IW( inddat+2 )
+      if(TRIGFLAG)then
+         istat = BLOCAT(iw,'EVCL',1,ind1,inddat)
+         Trgw1 = IW( inddat+1 )
+         Trgw2 = IW( inddat+2 )
+      end if
 C-----------------------------------------------------------------------
 C Fill Block evtc2trig
 C-----------------------------------------------------------------------
-      NSec = 0.
-      NSec_NoClu = 0.
-      NSec2Clu = 0.
-      NClu2s = 0.
-      DO iC2Trig=1,100
-        NNorm(iC2Trig)   = 0.
-        NormAdd(iC2Trig) = 0.
-        NOver(iC2Trig)   = 0.
-        OverAdd(iC2Trig) = 0.
-        NCosm(iC2Trig)   = 0.
-        CosmAdd(iC2Trig) = 0.
-      END DO
+      IF (C2TRGFLAG) THEN
+         NSec = 0.
+         NSec_NoClu = 0.
+         NSec2Clu = 0.
+         NClu2s = 0.
+         DO iC2Trig=1,100
+            NNorm(iC2Trig)   = 0.
+            NormAdd(iC2Trig) = 0.
+            NOver(iC2Trig)   = 0.
+            OverAdd(iC2Trig) = 0.
+            NCosm(iC2Trig)   = 0.
+            CosmAdd(iC2Trig) = 0.
+         END DO
 
-      istat = GETSEC2CLUSTRU(evt%s2clu)
+         istat = GETSEC2CLUSTRU(evt%s2clu)
 
-      NSec = Evt%S2CLU%nsect
-      NSec_NoClu = Evt%S2CLU%nsect_noclu
-      NSec2Clu = Evt%S2CLU%nsect_clu
-      NClu2s = Evt%S2CLU%Nclus
+         NSec = Evt%S2CLU%nsect
+         NSec_NoClu = Evt%S2CLU%nsect_noclu
+         NSec2Clu = Evt%S2CLU%nsect_clu
+         NClu2s = Evt%S2CLU%Nclus
 
-      IF (NClu2s > 0 .AND. NClu2s <= 100) THEN
-        DO iC2Trig=1,NClu2s
-          NNorm(iC2Trig)   = Evt%S2CLU%Nnorm(iC2Trig)
-          NormAdd(iC2Trig) = Evt%S2CLU%NormAdd(iC2Trig)
-          NOver(iC2Trig)   = Evt%S2CLU%Nover(iC2Trig)
-          OverAdd(iC2Trig) = Evt%S2CLU%OverAdd(iC2Trig)
-          NCosm(iC2Trig)   = Evt%S2CLU%Ncosm(iC2Trig)
-          CosmAdd(iC2Trig) = Evt%S2CLU%CosmAdd(iC2Trig)
-        END DO
-      ELSE
-        WRITE(*,*) 'ERROR EVTC2TRIG - NClu2s Out of bound : ', NClu2s
+         IF (NClu2s > 0 .OR. NClu2s <= 100) THEN
+            DO iC2Trig=1,NClu2s
+               NNorm(iC2Trig)   = Evt%S2CLU%Nnorm(iC2Trig)
+               NormAdd(iC2Trig) = Evt%S2CLU%NormAdd(iC2Trig)
+               NOver(iC2Trig)   = Evt%S2CLU%Nover(iC2Trig)
+               OverAdd(iC2Trig) = Evt%S2CLU%OverAdd(iC2Trig)
+               NCosm(iC2Trig)   = Evt%S2CLU%Ncosm(iC2Trig)
+               CosmAdd(iC2Trig) = Evt%S2CLU%CosmAdd(iC2Trig)
+            END DO
+         ELSE
+            WRITE(*,*) 'ERROR EVTC2TRIG - NClu2s Out of bound : ', NClu2s
+         END IF
       END IF
 C-----------------------------------------------------------------------
 C Fill Block tellina
 C-----------------------------------------------------------------------
-      NTel = 0.
-      DO iTELLINA=1, 1000
-        Add_Tel(iTELLINA) = 0.
-        Bitp_Tel(iTELLINA) = 0.
-        Ea_Tel(iTELLINA) = 0.
-        Eb_Tel(iTELLINA) = 0.
-        Ta_Tel(iTELLINA) = 0.
-        Tb_Tel(iTELLINA) = 0.
-      END DO
+      IF (TELLINAFLAG) THEN
+         NTel = 0.
+         DO iTELLINA=1, 1000
+            Add_Tel(iTELLINA) = 0.
+            Bitp_Tel(iTELLINA) = 0.
+            Ea_Tel(iTELLINA) = 0.
+            Eb_Tel(iTELLINA) = 0.
+            Ta_Tel(iTELLINA) = 0.
+            Tb_Tel(iTELLINA) = 0.
+         END DO
 
-      istat = GETTELLINA(Evt%Tellina) 
+         istat = GETTELLINA(Evt%Tellina) 
 
-      NTel = Evt%Tellina%n
-      IF (NTel > 0 .AND. NTel <= 1000) THEN
-        DO iTELLINA=1, NTel
-          Add_Tel(iTELLINA) = Evt%Tellina%add(iTELLINA)
-          Bitp_Tel(iTELLINA) = Evt%Tellina%Bitp(iTELLINA)
-          Ea_Tel(iTELLINA) = Evt%Tellina%Ea(iTELLINA)
-          Eb_Tel(iTELLINA) = Evt%Tellina%Eb(iTELLINA)
-          Ta_Tel(iTELLINA) = Evt%Tellina%Ta(iTELLINA)
-          Tb_Tel(iTELLINA) = Evt%Tellina%Tb(iTELLINA)
-        END DO
-      ELSE
-        WRITE(*,*) 'ERROR TELLINA - NTel Out of bound : ', NTel
+         NTel = Evt%Tellina%n
+         IF (NTel > 0 .OR. NTel <= 1000) THEN
+            DO iTELLINA=1, NTel
+               Add_Tel(iTELLINA) = Evt%Tellina%add(iTELLINA)
+               Bitp_Tel(iTELLINA) = Evt%Tellina%Bitp(iTELLINA)
+               Ea_Tel(iTELLINA) = Evt%Tellina%Ea(iTELLINA)
+               Eb_Tel(iTELLINA) = Evt%Tellina%Eb(iTELLINA)
+               Ta_Tel(iTELLINA) = Evt%Tellina%Ta(iTELLINA)
+               Tb_Tel(iTELLINA) = Evt%Tellina%Tb(iTELLINA)
+            END DO
+         ELSE
+            WRITE(*,*) 'ERROR TELLINA - NTel Out of bound : ', NTel
+         END IF
       END IF
-
 C-----------------------------------------------------------------------
 C Fill Block pizzetta
 C-----------------------------------------------------------------------
-      NPiz = 0.
-      DO iPIZZETTA=1, 1000
-        Add_Piz(iPIZZETTA) = 0.
-        Ea_Piz(iPIZZETTA)  = 0.
-        Eb_Piz(iPIZZETTA)  = 0.
-        E_Piz(iPIZZETTA)   = 0.
-        Z_Piz(iPIZZETTA)   = 0.
-      END DO
+      IF (PIZZAFLAG) THEN
+         NPiz = 0.
+         DO iPIZZETTA=1, 1000
+            Add_Piz(iPIZZETTA) = 0.
+            Ea_Piz(iPIZZETTA)  = 0.
+            Eb_Piz(iPIZZETTA)  = 0.
+            E_Piz(iPIZZETTA)   = 0.
+            Z_Piz(iPIZZETTA)   = 0.
+         END DO
 
-      istat = GETPIZZETTA(Evt%Pizzetta)
+         istat = GETPIZZETTA(Evt%Pizzetta)
 
-      NPiz = Evt%Pizzetta%n
-      IF (NPiz > 0 .AND. NPiz <= 1000) THEN
-        DO iPIZZETTA=1, NPiz
-          Add_Piz(iPIZZETTA) = Evt%Pizzetta%Add(iPIZZETTA)
-          Ea_Piz(iPIZZETTA)  = Evt%Pizzetta%Ea(iPIZZETTA)
-          Eb_Piz(iPIZZETTA)  = Evt%Pizzetta%Eb(iPIZZETTA)
-          E_Piz(iPIZZETTA)   = Evt%Pizzetta%E_Rec(iPIZZETTA)
-          Z_Piz(iPIZZETTA)   = Evt%Pizzetta%Z_Mod(iPIZZETTA)
-        END DO
-      ELSE
-        WRITE(*,*) 'ERROR PIZZETTA - NPiz Out of bound : ', NPiz
+         NPiz = Evt%Pizzetta%n
+         IF (NPiz > 0 .OR. NPiz <= 1000) THEN
+            DO iPIZZETTA=1, NPiz
+               Add_Piz(iPIZZETTA) = Evt%Pizzetta%Add(iPIZZETTA)
+               Ea_Piz(iPIZZETTA)  = Evt%Pizzetta%Ea(iPIZZETTA)
+               Eb_Piz(iPIZZETTA)  = Evt%Pizzetta%Eb(iPIZZETTA)
+               E_Piz(iPIZZETTA)   = Evt%Pizzetta%E_Rec(iPIZZETTA)
+               Z_Piz(iPIZZETTA)   = Evt%Pizzetta%Z_Mod(iPIZZETTA)
+            END DO
+         ELSE
+            WRITE(*,*) 'ERROR PIZZETTA - NPiz Out of bound : ', NPiz
+         END IF
       END IF
 C-----------------------------------------------------------------------
 C Fill Block Torta
@@ -750,7 +776,7 @@ C-----------------------------------------------------------------------
         tDTCE0(iDTCE0) = 0.
       END DO
 
-C     Where is initialized DTCEStru?
+C     DTCEStru is initialized in raw2dtce.cin
 
       nDTCE0 = DTCEStru%NEle
       IF ( nDTCE0 < 0 .OR. nDTCE0 > 1500 ) THEN
@@ -885,7 +911,7 @@ $$IMPLICIT
 C
 $$INCLUDE 'A_C_LIBRARY:ANERROR.INC'
 $$INCLUDE 'S_I$LIBRARY:NOARGINC.INC'
-$$include 'sample.inc'
+$$include 'sample_talk.inc'
 C
 C External functions
 C
@@ -899,15 +925,46 @@ C
 C==============================================================================
 C
       Status=UIDFFI( 
-     $'$SAMPLE/sample.uid'
-     $,IGROUP,MENUF,N$A,N$A,MENUL,N$A )
+     $     '$SAMPLE/sample.uid'
+     $     ,IGROUP,MENUF,N$A,N$A,MENUL,N$A )
       Status = UIUSGP(IGROUP,N$A)
  10   Status = UIACME(MENUF,Verb,N$A) ! Display menu
 C     
       if(verb.eq.'SHOW')then
-         goto 10
+	goto 10
+      else if(verb.eq.'TRIG')then
+      	write(Prompt,123)'TRIG'
+	Status=UIGTYE(Prompt,TRIGFLAG)
+	goto 10
+      else if(verb.eq.'TELE')then
+      	write(Prompt,123)'TELE'
+	Status=UIGTYE(Prompt,TELEFLAG)
+	goto 10
+      else if(verb.eq.'C2TRG')then
+      	write(Prompt,123)'C2TRG'
+	Status=UIGTYE(Prompt,C2TRGFLAG)
+	goto 10
+      else if(verb.eq.'TELLINA')then
+      	write(Prompt,123)'TELLINA'
+	Status=UIGTYE(Prompt,TELLINAFLAG)
+	goto 10
+      else if(verb.eq.'PIZZA')then
+      	write(Prompt,123)'PIZZA'
+	Status=UIGTYE(Prompt,PIZZAFLAG)
+	goto 10
+      else if(verb.eq.'ECLS')then
+      	write(Prompt,123)'ECLS'
+	Status=UIGTYE(Prompt,ECLSFLAG)
+	goto 10
+      else if(verb.eq.'BPOS')then
+      	write(Prompt,123)'BPOS'
+	Status=UIGTYE(Prompt,BPOSFLAG)
+	goto 10
+
       end if
-      
+C
+123   FORMAT(1x,'Select ',a4,' Ntuple-block?')
+C
       RETURN
       END
 C     

@@ -1,0 +1,13 @@
+C====================================================================
+C sample_talk.cin
+C====================================================================
+C
+C TALK TO DECLARATIONS FOR FLAGS
+C
+        logical*1 TRIGFLAG, TELEFLAG, C2TRGFLAG
+	logical*1 TELLINAFLAG, PIZZAFLAG !This are only prod2root
+	logical*1 ECLSFLAG
+	logical*1 BPOSFLAG
+C
+	common /sammenu/ TRIGFLAG, TELEFLAG, C2TRGFLAG,
+     &	 TELLINAFLAG, PIZZAFLAG, ECLSFLAG, BPOSFLAG

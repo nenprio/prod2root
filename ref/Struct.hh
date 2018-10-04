@@ -12,6 +12,18 @@ const int NeleCluMax = 300;
 const int NMaxDC     = 1500;
 const int MaxNumDHSP = 500;
 
+//Verb for Talk_to module
+extern "C"{
+  extern struct{
+    bool trigFlag;
+    bool teleFlag;
+    bool c2trgFlag;
+    bool tellinaFlag;
+    bool pizzaFlag;
+    bool eclsFlag;
+    bool bposFlag;
+  }sammenu_;
+}
 // Block:   evtinfo
 extern "C"{
   extern struct{
