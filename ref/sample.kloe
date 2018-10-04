@@ -251,7 +251,7 @@ C-----------------------------------------------------------------------
       istat = GETECLS(evt%ecls)
         
       necls = evt%ecls%n
-      IF (nEcls > 0 .OR. nEcls <= 8) THEN
+      IF (nEcls > 0 .AND. nEcls <= 8) THEN
         EclTrgw = evt%ecls%trigger
         EclFilfo = evt%ecls%filfo
         DO iecls=1,necls
@@ -266,7 +266,7 @@ C-----------------------------------------------------------------------
       
       nEcls2 = evt%ecls%n2
 
-      IF (nEcls2 > 0 .OR. nEcls <= 8) THEN
+      IF (nEcls2 > 0 .AND. nEcls <= 8) THEN
         EclTrgw2 = evt%ecls%trigger2
         EclFilfo2 = evt%ecls%filfo2
         DO iecls2=1,necls2
@@ -367,7 +367,7 @@ C-----------------------------------------------------------------------
       NSec2Clu = Evt%S2CLU%nsect_clu
       NClu2s = Evt%S2CLU%Nclus
 
-      IF (NClu2s > 0 .OR. NClu2s <= 100) THEN
+      IF (NClu2s > 0 .AND. NClu2s <= 100) THEN
         DO iC2Trig=1,NClu2s
           NNorm(iC2Trig)   = Evt%S2CLU%Nnorm(iC2Trig)
           NormAdd(iC2Trig) = Evt%S2CLU%NormAdd(iC2Trig)
@@ -395,7 +395,7 @@ C-----------------------------------------------------------------------
       istat = GETTELLINA(Evt%Tellina) 
 
       NTel = Evt%Tellina%n
-      IF (NTel > 0 .OR. NTel <= 1000) THEN
+      IF (NTel > 0 .AND. NTel <= 1000) THEN
         DO iTELLINA=1, NTel
           Add_Tel(iTELLINA) = Evt%Tellina%add(iTELLINA)
           Bitp_Tel(iTELLINA) = Evt%Tellina%Bitp(iTELLINA)
@@ -423,7 +423,7 @@ C-----------------------------------------------------------------------
       istat = GETPIZZETTA(Evt%Pizzetta)
 
       NPiz = Evt%Pizzetta%n
-      IF (NPiz > 0 .OR. NPiz <= 1000) THEN
+      IF (NPiz > 0 .AND. NPiz <= 1000) THEN
         DO iPIZZETTA=1, NPiz
           Add_Piz(iPIZZETTA) = Evt%Pizzetta%Add(iPIZZETTA)
           Ea_Piz(iPIZZETTA)  = Evt%Pizzetta%Ea(iPIZZETTA)
@@ -458,7 +458,7 @@ C-----------------------------------------------------------------------
       istat = GETTELESTRU(Evt%TELE)
 
       NTele = Evt%TELE%ntele
-      IF (NTele > 0 .OR. NTele <= 300) THEN
+      IF (NTele > 0 .AND. NTele <= 300) THEN
         DO iEVTTELE=1, NTele
           Det_Trg(iEVTTELE) = Evt%TELE%Det(iEVTTELE)
           BitP(iEVTTELE) = Evt%TELE%Bitp(iEVTTELE)
@@ -490,7 +490,7 @@ C-----------------------------------------------------------------------
       istat = GETPIZZASTRU(Evt%PIZZA)
 
       NPack = Evt%PIZZA%npizza
-      IF (NPack > 0 .OR. NPack <= 300) THEN
+      IF (NPack > 0 .AND. NPack <= 300) THEN
         DO iPIZZA=1, NPack
           PakSect(iPIZZA) = Evt%PIZZA%sector(iPIZZA)
           PakDet(iPIZZA) = Evt%PIZZA%det(iPIZZA)
@@ -540,7 +540,7 @@ C-----------------------------------------------------------------------
 
       NClu = Evt%Clu%n 
       NCluMc = Evt%Clu%nmc
-      IF (NClu > 0 .OR. NClu <= 100) THEN
+      IF (NClu > 0 .AND. NClu <= 100) THEN
         DO iEVTCLU=1, NClu
           EneCl(iEVTCLU) = Evt%Clu%E (iEVTCLU)
           TCl(iEVTCLU) = Evt%Clu%T (iEVTCLU)
@@ -560,7 +560,7 @@ C-----------------------------------------------------------------------
         WRITE(*,*) 'ERROR EVTCLU - NClu Out of bound : ', NClu
       END IF
 
-      IF (NCluMc > 0 .OR. NCluMc <= 100) THEN
+      IF (NCluMc > 0 .AND. NCluMc <= 100) THEN
         DO iEVTCLU=1, NCluMc
           NPar(iEVTCLU) = Evt%Clu%Npart(iEVTCLU)
           PNum1(iEVTCLU) = Evt%Clu%part1(iEVTCLU)
@@ -592,7 +592,7 @@ C-----------------------------------------------------------------------
       istat = GETPRECLUSTRU(Evt%PreClu)
 
       NPClu = Evt%PreClu%n 
-      IF (NPClu > 0 .OR. NPClu <= 100) THEN
+      IF (NPClu > 0 .AND. NPClu <= 100) THEN
         DO iPRECLU=1, NPClu
           EPre(iPRECLU) = Evt%PreClu%E (iPRECLU)
           TPre(iPRECLU) = Evt%PreClu%T (iPRECLU)
@@ -627,7 +627,7 @@ C-----------------------------------------------------------------------
       istat = GETCWRKSTRU(Evt%Cwrk)
 
       NCHit = Evt%CWRK%n 
-      IF (NCHit > 0 .OR. NCHit <= 300) THEN
+      IF (NCHit > 0 .AND. NCHit <= 300) THEN
         DO iCWRK=1, NCHit
           IClu(iCWRK) = Evt%CWRK%icl(iCWRK)
           ICel(iCWRK) = Evt%CWRK%cele(iCWRK)
@@ -672,7 +672,7 @@ C-----------------------------------------------------------------------
 
       NCel = Evt%Cele%n 
       NCelMc = Evt%Cele%nmc
-      IF (NCel > 0 .OR. NCel <= 300) THEN
+      IF (NCel > 0 .AND. NCel <= 300) THEN
         DO iCELE=1, NCel
           ICl(iCELE) = Evt%Cele%icl(iCELE)
           Det(iCELE) = Evt%Cele%det(iCELE)
@@ -688,7 +688,7 @@ C-----------------------------------------------------------------------
         WRITE(*,*) 'ERROR CELE - NCel Out of bound : ', NCel
       END IF
 
-      IF (NCelMc > 0 .OR. NCelMc <= 300) THEN
+      IF (NCelMc > 0 .AND. NCelMc <= 300) THEN
         DO iCELE=1, NCelMc
           EMc(iCELE) = Evt%Cele%Etrue(iCELE)
           TMc(iCELE) = Evt%Cele%Ttrue(iCELE)
