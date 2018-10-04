@@ -199,3 +199,11 @@ C
 
       common /dcnhits/nDCHR,nSmallDCm,nSmallDCp,nBigDCm,nBigDCp,
      1       nCellDC,nSmallDC
+C
+C  Block: dhre
+C
+      integer iDHRE
+      integer nDHRE, iLayerDHRE(1500), iWireDHRE(1500), iTrkDHRE(1500)
+      real rDHRE(1500), eDHRE(1500)
+
+      common /dhre/nDHRE,iLayerDHRE,iWireDHRE,iTrkDHRE,rDHRE,eDHRE

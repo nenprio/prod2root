@@ -791,6 +791,36 @@ C     Already filled Evt%DTCE and DTCEStru in previous blocks
       nBigDCp = DTCEStru%nBigDCp
       nCellDC = Evt%DTCE%nDTCE
       nSmallDC = Evt%DTCE%nSmall
+C-----------------------------------------------------------------------
+C Fill Block dhre
+C-----------------------------------------------------------------------
+      nDHRE = 0.
+      DO iDHRE=1, 1500
+        iLayerDHRE(iDHRE) = 0.
+        iWireDHRE(iDHRE) = 0.
+        iTrkDHRE(iDHRE) = 0.
+        rDHRE(iDHRE) = 0.
+        eDHRE(iDHRE) = 0.
+      END DO
+
+     CALL GETDHRESTRU(Evt%DHRE) 
+
+      nDHRE = Evt%DHRE%nDHRE
+      IF ( nDHRE < 0 .OR. nDHRE > 1500 ) THEN
+        WRITE(*,*) 'ERROR DHRE - nDHRE Out of bound : ', nDHRE
+      END IF
+
+      IF ( nDHRE > 0 .AND. nDHRE <= 1500 ) THEN
+        DO iDHRE=1, nDHRE
+          iLayerDHRE(iDHRE) = Evt%DHRE%iLayerDHRE(iDHRE)
+          iWireDHRE(iDHRE) = Evt%DHRE%iWireDHRE(iDHRE)
+          iTrkDHRE(iDHRE) = Evt%DHRE%iTrkDHRE(iDHRE)
+          rDHRE(iDHRE) = Evt%DHRE%rDHRE(iDHRE)
+          eDHRE(iDHRE) = Evt%DHRE%eDHRE(iDHRE)
+        END DO
+      ELSE
+        WRITE(*,*) 'ERROR DHRE - nDHRE Index not valid: ', nDHRE
+      END IF
 C
 C Fill Root
 C

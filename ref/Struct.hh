@@ -306,4 +306,16 @@ extern "C" {
   }dcnhits_;
 }
 
+// Block:   dhre
+extern "C" {
+  extern struct {
+    int nDHRE;
+    int iLayerDHRE[NMaxDC];
+    int iWireDHRE[NMaxDC];
+    int iTrkDHRE[NMaxDC];
+    float rDHRE[NMaxDC];
+    float eDHRE[NMaxDC];
+  }dhre_;
+}
+
 #endif

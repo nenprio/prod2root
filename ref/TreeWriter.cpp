@@ -51,6 +51,8 @@ TreeWriter::TreeWriter() {
     addBlockDTCE();
     // Block DTCE0
     addBlockDTCE0();
+    // Block DHRE
+    addBlockDHRE();
 
     // Write to the disk
     outfile->Write();
@@ -386,6 +388,19 @@ void TreeWriter::addBlockDCNHits() {
     fNewTree->Branch("nBigDCp", &dcnhits_.nBigDCp, "nBigDCp/I");
     fNewTree->Branch("nCellDC", &dcnhits_.nCellDC, "nCellDC/I");
     fNewTree->Branch("nSmallDC", &dcnhits_.nSmallDC, "nSmallDC/I");
+}
+
+// Add to the tree all the branches realted to the block DHRE.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockDHRE() {
+    fNewTree->Branch("nDHRE", &dhre_.nDHRE, "nDHRE/I");
+    fNewTree->Branch("iLayerDHRE", &dhre_.iLayerDHRE, "iLayerDHRE[nDHRE]/I");
+    fNewTree->Branch("iWireDHRE", &dhre_.iWireDHRE, "iWireDHRE[nDHRE]/I");
+    fNewTree->Branch("iTrkDHRE", &dhre_.iTrkDHRE, "iTrkDHRE[nDHRE]/I");
+    fNewTree->Branch("rDHRE", &dhre_.rDHRE, "rDHRE[nDHRE]/F");
+    fNewTree->Branch("eDHRE", &dhre_.eDHRE, "eDHRE[nDHRE]/F");
 }
 
 // Returns the output file object.
