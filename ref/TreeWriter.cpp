@@ -49,6 +49,8 @@ TreeWriter::TreeWriter() {
     addBlockCele();
     // Block DTCE
     addBlockDTCE();
+    // Block DTCE0
+    addBlockDTCE0();
 
     // Write to the disk
     outfile->Write();
@@ -359,6 +361,17 @@ void TreeWriter::addBlockDTCE() {
     fNewTree->Branch("iLayerDTCE", &dtce_.iLayerDTCE, "iLayerDTCE[nDTCE]/I");
     fNewTree->Branch("iWireDTCE", &dtce_.iWireDTCE, "iWireDTCE[nDTCE]/I");
     fNewTree->Branch("tDTCE", &dtce_.tDTCE, "tDTCE[nDTCE]/F");
+}
+
+// Add to the tree all the branches realted to the block DTCE0.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockDTCE0() {
+    fNewTree->Branch("nDTCE0", &dtce0_.nDTCE0, "nDTCE0/I");
+    fNewTree->Branch("", &dtce0_., "[nDTCE0]/I");
+    fNewTree->Branch("iWireDTCE0", &dtce0_.iWireDTCE0, "iWireDTCE0[nDTCE0]/I");
+    fNewTree->Branch("tDTCE0", &dtce0_.tDTCE0, "tDTCE0[nDTCE0]/F");
 }
 
 // Returns the output file object.
