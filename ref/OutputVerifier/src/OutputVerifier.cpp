@@ -21,9 +21,10 @@ OutputVerifier::OutputVerifier(const char *rFile, const char *hbFile, const char
     const char *errorOpenFile="[Error] An error occurs during the opening of input file.\n\tVerify that you can open the file as ROOT TFile.";
     const char *errorOpenTree="[Error] An error occurs during the extraction of tree.\n\tVerify that the input file contains a tree with id \"sample\".";
 
-    rootFile   = rFile;    
-    hbConvFile = hbFile;    
-    outputDir  = outDir;
+    ENTRY_PREFIX = "_event_";    
+    rootFile     = rFile;    
+    hbConvFile   = hbFile;    
+    outputDir    = outDir;
   
     // Check existance of input root file
     if(checkIfFileExists(rootFile)==false) {
@@ -108,7 +109,7 @@ void OutputVerifier::exportTreeToTxt(TTree *fTree) {
     Int_t nLeaves = leaves ? leaves->GetEntriesFast() : 0;
     
     for(Int_t i=0; i<nEntries; i++) {
-        name.Form("%s/%sentry%d.out", outputDir, fTree->GetName(), i); 
+        name.Form("%s/%s%s%d.out", outputDir, fTree->GetName(), ENTRY_PREFIX, i); 
         currentFile = name.Data();
         fTree->GetEntry(i);
         
@@ -147,6 +148,28 @@ void OutputVerifier::exportHBConvTree() {
     TFile *fHB = new TFile(hbConvFile, "READ");
     TTree *hbTree = (TTree*) fHB->Get("PROD2NTU/h1");
     exportTreeToTxt(hbTree);
+}
+
+// Compare the files in output dir associated with the event i-th.
+//
+// input:   id    event identifier
+// output:  -
+bool OutputVerifier::verifyEvent(int i) {
+    TString rEventFile;
+    TString hbEventFile;
+    bool result = true;
+
+    rEventFile.Form("%s/sample%s%d.out", outputDir, ENTRY_PREFIX, i);
+    hbEventFile.Form("%s/h1%s%d.out", outputDir, ENTRY_PREFIX, i);
+
+    return result;
+}
+
+// Loop over all events and invoke comparison.
+//
+// input:   id    event identifier
+// output:  -
+void OutputVerifier::verify() {
 }
 
 // Print information about internal variables.

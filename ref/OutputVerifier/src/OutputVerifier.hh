@@ -13,11 +13,15 @@ class OutputVerifier {
         void exportTreeToTxt(TTree *tree);
         void exportRootTree();
         void exportHBConvTree();
+        bool verifyEvent(int i);
+        void verify();
         void printInfo();
     private:
         const char *rootFile;
         const char *hbConvFile;
         const char *outputDir;
+
+        const char *ENTRY_PREFIX;       // Output i-th file name: <tree_name><ENTRY_PREFIX><i>.out
 };
 #endif
 
