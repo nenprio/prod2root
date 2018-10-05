@@ -152,7 +152,7 @@ C What are the following lines? I maintain here at the moment to
 C let fix the "RunNumber" issue. 
 C TODO: Move them to sample.cin
 C
-C NOTE1: trgwrd1/2 are used in block EVTTRG and if no other you, 
+C NOTE1: trgwrd1/2 are used in block EVTTRG and if no other, 
 C they can be removed. Now they are commented
 C
       INTEGER istat, OldRunNumber
@@ -217,89 +217,92 @@ C         ENDIF
 C-----------------------------------------------------------------------
 C Fill Block evtinfo
 C-----------------------------------------------------------------------
-      IF(mcflag_1)THEN
-         istat=blocat(iw,'BRID',1,ind1,inddat)
-         Evt%Info%RunNumber = iw(inddat)
-         IF(Evt%Info%RunNumber.ne.OldRunNumber)THEN
-            istat = fillbposcommon(Evt%Info%RunNumber)
-            OldRunNumber = Evt%Info%RunNumber
+      IF (.TRUE.) THEN  ! TODO: Change .TRUE. with the name of block flag
+         IF (mcflag_1) THEN
+            istat=blocat(iw,'BRID',1,ind1,inddat)
+            Evt%Info%RunNumber = iw(inddat)
+            IF (Evt%Info%RunNumber.ne.OldRunNumber) THEN
+               istat = fillbposcommon(Evt%Info%RunNumber)
+               OldRunNumber = Evt%Info%RunNumber
+            END IF
+         ELSE
+            Evt%Info%RunNumber = Nrun
          END IF
-      ELSE
-         Evt%Info%RunNumber = Nrun
+         Evt%Info%EventNumber = Nev
+           
+         NumRun = Evt%Info%RunNumber
+         NumEv = Evt%Info%EventNumber
+         Pileup = Evt%Info%Pileup
+         GCod = Evt%Info%GenCod
+         PhiD = Evt%Info%PhiDecay
+         A1Typ = Evt%Info%A1type
+         A2Typ = Evt%Info%A2type
+         A3Typ = Evt%Info%A3type
+         B1Typ = Evt%Info%B1type
+         B2Typ = Evt%Info%B2type
+         B3Typ = Evt%Info%B3type
       END IF
-      Evt%Info%EventNumber = Nev
-        
-      NumRun = Evt%Info%RunNumber
-      NumEv = Evt%Info%EventNumber
-      Pileup = Evt%Info%Pileup
-      GCod = Evt%Info%GenCod
-      PhiD = Evt%Info%PhiDecay
-      A1Typ = Evt%Info%A1type
-      A2Typ = Evt%Info%A2type
-      A3Typ = Evt%Info%A3type
-      B1Typ = Evt%Info%B1type
-      B2Typ = Evt%Info%B2type
-      B3Typ = Evt%Info%B3type
-
 C-----------------------------------------------------------------------
 C Fill Block evtecls 
 C-----------------------------------------------------------------------
-      IF (ECLSFLAG) THEN
-         nEcls = 0
-         EclTrgw = 0
-         EclFilfo = 0
-         DO iecls=1,8
-            EclWord(iecls) = 0
-            EclStream(iecls) = 0
-            EclTagNum(iecls) = 0
-            EclEvType(iecls) = 0
-         END DO
-         
-         nEcls2 = 0
-         EclTrgw2 = 0
-         EclFilfo2 = 0
-         DO iecls2=1,8
-            EclWord2(iecls2) = 0
-            EclStream2(iecls2) = 0
-            EclTagNum2(iecls2) = 0
-            EclEvType2(iecls2) = 0
-         END DO
-
-         istat = GETECLS(evt%ecls)
-         
-         necls = evt%ecls%n
-         IF (nEcls > 0 .OR. nEcls <= 8) THEN
-            EclTrgw = evt%ecls%trigger
-            EclFilfo = evt%ecls%filfo
-            DO iecls=1,necls
-               EclWord(iecls) = evt%ecls%TotWord(iecls)
-               EclStream(iecls) = evt%ecls%Stream(iecls)
-               EclTagNum(iecls) = evt%ecls%TagNum(iecls)
-               EclEvType(iecls) = evt%ecls%EvnTyp(iecls)
+      IF (.TRUE.) THEN  ! TODO: Change .TRUE. with the name of block flag
+         IF (ECLSFLAG) THEN
+            nEcls = 0
+            EclTrgw = 0
+            EclFilfo = 0
+            DO iecls=1,8
+               EclWord(iecls) = 0
+               EclStream(iecls) = 0
+               EclTagNum(iecls) = 0
+               EclEvType(iecls) = 0
             END DO
-         ELSE
-            WRITE(*,*) 'ERROR EVTC2TRIG - NClu2s Out of bound : ', NClu2s
-         END IF
-         
-         nEcls2 = evt%ecls%n2
-
-         IF (nEcls2 > 0 .OR. nEcls <= 8) THEN
-            EclTrgw2 = evt%ecls%trigger2
-            EclFilfo2 = evt%ecls%filfo2
-            DO iecls2=1,necls2
-               EclWord2(iecls2) = evt%ecls%TotWord2(iecls2)
-               EclStream2(iecls2) = evt%ecls%Stream2(iecls2)
-               EclTagNum2(iecls2) = evt%ecls%TagNum2(iecls2)
-               EclEvType2(iecls2) = evt%ecls%EvnTyp2(iecls2)
+            
+            nEcls2 = 0
+            EclTrgw2 = 0
+            EclFilfo2 = 0
+            DO iecls2=1,8
+               EclWord2(iecls2) = 0
+               EclStream2(iecls2) = 0
+               EclTagNum2(iecls2) = 0
+               EclEvType2(iecls2) = 0
             END DO
-         ELSE
-            WRITE(*,*) 'ERROR EVTC2TRIG - NClu2s Out of bound : ', NClu2s
+   
+            istat = GETECLS(evt%ecls)
+            
+            necls = evt%ecls%n
+            IF (nEcls > 0 .OR. nEcls <= 8) THEN
+               EclTrgw = evt%ecls%trigger
+               EclFilfo = evt%ecls%filfo
+               DO iecls=1,necls
+                  EclWord(iecls) = evt%ecls%TotWord(iecls)
+                  EclStream(iecls) = evt%ecls%Stream(iecls)
+                  EclTagNum(iecls) = evt%ecls%TagNum(iecls)
+                  EclEvType(iecls) = evt%ecls%EvnTyp(iecls)
+               END DO
+            ELSE
+               WRITE(*,*) 'ERROR EVTC2TRIG - NClu2s Out of bound : ', NClu2s
+            END IF
+            
+            nEcls2 = evt%ecls%n2
+   
+            IF (nEcls2 > 0 .OR. nEcls <= 8) THEN
+               EclTrgw2 = evt%ecls%trigger2
+               EclFilfo2 = evt%ecls%filfo2
+               DO iecls2=1,necls2
+                  EclWord2(iecls2) = evt%ecls%TotWord2(iecls2)
+                  EclStream2(iecls2) = evt%ecls%Stream2(iecls2)
+                  EclTagNum2(iecls2) = evt%ecls%TagNum2(iecls2)
+                  EclEvType2(iecls2) = evt%ecls%EvnTyp2(iecls2)
+               END DO
+            ELSE
+               WRITE(*,*) 'ERROR EVTC2TRIG - NClu2s Out of bound : ', NClu2s
+            END IF
          END IF
       END IF
 C-----------------------------------------------------------------------
 C Fill Block evtbpos
 C-----------------------------------------------------------------------
-      if(BPOSFLAG)then
+      IF (BPOSFLAG) THEN
          BPx = 0.
          BPy = 0.
          BPz = 0.
@@ -316,9 +319,9 @@ C-----------------------------------------------------------------------
          BLumz = 0.
          Broots = 0.
          BrootsErr = 0.
-
+ 
          rstat = GETBPOS(Evt%Bpos)
-
+ 
          BPx = Evt%Bpos%px
          BPy = Evt%Bpos%py
          BPz = Evt%Bpos%pz
@@ -335,36 +338,38 @@ C-----------------------------------------------------------------------
          BLumz = Evt%Bpos%lumz
          Broots = Evt%Bpos%Ene
          BrootsErr = Evt%Bpos%ErrEne
-      end if
+      END IF
 C-----------------------------------------------------------------------
 C Fill Block evtgdhit
 C-----------------------------------------------------------------------
-      DtceHit = 0.
-      DhreHit = 0.
-      DprsHit = 0.
-      DtfsHit = 0.
-
-      istat = BIGEST(iw,'DTCE',banknum)
-      istat = BLOCAT(iw,'DTCE',banknum,ind1,inddat)
-      IF( istat.ne.YESUCC ) THEN
-        NDtce_copy =0
-      ELSE
-        NDtce_copy = IW(inddat+DTCNRO)
-      ENDIF
-      CALL GETGDCHIT(Evt%GHit)
-
-      DtceHit = NDtce_copy
-      DhreHit = Evt%GHit%nhit
-      DprsHit = Evt%GHit%nhpr
-      DtfsHit = Evt%GHit%nhtf
+      IF (.TRUE.) THEN  ! TODO: Change .TRUE. with the name of block flag
+         DtceHit = 0.
+         DhreHit = 0.
+         DprsHit = 0.
+         DtfsHit = 0.
+   
+         istat = BIGEST(iw,'DTCE',banknum)
+         istat = BLOCAT(iw,'DTCE',banknum,ind1,inddat)
+         IF (istat.ne.YESUCC) THEN
+            NDtce_copy =0
+         ELSE
+            NDtce_copy = IW(inddat+DTCNRO)
+         ENDIF
+         CALL GETGDCHIT(Evt%GHit)
+  
+         DtceHit = NDtce_copy
+         DhreHit = Evt%GHit%nhit
+         DprsHit = Evt%GHit%nhpr
+         DtfsHit = Evt%GHit%nhtf
+      END IF
 C-----------------------------------------------------------------------
 C Fill Block evttrig
 C-----------------------------------------------------------------------
-      if(TRIGFLAG)then
+      IF (TRIGFLAG) THEN
          istat = BLOCAT(iw,'EVCL',1,ind1,inddat)
          Trgw1 = IW( inddat+1 )
          Trgw2 = IW( inddat+2 )
-      end if
+      END IF
 C-----------------------------------------------------------------------
 C Fill Block evtc2trig
 C-----------------------------------------------------------------------
@@ -399,7 +404,8 @@ C-----------------------------------------------------------------------
                CosmAdd(iC2Trig) = Evt%S2CLU%CosmAdd(iC2Trig)
             END DO
          ELSE
-            WRITE(*,*) 'ERROR EVTC2TRIG - NClu2s Out of bound : ', NClu2s
+            WRITE(*,*) 'ERROR EVTC2TRIG - NClu2s Out of bound : ', 
+     1                                                      NClu2s
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -463,9 +469,145 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block Torta
 C-----------------------------------------------------------------------
-C
-C NOT IMPLEMENTED
-C
+      IF (.TRUE.) THEN ! TODO: Change .TRUE. with block flag
+         tSpent = 0.
+         tDead = 0.
+         Type = 0.
+         BPhi = 0.
+         EPhi = 0.
+         WPhi = 0.
+         BBha = 0.
+         EBha = 0.
+         WBha = 0.
+         BCos = 0.
+         ECos = 0.
+         WCos = 0.
+         E1W1_Dwn = 0.
+         B1_Dwn = 0.
+         T0d_Dwn = 0.
+         VetoCos = 0.
+         VetoBha = 0.
+         Bdw = 0.
+         Rephasing = 0.
+         TDC1_Pht1 = 0.
+         Dt2_T1 = 0.
+         Fiducial = 0.
+         T1c = 0.
+         T1d = 0.
+         T2d = 0.
+         Tcr = 0.
+         TCaf_Tcrd = 0.
+         TCaf_T2d = 0.
+         Moka_T2d = 0.
+         DO iTORTA=1, 10
+           Moka_T2Dsl(iTORTA) = 0.
+         END DO
+
+         istat = GETTRIGGER(evt%trg)
+
+         tSpent = evt%trg%tspent
+         tDead = evt%trg%tdead
+         Type = evt%trg%type
+         IF ( Type < 0 .OR. Type > 7 ) THEN
+            WRITE(*,*) 'ERROR TORTA - Type Out of bound : ', Type
+         END IF
+         BPhi = evt%trg%bphi
+         IF ( BPhi < 0 .OR. BPhi > 3 ) THEN
+            WRITE(*,*) 'ERROR TORTA - BPhi Out of bound : ', BPhi
+         END IF
+         EPhi = evt%trg%ephi
+         IF ( EPhi < 0 .OR. EPhi > 3 ) THEN
+            WRITE(*,*) 'ERROR TORTA - EPhi Out of bound : ', EPhi
+         END IF
+         WPhi = evt%trg%wphi
+         IF ( WPhi < 0 .OR. WPhi > 3 ) THEN
+            WRITE(*,*) 'ERROR TORTA - WPhi Out of bound : ', WPhi
+         END IF
+         BBha = evt%trg%bbha
+         IF ( BBha < 0 .OR. BBha > 3 ) THEN
+            WRITE(*,*) 'ERROR TORTA - BBha Out of bound : ', BBha
+         END IF
+         EBha = evt%trg%ebha
+         IF ( EBha < 0 .OR. EBha > 3 ) THEN
+            WRITE(*,*) 'ERROR TORTA - EBha Out of bound : ', EBha
+         END IF
+         WBha = evt%trg%wbha
+         IF ( WBha < 0 .OR. WBha > 3 ) THEN
+            WRITE(*,*) 'ERROR TORTA - WBha Out of bound : ', WBha
+         END IF
+         BCos = evt%trg%bcos
+         IF ( BCos < 0 .OR. BCos > 3 ) THEN
+            WRITE(*,*) 'ERROR TORTA - BCos Out of bound : ', BCos
+         END IF
+         ECos = evt%trg%ecos
+         IF ( ECos < 0 .OR. ECos > 3 ) THEN
+            WRITE(*,*) 'ERROR TORTA - ECos Out of bound : ', ECos
+         END IF
+         WCos = evt%trg%wcos
+         IF ( WCos < 0 .OR. WCos > 3 ) THEN
+            WRITE(*,*) 'ERROR TORTA - WCos Out of bound : ', WCos
+         END IF
+         E1W1_Dwn = evt%trg%e1w1_dwn
+         IF ( E1W1_Dwn < 0 .OR. E1W1_Dwn > 1 ) THEN
+            WRITE(*,*) 'ERROR TORTA - E1W1_Dwn Out of bound : ', E1W1_Dwn
+         END IF
+         B1_Dwn = evt%trg%b1_dwn
+         IF ( B1_Dwn < 0 .OR. B1_Dwn > 1 ) THEN
+            WRITE(*,*) 'ERROR TORTA - B1_Dwn Out of bound : ', B1_Dwn
+         END IF
+         T0d_Dwn = evt%trg%t0d_dwn
+         IF ( T0d_Dwn < 0 .OR. T0d_Dwn > 1 ) THEN
+            WRITE(*,*) 'ERROR TORTA - T0d_Dwn Out of bound : ', T0d_Dwn
+         END IF
+         VetoCos = evt%trg%vetocos
+         IF ( VetoCos < 0 .OR. VetoCos > 1 ) THEN
+            WRITE(*,*) 'ERROR TORTA - VetoCos Out of bound : ', VetoCos
+         END IF
+         VetoBha = evt%trg%vetobha
+         IF ( VetoBha < 0 .OR. VetoBha > 1 ) THEN
+            WRITE(*,*) 'ERROR TORTA - VetoBha Out of bound : ', VetoBha
+         END IF
+         Bdw = evt%trg%bdw
+         IF ( Bdw < 0 .OR. Bdw > 1 ) THEN
+            WRITE(*,*) 'ERROR TORTA - Bdw Out of bound : ', Bdw
+         END IF
+         Rephasing = evt%trg%rephasing
+         IF ( Rephasing < 0 .OR. Rephasing > 4096 ) THEN
+            WRITE(*,*) 'ERROR TORTA - Rephasing Out of bound : ', Rephasing
+         END IF
+         TDC1_Pht1 = evt%trg%tdc1_pht1
+         IF ( TDC1_Pht1 < 0 .OR. TDC1_Pht1 > 4096 ) THEN
+            WRITE(*,*) 'ERROR TORTA - TDC1_Pht1 Out of bound : ', TDC1_Pht1
+         END IF
+         Dt2_T1 = evt%trg%dt2_t1
+         IF ( Dt2_T1 < 0 .OR. Dt2_T1 > 4096 ) THEN
+            WRITE(*,*) 'ERROR TORTA - Dt2_T1 Out of bound : ', Dt2_T1
+         END IF
+         Fiducial = evt%trg%fiducial
+         IF ( Fiducial < 0 .OR. Fiducial > 4096 ) THEN
+            WRITE(*,*) 'ERROR TORTA - Fiducial Out of bound : ', Fiducial
+         END IF
+         T1c = evt%trg%t1c
+         IF ( T1c < 0 .OR. T1c > 4096 ) THEN
+            WRITE(*,*) 'ERROR TORTA - T1c Out of bound : ', T1c
+         END IF
+         T1d = evt%trg%t1d
+         IF ( T1d < 0 .OR. T1d > 4096 ) THEN
+            WRITE(*,*) 'ERROR TORTA - T1d Out of bound : ', T1d
+         END IF
+         T2d = evt%trg%t2d
+         IF ( T2d < 0 .OR. T2d > 4096 ) THEN
+            WRITE(*,*) 'ERROR TORTA - T2d Out of bound : ', T2d
+         END IF
+         Tcr = evt%trg%tcr
+         IF ( Tcr < 0 .OR. Tcr > 4096 ) THEN
+            WRITE(*,*) 'ERROR TORTA - Tcr Out of bound : ', Tcr
+         END IF
+         TCaf_Tcrd = evt%trg%tcaf_tcrd
+         TCaf_T2d = evt%trg%tcaf_t2d
+         Moka_T2d = evt%trg%moka_t2d
+         Moka_T2Dsl = evt%trg%moka_t2dsl
+      END IF
 C-----------------------------------------------------------------------
 C Fill Block EvtTele
 C-----------------------------------------------------------------------

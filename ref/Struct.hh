@@ -170,6 +170,42 @@ extern "C" {
   }pizzetta_;
 }
 
+// Block:   torta
+extern "C" {
+  extern struct {
+    float tSpent;
+    float tDead;
+    int Type;
+    int BPhi;
+    int EPhi;
+    int WPhi;
+    int BBha;
+    int EBha;
+    int WBha;
+    int BCos;
+    int ECos;
+    int WCos;
+    int E1W1_Dwn;
+    int B1_Dwn;
+    int T0d_Dwn;
+    int VetoCos;
+    int VetoBha;
+    int Bdw;
+    int Rephasing;
+    int TDC1_Pht1;
+    int Dt2_T1;
+    int Fiducial;
+    int T1c;
+    int T1d;
+    int T2d;
+    int Tcr;
+    int TCaf_Tcrd;
+    int TCaf_T2d;
+    int Moka_T2d;
+    int Moka_T2Dsl[10];
+  }torta_;
+}
+
 // Block:   evttele
 extern "C" {
   extern struct {

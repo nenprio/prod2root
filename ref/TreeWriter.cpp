@@ -37,6 +37,8 @@ TreeWriter::TreeWriter() {
     if(sammenu_.tellinaFlag) addBlockTellina();
     // Block Pizzetta
     if(sammenu_.pizzaFlag) addBlockPizzetta();
+    // Block Torta
+    addBlockTorta();
     // Block Tele
     addBlockTele();
     // Block Pizza
@@ -220,6 +222,43 @@ void TreeWriter::addBlockPizzetta() {
     fNewTree->Branch("Eb_Piz",  &pizzetta_.Eb_Piz,  "Eb_Piz[NPiz]/F");
     fNewTree->Branch("E_Piz",   &pizzetta_.E_Piz,   "E_Piz[NPiz]/F");
     fNewTree->Branch("Z_Piz",   &pizzetta_.Z_Piz,   "Z_Piz[NPiz]/F");
+}
+
+// Add to the tree all the branches realted to the block Torta.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockTorta() {
+    fNewTree->Branch("tSpent", &torta_.tSpent, "tSpent/F");
+    fNewTree->Branch("tDead",  &torta_.tDead,  "tDead/F");
+    fNewTree->Branch("Type",   &torta_.Type,   "Type/I");
+    fNewTree->Branch("BPhi",   &torta_.BPhi,   "BPhi/I");
+    fNewTree->Branch("EPhi",   &torta_.EPhi,   "EPhi/I");
+    fNewTree->Branch("WPhi",   &torta_.WPhi,   "WPhi/I");
+    fNewTree->Branch("BBha",   &torta_.BBha,   "BBha/I");
+    fNewTree->Branch("EBha",   &torta_.EBha,   "EBha/I");
+    fNewTree->Branch("WBha",   &torta_.WBha,   "WBha/I");
+    fNewTree->Branch("BCos",   &torta_.BCos,   "BCos/I");
+    fNewTree->Branch("ECos",   &torta_.ECos,   "ECos/I");
+    fNewTree->Branch("WCos",   &torta_.WCos,   "WCos/I");
+    fNewTree->Branch("E1W1_Dwn",   &torta_.E1W1_Dwn,   "E1W1_Dwn/I");
+    fNewTree->Branch("B1_Dwn",     &torta_.B1_Dwn,     "B1_Dwn/I");
+    fNewTree->Branch("T0d_Dwn",    &torta_.T0d_Dwn,    "T0d_Dwn/I");
+    fNewTree->Branch("VetoCos",    &torta_.VetoCos,    "VetoCos/I");
+    fNewTree->Branch("VetoBha",    &torta_.VetoBha,    "VetoBha/I");
+    fNewTree->Branch("Bdw",        &torta_.Bdw,        "Bdw/I");
+    fNewTree->Branch("Rephasing",  &torta_.Rephasing,  "Rephasing/I");
+    fNewTree->Branch("TDC1_Pht1",  &torta_.TDC1_Pht1,  "TDC1_Pht1/I");
+    fNewTree->Branch("Dt2_T1",     &torta_.Dt2_T1,     "Dt2_T1/I");
+    fNewTree->Branch("Fiducial",   &torta_.Fiducial,   "Fiducial/I");
+    fNewTree->Branch("T1c",        &torta_.T1c,        "T1c/I");
+    fNewTree->Branch("T1d",        &torta_.T1d,        "T1d/I");
+    fNewTree->Branch("T2d",        &torta_.T2d,        "T2d/I");
+    fNewTree->Branch("Tcr",        &torta_.Tcr,        "Tcr/I");
+    fNewTree->Branch("TCaf_Tcrd",  &torta_.TCaf_Tcrd,  "TCaf_Tcrd/I");
+    fNewTree->Branch("TCaf_T2d",   &torta_.TCaf_T2d,   "TCaf_T2d/I");
+    fNewTree->Branch("Moka_T2d",   &torta_.Moka_T2d,   "Moka_T2d/I");
+    fNewTree->Branch("Moka_T2Dsl", &torta_.Moka_T2Dsl, "Moka_T2Dsl/I");
 }
 
 // Add to the tree all the branches realted to the block EVTTELE.

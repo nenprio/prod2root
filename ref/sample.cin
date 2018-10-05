@@ -122,6 +122,19 @@ C
 
       common /pizzetta/NPiz,Add_Piz,Ea_Piz,Eb_Piz,E_Piz,Z_Piz
 C
+C  Block: torta
+C
+      integer Type, BPhi, EPhi, WPhi, BBha, EBha, WBha, BCos, ECos
+      integer WCos, E1W1_Dwn, B1_Dwn, T0d_Dwn, VetoCos, VetoBha, Bdw
+      integer Rephasing, TDC1_Pht1, Dt2_T1, Fiducial, T1c, T1d, T2d
+      integer Tcr, TCaf_Tcrd, TCaf_T2d, Moka_T2d, Moka_T2Dsl(10)
+      real tSpent, tDead
+
+      common /torta/tSpent,tDead,Type,BPhi,EPhi,WPhi,BBha,EBha,WBha,
+     1       BCos,ECos,WCos,E1W1_Dwn,B1_Dwn,T0d_Dwn,VetoCos,VetoBha,
+     1       Bdw,Rephasing,TDC1_Pht1,Dt2_T1,Fiducial,T1c,T1d,T2d,Tcr,
+     1       TCaf_Tcrd,TCaf_T2d,Moka_T2d,Moka_T2Dsl
+C
 C  Block: EvtTele
 C
       integer iEVTTELE
