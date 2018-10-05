@@ -146,13 +146,13 @@ def getKloeContent(block_name, names, data, nameIsArray, ranges):
         n = names[j] + "(i" + block_name.upper() + ")"
         d = data[j] + "(i" + block_name.upper() + ")"
         if ranges[j]=="":
-            content += "               " + n + " = " + d + "\n"
+            content += "                 " + n + " = " + d + "\n"
         else:
             min_range, max_range = ranges[j].replace("[","").replace("]","").split(",")
-            content += "             " + n + " = " + d + "\n"
-            content += "             IF ( " + n + " < " + min_range + " .OR. " + n + " > " + max_range + " ) THEN\n"
-            content += "                WRITE(*,*) \'ERROR " + block_name.upper() + " - " + names[j] + "[" + str(j) + "] Out of bound : \', " + n + "\n"
-            content += "             END IF\n"
+            content += "               " + n + " = " + d + "\n"
+            content += "               IF ( " + n + " < " + min_range + " .OR. " + n + " > " + max_range + " ) THEN\n"
+            content += "                  WRITE(*,*) \'ERROR " + block_name.upper() + " - " + names[j] + "[" + str(j) + "] Out of bound : \', " + n + "\n"
+            content += "               END IF\n"
 
     if len(arrays)>0:
         content += "           END DO\n"

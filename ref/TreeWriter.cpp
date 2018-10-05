@@ -463,6 +463,32 @@ void TreeWriter::addBlockDHSP() {
     fNewTree->Branch("ZDh", &dhsp_.ZDh, "ZDh[nDHSP]/F");
 }
 
+// Add to the tree all the branches realted to the block TrkV.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockTrkV() {
+    fNewTree->Branch("nTv",     &trkv_.nTv,     "nTv/I");
+    fNewTree->Branch("iV",      &trkv_.iV,      "iV[nTv]/I");
+    fNewTree->Branch("TrkNumV", &trkv_.TrkNumV, "TrkNumV[nTv]/I");
+    fNewTree->Branch("CurV",    &trkv_.CurV,    "CurV[nTv]/F");
+    fNewTree->Branch("PhiV",    &trkv_.PhiV,    "PhiV[nTv]/F");
+    fNewTree->Branch("CoTv",    &trkv_.CoTv,    "CoTv[nTv]/F");
+    fNewTree->Branch("PxTv",    &trkv_.PxTv,    "PxTv[nTv]/F");
+    fNewTree->Branch("PyTv",    &trkv_.PyTv,    "PyTv[nTv]/F");
+    fNewTree->Branch("PzTv",    &trkv_.PzTv,    "PzTv[nTv]/F");
+    fNewTree->Branch("pModV",   &trkv_.pModV,   "pModV[nTv]/F");
+    fNewTree->Branch("LenV",    &trkv_.LenV,    "LenV[nTv]/F");
+    fNewTree->Branch("ChiV",    &trkv_.ChiV,    "ChiV[nTv]/F");
+    fNewTree->Branch("PidTv",   &trkv_.PidTv,   "PidTv[nTv]/I");
+    fNewTree->Branch("Cov11Tv", &trkv_.Cov11Tv, "Cov11Tv[nTv]/F");
+    fNewTree->Branch("Cov12Tv", &trkv_.Cov12Tv, "Cov12Tv[nTv]/F");
+    fNewTree->Branch("Cov13Tv", &trkv_.Cov13Tv, "Cov13Tv[nTv]/F");
+    fNewTree->Branch("Cov22Tv", &trkv_.Cov22Tv, "Cov22Tv[nTv]/F");
+    fNewTree->Branch("Cov23Tv", &trkv_.Cov23Tv, "Cov23Tv[nTv]/F");
+    fNewTree->Branch("Cov33Tv", &trkv_.Cov33Tv, "Cov33Tv[nTv]/F");
+}
+
 // Returns the output file object.
 //
 // input:   -

@@ -227,3 +227,14 @@ C
       real Time(500),DPar(500),Res(500),XDh(500),YDh(500),ZDh(500)
 
       common /dhsp/NDhsp,TrkDh,Layer,Wire,Time,DPar,Res,XDh,YDh,ZDh
+C
+C  Block: trkv
+C
+      
+      integer iTRKV, nTv, iV(30), TrkNumV(30), PidTv(30)
+      real CurV(30), PhiV(30), CoTv(30), PxTv(30), PyTv(30), PzTv(30)
+      real pModV(30), LenV(30), ChiV(30), Cov11Tv(30), Cov12Tv(30)
+      real Cov13Tv(30), Cov22Tv(30), Cov23Tv(30), Cov33Tv(30)
+
+      common /trkv/nTv,iV,TrkNumV,CurV,PhiV,CoTv,PxTv,PyTv,PzTv,pModV,
+     1 LenV,ChiV,PidTv,Cov11Tv,Cov12Tv,Cov13Tv,Cov22Tv,Cov23Tv,Cov33Tv

@@ -11,6 +11,7 @@ const int MaxNPack   = 300;
 const int NeleCluMax = 300;
 const int NMaxDC     = 1500;
 const int MaxNumDHSP = 500;
+const int MaxNumTrkV = 30;
 
 //Verb for Talk_to module
 extern "C"{
@@ -381,6 +382,31 @@ extern "C" {
     float YDh[MaxNumDHSP];
     float ZDh[MaxNumDHSP];
   }dhsp_;
+}
+
+// Block:   trkv
+extern "C" {
+  extern struct {
+    int nTv;
+    int iV[MaxNumTrkV];
+    int TrkNumV[MaxNumTrkV];
+    float CurV[MaxNumTrkV];
+    float PhiV[MaxNumTrkV];
+    float CoTv[MaxNumTrkV];
+    float PxTv[MaxNumTrkV];
+    float PyTv[MaxNumTrkV];
+    float PzTv[MaxNumTrkV];
+    float pModV[MaxNumTrkV];
+    float LenV[MaxNumTrkV];
+    float ChiV[MaxNumTrkV];
+    int PidTv[MaxNumTrkV];
+    float Cov11Tv[MaxNumTrkV];
+    float Cov12Tv[MaxNumTrkV];
+    float Cov13Tv[MaxNumTrkV];
+    float Cov22Tv[MaxNumTrkV];
+    float Cov23Tv[MaxNumTrkV];
+    float Cov33Tv[MaxNumTrkV];
+  }trkv_;
 }
 
 #endif
