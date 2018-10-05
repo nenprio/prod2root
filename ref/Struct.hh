@@ -12,6 +12,7 @@ const int NeleCluMax = 300;
 const int NMaxDC     = 1500;
 const int MaxNumDHSP = 500;
 const int MaxNumTrkV = 30;
+const int MaxNumVtx  = 10;
 
 //Verb for Talk_to module
 extern "C"{
@@ -407,6 +408,26 @@ extern "C" {
     float Cov23Tv[MaxNumTrkV];
     float Cov33Tv[MaxNumTrkV];
   }trkv_;
+}
+
+// Block:   vtx
+extern "C" {
+  extern struct {
+    int nV;
+    int Vetx[MaxNumVtx];
+    float xV[MaxNumVtx];
+    float yV[MaxNumVtx];
+    float zV[MaxNumVtx];
+    float ChiVtx[MaxNumVtx];
+    int QuaLv[MaxNumVtx];
+    int FitiDv[MaxNumVtx];
+    float VTXCov1[MaxNumVtx];
+    float VTXCov2[MaxNumVtx];
+    float VTXCov3[MaxNumVtx];
+    float VTXCov4[MaxNumVtx];
+    float VTXCov5[MaxNumVtx];
+    float VTXCov6[MaxNumVtx];
+  }vertices_;
 }
 
 #endif

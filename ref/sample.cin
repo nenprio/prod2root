@@ -238,3 +238,13 @@ C
 
       common /trkv/nTv,iV,TrkNumV,CurV,PhiV,CoTv,PxTv,PyTv,PzTv,pModV,
      1 LenV,ChiV,PidTv,Cov11Tv,Cov12Tv,Cov13Tv,Cov22Tv,Cov23Tv,Cov33Tv
+C
+C  Block: vtx
+C
+      
+      integer iVTX, nV, Vetx(10), QuaLv(10), FitiDv(10)
+      real xV(10), yV(10), zV(10), ChiVtx(10), VTXCov1(10), VTXCov2(10) 
+      real VTXCov3(10), VTXCov4(10), VTXCov5(10), VTXCov6(10)
+
+      common /vertices/nV,Vetx,xV,yV,zV,ChiVtx,QuaLv,FitiDv,VTXCov1,
+     1       VTXCov2,VTXCov3,VTXCov4,VTXCov5,VTXCov6

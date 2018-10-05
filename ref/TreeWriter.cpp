@@ -59,6 +59,10 @@ TreeWriter::TreeWriter() {
     addBlockDHRE();
     // Block DHSP
     addBlockDHSP();
+    // Block TrkV
+    addBlockTrkV();
+    // Block Vtx
+    addBlockVtx();
 
     // Write to the disk
     outfile->Write();
@@ -487,6 +491,27 @@ void TreeWriter::addBlockTrkV() {
     fNewTree->Branch("Cov22Tv", &trkv_.Cov22Tv, "Cov22Tv[nTv]/F");
     fNewTree->Branch("Cov23Tv", &trkv_.Cov23Tv, "Cov23Tv[nTv]/F");
     fNewTree->Branch("Cov33Tv", &trkv_.Cov33Tv, "Cov33Tv[nTv]/F");
+}
+
+// Add to the tree all the branches realted to the block Vtx.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockVtx() {
+    fNewTree->Branch("nV",      &vertices_.nV,      "nV/I");
+    fNewTree->Branch("Vtx",     &vertices_.Vetx,     "Vetx[nV]/I");
+    fNewTree->Branch("xV",      &vertices_.xV,      "xV[nV]/F");
+    fNewTree->Branch("yV",      &vertices_.yV,      "yV[nV]/F");
+    fNewTree->Branch("zV",      &vertices_.zV,      "zV[nV]/F");
+    fNewTree->Branch("ChiVtx",  &vertices_.ChiVtx,  "ChiVtx[nV]/F");
+    fNewTree->Branch("QuaLv",   &vertices_.QuaLv,   "QuaLv[nV]/I");
+    fNewTree->Branch("FitiDv",  &vertices_.FitiDv,  "FitiDv[nV]/I");
+    fNewTree->Branch("VTXCov1", &vertices_.VTXCov1, "VTXCov1[nV]/F");
+    fNewTree->Branch("VTXCov2", &vertices_.VTXCov2, "VTXCov2[nV]/F");
+    fNewTree->Branch("VTXCov3", &vertices_.VTXCov3, "VTXCov3[nV]/F");
+    fNewTree->Branch("VTXCov4", &vertices_.VTXCov4, "VTXCov4[nV]/F");
+    fNewTree->Branch("VTXCov5", &vertices_.VTXCov5, "VTXCov5[nV]/F");
+    fNewTree->Branch("VTXCov6", &vertices_.VTXCov6, "VTXCov6[nV]/F");
 }
 
 // Returns the output file object.

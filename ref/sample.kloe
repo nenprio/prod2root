@@ -465,8 +465,10 @@ C-----------------------------------------------------------------------
             DO iTELLINA=1, NTel
                Add_Tel(iTELLINA) = Evt%Tellina%add(iTELLINA)
                Bitp_Tel(iTELLINA) = Evt%Tellina%Bitp(iTELLINA)
-               IF ( Bitp_Tel < 0 .OR. Bitp_Tel > 7 ) THEN
-                  WRITE(*,*) 'ERROR TELLINA - Bitp_Tel Out of bound : ', Bitp_Tel
+               IF ( Bitp_Tel(iTELLINA) < 0 .OR. 
+     1              Bitp_Tel(iTELLINA) > 7 ) THEN
+                  WRITE(*,*) 'ERROR TELLINA - Bitp_Tel Out of bound : ',
+     1                                                Bitp_Tel(iTELLINA)
                END IF
                Ea_Tel(iTELLINA) = Evt%Tellina%Ea(iTELLINA)
                Eb_Tel(iTELLINA) = Evt%Tellina%Eb(iTELLINA)
@@ -1027,7 +1029,7 @@ C-----------------------------------------------------------------------
             tDTCE0(iDTCE0) = 0.
          END DO
    
-   C     DTCEStru is initialized in raw2dtce.cin
+C        DTCEStru is initialized in raw2dtce.cin
    
          nDTCE0 = DTCEStru%NEle
          IF ( nDTCE0 < 0 .OR. nDTCE0 > 1500 ) THEN
@@ -1062,7 +1064,7 @@ C-----------------------------------------------------------------------
          nCellDC = 0.
          nSmallDC = 0.
    
-   C     Already filled Evt%DTCE and DTCEStru in previous blocks
+C        Already filled Evt%DTCE and DTCEStru in previous blocks
    
          nDCHR = DTCEStru%nDCHR
          nSmallDCm = DTCEStru%nSmallDCm
@@ -1174,6 +1176,57 @@ C-----------------------------------------------------------------------
            END DO
          ELSE
             WRITE(*,*) 'ERROR TRKV - nTv Index not valid: ', nTv
+         END IF
+      END IF
+C-----------------------------------------------------------------------
+C Fill Block Vertices
+C-----------------------------------------------------------------------
+      IF (.TRUE.) THEN  ! TODO: Change .TRUE. with the name of block flag
+         nV = 0.
+         DO iVTX=1, 10
+           Vetx(iVTX) = 0.
+           xV(iVTX) = 0.
+           yV(iVTX) = 0.
+           zV(iVTX) = 0.
+           ChiVtx(iVTX) = 0.
+           QuaLv(iVTX) = 0.
+           FitiDv(iVTX) = 0.
+           VTXCov1(iVTX) = 0.
+           VTXCov2(iVTX) = 0.
+           VTXCov3(iVTX) = 0.
+           VTXCov4(iVTX) = 0.
+           VTXCov5(iVTX) = 0.
+           VTXCov6(iVTX) = 0.
+         END DO
+
+C         Already filled Evt%Vtx by the get function called in the previous block
+
+         nV = Evt%vtx%n
+         IF ( nV < 0 .OR. nV > 10 ) THEN
+            WRITE(*,*) 'ERROR VTX - nV Out of bound : ', nV
+         END IF
+
+         IF (nV > 0 .AND. nV <= 10) THEN
+            DO iVTX=1, nV
+               Vetx(iVTX) = Evt%Vtx%Ntrk(iVTX)
+               IF ( Vetx(iVTX) < 0 .OR. Vetx(iVTX) > 10 ) THEN
+                  WRITE(*,*) 'ERROR VTX - Vetx[1] Out of bound : ', Vetx(iVTX)
+               END IF
+                 xV(iVTX) = Evt%Vtx%X(iVTX)
+                 yV(iVTX) = Evt%Vtx%Y(iVTX)
+                 zV(iVTX) = Evt%Vtx%Z(iVTX)
+                 ChiVtx(iVTX) = Evt%Vtx%Chi2(iVTX)
+                 QuaLv(iVTX) = Evt%Vtx%Qual(iVTX)
+                 FitiDv(iVTX) = Evt%Vtx%Fitid(iVTX)
+                 VTXCov1(iVTX) = Evt%Vtx%Cov1(iVTX)
+                 VTXCov2(iVTX) = Evt%Vtx%Cov2(iVTX)
+                 VTXCov3(iVTX) = Evt%Vtx%Cov3(iVTX)
+                 VTXCov4(iVTX) = Evt%Vtx%Cov4(iVTX)
+                 VTXCov5(iVTX) = Evt%Vtx%Cov5(iVTX)
+                 VTXCov6(iVTX) = Evt%Vtx%Cov6(iVTX)
+           END DO
+         ELSE
+            WRITE(*,*) 'ERROR VTX - nV Index not valid: ', nV
          END IF
       END IF
 C-----------------------------------------------------------------------
