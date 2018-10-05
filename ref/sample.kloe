@@ -142,7 +142,6 @@ $$INCLUDE 'k$itls:itcestruct.cin'  ! IT Stru
 $$INCLUDE 'k$itls:hetenum.cin'      ! HET max dim
 $$INCLUDE 'k$itls:hetestru.cin'  !LET Stru
 $$include 'k$itls:prod2ntu.inc'
-$$include 'k$itls:prod2ntu_talk.inc'
 $$INCLUDE 'k$itls:raw2dtce.cin'
 
 $$include 'sample.inc'
