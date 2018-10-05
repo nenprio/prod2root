@@ -14,6 +14,7 @@
 TreeWriter::TreeWriter() {
     outfile  = new TFile("sample.root", "recreate");    //Open or create file 
     fNewTree = new TTree("sample", "Event Infos");      //Create "sample" tree
+    // TODO: create a function printHeader()
     std::cout<<"Flags "<<sammenu_.bposFlag<<" "<<sammenu_.eclsFlag<<" "<<sammenu_.trigFlag<<" "<<sammenu_.c2trgFlag<<" "<<sammenu_.tellinaFlag<<" "<<sammenu_.pizzaFlag<<std::endl;
     
     // Block Info
@@ -23,19 +24,19 @@ TreeWriter::TreeWriter() {
     // Block Time
     addBlockTime();
     // Block BPOS
-    if(sammenu_.bposFlag)addBlockBPOS();
+    if(sammenu_.bposFlag) addBlockBPOS();
     // Block GdHit
     addBlockGdHit();
     // Block Ecl
-    if(sammenu_.eclsFlag)addBlockEcl();
+    if(sammenu_.eclsFlag) addBlockEcl();
     // Block Trig
-    if(sammenu_.trigFlag)addBlockTrig();
+    if(sammenu_.trigFlag) addBlockTrig();
     // Block C2Trig
-    if(sammenu_.c2trgFlag)addBlockC2Trig();
+    if(sammenu_.c2trgFlag) addBlockC2Trig();
     // Block Tellina
-    if(sammenu_.tellinaFlag)addBlockTellina();
+    if(sammenu_.tellinaFlag) addBlockTellina();
     // Block Pizzetta
-    if(sammenu_.pizzaFlag)addBlockPizzetta();
+    if(sammenu_.pizzaFlag) addBlockPizzetta();
     // Block Tele
     addBlockTele();
     // Block Pizza
