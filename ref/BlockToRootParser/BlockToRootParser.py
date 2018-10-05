@@ -45,7 +45,8 @@ INFO_RESULT     = "[Info] Terminated. You can find the files in output directory
 # input:     -
 # output:    content of Struct.hh as string
 def getStructContent(block_name, names, types, nameIsArray):
-    content = "extern \"C\" {\n"
+    content = "// Block:   " + block_name + "\n"
+    content += "extern \"C\" {\n"
     content += "  extern struct {\n"
     for i,(t,n) in enumerate(zip(types,names)):
         c_type = FORT_TO_C_TYPES.get(t)
@@ -78,7 +79,7 @@ def getCinContent(block_name, names, types, nameIsArray):
         line_names = ""
         for i,j in enumerate(group):
             if nameIsArray[j]:
-                current_name = names[j] + "(>>>MAX-SIZE<<<)"
+                current_name = names[j] + "(>MAX-VALUE<)"
             else:
                 current_name = names[j]
             if i==0:
@@ -101,7 +102,7 @@ def getCinContent(block_name, names, types, nameIsArray):
 #
 # input:  -
 # output: content of kloe file as string.
-def getKloeContent(block_name, names, data, nameIsArray):
+def getKloeContent(block_name, names, data, nameIsArray, ranges):
     content = "C-----------------------------------------------------------------------\n"
     content += "C Fill Block " + block_name + "\n"
     content += "C-----------------------------------------------------------------------\n"
@@ -114,7 +115,7 @@ def getKloeContent(block_name, names, data, nameIsArray):
 
     # Initialize all arrays to zero
     if len(arrays)>0:
-        content += "      DO i" + block_name.upper() + "=1, >>>MAX-SIZE<<<\n"
+        content += "      DO i" + block_name.upper() + "=1, >MAX-VALUE<\n"
     for j in arrays:
         content += "        " +  names[j] + "(i" + block_name.upper() + ") = 0.\n"
     if len(arrays)>0:
@@ -125,18 +126,36 @@ def getKloeContent(block_name, names, data, nameIsArray):
     content += "\n"
     for i,(n,d) in enumerate(zip(names,data)):
         if not nameIsArray[i]:
-            content += "      " + n + " = " + d + "\n"
+            if ranges[i]=="":
+                content += "      " + n + " = " + d + "\n"
+            else:
+                min_range, max_range = ranges[i].replace("[","").replace("]","").split(",")
+                content += "      " + n + " = " + d + "\n"
+                content += "      IF ( " + n + " < " + min_range + " .OR. " + n + " > " + max_range + " ) THEN\n"
+                content += "        WRITE(*,*) \'ERROR " + block_name.upper() + " - " + n + " Out of bound : \', " + n + "\n"
+                content += "      END IF\n"
 
     # Initialize all arrays to zero
     if len(arrays)>0:
-        content += "      IF (>INDEX-VAR< > 0 .OR. >INDEX-VAR< <= >MAX-VALUE<) THEN\n"
+        content += "\n"
+        content += "      IF (>INDEX-VAR< > 0 .AND. >INDEX-VAR< <= >MAX-VALUE<) THEN\n"
         content += "        DO i" + block_name.upper() + "=1, >INDEX-VAR<\n"
     for j in arrays:
-        content += "          " + names[j] + "(i" + block_name.upper() + ") = " + data[j] + "(i" + block_name.upper() + ")\n"
+        n = names[j] + "(i" + block_name.upper() + ")"
+        d = data[j] + "(i" + block_name.upper() + ")"
+        if ranges[j]=="":
+            content += "          " + n + " = " + d + "\n"
+        else:
+            min_range, max_range = ranges[j].replace("[","").replace("]","").split(",")
+            content += "          " + n + " = " + d + "\n"
+            content += "          IF ( " + n + " < " + min_range + " .OR. " + n + " > " + max_range + " ) THEN\n"
+            content += "            WRITE(*,*) \'ERROR " + block_name.upper() + " - " + names[j] + "[" + str(j) + "] Out of bound : \', " + n + "\n"
+            content += "          END IF\n"
+
     if len(arrays)>0:
         content += "        END DO\n"
-        content += "      ELSE THEN\n"
-        content += "        WRITE(*,*) \'ERROR " + block_name.upper() + " - >INDEX-VAR< Out of bound : \', >INDEX-VAR<\n"
+        content += "      ELSE\n"
+        content += "        WRITE(*,*) \'ERROR " + block_name.upper() + " - >INDEX-VAR< Index not valid: \', >INDEX-VAR<\n"
         content += "      END IF\n"
     return content
 
@@ -169,7 +188,7 @@ def getCppContent(block_name, names, types, nameIsArray):
 def main(input_file, output_dir="out"):
     if output_dir == "":
         output_dir="out"
-    block_name       = input_file.split("/")[-1].split(".")[0]
+    block_name       = input_file.split("/")[-1].split(".")[0].lower()
     names_file       = output_dir + "/" + block_name + "_names.in"
     output_file_cin  = output_dir + "/" + block_name + "_toSample.cin"
     output_file_kloe = output_dir + "/" + block_name + "_toSample.kloe"
@@ -205,9 +224,10 @@ def main(input_file, output_dir="out"):
         print INFO_NAMES_FILE + " (" + names_file + ")"
 
     # Data, names, types lists initialization
-    data  = list()
-    names = list()
-    types = list()
+    data   = list()
+    names  = list()
+    types  = list()
+    ranges = list()
     nameIsArray = list()
 
     # Open input file and get line
@@ -215,21 +235,32 @@ def main(input_file, output_dir="out"):
         input_lines = in_file.readlines()
 
     for i,line in enumerate(input_lines):
-        splitted_lines = line.split(",")
+        splitted_lines = line.split(",",3) #At max 3 field, the others are in the last one
+        data.append(splitted_lines[2])
+
         # Third field has format 'name:type\n'
         # then we have to clean the string and split it
         # to separate name and type
         third_field = splitted_lines[3].replace(")","").replace("'","").replace("\n","").split(":")
+
+        # Take name and check if array
         current_name = third_field[0]
-
-        data.append(splitted_lines[2])
-
         if "(" in current_name:
             current_name = current_name.split("(")[0]
             nameIsArray.append(True)
         else:
             nameIsArray.append(False)
 
+        # Check existance of range
+        if len(third_field)==4:
+            ranges.append(third_field[3])
+        elif len(third_field)==2:
+            ranges.append("")
+        else:
+            print "[Error] Format of line " + i + " not recognized. (" + line + ")"
+            exit(1)
+
+        # Take the name from names file
         name_id=-1
         for n,name in enumerate(fortran_names):
             if name==current_name:
@@ -242,12 +273,12 @@ def main(input_file, output_dir="out"):
             names.append(C_names[name_id])
 
         # Given Fortran type, take the related C type
-        types.append(third_field[1])
+        types.append(third_field[1].lower())
 
     # Create files content
     content_hh   = getStructContent(block_name, names, types, nameIsArray)
     content_cin  = getCinContent(block_name, names, types, nameIsArray)
-    content_kloe = getKloeContent(block_name, names, data, nameIsArray)
+    content_kloe = getKloeContent(block_name, names, data, nameIsArray, ranges)
     content_cpp  = getCppContent(block_name, names, types, nameIsArray)
 
     # Create output files

@@ -6,31 +6,31 @@ C INITIAL DECLARATIONS
 C Follow the declarations of external functions 
 C and return variables used in sample.kloe to fill the data.
 C
-        real    rstat, getbpos
-        integer t0glrd, t0mcrd
-        integer getclustru, getmcstru, getcelestru
-        integer getevcl, getcluostru
-        integer trkv2stru, gettclostru, getcfhistru, blocat
-        integer parset, getqihistru, getqcalstru
-        integer getqcaestru, getdhspstru
-        integer gettelestru, getpreclustru
-        integer getpizzastru, tpie_upk
-        integer pizza_reset, torta_reset, tele_reset
-        integer get_dprs_struct, getnvo
-        integer geteclo, getclustrucorr
-        integer bigest, banknum, fillbposcommon
-        integer getqcaltstru, getqcthstru, getccaltstru
-        integer getletestru, itce_upk
-        integer gethetestru, hete_dump
-        integer angist, angohs, angpar, anptrg
-        integer getecls, gettime, getpizzetta
-        integer gettellina, getcwrkstru, gettrigger, trkq2stru
-        integer ncwrkhit, j
-        integer getsec2clustru
-        integer getcspsstru, getcluomcstru
-        integer trkvold2stru, getoldtclostru, dhit_reset, dhit_upk
-        integer dedx2stru_get, dedx2stru_reset
-        integer bnknum, icurr
+        REAL    rstat, GETBPOS
+        INTEGER T0GLRD, T0MCRD
+        INTEGER GETCLUSTRU, GETMCSTRU, GETCELESTRU
+        INTEGER GETEVCL, GETCLUOSTRU
+        INTEGER TRKV2STRU, GETTCLOSTRU, GETCFHISTRU, BLOCAT
+        INTEGER PARSET, GETQIHISTRU, GETQCALSTRU
+        INTEGER GETQCAESTRU, GETDHSPSTRU
+        INTEGER GETTELESTRU, GETPRECLUSTRU
+        INTEGER GETPIZZASTRU, TPIE_UPK
+        INTEGER PIZZA_RESET, TORTA_RESET, TELE_RESET
+        INTEGER GET_DPRS_STRUCT, GETNVO
+        INTEGER GETECLO, GETCLUSTRUCORR
+        INTEGER BIGEST, BANKNUM, FILLBPOSCOMMON
+        INTEGER GETQCALTSTRU, GETQCTHSTRU, GETCCALTSTRU
+        INTEGER GETLETESTRU, ITCE_UPK
+        INTEGER GETHETESTRU, HETE_DUMP
+        INTEGER ANGIST, ANGOHS, ANGPAR, ANPTRG
+        INTEGER GETECLS, GETTIME, GETPIZZETTA
+        INTEGER GETTELLINA, GETCWRKSTRU, GETTRIGGER, TRKQ2STRU
+        INTEGER NCWRKHIT, J
+        INTEGER GETSEC2CLUSTRU
+        INTEGER GETCSPSSTRU, GETCLUOMCSTRU
+        INTEGER TRKVOLD2STRU, GETOLDTCLOSTRU, DHIT_RESET, DHIT_UPK
+        INTEGER DEDX2STRU_GET, DEDX2STRU_RESET
+        INTEGER BNKNUM, ICURR
 C
 C BLOCK STRUCTURE DECLARATIONS
 C Follow the declarations of all the variables filled by data
@@ -51,11 +51,11 @@ C Block: evtdata
 C
       integer StreamNum,AlgoNum
       integer TimeSec,TimeMusec
-      integer Ndtce,McFlag
+      integer Ndtce_copy,McFlag
       real    IPos,IEle,Lumi
         
       common /eventinfo/StreamNum,AlgoNum,TimeSec,TimeMusec,
-     1      Ndtce,McFlag,IPos,IEle,Lumi
+     1      Ndtce_copy,McFlag,IPos,IEle,Lumi
 C
 C Block:  evtecls
 C
@@ -121,3 +121,96 @@ C
       real Ea_Piz(1000), Eb_Piz(1000), E_Piz(1000), Z_Piz(1000)
 
       common /pizzetta/NPiz,Add_Piz,Ea_Piz,Eb_Piz,E_Piz,Z_Piz
+C
+C  Block: EvtTele
+C
+      integer iEVTTELE
+      integer NTele,Det_Trg(300),BitP(300),Sector(300),SerKind(300)
+      real Ea_Trg(300), Eb_Trg(300), Ta_Trg(300), Tb_Trg(300)
+
+      common /tele/NTele,Det_Trg,BitP,Sector,SerKind,Ea_Trg,
+     1       Eb_Trg,Ta_Trg,Tb_Trg
+C
+C  Block: pizza
+C
+      integer iPIZZA, NPack, PakSect(300), PakDet(300), PakSerk(300)
+      real Ea_Pack(300), Eb_Pack(300), E_Rec(300), Z_mod(300)
+
+      common /pizza/NPack,PakSect,PakDet,PakSerk,
+     1              Ea_Pack,Eb_Pack,E_Rec,Z_mod
+C
+C  Block: evtclu
+C
+      integer iEVTCLU,NClu,FlagCl(100),NCluMc,NPar(100),PNum1(100)
+      integer Pid1(100), PNum2(100), Pid2(100), PNum3(100), Pid3(100)
+      real EneCl(100), TCl(100), XCl(100), YCl(100), ZCl(100)
+      real XaCl(100), YaCl(100), ZaCl(100), XRmCl(100)
+      real YRmsCl(100), ZrmsCl(100), TrmsCl(100)
+
+      common /evtclu/NClu,EneCl,TCl,XCl,YCl,ZCl,XaCl,YaCl,ZaCl,XRmCl,
+     1       YRmsCl,ZrmsCl,TrmsCl,FlagCl,NCluMc,NPar,PNum1,Pid1,PNum2,
+     1       Pid2,PNum3,Pid3
+C
+C  Block: preclu
+C
+      integer iPRECLU, NPClu
+      real EPre(100), TPre(100), XPre(100), YPre(100), ZPre(100)
+      real TAPre(100), TBPre(100), TARPre(100), TBRPre(100)
+
+      common /preclu/NPClu,EPre,TPre,XPre,YPre,ZPre,TAPre,TBPre,
+     1       TARPre,TBRPre
+C
+C  Block: cwrk
+C
+      integer iCWRK, NCHit, IClu(300), ICel(300), CAdd(300) 
+      integer CmcHit(300), Ckine(300)
+      real Ene(300), T(300), X(300), Y(300), Z(300)
+
+      common /cwrk/NCHit,IClu,ICel,CAdd,CmcHit,Ckine,Ene,T,X,Y,Z
+C
+C  Block: cele
+C
+      integer iCELE, NCel, ICl(300), Det(300), Wed(300), Pla(300)
+      integer Col(300), NCelMc, PTyp(300), KNum(300), NHit(300)
+      real Ea(300), Ta(300), Eb(300), Tb(300), EMc(300)
+      real TMc(300), XMc(300), YMc(300), ZMc(300)
+
+      common /cele/NCel,ICl,Det,Wed,Pla,Col,Ea,Ta,Eb,Tb,NCelMc,EMc,
+     1       TMc,XMc,YMc,ZMc,PTyp,KNum,NHit
+C
+C  Block: dtce
+C
+      integer iDTCE, nDTCE, nSmall, iLayerDTCE(1500), iWireDTCE(1500)
+      real tDTCE(1500)
+
+      common /dtce/nDTCE,nSmall,iLayerDTCE,iWireDTCE,tDTCE
+C
+C  Block: dtce0
+C
+      integer iDTCE0, nDTCE0, iLayerDTCE0(1500), iWireDTCE0(1500)
+      real tDTCE0(1500)
+
+      common /dtce0/nDTCE0,iLayerDTCE0,iWireDTCE0,tDTCE0
+C
+C  Block: dchits
+C
+      integer nDCHR, nSmallDCm, nSmallDCp, nBigDCm, nBigDCp
+      integer nCellDC, nSmallDC
+
+      common /dchits/nDCHR,nSmallDCm,nSmallDCp,nBigDCm,nBigDCp,
+     1       nCellDC,nSmallDC
+C
+C  Block: dhre
+C
+      integer iDHRE
+      integer nDHRE, iLayerDHRE(1500), iWireDHRE(1500), iTrkDHRE(1500)
+      real rDHRE(1500), eDHRE(1500)
+
+      common /dhre/nDHRE,iLayerDHRE,iWireDHRE,iTrkDHRE,rDHRE,eDHRE
+C
+C  Block: dhsp
+C
+      integer iDHSP, nDHSP, TrkDh(500), Layer(500), Wire(500)
+      real Time(500),DPar(500),Res(500),XDh(500),YDh(500),ZDh(500)
+
+      common /dhsp/NDhsp,TrkDh,Layer,Wire,Time,DPar,Res,XDh,YDh,ZDh

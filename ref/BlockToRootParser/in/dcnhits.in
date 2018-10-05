@@ -1,0 +1,7 @@
+call HBNAME(nId,'DCHITS',DTCEStru%nDCHR,'nDCHR:I')
+call HBNAME(nId,'DCHITS',DTCEStru%nSmallDCm,'nSmallDCm:I')
+call HBNAME(nId,'DCHITS',DTCEStru%nSmallDCp,'nSmallDCp:I')
+call HBNAME(nId,'DCHITS',DTCEStru%nBigDCm,'nBigDCm:I')
+call HBNAME(nId,'DCHITS',DTCEStru%nBigDCp,'nBigDCp:I')
+call HBNAME(nId,'DCHITS',Evt%DTCE%nDTCE,'nCellDC:I')
+call HBNAME(nId,'DCHITS',Evt%DTCE%nSmall,'nSmallDC:I')

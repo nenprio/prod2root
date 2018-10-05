@@ -137,11 +137,14 @@ $$INCLUDE 'K$ITLS:ele2hitqcalt.cin'    ! QCALT hit structure
 $$INCLUDE 'K$ITLS:CCALTNUM.INC'        ! CCALT stu dimensioner
 $$INCLUDE 'K$ITLS:ccaltstru.inc'   ! CCALT Stru
 $$INCLUDE 'k$itls:letestruct.cin'  !LET Stru
-c$$INCLUDE 'k$itls:raw2itce.cin'  ! IT Stru
+C$$INCLUDE 'k$itls:raw2itce.cin'  ! IT Stru
 $$INCLUDE 'k$itls:itcestruct.cin'  ! IT Stru
 $$INCLUDE 'k$itls:hetenum.cin'      ! HET max dim
 $$INCLUDE 'k$itls:hetestru.cin'  !LET Stru
-$$include 'k$itls:prod2ntu.inc' !Type structures and PROD event declarations
+$$include 'k$itls:prod2ntu.inc'
+$$include 'k$itls:prod2ntu_talk.inc'
+$$INCLUDE 'k$itls:raw2dtce.cin'
+
 $$include 'sample.inc'
 $$include 'sample_talk.inc'
 C
@@ -242,7 +245,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block evtecls 
 C-----------------------------------------------------------------------
-      if(ECLSFLAG)then
+      IF (ECLSFLAG) THEN
          nEcls = 0
          EclTrgw = 0
          EclFilfo = 0
@@ -293,7 +296,7 @@ C-----------------------------------------------------------------------
          ELSE
             WRITE(*,*) 'ERROR EVTC2TRIG - NClu2s Out of bound : ', NClu2s
          END IF
-      end if
+      END IF
 C-----------------------------------------------------------------------
 C Fill Block evtbpos
 C-----------------------------------------------------------------------
@@ -345,13 +348,13 @@ C-----------------------------------------------------------------------
       istat = BIGEST(iw,'DTCE',banknum)
       istat = BLOCAT(iw,'DTCE',banknum,ind1,inddat)
       IF( istat.ne.YESUCC ) THEN
-        NDtce =0
+        NDtce_copy =0
       ELSE
-        NDtce = IW(inddat+DTCNRO)
+        NDtce_copy = IW(inddat+DTCNRO)
       ENDIF
       CALL GETGDCHIT(Evt%GHit)
 
-      DtceHit = NDtce
+      DtceHit = NDtce_copy
       DhreHit = Evt%GHit%nhit
       DprsHit = Evt%GHit%nhpr
       DtfsHit = Evt%GHit%nhtf
@@ -366,7 +369,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block evtc2trig
 C-----------------------------------------------------------------------
-      if(C2TRGFLAG)then
+      IF (C2TRGFLAG) THEN
          NSec = 0.
          NSec_NoClu = 0.
          NSec2Clu = 0.
@@ -399,11 +402,11 @@ C-----------------------------------------------------------------------
          ELSE
             WRITE(*,*) 'ERROR EVTC2TRIG - NClu2s Out of bound : ', NClu2s
          END IF
-      end if
+      END IF
 C-----------------------------------------------------------------------
 C Fill Block tellina
 C-----------------------------------------------------------------------
-      if(TELLINAFLAG)then
+      IF (TELLINAFLAG) THEN
          NTel = 0.
          DO iTELLINA=1, 1000
             Add_Tel(iTELLINA) = 0.
@@ -429,11 +432,11 @@ C-----------------------------------------------------------------------
          ELSE
             WRITE(*,*) 'ERROR TELLINA - NTel Out of bound : ', NTel
          END IF
-      end if
+      END IF
 C-----------------------------------------------------------------------
 C Fill Block pizzetta
 C-----------------------------------------------------------------------
-      if(PIZZAFLAG)then
+      IF (PIZZAFLAG) THEN
          NPiz = 0.
          DO iPIZZETTA=1, 1000
             Add_Piz(iPIZZETTA) = 0.
@@ -457,13 +460,405 @@ C-----------------------------------------------------------------------
          ELSE
             WRITE(*,*) 'ERROR PIZZETTA - NPiz Out of bound : ', NPiz
          END IF
-      end if
+      END IF
+C-----------------------------------------------------------------------
+C Fill Block Torta
+C-----------------------------------------------------------------------
+C
+C NOT IMPLEMENTED
+C
+C-----------------------------------------------------------------------
+C Fill Block EvtTele
+C-----------------------------------------------------------------------
+      NTele = 0.
+      DO iEVTTELE=1, 300
+        Det_Trg(iEVTTELE) = 0.
+        BitP(iEVTTELE) = 0.
+        Sector(iEVTTELE) = 0.
+        SerKind(iEVTTELE) = 0.
+        Ea_Trg(iEVTTELE) = 0.
+        Eb_Trg(iEVTTELE) = 0.
+        Ta_Trg(iEVTTELE) = 0.
+        Tb_Trg(iEVTTELE) = 0.
+      END DO
+
+      istat = GETTELESTRU(Evt%TELE)
+
+      NTele = Evt%TELE%ntele
+      IF (NTele > 0 .AND. NTele <= 300) THEN
+        DO iEVTTELE=1, NTele
+          Det_Trg(iEVTTELE) = Evt%TELE%Det(iEVTTELE)
+          BitP(iEVTTELE) = Evt%TELE%Bitp(iEVTTELE)
+          Sector(iEVTTELE) = Evt%TELE%Sector(iEVTTELE)
+          SerKind(iEVTTELE) = Evt%TELE%Serkind(iEVTTELE)
+          Ea_Trg(iEVTTELE) = Evt%TELE%Ea(iEVTTELE)
+          Eb_Trg(iEVTTELE) = Evt%TELE%Eb(iEVTTELE)
+          Ta_Trg(iEVTTELE) = Evt%TELE%Ta(iEVTTELE)
+          Tb_Trg(iEVTTELE) = Evt%TELE%Tb(iEVTTELE)
+        END DO
+      ELSE
+        WRITE(*,*) 'ERROR EVTTELE - NTele Out of bound : ', NTele
+      END IF
+C-----------------------------------------------------------------------
+C Fill Block pizza
+C-----------------------------------------------------------------------
+      NPack = 0.
+      DO iPIZZA=1, 300
+        PakSect(iPIZZA) = 0.
+        PakDet(iPIZZA) = 0.
+        PakSerk(iPIZZA) = 0.
+        Ea_Pack(iPIZZA) = 0.
+        Eb_Pack(iPIZZA) = 0.
+        E_Rec(iPIZZA) = 0.
+        Z_mod(iPIZZA) = 0.
+      END DO
+
+      istat = PIZZA_RESET(Evt%PIZZA)
+      istat = GETPIZZASTRU(Evt%PIZZA)
+
+      NPack = Evt%PIZZA%npizza
+      IF (NPack > 0 .AND. NPack <= 300) THEN
+        DO iPIZZA=1, NPack
+          PakSect(iPIZZA) = Evt%PIZZA%sector(iPIZZA)
+          PakDet(iPIZZA) = Evt%PIZZA%det(iPIZZA)
+          PakSerk(iPIZZA) = Evt%PIZZA%serkind(iPIZZA)
+          Ea_Pack(iPIZZA) = Evt%PIZZA%Ea(iPIZZA)
+          Eb_Pack(iPIZZA) = Evt%PIZZA%Eb(iPIZZA)
+          E_Rec(iPIZZA) = Evt%PIZZA%E_rec(iPIZZA)
+          Z_mod(iPIZZA) = Evt%PIZZA%Z_mod(iPIZZA)
+        END DO
+      ELSE
+        WRITE(*,*) 'ERROR PIZZA - NPack Out of bound : ', NPack
+      END IF
 C-----------------------------------------------------------------------
 C Fill Block evttime
 C-----------------------------------------------------------------------
       istat = T0GLRD(T0Dc0,T0Hit0,T0Clu0,T0Step1,DelayCable,TBunch)
       istat = T0MCRD(TPhased_mc)
-        
+C-----------------------------------------------------------------------
+C Fill Block evtclu
+C-----------------------------------------------------------------------
+      NClu = 0.
+      NCluMc = 0.
+      DO iEVTCLU=1, 100
+        EneCl(iEVTCLU) = 0.
+        TCl(iEVTCLU) = 0.
+        XCl(iEVTCLU) = 0.
+        YCl(iEVTCLU) = 0.
+        ZCl(iEVTCLU) = 0.
+        XaCl(iEVTCLU) = 0.
+        YaCl(iEVTCLU) = 0.
+        ZaCl(iEVTCLU) = 0.
+        XRmCl(iEVTCLU) = 0.
+        YRmsCl(iEVTCLU) = 0.
+        ZrmsCl(iEVTCLU) = 0.
+        TrmsCl(iEVTCLU) = 0.
+        FlagCl(iEVTCLU) = 0.
+        NPar(iEVTCLU) = 0.
+        PNum1(iEVTCLU) = 0.
+        Pid1(iEVTCLU) = 0.
+        PNum2(iEVTCLU) = 0.
+        Pid2(iEVTCLU) = 0.
+        PNum3(iEVTCLU) = 0.
+        Pid3(iEVTCLU) = 0.
+      END DO
+
+      istat = GETCLUSTRU(Evt%Clu)
+
+      NClu = Evt%Clu%n 
+      NCluMc = Evt%Clu%nmc
+      IF (NClu > 0 .AND. NClu <= 100) THEN
+        DO iEVTCLU=1, NClu
+          EneCl(iEVTCLU) = Evt%Clu%E (iEVTCLU)
+          TCl(iEVTCLU) = Evt%Clu%T (iEVTCLU)
+          XCl(iEVTCLU) = Evt%Clu%X (iEVTCLU)
+          YCl(iEVTCLU) = Evt%Clu%Y (iEVTCLU)
+          ZCl(iEVTCLU) = Evt%Clu%Z (iEVTCLU)
+          XaCl(iEVTCLU) = Evt%Clu%Xa(iEVTCLU)
+          YaCl(iEVTCLU) = Evt%Clu%Ya(iEVTCLU)
+          ZaCl(iEVTCLU) = Evt%Clu%Za(iEVTCLU)
+          XRmCl(iEVTCLU) = Evt%Clu%Xrms(iEVTCLU)
+          YRmsCl(iEVTCLU) = Evt%Clu%Yrms(iEVTCLU)
+          ZrmsCl(iEVTCLU) = Evt%Clu%Zrms(iEVTCLU)
+          TrmsCl(iEVTCLU) = Evt%Clu%Trms(iEVTCLU)
+          FlagCl(iEVTCLU) = Evt%Clu%Flag(iEVTCLU)
+        END DO
+      ELSE
+        WRITE(*,*) 'ERROR EVTCLU - NClu Out of bound : ', NClu
+      END IF
+
+      IF (NCluMc > 0 .AND. NCluMc <= 100) THEN
+        DO iEVTCLU=1, NCluMc
+          NPar(iEVTCLU) = Evt%Clu%Npart(iEVTCLU)
+          PNum1(iEVTCLU) = Evt%Clu%part1(iEVTCLU)
+          Pid1(iEVTCLU) = Evt%Clu%pid1(iEVTCLU)
+          PNum2(iEVTCLU) = Evt%Clu%part2(iEVTCLU)
+          Pid2(iEVTCLU) = Evt%Clu%pid2(iEVTCLU)
+          PNum3(iEVTCLU) = Evt%Clu%part3(iEVTCLU)
+          Pid3(iEVTCLU) = Evt%Clu%pid3(iEVTCLU) 
+        END DO
+      ELSE
+        WRITE(*,*) 'ERROR EVTCLU - NCluMc Out of bound : ', NCluMc
+      END IF
+C-----------------------------------------------------------------------
+C Fill Block preclu
+C-----------------------------------------------------------------------
+      NPClu = 0.
+      DO iPRECLU=1, 100
+        EPre(iPRECLU) = 0.
+        TPre(iPRECLU) = 0.
+        XPre(iPRECLU) = 0.
+        YPre(iPRECLU) = 0.
+        ZPre(iPRECLU) = 0.
+        TAPre(iPRECLU) = 0.
+        TBPre(iPRECLU) = 0.
+        TARPre(iPRECLU) = 0.
+        TBRPre(iPRECLU) = 0.
+      END DO
+
+      istat = GETPRECLUSTRU(Evt%PreClu)
+
+      NPClu = Evt%PreClu%n 
+      IF (NPClu > 0 .AND. NPClu <= 100) THEN
+        DO iPRECLU=1, NPClu
+          EPre(iPRECLU) = Evt%PreClu%E (iPRECLU)
+          TPre(iPRECLU) = Evt%PreClu%T (iPRECLU)
+          XPre(iPRECLU) = Evt%PreClu%X (iPRECLU)
+          YPre(iPRECLU) = Evt%PreClu%Y (iPRECLU)
+          ZPre(iPRECLU) = Evt%PreClu%Z (iPRECLU)
+          TAPre(iPRECLU) = Evt%PreClu%TA(iPRECLU)
+          TBPre(iPRECLU) = Evt%PreClu%TB(iPRECLU)
+          TARPre(iPRECLU) = Evt%PreClu%TrmsA(iPRECLU)
+          TBRPre(iPRECLU) = Evt%PreClu%TrmsB(iPRECLU)
+        END DO
+      ELSE
+        WRITE(*,*) 'ERROR PRECLU - NPClu Out of bound : ', NPClu
+      END IF
+C-----------------------------------------------------------------------
+C Fill Block cwrk
+C-----------------------------------------------------------------------
+      NCHit = 0.
+      DO iCWRK=1, 300
+        IClu(iCWRK) = 0.
+        ICel(iCWRK) = 0.
+        CAdd(iCWRK) = 0.
+        CmcHit(iCWRK) = 0.
+        Ckine(iCWRK) = 0.
+        Ene(iCWRK) = 0.
+        T(iCWRK) = 0.
+        X(iCWRK) = 0.
+        Y(iCWRK) = 0.
+        Z(iCWRK) = 0.
+      END DO
+
+      istat = GETCWRKSTRU(Evt%Cwrk)
+
+      NCHit = Evt%CWRK%n 
+      IF (NCHit > 0 .AND. NCHit <= 300) THEN
+        DO iCWRK=1, NCHit
+          IClu(iCWRK) = Evt%CWRK%icl(iCWRK)
+          ICel(iCWRK) = Evt%CWRK%cele(iCWRK)
+          CAdd(iCWRK) = Evt%CWRK%add(iCWRK)
+          CmcHit(iCWRK) = Evt%CWRK%nhit(iCWRK)
+          Ckine(iCWRK) = Evt%CWRK%kine(iCWRK)
+          Ene(iCWRK) = Evt%CWRK%E(iCWRK)
+          T(iCWRK) = Evt%CWRK%T(iCWRK)
+          X(iCWRK) = Evt%CWRK%X(iCWRK)
+          Y(iCWRK) = Evt%CWRK%Y(iCWRK)
+          Z(iCWRK) = Evt%CWRK%Z(iCWRK)
+        END DO
+      ELSE
+        WRITE(*,*) 'ERROR CWRK - NCHit Out of bound : ', NCHit
+      END IF
+C-----------------------------------------------------------------------
+C Fill Block cele
+C-----------------------------------------------------------------------
+      NCel = 0.
+      NCelMc = 0.
+      DO iCELE=1, 300
+        ICl(iCELE) = 0.
+        Det(iCELE) = 0.
+        Wed(iCELE) = 0.
+        Pla(iCELE) = 0.
+        Col(iCELE) = 0.
+        Ea(iCELE) = 0.
+        Ta(iCELE) = 0.
+        Eb(iCELE) = 0.
+        Tb(iCELE) = 0.
+        EMc(iCELE) = 0.
+        TMc(iCELE) = 0.
+        XMc(iCELE) = 0.
+        YMc(iCELE) = 0.
+        ZMc(iCELE) = 0.
+        PTyp(iCELE) = 0.
+        KNum(iCELE) = 0.
+        NHit(iCELE) = 0.
+      END DO
+
+      istat = GETCELESTRU(Evt%Cele)
+
+      NCel = Evt%Cele%n 
+      NCelMc = Evt%Cele%nmc
+      IF (NCel > 0 .AND. NCel <= 300) THEN
+        DO iCELE=1, NCel
+          ICl(iCELE) = Evt%Cele%icl(iCELE)
+          Det(iCELE) = Evt%Cele%det(iCELE)
+          Wed(iCELE) = Evt%Cele%wed(iCELE)
+          Pla(iCELE) = Evt%Cele%pla(iCELE)
+          Col(iCELE) = Evt%Cele%col(iCELE)
+          Ea(iCELE) = Evt%Cele%Ea(iCELE)
+          Ta(iCELE) = Evt%Cele%ta(iCELE)
+          Eb(iCELE) = Evt%Cele%Eb(iCELE)
+          Tb(iCELE) = Evt%Cele%tb(iCELE)
+        END DO
+      ELSE
+        WRITE(*,*) 'ERROR CELE - NCel Out of bound : ', NCel
+      END IF
+
+      IF (NCelMc > 0 .AND. NCelMc <= 300) THEN
+        DO iCELE=1, NCelMc
+          EMc(iCELE) = Evt%Cele%Etrue(iCELE)
+          TMc(iCELE) = Evt%Cele%Ttrue(iCELE)
+          XMc(iCELE) = Evt%Cele%xtrue(iCELE)
+          YMc(iCELE) = Evt%Cele%ytrue(iCELE)
+          ZMc(iCELE) = Evt%Cele%ztrue(iCELE)
+          PTyp(iCELE) = Evt%Cele%ptyp(iCELE)
+          KNum(iCELE) = Evt%Cele%knum(iCELE)
+          NHit(iCELE) = Evt%Cele%numpar(iCELE)
+        END DO
+      ELSE
+        WRITE(*,*) 'ERROR CELE - NCelMc Out of bound : ', NCelMc
+      END IF
+C-----------------------------------------------------------------------
+C Fill Block dtce
+C-----------------------------------------------------------------------
+      nDTCE = 0.
+      nSmall = 0.
+      DO iDTCE=1, 1500
+        iLayerDTCE(iDTCE) = 0.
+        iWireDTCE(iDTCE) = 0.
+        tDTCE(iDTCE) = 0.
+      END DO
+
+      CALL GETDTCESTRU(Evt%DTCE)
+
+      nDTCE = Evt%DTCE%nDTCE
+      IF ( nDTCE < 0 .OR. nDTCE > 1500 ) THEN
+        WRITE(*,*) 'ERROR DTCE - nDTCE Out of bound : ', nDTCE
+      END IF
+      nSmall = Evt%DTCE%nSmall
+      IF ( nSmall < 0 .OR. nSmall > 1500 ) THEN
+        WRITE(*,*) 'ERROR DTCE - nSmall Out of bound : ', nSmall
+      END IF
+
+      IF (nDTCE > 0 .AND. nDTCE <= 1500) THEN
+        DO iDTCE=1, nDTCE
+          iLayerDTCE(iDTCE) = Evt%DTCE%iLayerDTCE(iDTCE)
+          IF ( iLayerDTCE(iDTCE) < 1 .OR. iLayerDTCE(iDTCE) > 58 ) THEN
+            WRITE(*,*) 'ERROR DTCE - iLayerDTCE[2] Out of bound : ', iLayerDTCE(iDTCE)
+          END IF
+          iWireDTCE(iDTCE) = Evt%DTCE%iWireDTCE(iDTCE)
+          IF ( iWireDTCE(iDTCE) < 1 .OR. iWireDTCE(iDTCE) > 378 ) THEN
+            WRITE(*,*) 'ERROR DTCE - iWireDTCE[3] Out of bound : ', iWireDTCE(iDTCE)
+          END IF
+          tDTCE(iDTCE) = Evt%DTCE%tDTCE(iDTCE)
+        END DO
+      ELSE
+        WRITE(*,*) 'ERROR DTCE - nDTCE Index not valid: ', nDTCE
+      END IF
+C-----------------------------------------------------------------------
+C Fill Block dtce0
+C-----------------------------------------------------------------------
+      nDTCE0 = 0.
+      DO iDTCE0=1, 1500
+        iLayerDTCE0(iDTCE0) = 0.
+        iWireDTCE0(iDTCE0) = 0.
+        tDTCE0(iDTCE0) = 0.
+      END DO
+
+C     DTCEStru is initialized in raw2dtce.cin
+
+      nDTCE0 = DTCEStru%NEle
+      IF ( nDTCE0 < 0 .OR. nDTCE0 > 1500 ) THEN
+        WRITE(*,*) 'ERROR DTCE0 - nDTCE0 Out of bound : ', nDTCE0
+      END IF
+
+      IF ( nDTCE0 > 0 .AND. nDTCE0 <= 1500 ) THEN
+        DO iDTCE0=1, nDTCE0
+          iLayerDTCE0(iDTCE0) = DTCEStru%Lay(iDTCE0)
+          IF ( iLayerDTCE0(iDTCE0) < 1 .OR. iLayerDTCE0(iDTCE0) > 58 ) THEN
+            WRITE(*,*) 'ERROR DTCE0 - iLayerDTCE0[1] Out of bound : ', iLayerDTCE0(iDTCE0)
+          END IF
+          iWireDTCE0(iDTCE0) = DTCEStru%Wir(iDTCE0)
+          IF ( iWireDTCE0(iDTCE0) < 1 .OR. iWireDTCE0(iDTCE0) > 378 ) THEN
+            WRITE(*,*) 'ERROR DTCE0 - iWireDTCE0[2] Out of bound : ', iWireDTCE0(iDTCE0)
+          END IF
+          tDTCE0(iDTCE0) = DTCEStru%Time(iDTCE0)
+        END DO
+      ELSE
+        WRITE(*,*) 'ERROR DTCE0 - nDTCE0 Index not valid: ', nDTCE0
+      END IF
+C-----------------------------------------------------------------------
+C Fill Block dchits
+C-----------------------------------------------------------------------
+      nDCHR = 0.
+      nSmallDCm = 0.
+      nSmallDCp = 0.
+      nBigDCm = 0.
+      nBigDCp = 0.
+      nCellDC = 0.
+      nSmallDC = 0.
+
+C     Already filled Evt%DTCE and DTCEStru in previous blocks
+
+      nDCHR = DTCEStru%nDCHR
+      nSmallDCm = DTCEStru%nSmallDCm
+      nSmallDCp = DTCEStru%nSmallDCp
+      nBigDCm = DTCEStru%nBigDCm
+      nBigDCp = DTCEStru%nBigDCp
+      nCellDC = Evt%DTCE%nDTCE
+      nSmallDC = Evt%DTCE%nSmall
+C-----------------------------------------------------------------------
+C Fill Block dhsp
+C-----------------------------------------------------------------------
+      nDHSP = 0.
+      DO iDHSP=1, 500
+        TrkDh(iDHSP) = 0.
+        Layer(iDHSP) = 0.
+        Wire(iDHSP) = 0.
+        Time(iDHSP) = 0.
+        DPar(iDHSP) = 0.
+        Res(iDHSP) = 0.
+        XDh(iDHSP) = 0.
+        YDh(iDHSP) = 0.
+        ZDh(iDHSP) = 0.
+      END DO
+
+      CALL GETDHRESTRU(Evt%DHRE) 
+
+      nDHSP = Evt%DHSP%numDHSP
+      IF ( nDHSP < 0 .OR. nDHSP > 1500 ) THEN
+        WRITE(*,*) 'ERROR DHSP - nDHSP Out of bound : ', nDHSP
+      END IF
+
+      IF (nDHSP > 0 .AND. nDHSP <= 500) THEN
+        DO iDHSP=1, nDHSP
+          TrkDh(iDHSP) = Evt%DHSP%itrk(iDHSP)
+          Layer(iDHSP) = Evt%Dhsp%layer(iDHSP)
+          Wire(iDHSP) = Evt%Dhsp%wire(iDHSP)
+          Time(iDHSP) = Evt%Dhsp%time(iDHSP)
+          DPar(iDHSP) = Evt%Dhsp%drift(iDHSP)
+          Res(iDHSP) = Evt%Dhsp%res(iDHSP)
+          XDh(iDHSP) = Evt%Dhsp%x(iDHSP)
+          YDh(iDHSP) = Evt%Dhsp%y(iDHSP)
+          ZDh(iDHSP) = Evt%Dhsp%z(iDHSP)
+        END DO
+      ELSE
+        WRITE(*,*) 'ERROR DHSP - nDHSP Index not valid: ', nDHSP
+      END IF
+C
+C Fill Root
+C
       call fillntu() 	
 CC End of code
 C============
@@ -495,7 +890,7 @@ C
 C Local declarations
 C
       INTEGER    Status, MinHisId, MaxHisId
-      INTEGER    NtuId
+C      INTEGER    NtuId ! Comment to avoid conflict with raw2dtce.cin
       LOGICAL    HisFlg
 C
 C==============================================================================

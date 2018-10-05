@@ -17,6 +17,17 @@ class TreeWriter{
          void addBlockC2Trig();
          void addBlockTellina();
          void addBlockPizzetta();
+         void addBlockTele();
+         void addBlockPizza();
+         void addBlockClu();
+         void addBlockPreClu();
+         void addBlockCWRK();
+         void addBlockCele();
+         void addBlockDTCE();
+         void addBlockDTCE0();
+         void addBlockDCHits();
+         void addBlockDHRE();
+         void addBlockDHSP();
          TFile* getTFile();
          void fillTTree();
      private:

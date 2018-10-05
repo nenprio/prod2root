@@ -6,6 +6,11 @@
 const int MaxNumClu  = 100;
 const int MaxEclSize = 8;
 const int MaxTrgChan = 1000;
+const int MaxNTele   = 300;
+const int MaxNPack   = 300;
+const int NeleCluMax = 300;
+const int NMaxDC     = 1500;
+const int MaxNumDHSP = 500;
 
 //Verb for Talk_to module
 extern "C"{
@@ -43,7 +48,7 @@ extern "C"{
     int AlgoNum;
     int TimeSec;
     int TimeMusec;
-    int Ndtce;
+    int Ndtce_copy;
     int McFlag;
     float IPos;
     float IEle;
@@ -73,25 +78,25 @@ extern "C"{
 
 // Block:    evtbpos
 extern "C" {
-   extern struct {
-     float BPx;
-     float BPy;
-     float BPz;
-     float Bx;
-     float By;
-     float Bz;
-     float BWidPx;
-     float BWidPy;
-     float BWidPz;
-     float BSx;
-     float BSy;
-     float BSz;
-     float BLumx;
-     float BLumz;
-     float Broots;
-     float BrootsErr;
-   }evtbpos_;
- }
+  extern struct {
+    float BPx;
+    float BPy;
+    float BPz;
+    float Bx;
+    float By;
+    float Bz;
+    float BWidPx;
+    float BWidPy;
+    float BWidPz;
+    float BSx;
+    float BSy;
+    float BSz;
+    float BLumx;
+    float BLumz;
+    float Broots;
+    float BrootsErr;
+  }evtbpos_;
+}
 
 // Block:   evttime
 extern "C"{
@@ -163,6 +168,183 @@ extern "C" {
     float E_Piz[MaxTrgChan];
     float Z_Piz[MaxTrgChan];
   }pizzetta_;
+}
+
+// Block:   evttele
+extern "C" {
+  extern struct {
+    int NTele;
+    int Det_Trg[MaxNTele];
+    int BitP[MaxNTele];
+    int Sector[MaxNTele];
+    int SerKind[MaxNTele];
+    float Ea_Trg[MaxNTele];
+    float Eb_Trg[MaxNTele];
+    float Ta_Trg[MaxNTele];
+    float Tb_Trg[MaxNTele];
+  }tele_;
+}
+
+// Block:   pizza
+extern "C" {
+  extern struct {
+    int NPack;
+    int PakSect[MaxNPack];
+    int PakDet[MaxNPack];
+    int PakSerk[MaxNPack];
+    float Ea_Pack[MaxNPack];
+    float Eb_Pack[MaxNPack];
+    float E_Rec[MaxNPack];
+    float Z_mod[MaxNPack];
+  }pizza_;
+}
+
+// Block:   evtclu
+extern "C" {
+  extern struct {
+    int NClu;
+    float EneCl[MaxNumClu];
+    float TCl[MaxNumClu];
+    float XCl[MaxNumClu];
+    float YCl[MaxNumClu];
+    float ZCl[MaxNumClu];
+    float XaCl[MaxNumClu];
+    float YaCl[MaxNumClu];
+    float ZaCl[MaxNumClu];
+    float XRmCl[MaxNumClu];
+    float YRmsCl[MaxNumClu];
+    float ZrmsCl[MaxNumClu];
+    float TrmsCl[MaxNumClu];
+    int FlagCl[MaxNumClu];
+    int NCluMc;
+    int NPar[MaxNumClu];
+    int PNum1[MaxNumClu];
+    int Pid1[MaxNumClu];
+    int PNum2[MaxNumClu];
+    int Pid2[MaxNumClu];
+    int PNum3[MaxNumClu];
+    int Pid3[MaxNumClu];
+  }evtclu_;
+}
+
+// Block:   preclu
+extern "C" {
+  extern struct {
+    int NPClu;
+    float EPre[MaxNumClu];
+    float TPre[MaxNumClu];
+    float XPre[MaxNumClu];
+    float YPre[MaxNumClu];
+    float ZPre[MaxNumClu];
+    float TAPre[MaxNumClu];
+    float TBPre[MaxNumClu];
+    float TARPre[MaxNumClu];
+    float TBRPre[MaxNumClu];
+  }preclu_;
+}
+
+// Block:   cwrk
+extern "C" {
+  extern struct {
+    int NCHit;
+    int IClu[NeleCluMax];
+    int ICel[NeleCluMax];
+    int CAdd[NeleCluMax];
+    int CmcHit[NeleCluMax];
+    int Ckine[NeleCluMax];
+    float Ene[NeleCluMax];
+    float T[NeleCluMax];
+    float X[NeleCluMax];
+    float Y[NeleCluMax];
+    float Z[NeleCluMax];
+  }cwrk_;
+}
+
+// Block:   cele
+extern "C" {
+  extern struct {
+    int NCel;
+    int ICl[NeleCluMax];
+    int Det[NeleCluMax];
+    int Wed[NeleCluMax];
+    int Pla[NeleCluMax];
+    int Col[NeleCluMax];
+    float Ea[NeleCluMax];
+    float Ta[NeleCluMax];
+    float Eb[NeleCluMax];
+    float Tb[NeleCluMax];
+    int NCelMc;
+    float EMc[NeleCluMax];
+    float TMc[NeleCluMax];
+    float XMc[NeleCluMax];
+    float YMc[NeleCluMax];
+    float ZMc[NeleCluMax];
+    int PTyp[NeleCluMax];
+    int KNum[NeleCluMax];
+    int NHit[NeleCluMax];
+  }cele_;
+}
+
+// Block:   dtce
+extern "C" {
+  extern struct {
+    int nDTCE;
+    int nSmall;
+    int iLayerDTCE[NMaxDC];
+    int iWireDTCE[NMaxDC];
+    float tDTCE[NMaxDC];
+  }dtce_;
+}
+
+// Block:   dtce0
+extern "C" {
+  extern struct {
+    int nDTCE0;
+    int iLayerDTCE0[NMaxDC];
+    int iWireDTCE0[NMaxDC];
+    float tDTCE0[NMaxDC];
+  }dtce0_;
+}
+
+// Block:   dcnhits
+extern "C" {
+  extern struct {
+    int nDCHR;
+    int nSmallDCm;
+    int nSmallDCp;
+    int nBigDCm;
+    int nBigDCp;
+    int nCellDC;
+    int nSmallDC;
+  }dchits_;
+}
+
+// Block:   dhre
+extern "C" {
+  extern struct {
+    int nDHRE;
+    int iLayerDHRE[NMaxDC];
+    int iWireDHRE[NMaxDC];
+    int iTrkDHRE[NMaxDC];
+    float rDHRE[NMaxDC];
+    float eDHRE[NMaxDC];
+  }dhre_;
+}
+
+// Block:   dhsp
+extern "C" {
+  extern struct {
+    int nDHSP;
+    int TrkDh[MaxNumDHSP];
+    int Layer[MaxNumDHSP];
+    int Wire[MaxNumDHSP];
+    float Time[MaxNumDHSP];
+    float DPar[MaxNumDHSP];
+    float Res[MaxNumDHSP];
+    float XDh[MaxNumDHSP];
+    float YDh[MaxNumDHSP];
+    float ZDh[MaxNumDHSP];
+  }dhsp_;
 }
 
 #endif
