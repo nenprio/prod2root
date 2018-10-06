@@ -11,5 +11,6 @@ paw*
 ref/OutputVerifier/trash
 ref/OutputVerifier/out
 ref/sample_bj.kloe
+ref/BlockToRootParser/in
 ref/BlockToRootParser/out
 *main

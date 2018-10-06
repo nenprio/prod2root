@@ -217,7 +217,7 @@ C         ENDIF
 C-----------------------------------------------------------------------
 C Fill Block Info
 C-----------------------------------------------------------------------
-      IF (.TRUE.) THEN  ! TODO: Change .TRUE. with the name of block flag
+      IF (.TRUE.) THEN ! TODO: Change .TRUE. with flag name
          IF (mcflag_1) THEN
             istat=blocat(iw,'BRID',1,ind1,inddat)
             Evt%Info%RunNumber = iw(inddat)
@@ -312,7 +312,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block GDHit
 C-----------------------------------------------------------------------
-      IF (.TRUE.) THEN  ! TODO: Change .TRUE. with the name of block flag
+      IF (.TRUE.) THEN ! TODO: Change .TRUE. with flag name
          DtceHit = 0.
          DhreHit = 0.
          DprsHit = 0.
@@ -335,7 +335,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block Ecls
 C-----------------------------------------------------------------------
-      IF (.TRUE.) THEN  ! TODO: Change .TRUE. with the name of block flag
+      IF (.TRUE.) THEN ! TODO: Change .TRUE. with flag name
          IF (ECLSFLAG) THEN
             nEcls = 0
             EclTrgw = 0
@@ -513,7 +513,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block Torta
 C-----------------------------------------------------------------------
-      IF (.TRUE.) THEN ! TODO: Change .TRUE. with block flag
+      IF (.TRUE.) THEN ! TODO: Change .TRUE. with flag name
          tSpent = 0.
          tDead = 0.
          Type = 0.
@@ -1117,7 +1117,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block trkv
 C-----------------------------------------------------------------------
-      IF (.TRUE.) THEN  ! TODO: Change .TRUE. with the name of block flag
+      IF (.TRUE.) THEN ! TODO: Change .TRUE. with flag name
          nTv = 0.
          DO iTRKV=1, 30
            iV(iTRKV) = 0.
@@ -1181,7 +1181,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block Vertices
 C-----------------------------------------------------------------------
-      IF (.TRUE.) THEN  ! TODO: Change .TRUE. with the name of block flag
+      IF (.TRUE.) THEN ! TODO: Change .TRUE. with flag name
          nV = 0.
          DO iVTX=1, 10
            Vetx(iVTX) = 0.
