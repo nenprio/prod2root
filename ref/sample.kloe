@@ -826,7 +826,7 @@ C-----------------------------------------------------------------------
                Pid3(iEVTCLU) = Evt%Clu%pid3(iEVTCLU)
                IF ( Pid3(iEVTCLU) < 0 .OR. Pid3(iEVTCLU) > 100 ) THEN
                   WRITE(*,*) 'ERROR EVTCLU - Pid3[6] Out of bound : ', Pid3(iEVTCLU)
-               END IF        
+               END IF
             END DO
          ELSE
             WRITE(*,*) 'ERROR EVTCLU - NCluMc Index not valid : ', NCluMc
@@ -1447,6 +1447,123 @@ C         Already filled Evt%Trk by the get function called in the previous bloc
            END DO
          ELSE
             WRITE(*,*) 'ERROR TRKMC - nTfMC Index not valid: ', nTfMC
+         END IF
+      END IF
+C-----------------------------------------------------------------------
+C Fill Block trkvold
+C-----------------------------------------------------------------------
+      IF (.TRUE.) THEN
+         nTVOld = 0.
+         DO iTRKVOLD=1, 30
+           iVOld(iTRKVOLD) = 0.
+           TrkNumVOld(iTRKVOLD) = 0.
+           CurVOld(iTRKVOLD) = 0.
+           PhiVOld(iTRKVOLD) = 0.
+           CotVOld(iTRKVOLD) = 0.
+           PxTVOld(iTRKVOLD) = 0.
+           PyTVOld(iTRKVOLD) = 0.
+           PzTVOld(iTRKVOLD) = 0.
+           PModVOld(iTRKVOLD) = 0.
+           LenVOld(iTRKVOLD) = 0.
+           ChiVOld(iTRKVOLD) = 0.
+           PidTVOld(iTRKVOLD) = 0.
+           Cov11TVOld(iTRKVOLD) = 0.
+           Cov12TVOld(iTRKVOLD) = 0.
+           Cov13TVOld(iTRKVOLD) = 0.
+           Cov22TVOld(iTRKVOLD) = 0.
+           Cov23TVOld(iTRKVOLD) = 0.
+           Cov33TVOld(iTRKVOLD) = 0.
+         END DO
+
+         istat = TRKVOLD2STRU(evt%vtxold,evt%trkvold,evt%trkold
+     1                                           ,evt%trkmcold)
+
+         nTVOld = Evt%TrkvOld%n
+         IF ( nTVOld < 0 .OR. nTVOld > 30 ) THEN
+            WRITE(*,*) 'ERROR TRKVOLD - nTVOld Out of bound : ', nTVOld
+         END IF
+
+         IF (nTVOld > 0 .AND. nTVOld <= 30) THEN
+            DO iTRKVOLD=1, nTVOld
+               iVOld(iTRKVOLD) = Evt%TrkvOld%iv(iTRKVOLD)
+               IF ( iVOld(iTRKVOLD) < 0 .OR. iVOld(iTRKVOLD) > 30 ) THEN
+                  WRITE(*,*) 'ERROR TRKVOLD - iVOld[1] Out of bound : ', iVOld(iTRKVOLD)
+               END IF
+               TrkNumVOld(iTRKVOLD) = Evt%Trkvold%trkpoi(iTRKVOLD)
+               IF ( TrkNumVOld(iTRKVOLD) < 0 .OR. TrkNumVOld(iTRKVOLD) > 999 ) THEN
+                  WRITE(*,*) 'ERROR TRKVOLD - TrkNumVOld[2] Out of bound : ', TrkNumVOld(iTRKVOLD)
+               END IF
+                 CurVOld(iTRKVOLD) = Evt%Trkvold%cur(iTRKVOLD)
+                 PhiVOld(iTRKVOLD) = Evt%Trkvold%phi(iTRKVOLD)
+                 CotVOld(iTRKVOLD) = Evt%Trkvold%cot(iTRKVOLD)
+                 PxTVOld(iTRKVOLD) = Evt%Trkvold%px(iTRKVOLD)
+                 PyTVOld(iTRKVOLD) = Evt%Trkvold%py(iTRKVOLD)
+                 PzTVOld(iTRKVOLD) = Evt%Trkvold%pz(iTRKVOLD)
+                 PModVOld(iTRKVOLD) = Evt%Trkvold%pmod(iTRKVOLD)
+                 LenVOld(iTRKVOLD) = Evt%Trkvold%Length(iTRKVOLD)
+                 ChiVOld(iTRKVOLD) = Evt%Trkvold%Chi2(iTRKVOLD)
+                 PidTVOld(iTRKVOLD) = Evt%Trkvold%ipid(iTRKVOLD)
+                 Cov11TVOld(iTRKVOLD) = Evt%Trkvold%cov11(iTRKVOLD)
+                 Cov12TVOld(iTRKVOLD) = Evt%Trkvold%cov12(iTRKVOLD)
+                 Cov13TVOld(iTRKVOLD) = Evt%Trkvold%cov13(iTRKVOLD)
+                 Cov22TVOld(iTRKVOLD) = Evt%Trkvold%cov22(iTRKVOLD)
+                 Cov23TVOld(iTRKVOLD) = Evt%Trkvold%cov23(iTRKVOLD)
+                 Cov33TVOld(iTRKVOLD) = Evt%Trkvold%cov33(iTRKVOLD)
+           END DO
+         ELSE
+            WRITE(*,*) 'ERROR TRKVOLD - nTVOld Index not valid: ', nTVOld
+         END IF
+      END IF
+C-----------------------------------------------------------------------
+C Fill Block vtxold
+C-----------------------------------------------------------------------
+      IF (.TRUE.) THEN
+         nVOld = 0.
+         DO iVTXOLD=1, 10
+           VtxOld(iVTXOLD) = 0.
+           xVOld(iVTXOLD) = 0.
+           yVOld(iVTXOLD) = 0.
+           ZVOld(iVTXOLD) = 0.
+           ChiVTxOld(iVTXOLD) = 0.
+           QuaLVOld(iVTXOLD) = 0.
+           FitIdVOld(iVTXOLD) = 0.
+           VtxCov1Old(iVTXOLD) = 0.
+           VtxCov2Old(iVTXOLD) = 0.
+           VtxCov3Old(iVTXOLD) = 0.
+           VtxCov4Old(iVTXOLD) = 0.
+           VtxCov5Old(iVTXOLD) = 0.
+           VtxCov6Old(iVTXOLD) = 0.
+         END DO
+
+C         Already filled Evt%Trk by the get function called in the previous block
+
+         nVOld = Evt%vtxold%n
+         IF ( nVOld < 0 .OR. nVOld > 10 ) THEN
+            WRITE(*,*) 'ERROR VTXOLD - nVOld Out of bound : ', nVOld
+         END IF
+
+         IF (nVOld > 0 .AND. nVOld <= 10) THEN
+            DO iVTXOLD=1, nVOld
+               VtxOld(iVTXOLD) = Evt%Vtxold%Ntrk(iVTXOLD)
+               IF ( VtxOld(iVTXOLD) < 0 .OR. VtxOld(iVTXOLD) > 10 ) THEN
+                  WRITE(*,*) 'ERROR VTXOLD - VtxOld[1] Out of bound : ',
+     1                                                   VtxOld(iVTXOLD)
+               END IF
+                 xVOld(iVTXOLD) = Evt%Vtxold%X(iVTXOLD)
+                 yVOld(iVTXOLD) = Evt%Vtxold%Y(iVTXOLD)
+                 ZVOld(iVTXOLD) = Evt%Vtxold%Z(iVTXOLD)
+                 ChiVTxOld(iVTXOLD) = Evt%Vtxold%Chi2(iVTXOLD)
+                 QuaLVOld(iVTXOLD) = Evt%Vtxold%Qual(iVTXOLD)
+                 FitIdVOld(iVTXOLD) = Evt%Vtxold%Fitid(iVTXOLD)
+                 VtxCov1Old(iVTXOLD) = Evt%Vtxold%Cov1(iVTXOLD)
+                 VtxCov2Old(iVTXOLD) = Evt%Vtxold%Cov2(iVTXOLD)
+                 VtxCov3Old(iVTXOLD) = Evt%Vtxold%Cov3(iVTXOLD)
+                 VtxCov4Old(iVTXOLD) = Evt%Vtxold%Cov4(iVTXOLD)
+                 VtxCov5Old(iVTXOLD) = Evt%Vtxold%Cov5(iVTXOLD)
+                 VtxCov6Old(iVTXOLD) = Evt%Vtxold%Cov6(iVTXOLD)
+           END DO
+         ELSE
+            WRITE(*,*) 'ERROR VTXOLD - nVOld Index not valid: ', nVOld
          END IF
       END IF
 C-----------------------------------------------------------------------

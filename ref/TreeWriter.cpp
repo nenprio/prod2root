@@ -63,10 +63,12 @@ TreeWriter::TreeWriter() {
     addBlockTrkV();
     // Block Vtx
     addBlockVtx();
-    // Block Trk
-    addBlockTrk();
+    // Block Trks
+    addBlockTrks();
     // Block TrkMC
     addBlockTrkMC();
+    // Block VtxOld
+    addBlockVtxOld();
 
     // Write to the disk
     outfile->Write();
@@ -605,6 +607,53 @@ void TreeWriter::addBlockTrkMC() {
     fNewTree->Branch("PxLMC2", &trkmc_.PxLMC2, "PxLMC2[nTfMC]/F");
     fNewTree->Branch("PyLMC2", &trkmc_.PyLMC2, "PyLMC2[nTfMC]/F");
     fNewTree->Branch("PzLMC2", &trkmc_.PzLMC2, "PzLMC2[nTfMC]/F");
+}
+
+// Add to the tree all the branches realted to the block TrkVOld.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockTrkVOld() {
+    fNewTree->Branch("nTVOld", &trkvold_.nTVOld, "nTVOld/I");
+    fNewTree->Branch("iVOld", &trkvold_.iVOld, "iVOld[nTVOld]/I");
+    fNewTree->Branch("TrkNumVOld", &trkvold_.TrkNumVOld, "TrkNumVOld[nTVOld]/I");
+    fNewTree->Branch("CurVOld", &trkvold_.CurVOld, "CurVOld[nTVOld]/F");
+    fNewTree->Branch("PhiVOld", &trkvold_.PhiVOld, "PhiVOld[nTVOld]/F");
+    fNewTree->Branch("CotVOld", &trkvold_.CotVOld, "CotVOld[nTVOld]/F");
+    fNewTree->Branch("PxTVOld", &trkvold_.PxTVOld, "PxTVOld[nTVOld]/F");
+    fNewTree->Branch("PyTVOld", &trkvold_.PyTVOld, "PyTVOld[nTVOld]/F");
+    fNewTree->Branch("PzTVOld", &trkvold_.PzTVOld, "PzTVOld[nTVOld]/F");
+    fNewTree->Branch("PModVOld", &trkvold_.PModVOld, "PModVOld[nTVOld]/F");
+    fNewTree->Branch("LenVOld", &trkvold_.LenVOld, "LenVOld[nTVOld]/F");
+    fNewTree->Branch("ChiVOld", &trkvold_.ChiVOld, "ChiVOld[nTVOld]/F");
+    fNewTree->Branch("PidTVOld", &trkvold_.PidTVOld, "PidTVOld[nTVOld]/I");
+    fNewTree->Branch("Cov11TVOld", &trkvold_.Cov11TVOld, "Cov11TVOld[nTVOld]/F");
+    fNewTree->Branch("Cov12TVOld", &trkvold_.Cov12TVOld, "Cov12TVOld[nTVOld]/F");
+    fNewTree->Branch("Cov13TVOld", &trkvold_.Cov13TVOld, "Cov13TVOld[nTVOld]/F");
+    fNewTree->Branch("Cov22TVOld", &trkvold_.Cov22TVOld, "Cov22TVOld[nTVOld]/F");
+    fNewTree->Branch("Cov23TVOld", &trkvold_.Cov23TVOld, "Cov23TVOld[nTVOld]/F");
+    fNewTree->Branch("Cov33TVOld", &trkvold_.Cov33TVOld, "Cov33TVOld[nTVOld]/F");
+}
+
+// Add to the tree all the branches realted to the block VtxOld.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockVtxOld() {
+    fNewTree->Branch("nVOld", &vtxold_.nVOld, "nVOld/I");
+    fNewTree->Branch("VtxOld", &vtxold_.VtxOld, "VtxOld[nVOld]/I");
+    fNewTree->Branch("xVOld", &vtxold_.xVOld, "xVOld[nVOld]/F");
+    fNewTree->Branch("yVOld", &vtxold_.yVOld, "yVOld[nVOld]/F");
+    fNewTree->Branch("ZVOld", &vtxold_.ZVOld, "ZVOld[nVOld]/F");
+    fNewTree->Branch("ChiVTxOld", &vtxold_.ChiVTxOld, "ChiVTxOld[nVOld]/F");
+    fNewTree->Branch("QuaLVOld", &vtxold_.QuaLVOld, "QuaLVOld[nVOld]/I");
+    fNewTree->Branch("FitIdVOld", &vtxold_.FitIdVOld, "FitIdVOld[nVOld]/I");
+    fNewTree->Branch("VtxCov1Old", &vtxold_.VtxCov1Old, "VtxCov1Old[nVOld]/F");
+    fNewTree->Branch("VtxCov2Old", &vtxold_.VtxCov2Old, "VtxCov2Old[nVOld]/F");
+    fNewTree->Branch("VtxCov3Old", &vtxold_.VtxCov3Old, "VtxCov3Old[nVOld]/F");
+    fNewTree->Branch("VtxCov4Old", &vtxold_.VtxCov4Old, "VtxCov4Old[nVOld]/F");
+    fNewTree->Branch("VtxCov5Old", &vtxold_.VtxCov5Old, "VtxCov5Old[nVOld]/F");
+    fNewTree->Branch("VtxCov6Old", &vtxold_.VtxCov6Old, "VtxCov6Old[nVOld]/F");
 }
 
 // Returns the output file object.

@@ -283,3 +283,27 @@ C
      1       PxFMC,PyFMC,PzFMC,xLMC,yLMC,zLMC,PxLMC,PyLMC,PzLMC,xFMC2,
      1       yFMC2,zFMC2,PxFMC2,PyFMC2,PzFMC2,xLMC2,yLMC2,zLMC2,PxLMC2,
      1       PyLMC2,PzLMC2
+C
+C  Block: trkvold
+C
+      integer iTRKVOLD, nTVOld, iVOld(30), TrkNumVOld(30), PidTVOld(30)
+      real CurVOld(30), PhiVOld(30), CotVOld(30), PxTVOld(30) 
+      real PyTVOld(30), PzTVOld(30), PModVOld(30), LenVOld(30)
+      real ChiVOld(30), Cov11TVOld(30), Cov12TVOld(30), Cov13TVOld(30)
+      real Cov22TVOld(30), Cov23TVOld(30), Cov33TVOld(30)
+
+      common /trkvold/nTVOld,iVOld,TrkNumVOld,CurVOld,PhiVOld,CotVOld,
+     1       PxTVOld,PyTVOld,PzTVOld,PModVOld,LenVOld,ChiVOld,PidTVOld,
+     1       Cov11TVOld,Cov12TVOld,Cov13TVOld,Cov22TVOld,Cov23TVOld,
+     1       Cov33TVOld
+C
+C  Block: vtxold
+C
+      integer iVTXOLD, nVOld, VtxOld(10), QuaLVOld(10), FitIdVOld(10)
+      real xVOld(10), yVOld(10), ZVOld(10), ChiVTxOld(10)
+      real VtxCov1Old(10), VtxCov2Old(10), VtxCov3Old(10)
+      real VtxCov4Old(10), VtxCov5Old(10), VtxCov6Old(10)
+
+      common /vtxold/nVOld,VtxOld,xVOld,yVOld,ZVOld,ChiVTxOld,QuaLVOld,
+     1       FitIdVOld,VtxCov1Old,VtxCov2Old,VtxCov3Old,VtxCov4Old,
+     1       VtxCov5Old,VtxCov6Old
