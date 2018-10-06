@@ -63,6 +63,8 @@ TreeWriter::TreeWriter() {
     addBlockTrkV();
     // Block Vtx
     addBlockVtx();
+    // Block Trk
+    addBlockTrk();
 
     // Write to the disk
     outfile->Write();
@@ -512,6 +514,53 @@ void TreeWriter::addBlockVtx() {
     fNewTree->Branch("VTXCov4", &vertices_.VTXCov4, "VTXCov4[nV]/F");
     fNewTree->Branch("VTXCov5", &vertices_.VTXCov5, "VTXCov5[nV]/F");
     fNewTree->Branch("VTXCov6", &vertices_.VTXCov6, "VTXCov6[nV]/F");
+}
+
+// Add to the tree all the branches realted to the block Trks.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockTrks() {
+    fNewTree->Branch("nT", &trks_.nT, "nT/I");
+    fNewTree->Branch("TrkInd", &trks_.TrkInd, "TrkInd[nT]/I");
+    fNewTree->Branch("TrkVer", &trks_.TrkVer, "TrkVer[nT]/I");
+    fNewTree->Branch("Cur", &trks_.Cur, "Cur[nT]/F");
+    fNewTree->Branch("Phi", &trks_.Phi, "Phi[nT]/F");
+    fNewTree->Branch("Cot", &trks_.Cot, "Cot[nT]/F");
+    fNewTree->Branch("Pxt", &trks_.Pxt, "Pxt[nT]/F");
+    fNewTree->Branch("Pyt", &trks_.Pyt, "Pyt[nT]/F");
+    fNewTree->Branch("Pzt", &trks_.Pzt, "Pzt[nT]/F");
+    fNewTree->Branch("PMod", &trks_.PMod, "PMod[nT]/F");
+    fNewTree->Branch("Len", &trks_.Len, "Len[nT]/F");
+    fNewTree->Branch("xFirst", &trks_.xFirst, "xFirst[nT]/F");
+    fNewTree->Branch("yFirst", &trks_.yFirst, "yFirst[nT]/F");
+    fNewTree->Branch("zFirst", &trks_.zFirst, "zFirst[nT]/F");
+    fNewTree->Branch("CurLa", &trks_.CurLa, "CurLa[nT]/F");
+    fNewTree->Branch("PhiLa", &trks_.PhiLa, "PhiLa[nT]/F");
+    fNewTree->Branch("CotLa", &trks_.CotLa, "CotLa[nT]/F");
+    fNewTree->Branch("PxtLa", &trks_.PxtLa, "PxtLa[nT]/F");
+    fNewTree->Branch("PytLa", &trks_.PytLa, "PytLa[nT]/F");
+    fNewTree->Branch("PztLa", &trks_.PztLa, "PztLa[nT]/F");
+    fNewTree->Branch("PModLa", &trks_.PModLa, "PModLa[nT]/F");
+    fNewTree->Branch("SPca", &trks_.SPca, "SPca[nT]/F");
+    fNewTree->Branch("SZeta", &trks_.SZeta, "SZeta[nT]/F");
+    fNewTree->Branch("SCurV", &trks_.SCurV, "SCurV[nT]/F");
+    fNewTree->Branch("SCotG", &trks_.SCotG, "SCotG[nT]/F");
+    fNewTree->Branch("SPhi", &trks_.SPhi, "SPhi[nT]/F");
+    fNewTree->Branch("xLast", &trks_.xLast, "xLast[nT]/F");
+    fNewTree->Branch("yLast", &trks_.yLast, "yLast[nT]/F");
+    fNewTree->Branch("zLast", &trks_.zLast, "zLast[nT]/F");
+    fNewTree->Branch("xPca2", &trks_.xPca2, "xPca2[nT]/F");
+    fNewTree->Branch("yPca2", &trks_.yPca2, "yPca2[nT]/F");
+    fNewTree->Branch("zPca2", &trks_.zPca2, "zPca2[nT]/F");
+    fNewTree->Branch("QTrk2", &trks_.QTrk2, "QTrk2[nT]/F");
+    fNewTree->Branch("CotPca2", &trks_.CotPca2, "CotPca2[nT]/F");
+    fNewTree->Branch("PhiPca2", &trks_.PhiPca2, "PhiPca2[nT]/F");
+    fNewTree->Branch("nPrHit", &trks_.nPrHit, "nPrHit[nT]/I");
+    fNewTree->Branch("nFitHit", &trks_.nFitHit, "nFitHit[nT]/I");
+    fNewTree->Branch("nMskInk", &trks_.nMskInk, "nMskInk[nT]/I");
+    fNewTree->Branch("Chi2Fit", &trks_.Chi2Fit, "Chi2Fit[nT]/F");
+    fNewTree->Branch("Chi2Ms", &trks_.Chi2Ms, "Chi2Ms[nT]/F");
 }
 
 // Returns the output file object.

@@ -248,3 +248,21 @@ C
 
       common /vertices/nV,Vetx,xV,yV,zV,ChiVtx,QuaLv,FitiDv,VTXCov1,
      1       VTXCov2,VTXCov3,VTXCov4,VTXCov5,VTXCov6
+C
+C  Block: trks
+C
+      integer iTRKS, nT, TrkInd(100), TrkVer(100), nPrHit(100)
+      integer nFitHit(100), nMskInk(100)
+      real Cur(100), Phi(100), Cot(100), Pxt(100), Pyt(100), Pzt(100)
+      real PMod(100), Len(100), xFirst(100), yFirst(100), zFirst(100)
+      real CurLa(100), PhiLa(100), CotLa(100), PxtLa(100), PytLa(100)
+      real PztLa(100), PModLa(100), SPca(100), SZeta(100), SCurV(100)
+      real SCotG(100), SPhi(100), xLast(100), yLast(100), zLast(100)
+      real xPca2(100), yPca2(100), zPca2(100), QTrk2(100), CotPca2(100)
+      real PhiPca2(100), Chi2Fit(100), Chi2Ms(100)
+
+      common /trks/nT,TrkInd,TrkVer,Cur,Phi,Cot,Pxt,Pyt,Pzt,PMod,Len,
+     1       xFirst,yFirst,zFirst,CurLa,PhiLa,CotLa,PxtLa,PytLa,PztLa,
+     1       PModLa,SPca,SZeta,SCurV,SCotG,SPhi,xLast,yLast,zLast,xPca2,
+     1       yPca2,zPca2,QTrk2,CotPca2,PhiPca2,nPrHit,nFitHit,nMskInk,
+     1       Chi2Fit,Chi2Ms

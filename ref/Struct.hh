@@ -13,6 +13,7 @@ const int NMaxDC     = 1500;
 const int MaxNumDHSP = 500;
 const int MaxNumTrkV = 30;
 const int MaxNumVtx  = 10;
+const int MaxNumTrk  = 100;
 
 //Verb for Talk_to module
 extern "C"{
@@ -428,6 +429,52 @@ extern "C" {
     float VTXCov5[MaxNumVtx];
     float VTXCov6[MaxNumVtx];
   }vertices_;
+}
+
+// Block:   trks
+extern "C" {
+  extern struct {
+    int nT;
+    int TrkInd[MaxNumTrk];
+    int TrkVer[MaxNumTrk];
+    float Cur[MaxNumTrk];
+    float Phi[MaxNumTrk];
+    float Cot[MaxNumTrk];
+    float Pxt[MaxNumTrk];
+    float Pyt[MaxNumTrk];
+    float Pzt[MaxNumTrk];
+    float PMod[MaxNumTrk];
+    float Len[MaxNumTrk];
+    float xFirst[MaxNumTrk];
+    float yFirst[MaxNumTrk];
+    float zFirst[MaxNumTrk];
+    float CurLa[MaxNumTrk];
+    float PhiLa[MaxNumTrk];
+    float CotLa[MaxNumTrk];
+    float PxtLa[MaxNumTrk];
+    float PytLa[MaxNumTrk];
+    float PztLa[MaxNumTrk];
+    float PModLa[MaxNumTrk];
+    float SPca[MaxNumTrk];
+    float SZeta[MaxNumTrk];
+    float SCurV[MaxNumTrk];
+    float SCotG[MaxNumTrk];
+    float SPhi[MaxNumTrk];
+    float xLast[MaxNumTrk];
+    float yLast[MaxNumTrk];
+    float zLast[MaxNumTrk];
+    float xPca2[MaxNumTrk];
+    float yPca2[MaxNumTrk];
+    float zPca2[MaxNumTrk];
+    float QTrk2[MaxNumTrk];
+    float CotPca2[MaxNumTrk];
+    float PhiPca2[MaxNumTrk];
+    int nPrHit[MaxNumTrk];
+    int nFitHit[MaxNumTrk];
+    int nMskInk[MaxNumTrk];
+    float Chi2Fit[MaxNumTrk];
+    float Chi2Ms[MaxNumTrk];
+  }trks_;
 }
 
 #endif

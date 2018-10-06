@@ -1230,6 +1230,106 @@ C         Already filled Evt%Vtx by the get function called in the previous bloc
          END IF
       END IF
 C-----------------------------------------------------------------------
+C Fill Block trks
+C-----------------------------------------------------------------------
+      IF (.TRUE.) THEN
+         nT = 0.
+         DO iTRKS=1, 100
+           TrkInd(iTRKS) = 0.
+           TrkVer(iTRKS) = 0.
+           Cur(iTRKS) = 0.
+           Phi(iTRKS) = 0.
+           Cot(iTRKS) = 0.
+           Pxt(iTRKS) = 0.
+           Pyt(iTRKS) = 0.
+           Pzt(iTRKS) = 0.
+           PMod(iTRKS) = 0.
+           Len(iTRKS) = 0.
+           xFirst(iTRKS) = 0.
+           yFirst(iTRKS) = 0.
+           zFirst(iTRKS) = 0.
+           CurLa(iTRKS) = 0.
+           PhiLa(iTRKS) = 0.
+           CotLa(iTRKS) = 0.
+           PxtLa(iTRKS) = 0.
+           PytLa(iTRKS) = 0.
+           PztLa(iTRKS) = 0.
+           PModLa(iTRKS) = 0.
+           SPca(iTRKS) = 0.
+           SZeta(iTRKS) = 0.
+           SCurV(iTRKS) = 0.
+           SCotG(iTRKS) = 0.
+           SPhi(iTRKS) = 0.
+           xLast(iTRKS) = 0.
+           yLast(iTRKS) = 0.
+           zLast(iTRKS) = 0.
+           xPca2(iTRKS) = 0.
+           yPca2(iTRKS) = 0.
+           zPca2(iTRKS) = 0.
+           QTrk2(iTRKS) = 0.
+           CotPca2(iTRKS) = 0.
+           PhiPca2(iTRKS) = 0.
+           nPrHit(iTRKS) = 0.
+           nFitHit(iTRKS) = 0.
+           nMskInk(iTRKS) = 0.
+           Chi2Fit(iTRKS) = 0.
+           Chi2Ms(iTRKS) = 0.
+         END DO
+
+C         Already filled Evt%Trk by the get function called in the previous block
+
+         nT = Evt%Trk%n
+         IF ( nT < 0 .OR. nT > 100 ) THEN
+            WRITE(*,*) 'ERROR TRKS - nT Out of bound : ', nT
+         END IF
+
+         IF (nT > 0 .AND. nT <= 100) THEN
+            DO iTRKS=1, nT
+                 TrkInd(iTRKS) = Evt%Trk%trkind(iTRKS)
+                 TrkVer(iTRKS) = Evt%Trk%version(iTRKS)
+                 Cur(iTRKS) = Evt%Trk%cur(iTRKS)
+                 Phi(iTRKS) = Evt%Trk%phi(iTRKS)
+                 Cot(iTRKS) = Evt%Trk%cot(iTRKS)
+                 Pxt(iTRKS) = Evt%Trk%px(iTRKS)
+                 Pyt(iTRKS) = Evt%Trk%py(iTRKS)
+                 Pzt(iTRKS) = Evt%Trk%pz(iTRKS)
+                 PMod(iTRKS) = Evt%Trk%pmod(iTRKS)
+                 Len(iTRKS) = Evt%Trk%length(iTRKS)
+                 xFirst(iTRKS) = Evt%Trk%x(iTRKS)
+                 yFirst(iTRKS) = Evt%Trk%y(iTRKS)
+                 zFirst(iTRKS) = Evt%Trk%z(iTRKS)
+                 CurLa(iTRKS) = Evt%Trk%curlast(iTRKS)
+                 PhiLa(iTRKS) = Evt%Trk%philast(iTRKS)
+                 CotLa(iTRKS) = Evt%Trk%cotlast(iTRKS)
+                 PxtLa(iTRKS) = Evt%Trk%pxlast(iTRKS)
+                 PytLa(iTRKS) = Evt%Trk%pylast(iTRKS)
+                 PztLa(iTRKS) = Evt%Trk%pzlast(iTRKS)
+                 PModLa(iTRKS) = Evt%Trk%pmodlast(iTRKS)
+                 SPca(iTRKS) = Evt%Trk%SigPCA(iTRKS)
+                 SZeta(iTRKS) = Evt%Trk%SigZeta(iTRKS)
+                 SCurV(iTRKS) = Evt%Trk%SigCurv(iTRKS)
+                 SCotG(iTRKS) = Evt%Trk%SigCot(iTRKS)
+                 SPhi(iTRKS) = Evt%Trk%SigPhi(iTRKS)
+                 xLast(iTRKS) = Evt%Trk%xlast(iTRKS)
+                 yLast(iTRKS) = Evt%Trk%ylast(iTRKS)
+                 zLast(iTRKS) = Evt%Trk%zlast(iTRKS)
+                 xPca2(iTRKS) = Evt%Trk%xpca(iTRKS)
+                 yPca2(iTRKS) = Evt%Trk%ypca(iTRKS)
+                 zPca2(iTRKS) = Evt%Trk%zpca(iTRKS)
+                 QTrk2(iTRKS) = Evt%Trk%qtrk(iTRKS)
+                 CotPca2(iTRKS) = Evt%Trk%cotpca(iTRKS)
+                 PhiPca2(iTRKS) = Evt%Trk%phipca(iTRKS)
+                 nPrHit(iTRKS) = Evt%Trk%NumPRhit(iTRKS)
+                 nFitHit(iTRKS) = Evt%Trk%NumFitHit(iTRKS)
+                 nMskInk(iTRKS) = Evt%Trk%nmskink(iTRKS)
+                 Chi2Fit(iTRKS) = Evt%Trk%chi2fit(iTRKS)
+                 Chi2Ms(iTRKS) = Evt%Trk%chi2ms(iTRKS)
+           END DO
+         ELSE
+            WRITE(*,*) 'ERROR TRKS - nT Index not valid: ', nT
+         END IF
+      END IF
+C-----------------------------------------------------------------------
 C Fill Root
 C-----------------------------------------------------------------------
       call fillntu() 	
