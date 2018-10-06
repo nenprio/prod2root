@@ -32,6 +32,7 @@ class TreeWriter{
          void addBlockTrkV();
          void addBlockVtx();
          void addBlockTrk();
+         void addBlockTrkMC();
          TFile* getTFile();
          void fillTTree();
      private:

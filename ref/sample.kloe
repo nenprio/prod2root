@@ -1330,6 +1330,126 @@ C         Already filled Evt%Trk by the get function called in the previous bloc
          END IF
       END IF
 C-----------------------------------------------------------------------
+C Fill Block trkmc
+C-----------------------------------------------------------------------
+      IF (.TRUE.) THEN
+         nTfMC = 0.
+         DO iTRKMC=1, 100
+           NConTr(iTRKMC) = 0.
+           TrkIne1(iTRKMC) = 0.
+           TrType1(iTRKMC) = 0.
+           TrHits1(iTRKMC) = 0.
+           TrkIne2(iTRKMC) = 0.
+           TrType2(iTRKMC) = 0.
+           TrHits2(iTRKMC) = 0.
+           TrkIn3(iTRKMC) = 0.
+           TrType3(iTRKMC) = 0.
+           TrHits3(iTRKMC) = 0.
+           xFMC(iTRKMC) = 0.
+           yFMC(iTRKMC) = 0.
+           zFMC(iTRKMC) = 0.
+           PxFMC(iTRKMC) = 0.
+           PyFMC(iTRKMC) = 0.
+           PzFMC(iTRKMC) = 0.
+           xLMC(iTRKMC) = 0.
+           yLMC(iTRKMC) = 0.
+           zLMC(iTRKMC) = 0.
+           PxLMC(iTRKMC) = 0.
+           PyLMC(iTRKMC) = 0.
+           PzLMC(iTRKMC) = 0.
+           xFMC2(iTRKMC) = 0.
+           yFMC2(iTRKMC) = 0.
+           zFMC2(iTRKMC) = 0.
+           PxFMC2(iTRKMC) = 0.
+           PyFMC2(iTRKMC) = 0.
+           PzFMC2(iTRKMC) = 0.
+           xLMC2(iTRKMC) = 0.
+           yLMC2(iTRKMC) = 0.
+           zLMC2(iTRKMC) = 0.
+           PxLMC2(iTRKMC) = 0.
+           PyLMC2(iTRKMC) = 0.
+           PzLMC2(iTRKMC) = 0.
+         END DO
+
+C         Already filled Evt%Trk by the get function called in the previous block
+
+         nTfMC = Evt%TrkMC%n
+         IF ( nTfMC < 0 .OR. nTfMC > 100 ) THEN
+            WRITE(*,*) 'ERROR TRKMC - nTfMC Out of bound : ', nTfMC
+         END IF
+
+         IF (nTfMC > 0 .AND. nTfMC <= 100) THEN
+            DO iTRKMC=1, nTfMC
+               NConTr(iTRKMC) = Evt%TrkMC%ncontr(iTRKMC)
+               IF ( NConTr(iTRKMC) < 0 .OR. NConTr(iTRKMC) > 10 ) THEN
+                  WRITE(*,*) 'ERROR TRKMC - NConTr[1] Out of bound : ', NConTr(iTRKMC)
+               END IF
+               TrkIne1(iTRKMC) = Evt%TrkMC%kine1(iTRKMC)
+               IF ( TrkIne1(iTRKMC) < 0 .OR. TrkIne1(iTRKMC) > 100 ) THEN
+                  WRITE(*,*) 'ERROR TRKMC - TrkIne1[2] Out of bound : ', TrkIne1(iTRKMC)
+               END IF
+               TrType1(iTRKMC) = Evt%TrkMC%type1(iTRKMC)
+               IF ( TrType1(iTRKMC) < 0 .OR. TrType1(iTRKMC) > 100 ) THEN
+                  WRITE(*,*) 'ERROR TRKMC - TrType1[3] Out of bound : ', TrType1(iTRKMC)
+               END IF
+               TrHits1(iTRKMC) = Evt%TrkMC%hits1(iTRKMC)
+               IF ( TrHits1(iTRKMC) < 0 .OR. TrHits1(iTRKMC) > 1000 ) THEN
+                  WRITE(*,*) 'ERROR TRKMC - TrHits1[4] Out of bound : ', TrHits1(iTRKMC)
+               END IF
+               TrkIne2(iTRKMC) = Evt%TrkMC%kine2(iTRKMC)
+               IF ( TrkIne2(iTRKMC) < 0 .OR. TrkIne2(iTRKMC) > 100 ) THEN
+                  WRITE(*,*) 'ERROR TRKMC - TrkIne2[5] Out of bound : ', TrkIne2(iTRKMC)
+               END IF
+               TrType2(iTRKMC) = Evt%TrkMC%type2(iTRKMC)
+               IF ( TrType2(iTRKMC) < 0 .OR. TrType2(iTRKMC) > 100 ) THEN
+                  WRITE(*,*) 'ERROR TRKMC - TrType2[6] Out of bound : ', TrType2(iTRKMC)
+               END IF
+               TrHits2(iTRKMC) = Evt%TrkMC%hits2(iTRKMC)
+               IF ( TrHits2(iTRKMC) < 0 .OR. TrHits2(iTRKMC) > 1000 ) THEN
+                  WRITE(*,*) 'ERROR TRKMC - TrHits2[7] Out of bound : ', TrHits2(iTRKMC)
+               END IF
+               TrkIn3(iTRKMC) = Evt%TrkMC%kine3(iTRKMC)
+               IF ( TrkIn3(iTRKMC) < 0 .OR. TrkIn3(iTRKMC) > 100 ) THEN
+                  WRITE(*,*) 'ERROR TRKMC - TrkIn3[8] Out of bound : ', TrkIn3(iTRKMC)
+               END IF
+               TrType3(iTRKMC) = Evt%TrkMC%type3(iTRKMC)
+               IF ( TrType3(iTRKMC) < 0 .OR. TrType3(iTRKMC) > 100 ) THEN
+                  WRITE(*,*) 'ERROR TRKMC - TrType3[9] Out of bound : ', TrType3(iTRKMC)
+               END IF
+               TrHits3(iTRKMC) = Evt%TrkMC%hits3(iTRKMC)
+               IF ( TrHits3(iTRKMC) < 0 .OR. TrHits3(iTRKMC) > 1000 ) THEN
+                  WRITE(*,*) 'ERROR TRKMC - TrHits3[10] Out of bound : ', TrHits3(iTRKMC)
+               END IF
+                 xFMC(iTRKMC) = Evt%TrkMC%xfirst(iTRKMC)
+                 yFMC(iTRKMC) = Evt%TrkMC%yfirst(iTRKMC)
+                 zFMC(iTRKMC) = Evt%TrkMC%zfirst(iTRKMC)
+                 PxFMC(iTRKMC) = Evt%TrkMC%pxfirst(iTRKMC)
+                 PyFMC(iTRKMC) = Evt%TrkMC%pyfirst(iTRKMC)
+                 PzFMC(iTRKMC) = Evt%TrkMC%pzfirst(iTRKMC)
+                 xLMC(iTRKMC) = Evt%TrkMC%xlast(iTRKMC)
+                 yLMC(iTRKMC) = Evt%TrkMC%ylast(iTRKMC)
+                 zLMC(iTRKMC) = Evt%TrkMC%zlast(iTRKMC)
+                 PxLMC(iTRKMC) = Evt%TrkMC%pxlast(iTRKMC)
+                 PyLMC(iTRKMC) = Evt%TrkMC%pylast(iTRKMC)
+                 PzLMC(iTRKMC) = Evt%TrkMC%pzlast(iTRKMC)
+                 xFMC2(iTRKMC) = Evt%TrkMC%xmcfirst(iTRKMC)
+                 yFMC2(iTRKMC) = Evt%TrkMC%ymcfirst(iTRKMC)
+                 zFMC2(iTRKMC) = Evt%TrkMC%zmcfirst(iTRKMC)
+                 PxFMC2(iTRKMC) = Evt%TrkMC%pxmcfirst(iTRKMC)
+                 PyFMC2(iTRKMC) = Evt%TrkMC%pymcfirst(iTRKMC)
+                 PzFMC2(iTRKMC) = Evt%TrkMC%pzmcfirst(iTRKMC)
+                 xLMC2(iTRKMC) = Evt%TrkMC%xmclast(iTRKMC)
+                 yLMC2(iTRKMC) = Evt%TrkMC%ymclast(iTRKMC)
+                 zLMC2(iTRKMC) = Evt%TrkMC%zmclast(iTRKMC)
+                 PxLMC2(iTRKMC) = Evt%TrkMC%pxmclast(iTRKMC)
+                 PyLMC2(iTRKMC) = Evt%TrkMC%pymclast(iTRKMC)
+                 PzLMC2(iTRKMC) = Evt%TrkMC%pzmclast(iTRKMC)
+           END DO
+         ELSE
+            WRITE(*,*) 'ERROR TRKMC - nTfMC Index not valid: ', nTfMC
+         END IF
+      END IF
+C-----------------------------------------------------------------------
 C Fill Root
 C-----------------------------------------------------------------------
       call fillntu() 	

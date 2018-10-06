@@ -477,4 +477,45 @@ extern "C" {
   }trks_;
 }
 
+// Block:   trkmc
+extern "C" {
+  extern struct {
+    int nTfMC;
+    int NConTr[MaxNumTrk];
+    int TrkIne1[MaxNumTrk];
+    int TrType1[MaxNumTrk];
+    int TrHits1[MaxNumTrk];
+    int TrkIne2[MaxNumTrk];
+    int TrType2[MaxNumTrk];
+    int TrHits2[MaxNumTrk];
+    int TrkIn3[MaxNumTrk];
+    int TrType3[MaxNumTrk];
+    int TrHits3[MaxNumTrk];
+    float xFMC[MaxNumTrk];
+    float yFMC[MaxNumTrk];
+    float zFMC[MaxNumTrk];
+    float PxFMC[MaxNumTrk];
+    float PyFMC[MaxNumTrk];
+    float PzFMC[MaxNumTrk];
+    float xLMC[MaxNumTrk];
+    float yLMC[MaxNumTrk];
+    float zLMC[MaxNumTrk];
+    float PxLMC[MaxNumTrk];
+    float PyLMC[MaxNumTrk];
+    float PzLMC[MaxNumTrk];
+    float xFMC2[MaxNumTrk];
+    float yFMC2[MaxNumTrk];
+    float zFMC2[MaxNumTrk];
+    float PxFMC2[MaxNumTrk];
+    float PyFMC2[MaxNumTrk];
+    float PzFMC2[MaxNumTrk];
+    float xLMC2[MaxNumTrk];
+    float yLMC2[MaxNumTrk];
+    float zLMC2[MaxNumTrk];
+    float PxLMC2[MaxNumTrk];
+    float PyLMC2[MaxNumTrk];
+    float PzLMC2[MaxNumTrk];
+  }trkmc_;
+}
+
 #endif

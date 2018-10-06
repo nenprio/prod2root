@@ -266,3 +266,20 @@ C
      1       PModLa,SPca,SZeta,SCurV,SCotG,SPhi,xLast,yLast,zLast,xPca2,
      1       yPca2,zPca2,QTrk2,CotPca2,PhiPca2,nPrHit,nFitHit,nMskInk,
      1       Chi2Fit,Chi2Ms
+C
+C  Block: trkmc
+C
+      integer iTRKMC, nTfMC, NConTr(100), TrkIne1(100), TrType1(100)
+      integer TrHits1(100), TrkIne2(100), TrType2(100), TrHits2(100)
+      integer TrkIn3(100), TrType3(100), TrHits3(100)
+      real xFMC(100), yFMC(100), zFMC(100), PxFMC(100), PyFMC(100)
+      real PzFMC(100), xLMC(100), yLMC(100), zLMC(100), PxLMC(100)
+      real PyLMC(100), PzLMC(100), xFMC2(100), yFMC2(100), zFMC2(100)
+      real PxFMC2(100), PyFMC2(100), PzFMC2(100), xLMC2(100), yLMC2(100)
+      real zLMC2(100), PxLMC2(100), PyLMC2(100), PzLMC2(100)
+
+      common /trkmc/nTfMC,NConTr,TrkIne1,TrType1,TrHits1,TrkIne2,
+     1       TrType2,TrHits2,TrkIn3,TrType3,TrHits3,xFMC,yFMC,zFMC,
+     1       PxFMC,PyFMC,PzFMC,xLMC,yLMC,zLMC,PxLMC,PyLMC,PzLMC,xFMC2,
+     1       yFMC2,zFMC2,PxFMC2,PyFMC2,PzFMC2,xLMC2,yLMC2,zLMC2,PxLMC2,
+     1       PyLMC2,PzLMC2
