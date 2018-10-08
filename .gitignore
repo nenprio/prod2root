@@ -7,6 +7,7 @@ README
 *.f
 *~
 *.cdf
+*.in
 paw*
 ref/OutputVerifier/trash
 ref/OutputVerifier/out
