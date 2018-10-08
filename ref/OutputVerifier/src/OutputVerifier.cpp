@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <string.h>
 #include <TFile.h>
 #include <TTree.h>
 #include <TBranch.h>
@@ -138,7 +139,7 @@ void OutputVerifier::exportRootTree() {
     TTree *rTree = (TTree*) fRoot->Get("sample");
     exportTreeToTxt(rTree);
     
-    fRoot.close();
+    fRoot->Close();
     if (fRoot) {
         delete fRoot;
         fRoot = NULL;
@@ -155,7 +156,7 @@ void OutputVerifier::exportHBConvTree() {
     TTree *hbTree = (TTree*) fHB->Get("PROD2NTU/h1");
     exportTreeToTxt(hbTree);
 
-    fHB.close();
+    fHB->Close();
     if (fHB) {
         delete fHB;
         fHB = NULL;
@@ -206,20 +207,27 @@ bool OutputVerifier::verifyEvent(int i) {
     TString valueRoot;
     TString valueHB;
     while ( getline(fRoot, lRoot) ) {
-        nameRoot.Form("%s", cut(lRoot.c_str(), " : ", 1));
-        valueRoot.Form("%s", cut(lRoot.c_str(), " : ", 2));
+        nameRoot.Form("%s", cut(lRoot.c_str(), ":",  1));
+        valueRoot.Form("%s", cut(lRoot.c_str(), ":" , 2));
         while ( getline(fHB, lHB) ) {
-            nameHB.Form("%s", cut(lHB.c_str(), " : ", 1));
-            valueHB.Form("%s", cut(lHB.c_str(), " : ", 2));
+            nameHB.Form("%s", cut(lHB.c_str(), ":", 1));
+            valueHB.Form("%s", cut(lHB.c_str(), ":", 2));
+
+            print(nameRoot.Data());
+            print(" ");
+            print(valueRoot.Data());
+            print(" - ");
+            print(nameHB.Data());
+            print(valueHB.Data());
+            println(" ");
+
             // Check equality name
             // TODO: ignore case
-            if (nameRoot == nameHB) {
+            if (stricmp(nameRoot.Data(), nameHB.Data()==0)) {
                 if (valueRoot != valueHB) {
-                    error.Form("%s %s - (%s != %s)", ErrorEventDiff, nameRoot, valueRoot, valueHB);
+                    error.Form("%s %s - (%s != %s)", ErrorLeafDiff, nameRoot, valueRoot, valueHB);
                     println(error.Data());
-
                     result = false;
-                    break;
                 }
             }
             nLinesHB++;
@@ -268,8 +276,8 @@ void OutputVerifier::verify() {
         }
     }
     
-    fRoot.close();
-    fHB.close();
+    fRoot->Close();
+    fHB->Close();
 
     if (fRoot) {
         delete fRoot;
@@ -287,7 +295,6 @@ void OutputVerifier::verify() {
 // output:  -
 void OutputVerifier::printInfo() {
     TString printout;
-    printout.Form("[Info] ROOT File:\t%s\n
-                   [Info] HBConv File:\t%s\n
-                   [Info] Output dir:\t%s\n\n", rootFile, hbConvFile, outputDir);
+    printout.Form("[Info] ROOT File:\t%s\n[Info] HBConv File:\t%s\n[Info] Output dir:\t%s\n\n", rootFile, hbConvFile, outputDir);
+    println(printout.Data());
 }

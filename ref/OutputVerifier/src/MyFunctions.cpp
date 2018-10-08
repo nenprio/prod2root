@@ -1,4 +1,5 @@
 #include <string>
+#include <cstring>
 #include <iostream>
 #include <sys/stat.h>
 #include "MyFunctions.hh"
@@ -111,8 +112,25 @@ bool createDirRecursively(const char *ss) {
 //          field   number of return field
 // output:  the field-th substring delimited by del
 //          or empty string if such substring doesn't exist
-char* cut(char *str, char *del, int field) {
+char* cut(const char *s, char *del, int field) {
     char *result;
-    //TODO
+    char *str = strdup(s);
+    int currentField = 0;
+    
+    // Tokenize the input string and increment the field counter 
+    result = strtok(str, del);
+    currentField++;
+
+    // Loop up to reach the required field or the end of string
+    while (currentField!=field and result!=NULL) {
+        result = strtok(NULL, del);
+        currentField++;
+    }
+    
+    // If the required field doesn't exist, return empty string
+    if (currentField<field){
+        result = "";
+    }
     return result;
 }
+
