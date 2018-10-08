@@ -1667,6 +1667,126 @@ C         Already filled Evt%TrkOld by the get function called in the previous b
          END IF
       END IF
 C-----------------------------------------------------------------------
+C Fill Block trkmcold
+C-----------------------------------------------------------------------
+      IF (.TRUE.) THEN
+         nTfMCOld = 0.
+         DO iTRKMCOLD=1, 100
+           nContrOld(iTRKMCOLD) = 0.
+           TrkIne1Old(iTRKMCOLD) = 0.
+           TrType1Old(iTRKMCOLD) = 0.
+           TrHits1Old(iTRKMCOLD) = 0.
+           TrkIne2Old(iTRKMCOLD) = 0.
+           TrType2Old(iTRKMCOLD) = 0.
+           TrHits2Old(iTRKMCOLD) = 0.
+           TrkIne3Old(iTRKMCOLD) = 0.
+           TrType3Old(iTRKMCOLD) = 0.
+           TrHits3Old(iTRKMCOLD) = 0.
+           xFMCOld(iTRKMCOLD) = 0.
+           yFMCOld(iTRKMCOLD) = 0.
+           zFMCOld(iTRKMCOLD) = 0.
+           PxFMCOld(iTRKMCOLD) = 0.
+           PyFMCOld(iTRKMCOLD) = 0.
+           PzFMCOld(iTRKMCOLD) = 0.
+           xLMCOld(iTRKMCOLD) = 0.
+           yLMCOld(iTRKMCOLD) = 0.
+           zLMCOld(iTRKMCOLD) = 0.
+           PxLMCOld(iTRKMCOLD) = 0.
+           PyLMCOld(iTRKMCOLD) = 0.
+           PzLMCOld(iTRKMCOLD) = 0.
+           xFMC2Old(iTRKMCOLD) = 0.
+           yFMC2Old(iTRKMCOLD) = 0.
+           zFMC2Old(iTRKMCOLD) = 0.
+           PxFMC2Old(iTRKMCOLD) = 0.
+           PyFMC2Old(iTRKMCOLD) = 0.
+           PzFMC2Old(iTRKMCOLD) = 0.
+           xLMC2Old(iTRKMCOLD) = 0.
+           yLMC2Old(iTRKMCOLD) = 0.
+           zLMC2Old(iTRKMCOLD) = 0.
+           PxLMC2Old(iTRKMCOLD) = 0.
+           PyLMC2Old(iTRKMCOLD) = 0.
+           PzLMC2Old(iTRKMCOLD) = 0.
+         END DO
+
+C         Already filled Evt%TrkMCOld by the get function called in the previous block
+
+         nTfMCOld = Evt%Trkmcold%n
+         IF ( nTfMCOld < 0 .OR. nTfMCOld > 100 ) THEN
+            WRITE(*,*) 'ERROR TRKMCOLD - nTfMCOld Out of bound : ', nTfMCOld
+         END IF
+
+         IF (nTfMCOld > 0 .AND. nTfMCOld <= 100) THEN
+            DO iTRKMCOLD=1, nTfMCOld
+               nContrOld(iTRKMCOLD) = Evt%Trkmcold%ncontr(iTRKMCOLD)
+               IF ( nContrOld(iTRKMCOLD) < 0 .OR. nContrOld(iTRKMCOLD) > 10 ) THEN
+                  WRITE(*,*) 'ERROR TRKMCOLD - nContrOld[1] Out of bound : ', nContrOld(iTRKMCOLD)
+               END IF
+               TrkIne1Old(iTRKMCOLD) = Evt%Trkmcold%kine1(iTRKMCOLD)
+               IF ( TrkIne1Old(iTRKMCOLD) < 0 .OR. TrkIne1Old(iTRKMCOLD) > 100 ) THEN
+                  WRITE(*,*) 'ERROR TRKMCOLD - TrkIne1Old[2] Out of bound : ', TrkIne1Old(iTRKMCOLD)
+               END IF
+               TrType1Old(iTRKMCOLD) = Evt%Trkmcold%type1(iTRKMCOLD)
+               IF ( TrType1Old(iTRKMCOLD) < 0 .OR. TrType1Old(iTRKMCOLD) > 100 ) THEN
+                  WRITE(*,*) 'ERROR TRKMCOLD - TrType1Old[3] Out of bound : ', TrType1Old(iTRKMCOLD)
+               END IF
+               TrHits1Old(iTRKMCOLD) = Evt%Trkmcold%hits1(iTRKMCOLD)
+               IF ( TrHits1Old(iTRKMCOLD) < 0 .OR. TrHits1Old(iTRKMCOLD) > 1000 ) THEN
+                  WRITE(*,*) 'ERROR TRKMCOLD - TrHits1Old[4] Out of bound : ', TrHits1Old(iTRKMCOLD)
+               END IF
+               TrkIne2Old(iTRKMCOLD) = Evt%Trkmcold%kine2(iTRKMCOLD)
+               IF ( TrkIne2Old(iTRKMCOLD) < 0 .OR. TrkIne2Old(iTRKMCOLD) > 100 ) THEN
+                  WRITE(*,*) 'ERROR TRKMCOLD - TrkIne2Old[5] Out of bound : ', TrkIne2Old(iTRKMCOLD)
+               END IF
+               TrType2Old(iTRKMCOLD) = Evt%Trkmcold%type2(iTRKMCOLD)
+               IF ( TrType2Old(iTRKMCOLD) < 0 .OR. TrType2Old(iTRKMCOLD) > 100 ) THEN
+                  WRITE(*,*) 'ERROR TRKMCOLD - TrType2Old[6] Out of bound : ', TrType2Old(iTRKMCOLD)
+               END IF
+               TrHits2Old(iTRKMCOLD) = Evt%Trkmcold%hits2(iTRKMCOLD)
+               IF ( TrHits2Old(iTRKMCOLD) < 0 .OR. TrHits2Old(iTRKMCOLD) > 1000 ) THEN
+                  WRITE(*,*) 'ERROR TRKMCOLD - TrHits2Old[7] Out of bound : ', TrHits2Old(iTRKMCOLD)
+               END IF
+               TrkIne3Old(iTRKMCOLD) = Evt%Trkmcold%kine3(iTRKMCOLD)
+               IF ( TrkIne3Old(iTRKMCOLD) < 0 .OR. TrkIne3Old(iTRKMCOLD) > 100 ) THEN
+                  WRITE(*,*) 'ERROR TRKMCOLD - TrkIne3Old[8] Out of bound : ', TrkIne3Old(iTRKMCOLD)
+               END IF
+               TrType3Old(iTRKMCOLD) = Evt%Trkmcold%type3(iTRKMCOLD)
+               IF ( TrType3Old(iTRKMCOLD) < 0 .OR. TrType3Old(iTRKMCOLD) > 100 ) THEN
+                  WRITE(*,*) 'ERROR TRKMCOLD - TrType3Old[9] Out of bound : ', TrType3Old(iTRKMCOLD)
+               END IF
+               TrHits3Old(iTRKMCOLD) = Evt%Trkmcold%hits3(iTRKMCOLD)
+               IF ( TrHits3Old(iTRKMCOLD) < 0 .OR. TrHits3Old(iTRKMCOLD) > 1000 ) THEN
+                  WRITE(*,*) 'ERROR TRKMCOLD - TrHits3Old[10] Out of bound : ', TrHits3Old(iTRKMCOLD)
+               END IF
+                 xFMCOld(iTRKMCOLD) = Evt%Trkmcold%xfirst(iTRKMCOLD)
+                 yFMCOld(iTRKMCOLD) = Evt%Trkmcold%yfirst(iTRKMCOLD)
+                 zFMCOld(iTRKMCOLD) = Evt%Trkmcold%zfirst(iTRKMCOLD)
+                 PxFMCOld(iTRKMCOLD) = Evt%Trkmcold%pxfirst(iTRKMCOLD)
+                 PyFMCOld(iTRKMCOLD) = Evt%Trkmcold%pyfirst(iTRKMCOLD)
+                 PzFMCOld(iTRKMCOLD) = Evt%Trkmcold%pzfirst(iTRKMCOLD)
+                 xLMCOld(iTRKMCOLD) = Evt%Trkmcold%xlast(iTRKMCOLD)
+                 yLMCOld(iTRKMCOLD) = Evt%Trkmcold%ylast(iTRKMCOLD)
+                 zLMCOld(iTRKMCOLD) = Evt%Trkmcold%zlast(iTRKMCOLD)
+                 PxLMCOld(iTRKMCOLD) = Evt%Trkmcold%pxlast(iTRKMCOLD)
+                 PyLMCOld(iTRKMCOLD) = Evt%Trkmcold%pylast(iTRKMCOLD)
+                 PzLMCOld(iTRKMCOLD) = Evt%Trkmcold%pzlast(iTRKMCOLD)
+                 xFMC2Old(iTRKMCOLD) = Evt%Trkmcold%xmcfirst(iTRKMCOLD)
+                 yFMC2Old(iTRKMCOLD) = Evt%Trkmcold%ymcfirst(iTRKMCOLD)
+                 zFMC2Old(iTRKMCOLD) = Evt%Trkmcold%zmcfirst(iTRKMCOLD)
+                 PxFMC2Old(iTRKMCOLD) = Evt%Trkmcold%pxmcfirst(iTRKMCOLD)
+                 PyFMC2Old(iTRKMCOLD) = Evt%Trkmcold%pymcfirst(iTRKMCOLD)
+                 PzFMC2Old(iTRKMCOLD) = Evt%Trkmcold%pzmcfirst(iTRKMCOLD)
+                 xLMC2Old(iTRKMCOLD) = Evt%Trkmcold%xmclast(iTRKMCOLD)
+                 yLMC2Old(iTRKMCOLD) = Evt%Trkmcold%ymclast(iTRKMCOLD)
+                 zLMC2Old(iTRKMCOLD) = Evt%Trkmcold%zmclast(iTRKMCOLD)
+                 PxLMC2Old(iTRKMCOLD) = Evt%Trkmcold%pxmclast(iTRKMCOLD)
+                 PyLMC2Old(iTRKMCOLD) = Evt%Trkmcold%pymclast(iTRKMCOLD)
+                 PzLMC2Old(iTRKMCOLD) = Evt%Trkmcold%pzmclast(iTRKMCOLD)
+           END DO
+         ELSE
+            WRITE(*,*) 'ERROR TRKMCOLD - nTfMCOld Index not valid: ', nTfMCOld
+         END IF
+      END IF
+C-----------------------------------------------------------------------
 C Fill Root
 C-----------------------------------------------------------------------
       call fillntu() 	
