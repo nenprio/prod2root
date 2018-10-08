@@ -69,6 +69,8 @@ TreeWriter::TreeWriter() {
     addBlockTrkMC();
     // Block VtxOld
     addBlockVtxOld();
+    // Block TrkOld
+    addBlockTrkOld();
 
     // Write to the disk
     outfile->Write();
@@ -654,6 +656,53 @@ void TreeWriter::addBlockVtxOld() {
     fNewTree->Branch("VtxCov4Old", &vtxold_.VtxCov4Old, "VtxCov4Old[nVOld]/F");
     fNewTree->Branch("VtxCov5Old", &vtxold_.VtxCov5Old, "VtxCov5Old[nVOld]/F");
     fNewTree->Branch("VtxCov6Old", &vtxold_.VtxCov6Old, "VtxCov6Old[nVOld]/F");
+}
+
+// Add to the tree all the branches realted to the block TrkOld.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockTrkOld() {
+    fNewTree->Branch("nTOld", &trkold_.nTOld, "nTOld/I");
+    fNewTree->Branch("TrkIndOld", &trkold_.TrkIndOld, "TrkIndOld[nTOld]/I");
+    fNewTree->Branch("TrkVerOld", &trkold_.TrkVerOld, "TrkVerOld[nTOld]/I");
+    fNewTree->Branch("CurOld", &trkold_.CurOld, "CurOld[nTOld]/F");
+    fNewTree->Branch("PhiOld", &trkold_.PhiOld, "PhiOld[nTOld]/F");
+    fNewTree->Branch("CotOld", &trkold_.CotOld, "CotOld[nTOld]/F");
+    fNewTree->Branch("PxTOld", &trkold_.PxTOld, "PxTOld[nTOld]/F");
+    fNewTree->Branch("PyTOld", &trkold_.PyTOld, "PyTOld[nTOld]/F");
+    fNewTree->Branch("PzTOld", &trkold_.PzTOld, "PzTOld[nTOld]/F");
+    fNewTree->Branch("PModOld", &trkold_.PModOld, "PModOld[nTOld]/F");
+    fNewTree->Branch("LenOld", &trkold_.LenOld, "LenOld[nTOld]/F");
+    fNewTree->Branch("xFirstOld", &trkold_.xFirstOld, "xFirstOld[nTOld]/F");
+    fNewTree->Branch("yFirstOld", &trkold_.yFirstOld, "yFirstOld[nTOld]/F");
+    fNewTree->Branch("zFirstOld", &trkold_.zFirstOld, "zFirstOld[nTOld]/F");
+    fNewTree->Branch("CurLaOld", &trkold_.CurLaOld, "CurLaOld[nTOld]/F");
+    fNewTree->Branch("PhiLaOld", &trkold_.PhiLaOld, "PhiLaOld[nTOld]/F");
+    fNewTree->Branch("CotLaOld", &trkold_.CotLaOld, "CotLaOld[nTOld]/F");
+    fNewTree->Branch("PxTLaOld", &trkold_.PxTLaOld, "PxTLaOld[nTOld]/F");
+    fNewTree->Branch("PyTLaOld", &trkold_.PyTLaOld, "PyTLaOld[nTOld]/F");
+    fNewTree->Branch("PzTLaOld", &trkold_.PzTLaOld, "PzTLaOld[nTOld]/F");
+    fNewTree->Branch("PModLaOld", &trkold_.PModLaOld, "PModLaOld[nTOld]/F");
+    fNewTree->Branch("SPcaOld", &trkold_.SPcaOld, "SPcaOld[nTOld]/F");
+    fNewTree->Branch("SZetaOld", &trkold_.SZetaOld, "SZetaOld[nTOld]/F");
+    fNewTree->Branch("SCurVOld", &trkold_.SCurVOld, "SCurVOld[nTOld]/F");
+    fNewTree->Branch("SCotGOld", &trkold_.SCotGOld, "SCotGOld[nTOld]/F");
+    fNewTree->Branch("SPhiOld", &trkold_.SPhiOld, "SPhiOld[nTOld]/F");
+    fNewTree->Branch("xLastOld", &trkold_.xLastOld, "xLastOld[nTOld]/F");
+    fNewTree->Branch("yLastOld", &trkold_.yLastOld, "yLastOld[nTOld]/F");
+    fNewTree->Branch("zLastOld", &trkold_.zLastOld, "zLastOld[nTOld]/F");
+    fNewTree->Branch("xPca2Old", &trkold_.xPca2Old, "xPca2Old[nTOld]/F");
+    fNewTree->Branch("yPca2Old", &trkold_.yPca2Old, "yPca2Old[nTOld]/F");
+    fNewTree->Branch("zPca2Old", &trkold_.zPca2Old, "zPca2Old[nTOld]/F");
+    fNewTree->Branch("QTrk2Old", &trkold_.QTrk2Old, "QTrk2Old[nTOld]/F");
+    fNewTree->Branch("CotPca2Old", &trkold_.CotPca2Old, "CotPca2Old[nTOld]/F");
+    fNewTree->Branch("PhiPca2Old", &trkold_.PhiPca2Old, "PhiPca2Old[nTOld]/F");
+    fNewTree->Branch("nPrhiTOld", &trkold_.nPrhiTOld, "nPrhiTOld[nTOld]/I");
+    fNewTree->Branch("nFifthITOld", &trkold_.nFifthITOld, "nFifthITOld[nTOld]/I");
+    fNewTree->Branch("nMskInkOld", &trkold_.nMskInkOld, "nMskInkOld[nTOld]/I");
+    fNewTree->Branch("Chi2FitOld", &trkold_.Chi2FitOld, "Chi2FitOld[nTOld]/F");
+    fNewTree->Branch("Chi2MSOld", &trkold_.Chi2MSOld, "Chi2MSOld[nTOld]/F");
 }
 
 // Returns the output file object.

@@ -307,3 +307,25 @@ C
       common /vtxold/nVOld,VtxOld,xVOld,yVOld,ZVOld,ChiVTxOld,QuaLVOld,
      1       FitIdVOld,VtxCov1Old,VtxCov2Old,VtxCov3Old,VtxCov4Old,
      1       VtxCov5Old,VtxCov6Old
+C
+C  Block: trkold
+C
+      integer iTRKOLD, nTOld, TrkIndOld(100), TrkVerOld(100)
+      integer nPrhiTOld(100), nFifthITOld(100), nMskInkOld(100)
+      real CurOld(100), PhiOld(100), CotOld(100), PxTOld(100)
+      real PyTOld(100), PzTOld(100), PModOld(100), LenOld(100)
+      real xFirstOld(100), yFirstOld(100), zFirstOld(100), CurLaOld(100)
+      real PhiLaOld(100), CotLaOld(100), PxTLaOld(100), PyTLaOld(100)
+      real PzTLaOld(100), PModLaOld(100), SPcaOld(100), SZetaOld(100)
+      real SCurVOld(100), SCotGOld(100), SPhiOld(100), xLastOld(100)
+      real yLastOld(100), zLastOld(100), xPca2Old(100), yPca2Old(100)
+      real zPca2Old(100), QTrk2Old(100), CotPca2Old(100), PhiPca2Old(100)
+      real Chi2FitOld(100), Chi2MSOld(100)
+
+      common /trkold/nTOld,TrkIndOld,TrkVerOld,CurOld,PhiOld,CotOld,
+     1       PxTOld,PyTOld,PzTOld,PModOld,LenOld,xFirstOld,yFirstOld,
+     1       zFirstOld,CurLaOld,PhiLaOld,CotLaOld,PxTLaOld,PyTLaOld,
+     1       PzTLaOld,PModLaOld,SPcaOld,SZetaOld,SCurVOld,SCotGOld,
+     1       SPhiOld,xLastOld,yLastOld,zLastOld,xPca2Old,yPca2Old,
+     1       zPca2Old,QTrk2Old,CotPca2Old,PhiPca2Old,nPrhiTOld,
+     1       nFifthITOld,nMskInkOld,Chi2FitOld,Chi2MSOld

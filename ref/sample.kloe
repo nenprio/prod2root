@@ -1567,6 +1567,106 @@ C         Already filled Evt%Trk by the get function called in the previous bloc
          END IF
       END IF
 C-----------------------------------------------------------------------
+C Fill Block trkold
+C-----------------------------------------------------------------------
+      IF (.TRUE.) THEN
+         nTOld = 0.
+         DO iTRKOLD=1, 100
+           TrkIndOld(iTRKOLD) = 0.
+           TrkVerOld(iTRKOLD) = 0.
+           CurOld(iTRKOLD) = 0.
+           PhiOld(iTRKOLD) = 0.
+           CotOld(iTRKOLD) = 0.
+           PxTOld(iTRKOLD) = 0.
+           PyTOld(iTRKOLD) = 0.
+           PzTOld(iTRKOLD) = 0.
+           PModOld(iTRKOLD) = 0.
+           LenOld(iTRKOLD) = 0.
+           xFirstOld(iTRKOLD) = 0.
+           yFirstOld(iTRKOLD) = 0.
+           zFirstOld(iTRKOLD) = 0.
+           CurLaOld(iTRKOLD) = 0.
+           PhiLaOld(iTRKOLD) = 0.
+           CotLaOld(iTRKOLD) = 0.
+           PxTLaOld(iTRKOLD) = 0.
+           PyTLaOld(iTRKOLD) = 0.
+           PzTLaOld(iTRKOLD) = 0.
+           PModLaOld(iTRKOLD) = 0.
+           SPcaOld(iTRKOLD) = 0.
+           SZetaOld(iTRKOLD) = 0.
+           SCurVOld(iTRKOLD) = 0.
+           SCotGOld(iTRKOLD) = 0.
+           SPhiOld(iTRKOLD) = 0.
+           xLastOld(iTRKOLD) = 0.
+           yLastOld(iTRKOLD) = 0.
+           zLastOld(iTRKOLD) = 0.
+           xPca2Old(iTRKOLD) = 0.
+           yPca2Old(iTRKOLD) = 0.
+           zPca2Old(iTRKOLD) = 0.
+           QTrk2Old(iTRKOLD) = 0.
+           CotPca2Old(iTRKOLD) = 0.
+           PhiPca2Old(iTRKOLD) = 0.
+           nPrhiTOld(iTRKOLD) = 0.
+           nFifthITOld(iTRKOLD) = 0.
+           nMskInkOld(iTRKOLD) = 0.
+           Chi2FitOld(iTRKOLD) = 0.
+           Chi2MSOld(iTRKOLD) = 0.
+         END DO
+
+C         Already filled Evt%TrkOld by the get function called in the previous block
+
+         nTOld = Evt%Trkold%n
+         IF ( nTOld < 0 .OR. nTOld > 100 ) THEN
+            WRITE(*,*) 'ERROR TRKOLD - nTOld Out of bound : ', nTOld
+         END IF
+
+         IF (nTOld > 0 .AND. nTOld <= 100) THEN
+            DO iTRKOLD=1, nTOld
+                 TrkIndOld(iTRKOLD) = Evt%Trkold%trkind(iTRKOLD)
+                 TrkVerOld(iTRKOLD) = Evt%Trkold%version(iTRKOLD)
+                 CurOld(iTRKOLD) = Evt%Trkold%cur(iTRKOLD)
+                 PhiOld(iTRKOLD) = Evt%Trkold%phi(iTRKOLD)
+                 CotOld(iTRKOLD) = Evt%Trkold%cot(iTRKOLD)
+                 PxTOld(iTRKOLD) = Evt%Trkold%px(iTRKOLD)
+                 PyTOld(iTRKOLD) = Evt%Trkold%py(iTRKOLD)
+                 PzTOld(iTRKOLD) = Evt%Trkold%pz(iTRKOLD)
+                 PModOld(iTRKOLD) = Evt%Trkold%pmod(iTRKOLD)
+                 LenOld(iTRKOLD) = Evt%Trkold%length(iTRKOLD)
+                 xFirstOld(iTRKOLD) = Evt%Trkold%x(iTRKOLD)
+                 yFirstOld(iTRKOLD) = Evt%Trkold%y(iTRKOLD)
+                 zFirstOld(iTRKOLD) = Evt%Trkold%z(iTRKOLD)
+                 CurLaOld(iTRKOLD) = Evt%Trkold%curlast(iTRKOLD)
+                 PhiLaOld(iTRKOLD) = Evt%Trkold%philast(iTRKOLD)
+                 CotLaOld(iTRKOLD) = Evt%Trkold%cotlast(iTRKOLD)
+                 PxTLaOld(iTRKOLD) = Evt%Trkold%pxlast(iTRKOLD)
+                 PyTLaOld(iTRKOLD) = Evt%Trkold%pylast(iTRKOLD)
+                 PzTLaOld(iTRKOLD) = Evt%Trkold%pzlast(iTRKOLD)
+                 PModLaOld(iTRKOLD) = Evt%Trkold%pmodlast(iTRKOLD)
+                 SPcaOld(iTRKOLD) = Evt%Trkold%SigPCA(iTRKOLD)
+                 SZetaOld(iTRKOLD) = Evt%Trkold%SigZeta(iTRKOLD)
+                 SCurVOld(iTRKOLD) = Evt%Trkold%SigCurv(iTRKOLD)
+                 SCotGOld(iTRKOLD) = Evt%Trkold%SigCot(iTRKOLD)
+                 SPhiOld(iTRKOLD) = Evt%Trkold%SigPhi(iTRKOLD)
+                 xLastOld(iTRKOLD) = Evt%Trkold%xlast(iTRKOLD)
+                 yLastOld(iTRKOLD) = Evt%Trkold%ylast(iTRKOLD)
+                 zLastOld(iTRKOLD) = Evt%Trkold%zlast(iTRKOLD)
+                 xPca2Old(iTRKOLD) = Evt%Trkold%xpca(iTRKOLD)
+                 yPca2Old(iTRKOLD) = Evt%Trkold%ypca(iTRKOLD)
+                 zPca2Old(iTRKOLD) = Evt%Trkold%zpca(iTRKOLD)
+                 QTrk2Old(iTRKOLD) = Evt%Trkold%qtrk(iTRKOLD)
+                 CotPca2Old(iTRKOLD) = Evt%Trkold%cotpca(iTRKOLD)
+                 PhiPca2Old(iTRKOLD) = Evt%Trkold%phipca(iTRKOLD)
+                 nPrhiTOld(iTRKOLD) = Evt%Trkold%NumPRhit(iTRKOLD)
+                 nFifthITOld(iTRKOLD) = Evt%Trkold%NumFitHit(iTRKOLD)
+                 nMskInkOld(iTRKOLD) = Evt%Trkold%nmskink(iTRKOLD)
+                 Chi2FitOld(iTRKOLD) = Evt%Trkold%chi2fit(iTRKOLD)
+                 Chi2MSOld(iTRKOLD) = Evt%Trkold%chi2ms(iTRKOLD)
+           END DO
+         ELSE
+            WRITE(*,*) 'ERROR TRKOLD - nTOld Index not valid: ', nTOld
+         END IF
+      END IF
+C-----------------------------------------------------------------------
 C Fill Root
 C-----------------------------------------------------------------------
       call fillntu() 	
