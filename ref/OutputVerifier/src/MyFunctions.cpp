@@ -134,3 +134,20 @@ char* cut(const char *s, char *del, int field) {
     return result;
 }
 
+// My implementation of stricmp to compare 2 char strings.
+//
+// input: two char strings a and b
+// output: integer value with the following meaning
+//          < 0     b greater than a
+//          = 0     string equals
+//          > 0     a greater than b
+int myStricmp(const char *a, const char *b) {
+  int ca, cb;
+  do {
+     ca = (unsigned char) *a++;
+     cb = (unsigned char) *b++;
+     ca = tolower(toupper(ca));
+     cb = tolower(toupper(cb));
+   } while (ca == cb && ca != '\0');
+   return ca - cb;
+}

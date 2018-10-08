@@ -166,10 +166,13 @@ void OutputVerifier::exportHBConvTree() {
 // Compare the files in output dir associated with the event i-th.
 //
 // input:   id    event identifier
-// output:  -
-bool OutputVerifier::verifyEvent(int i) {
-    const char *ErrorFileOpen = "[Error] Cannot open file";
-    const char *ErrorLeafDiff = "[Error] Difference on leaf";
+// output:  the number of errors found
+int OutputVerifier::verifyEvent(int i, bool printInfo) {
+    const char *ErrorFileOpen     = "\t[Error]\tCannot open file";
+    const char *ErrorLeafDiff     = "\t[Error]\tDifference on leaf";
+    const char *ErrorLeafNotFound = "\t[Error]\tNot found correspondance for leaf";
+
+    int errorCounter = 0;   //Result counter
     TString rEventFile;
     TString hbEventFile;
     TString error;
@@ -178,7 +181,6 @@ bool OutputVerifier::verifyEvent(int i) {
     ifstream fHB;
     std::string lRoot;
     std::string lHB;
-    bool result = true;
 
     rEventFile.Form("%s/sample%s%d.out", outputDir, ENTRY_PREFIX, i);
     hbEventFile.Form("%s/h1%s%d.out", outputDir, ENTRY_PREFIX, i);
@@ -190,13 +192,17 @@ bool OutputVerifier::verifyEvent(int i) {
     // Check open file
     if(!fRoot.is_open()){
         error.Form("%s %s", ErrorFileOpen, rEventFile);
-        println(error.Data());
-        return false;
+        if (printInfo) {
+            println(error.Data());
+        }
+        return -1;
     }
     if(!fHB.is_open()){
         error.Form("%s %s", ErrorFileOpen, hbEventFile);
-        println(error.Data());
-        return false;
+        if (printInfo) {
+            println(error.Data());
+        }
+        return -1;
     }
     
     // Get Num lines
@@ -206,32 +212,42 @@ bool OutputVerifier::verifyEvent(int i) {
     TString nameHB;
     TString valueRoot;
     TString valueHB;
+    bool fieldFound;
     while ( getline(fRoot, lRoot) ) {
+        fieldFound = false;     // Field of curr line not yet found
         nameRoot.Form("%s", cut(lRoot.c_str(), ":",  1));
         valueRoot.Form("%s", cut(lRoot.c_str(), ":" , 2));
+        
         while ( getline(fHB, lHB) ) {
             nameHB.Form("%s", cut(lHB.c_str(), ":", 1));
             valueHB.Form("%s", cut(lHB.c_str(), ":", 2));
 
-            print(nameRoot.Data());
-            print(" ");
-            print(valueRoot.Data());
-            print(" - ");
-            print(nameHB.Data());
-            print(valueHB.Data());
-            println(" ");
-
             // Check equality name
-            // TODO: ignore case
-            if (stricmp(nameRoot.Data(), nameHB.Data()==0)) {
-                if (valueRoot != valueHB) {
-                    error.Form("%s %s - (%s != %s)", ErrorLeafDiff, nameRoot, valueRoot, valueHB);
-                    println(error.Data());
-                    result = false;
+            if (myStricmp(nameRoot.Data(), nameHB.Data())==0) {
+                fieldFound = true;
+                if (myStricmp(valueRoot.Data(), valueHB.Data())!=0) {
+                    if (printInfo) {
+                        error.Form("%s %s - (%s != %s)", ErrorLeafDiff, nameRoot.Data(), valueRoot.Data(), valueHB.Data());
+                        println(error.Data());
+                    }
+                    errorCounter++;
+                    break;
                 }
             }
             nLinesHB++;
         }
+     
+        // If the current field in not in hb file
+        if (fieldFound==false) {
+            if (printInfo) {
+                error.Form("%s %s", ErrorLeafNotFound, nameRoot.Data());
+                println(error.Data());
+            }
+            errorCounter++;
+        }
+        // Reset hb file to the beginning
+        fHB.clear();
+        fHB.seekg (0, ios::beg);
         nLinesRoot ++;
     }
 
@@ -239,40 +255,81 @@ bool OutputVerifier::verifyEvent(int i) {
     fRoot.close();
     fHB.close();
 
-    // Return boolean result
-    return result;
+    delete fRoot;
+    delete fHB;
+    delete ErrorFileOpen;
+    delete ErrorLeafDiff;
+    delete ErrorLeafNotFound;
+
+    // Return the number of errors found
+    return errorCounter;
 }
 
 // Loop over all events and invoke comparison.
 //
 // input:   id    event identifier
 // output:  -
-void OutputVerifier::verify() {
-    bool result = true;
+bool OutputVerifier::verify(int from, int to, bool printInfo) {
+    // Auxiliar strings
     TString error;
+    TString printout;
     std::string currentFile;
 
-    const char* ErrorNumEvents = "[Error] Number of events are different.";
-    const char* ErrorEventDiff = "[Error] Event verification return false.";
+    // Error/Info declarations
+    const char* ErrorNumEvents    = "[Error]\tNumber of events are different.";
+    const char* ErrorEventDiff    = "[Error]\tEvent verification return false.";
+    const char* ErrorInitialPhase = "[Error]\tInitial phase failed, probably there are problems with files.";
+    const char* InfoNoError       = "[Info]\tEvent verified, no error occurs.";
     
+    // Result variables
+    bool result  = true;
+    int eventRes;
+
     // First check: Number events of trees
-    TFile *fRoot = new TFile(rootFile,   "READ");
-    TFile *fHB   = new TFile(hbConvFile, "READ");
-    TTree *rTree  = (TTree*) fRoot->Get("sample");
-    TTree *hbTree = (TTree*) fHB->Get("PROD2NTU/h1");
+    TFile *fRoot      = new TFile(rootFile,   "READ");
+    TFile *fHB        = new TFile(hbConvFile, "READ");
+    TTree *rTree      = (TTree*) fRoot->Get("sample");
+    TTree *hbTree     = (TTree*) fHB->Get("PROD2NTU/h1");
     Int_t rootEntries = rTree->GetEntries();
     Int_t hbEntries   = hbTree->GetEntries();
+
+    // Check if both trees have the same number of events
     if(rootEntries!=hbEntries) {
-        error.Form("%s - (%d != %d)", ErrorNumEvents, rootEntries, hbEntries);
-        println(error.Data());
+        if (printInfo) {
+            error.Form("%s - (%d != %d)", ErrorNumEvents, rootEntries, hbEntries);
+            println(error.Data());
+        }
         result = false;
     }
 
-    for(Int_t i=0; i<rootEntries; i++) {
-        if(!verifyEvent(i)) {
-            error.Form("%s - (%d)", ErrorEventDiff, i);
-            println(error.Data());
-            result = false;
+    // Loop on events in [0, rootEntries]
+    if (from<0)
+        from = 0;
+    if (to+1>rootEntries)
+        to = rootEntries;
+    for(Int_t i=from; i<to+1; i++) {
+        eventRes = verifyEvent(i, false);
+        switch (eventRes ) {
+            case -1:                // Error during the initial phase (file opening...)
+                if (printInfo) {
+                    error.Form("%s", ErrorInitialPhase);
+                    println(error.Data());
+                }
+                result = false;
+            break;
+            case 0:                 // No error occurs
+                if (printInfo) {
+                    printout.Form("%s", InfoNoError);
+                    println(printout.Data());
+                }
+            break;
+            default:                // Error during scanning leaves
+                if (printInfo) {
+                    error.Form("%s (Event #%d > %d errors)", ErrorEventDiff, i, eventRes);
+                    println(error.Data());
+                }
+                result = false;
+            break;
         }
     }
     
@@ -287,6 +344,16 @@ void OutputVerifier::verify() {
         delete fHB;
         fHB = NULL;
     }
+
+    delete ErrorNumEvents;
+    delete ErrorEventDiff;  
+    delete ErrorInitialPhase;
+    delete InfoNoError;
+    delete error;
+    delete printout;
+
+    // Return boolean result
+    return result;
 }
 
 // Print information about internal variables.

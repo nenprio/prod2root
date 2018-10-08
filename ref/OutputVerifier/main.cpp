@@ -14,10 +14,12 @@ int main() {
     
     verifier->printInfo();
     
-//    verifier->exportRootTree();
-  //  verifier->exportHBConvTree();
-    
-    verifier->verifyEvent(0);
+    /* verifier->exportRootTree(); */
+    /* verifier->exportHBConvTree(); */
+   
+    bool debug = true;
+    /* verifier->verifyEvent(52, debug); */
+    verifier->verify(52, 100, debug);
 
     return(0);
 }
