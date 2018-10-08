@@ -102,3 +102,17 @@ bool createDirRecursively(const char *ss) {
     }
     return true;
 }
+
+// Cut the string at each occurrence of a given delimiter
+// and return the specified field.
+//
+// input:   str     string to cut
+//          del     delimiter used to cut
+//          field   number of return field
+// output:  the field-th substring delimited by del
+//          or empty string if such substring doesn't exist
+char* cut(char *str, char *del, int field) {
+    char *result;
+    //TODO
+    return result;
+}

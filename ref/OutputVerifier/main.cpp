@@ -14,8 +14,8 @@ int main() {
     
     verifier->printInfo();
     
-    verifier->exportRootTree();
-    verifier->exportHBConvTree();
+//    verifier->exportRootTree();
+  //  verifier->exportHBConvTree();
     
     verifier->verifyEvent(0);
 

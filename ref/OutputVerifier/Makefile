@@ -8,8 +8,10 @@ else
 endif
 CFLAGS = -I. `root-config --cflags --libs`
 
-main: main.cpp src/MyFunctions.cpp src/OutputVerifier.cpp
-	$(CC) -o $@ $< src/MyFunctions.cpp src/OutputVerifier.cpp $(CFLAGS)
+main: main.cpp src/OutputVerifier.cpp src/MyFunctions.cpp 
+	$(CC) -o $@ $< src/OutputVerifier.cpp src/MyFunctions.cpp $(CFLAGS)
+
+.PHONY: clean
 
 clean:
 	rm -f main

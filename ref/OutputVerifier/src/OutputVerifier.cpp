@@ -137,6 +137,12 @@ void OutputVerifier::exportRootTree() {
     TFile *fRoot = new TFile(rootFile, "READ");
     TTree *rTree = (TTree*) fRoot->Get("sample");
     exportTreeToTxt(rTree);
+    
+    fRoot.close();
+    if (fRoot) {
+        delete fRoot;
+        fRoot = NULL;
+    }
 }
 
 // Export content of tree in hb converted file and
@@ -148,6 +154,12 @@ void OutputVerifier::exportHBConvTree() {
     TFile *fHB = new TFile(hbConvFile, "READ");
     TTree *hbTree = (TTree*) fHB->Get("PROD2NTU/h1");
     exportTreeToTxt(hbTree);
+
+    fHB.close();
+    if (fHB) {
+        delete fHB;
+        fHB = NULL;
+    }
 }
 
 // Compare the files in output dir associated with the event i-th.
@@ -155,13 +167,71 @@ void OutputVerifier::exportHBConvTree() {
 // input:   id    event identifier
 // output:  -
 bool OutputVerifier::verifyEvent(int i) {
+    const char *ErrorFileOpen = "[Error] Cannot open file";
+    const char *ErrorLeafDiff = "[Error] Difference on leaf";
     TString rEventFile;
     TString hbEventFile;
+    TString error;
+    TString printout;
+    ifstream fRoot;
+    ifstream fHB;
+    std::string lRoot;
+    std::string lHB;
     bool result = true;
 
     rEventFile.Form("%s/sample%s%d.out", outputDir, ENTRY_PREFIX, i);
     hbEventFile.Form("%s/h1%s%d.out", outputDir, ENTRY_PREFIX, i);
 
+    // Open files
+    fRoot.open(rEventFile.Data());
+    fHB.open(hbEventFile.Data());
+
+    // Check open file
+    if(!fRoot.is_open()){
+        error.Form("%s %s", ErrorFileOpen, rEventFile);
+        println(error.Data());
+        return false;
+    }
+    if(!fHB.is_open()){
+        error.Form("%s %s", ErrorFileOpen, hbEventFile);
+        println(error.Data());
+        return false;
+    }
+    
+    // Get Num lines
+    Int_t nLinesRoot = 0;
+    Int_t nLinesHB   = 0;
+    TString nameRoot;
+    TString nameHB;
+    TString valueRoot;
+    TString valueHB;
+    while ( getline(fRoot, lRoot) ) {
+        nameRoot.Form("%s", cut(lRoot.c_str(), " : ", 1));
+        valueRoot.Form("%s", cut(lRoot.c_str(), " : ", 2));
+        while ( getline(fHB, lHB) ) {
+            nameHB.Form("%s", cut(lHB.c_str(), " : ", 1));
+            valueHB.Form("%s", cut(lHB.c_str(), " : ", 2));
+            // Check equality name
+            // TODO: ignore case
+            if (nameRoot == nameHB) {
+                if (valueRoot != valueHB) {
+                    error.Form("%s %s - (%s != %s)", ErrorEventDiff, nameRoot, valueRoot, valueHB);
+                    println(error.Data());
+
+                    result = false;
+                    break;
+                }
+            }
+            nLinesHB++;
+        }
+        nLinesRoot ++;
+    }
+
+    // Close files
+    fRoot.close();
+    fHB.close();
+
+    // Return boolean result
     return result;
 }
 
@@ -170,6 +240,45 @@ bool OutputVerifier::verifyEvent(int i) {
 // input:   id    event identifier
 // output:  -
 void OutputVerifier::verify() {
+    bool result = true;
+    TString error;
+    std::string currentFile;
+
+    const char* ErrorNumEvents = "[Error] Number of events are different.";
+    const char* ErrorEventDiff = "[Error] Event verification return false.";
+    
+    // First check: Number events of trees
+    TFile *fRoot = new TFile(rootFile,   "READ");
+    TFile *fHB   = new TFile(hbConvFile, "READ");
+    TTree *rTree  = (TTree*) fRoot->Get("sample");
+    TTree *hbTree = (TTree*) fHB->Get("PROD2NTU/h1");
+    Int_t rootEntries = rTree->GetEntries();
+    Int_t hbEntries   = hbTree->GetEntries();
+    if(rootEntries!=hbEntries) {
+        error.Form("%s - (%d != %d)", ErrorNumEvents, rootEntries, hbEntries);
+        println(error.Data());
+        result = false;
+    }
+
+    for(Int_t i=0; i<rootEntries; i++) {
+        if(!verifyEvent(i)) {
+            error.Form("%s - (%d)", ErrorEventDiff, i);
+            println(error.Data());
+            result = false;
+        }
+    }
+    
+    fRoot.close();
+    fHB.close();
+
+    if (fRoot) {
+        delete fRoot;
+        fRoot = NULL;
+    }
+    if (fHB) {
+        delete fHB;
+        fHB = NULL;
+    }
 }
 
 // Print information about internal variables.
@@ -177,14 +286,8 @@ void OutputVerifier::verify() {
 // input:   -
 // output:  -
 void OutputVerifier::printInfo() {
-    const char *line1 = "[Info] ROOT File:\t";
-    const char *line2 = "[Info] HBConv File:\t";
-    const char *line3 = "[Info] Output dir:\t";
-    print(line1);
-    println(rootFile);
-    print(line2);
-    println(hbConvFile);
-    print(line3);
-    println(outputDir);
-    println("");
+    TString printout;
+    printout.Form("[Info] ROOT File:\t%s\n
+                   [Info] HBConv File:\t%s\n
+                   [Info] Output dir:\t%s\n\n", rootFile, hbConvFile, outputDir);
 }
