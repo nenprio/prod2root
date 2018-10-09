@@ -7,6 +7,7 @@ class TreeWriter{
      public:
          TreeWriter();
          ~TreeWriter();
+         void printHeaderFlags();
          void addBlockInfo();
          void addBlockData();
          void addBlockEcl();
@@ -31,11 +32,11 @@ class TreeWriter{
          void addBlockDHSP();
          void addBlockTrkV();
          void addBlockVtx();
-         void addBlockTrks();
+         void addBlockTrkS();
          void addBlockTrkMC();
          void addBlockTrkVOld();
          void addBlockVtxOld();
-         void addBlockTrkOld();
+         void addBlockTrkSOld();
          void addBlockTrkMCOld();
          TFile* getTFile();
          void fillTTree();

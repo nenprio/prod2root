@@ -18,13 +18,38 @@ const int MaxNumTrk  = 100;
 //Verb for Talk_to module
 extern "C"{
   extern struct{
-    bool trigFlag;
-    bool teleFlag;
-    bool c2trgFlag;
-    bool tellinaFlag;
-    bool pizzaFlag;
-    bool eclsFlag;
-    bool bposFlag;
+    int infoFlag;
+    int dataFlag;
+    int bposFlag;
+    int gdhitFlag;
+    int eclsFlag;
+    int trigFlag;
+    int c2trgFlag;
+    int tellinaFlag;
+    int pizzettaFlag;
+    int tortaFlag;
+    int teleFlag;
+    int pizzaFlag;
+    int timeFlag;
+    int clusFlag;
+    int cluMCFlag;      //TODO
+    int preclusFlag;
+    int cwrkFlag;
+    int celeFlag;
+    int celeMCFlag;     //TODO
+    int dtceFlag;
+    int dtce0Flag;
+    int dchitsFlag;     //TODO
+    int dhreFlag;
+    int dhspFlag;
+    int trkvFlag;
+    int vtxFlag;
+    int trksFlag;
+    int trkMCFlag;
+    int trkvOldFlag;
+    int vtxOldFlag;
+    int trksOldFlag;
+    int trkMCOldFlag;
   }sammenu_;
 }
 // Block:   evtinfo

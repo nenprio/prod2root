@@ -14,65 +14,68 @@
 TreeWriter::TreeWriter() {
     outfile  = new TFile("sample.root", "recreate");    //Open or create file 
     fNewTree = new TTree("sample", "Event Infos");      //Create "sample" tree
-    // TODO: create a function printHeader()
-    std::cout<<"Flags "<<sammenu_.bposFlag<<" "<<sammenu_.eclsFlag<<" "<<sammenu_.trigFlag<<" "<<sammenu_.c2trgFlag<<" "<<sammenu_.tellinaFlag<<" "<<sammenu_.pizzaFlag<<std::endl;
-    
+  
+    // Print Header with Flags and values assigned
+    printHeaderFlags();
+
     // Block Info
-    addBlockInfo();
+    if(sammenu_.infoFlag==1)        addBlockInfo();
     // Block Data
-    addBlockData();
-    // Block Time
-    addBlockTime();
+    if(sammenu_.dataFlag==1)        addBlockData();
     // Block BPOS
-    if(sammenu_.bposFlag) addBlockBPOS();
+    if(sammenu_.bposFlag==1)        addBlockBPOS();
     // Block GdHit
-    addBlockGdHit();
+    if(sammenu_.gdhitFlag==1)       addBlockGdHit();
     // Block Ecl
-    if(sammenu_.eclsFlag) addBlockEcl();
+    if(sammenu_.eclsFlag==1)        addBlockEcl();
     // Block Trig
-    if(sammenu_.trigFlag) addBlockTrig();
+    if(sammenu_.trigFlag==1)        addBlockTrig();
     // Block C2Trig
-    if(sammenu_.c2trgFlag) addBlockC2Trig();
+    if(sammenu_.c2trgFlag==1)       addBlockC2Trig();
     // Block Tellina
-    if(sammenu_.tellinaFlag) addBlockTellina();
+    if(sammenu_.tellinaFlag==1)     addBlockTellina();
     // Block Pizzetta
-    if(sammenu_.pizzaFlag) addBlockPizzetta();
+    if(sammenu_.pizzettaFlag==1)    addBlockPizzetta();
     // Block Torta
-    addBlockTorta();
+    if(sammenu_.tortaFlag==1)       addBlockTorta();
     // Block Tele
-    addBlockTele();
+    if(sammenu_.teleFlag==1)        addBlockTele();
     // Block Pizza
-    addBlockPizza();
+    if(sammenu_.pizzaFlag==1)       addBlockPizza();
+    // Block Time
+    if(sammenu_.timeFlag==1)        addBlockTime();
     // Block Clu
-    addBlockClu();
+    if(sammenu_.clusFlag==1)        addBlockClu();
     // Block PreClu
-    addBlockPreClu();
+    if(sammenu_.preclusFlag==1)     addBlockPreClu();
     // Block CWRK
-    addBlockCWRK();
+    if(sammenu_.cwrkFlag==1)        addBlockCWRK();
     // Block Cele
-    addBlockCele();
+    if(sammenu_.celeFlag==1)        addBlockCele();
     // Block DTCE
-    addBlockDTCE();
+    if(sammenu_.dtceFlag==1)        addBlockDTCE();
     // Block DTCE0
-    addBlockDTCE0();
+    if(sammenu_.dtce0Flag==1)       addBlockDTCE0();
     // Block DHRE
-    addBlockDHRE();
+    if(sammenu_.dhreFlag==1)        addBlockDHRE();
     // Block DHSP
-    addBlockDHSP();
+    if(sammenu_.dhspFlag==1)        addBlockDHSP();
     // Block TrkV
-    addBlockTrkV();
+    if(sammenu_.trkvFlag==1)        addBlockTrkV();
     // Block Vtx
-    addBlockVtx();
+    if(sammenu_.vtxFlag==1)         addBlockVtx();
     // Block Trks
-    addBlockTrks();
+    if(sammenu_.trksFlag==1)        addBlockTrkS();
     // Block TrkMC
-    addBlockTrkMC();
-    // Block VtxOld
-    addBlockVtxOld();
+    if(sammenu_.trkMCFlag==1)       addBlockTrkMC();
     // Block TrkOld
-    addBlockTrkOld();
+    if(sammenu_.trkvOldFlag==1)     addBlockTrkVOld();
+    // Block VtxOld
+    if(sammenu_.vtxOldFlag==1)      addBlockVtxOld();
+    // Block TrkOld
+    if(sammenu_.trksOldFlag==1)       addBlockTrkSOld();
     // Block TrkMCOld
-    addBlockTrkMCOld();
+    if(sammenu_.trkMCFlag==1)       addBlockTrkMCOld();
 
     // Write to the disk
     outfile->Write();
@@ -92,10 +95,17 @@ TreeWriter::~TreeWriter() {
         outfile->Write(0,TObject::kOverwrite);
         outfile->Close();
         delete outfile;
-	outfile = NULL;
+    	outfile = NULL;
     }
 }
 
+void TreeWriter::printHeaderFlags() {
+    TString header;
+    header.Form("Flags:\tBPOS %d\tECLS %d\tTRIG %d\tC2TRG %d\tTELLINA %d\tPIZZA %d\n",
+                sammenu_.bposFlag, sammenu_.eclsFlag, sammenu_.trigFlag, sammenu_.c2trgFlag, 
+                sammenu_.tellinaFlag, sammenu_.pizzaFlag);
+    std::cout << header.Data() << std::endl;
+}
 // Add to the tree all the branches related to the block Info.
 //
 // input:   -
@@ -325,6 +335,7 @@ void TreeWriter::addBlockTime() {
 // input:   -
 // output: -
 void TreeWriter::addBlockClu() {
+    /*TODO Split this block into Clus and CluMC*/
     fNewTree->Branch("nClu",   &evtclu_.NClu,   "NClu/I");
     fNewTree->Branch("EneCl",  &evtclu_.EneCl,  "EneCl[NClu]/F");
     fNewTree->Branch("TCl",    &evtclu_.TCl,    "TCl[NClu]/F");
@@ -528,7 +539,7 @@ void TreeWriter::addBlockVtx() {
 //
 // input:	-
 // output: -
-void TreeWriter::addBlockTrks() {
+void TreeWriter::addBlockTrkS() {
     fNewTree->Branch("nT", &trks_.nT, "nT/I");
     fNewTree->Branch("TrkInd", &trks_.TrkInd, "TrkInd[nT]/I");
     fNewTree->Branch("TrkVer", &trks_.TrkVer, "TrkVer[nT]/I");
@@ -664,7 +675,7 @@ void TreeWriter::addBlockVtxOld() {
 //
 // input:	-
 // output: -
-void TreeWriter::addBlockTrkOld() {
+void TreeWriter::addBlockTrkSOld() {
     fNewTree->Branch("nTOld", &trkold_.nTOld, "nTOld/I");
     fNewTree->Branch("TrkIndOld", &trkold_.TrkIndOld, "TrkIndOld[nTOld]/I");
     fNewTree->Branch("TrkVerOld", &trkold_.TrkVerOld, "TrkVerOld[nTOld]/I");

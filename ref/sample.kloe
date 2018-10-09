@@ -215,7 +215,7 @@ C         ENDIF
 C-----------------------------------------------------------------------
 C Fill Block Info
 C-----------------------------------------------------------------------
-      IF (.TRUE.) THEN ! TODO: Change .TRUE. with flag name
+      IF (.FALSE.) THEN ! TODO: Change .TRUE. with flag name
          IF (mcflag_1) THEN
             istat=blocat(iw,'BRID',1,ind1,inddat)
             Evt%Info%RunNumber = iw(inddat)
@@ -310,7 +310,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block GDHit
 C-----------------------------------------------------------------------
-      IF (.TRUE.) THEN ! TODO: Change .TRUE. with flag name
+      IF (.FALSE.) THEN ! TODO: Change .TRUE. with flag name
          DtceHit = 0.
          DhreHit = 0.
          DprsHit = 0.
@@ -333,7 +333,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block Ecls
 C-----------------------------------------------------------------------
-      IF (.TRUE.) THEN ! TODO: Change .TRUE. with flag name
+      IF (.FALSE.) THEN ! TODO: Change .TRUE. with flag name
          IF (ECLSFLAG) THEN
             nEcls = 0
             EclTrgw = 0
@@ -511,7 +511,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block Torta
 C-----------------------------------------------------------------------
-      IF (.TRUE.) THEN ! TODO: Change .TRUE. with flag name
+      IF (.FALSE.) THEN ! TODO: Change .TRUE. with flag name
          tSpent = 0.
          tDead = 0.
          Type = 0.
@@ -739,7 +739,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block EMC Clusters
 C-----------------------------------------------------------------------
-      IF (.TRUE.) THEN ! TODO: Change .TRUE. with flag name
+      IF (.FALSE.) THEN ! TODO: Change .TRUE. with flag name
          NClu = 0.
          NCluMc = 0.
          DO iEVTCLU=1, 100
@@ -833,7 +833,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block Pre-Clusters
 C-----------------------------------------------------------------------
-      IF (.TRUE.) THEN ! TODO: Change .TRUE. with flag name
+      IF (.FALSE.) THEN ! TODO: Change .TRUE. with flag name
          NPClu = 0.
          DO iPRECLU=1, 100
            EPre(iPRECLU) = 0.
@@ -872,7 +872,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block CWRK
 C-----------------------------------------------------------------------
-      IF (.TRUE.) THEN ! TODO: Change .TRUE. with flag name
+      IF (.FALSE.) THEN ! TODO: Change .TRUE. with flag name
          NCHit = 0.
          DO iCWRK=1, 300
             IClu(iCWRK) = 0.
@@ -913,7 +913,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block cele
 C-----------------------------------------------------------------------
-      IF (.TRUE.) THEN ! TODO: Change .TRUE. with flag name
+      IF (.FALSE.) THEN ! TODO: Change .TRUE. with flag name
          NCel = 0.
          NCelMc = 0.
          DO iCELE=1, 300
@@ -980,7 +980,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block dtce
 C-----------------------------------------------------------------------
-      IF (.TRUE.) THEN ! TODO: Change .TRUE. with flag name
+      IF (.FALSE.) THEN ! TODO: Change .TRUE. with flag name
          nDTCE = 0.
          nSmall = 0.
          DO iDTCE=1, 1500
@@ -1019,7 +1019,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block dtce0
 C-----------------------------------------------------------------------
-      IF (.TRUE.) THEN ! TODO: Change .TRUE. with flag name
+      IF (.FALSE.) THEN ! TODO: Change .TRUE. with flag name
          nDTCE0 = 0.
          DO iDTCE0=1, 1500
             iLayerDTCE0(iDTCE0) = 0.
@@ -1053,7 +1053,7 @@ C        DTCEStru is initialized in raw2dtce.cin
 C-----------------------------------------------------------------------
 C Fill Block dchits
 C-----------------------------------------------------------------------
-      IF (.TRUE.) THEN ! TODO: Change .TRUE. with flag name
+      IF (.FALSE.) THEN ! TODO: Change .TRUE. with flag name
          nDCHR = 0.
          nSmallDCm = 0.
          nSmallDCp = 0.
@@ -1075,7 +1075,7 @@ C        Already filled Evt%DTCE and DTCEStru in previous blocks
 C-----------------------------------------------------------------------
 C Fill Block dhsp
 C-----------------------------------------------------------------------
-      IF (.TRUE.) THEN ! TODO: Change .TRUE. with flag name
+      IF (.FALSE.) THEN ! TODO: Change .TRUE. with flag name
          nDHSP = 0.
          DO iDHSP=1, 500
             TrkDh(iDHSP) = 0.
@@ -1115,7 +1115,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block trkv
 C-----------------------------------------------------------------------
-      IF (.TRUE.) THEN ! TODO: Change .TRUE. with flag name
+      IF (.FALSE.) THEN ! TODO: Change .TRUE. with flag name
          nTv = 0.
          DO iTRKV=1, 30
            iV(iTRKV) = 0.
@@ -1179,7 +1179,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block Vertices
 C-----------------------------------------------------------------------
-      IF (.TRUE.) THEN ! TODO: Change .TRUE. with flag name
+      IF (.FALSE.) THEN ! TODO: Change .TRUE. with flag name
          nV = 0.
          DO iVTX=1, 10
            Vetx(iVTX) = 0.
@@ -1230,7 +1230,7 @@ C         Already filled Evt%Vtx by the get function called in the previous bloc
 C-----------------------------------------------------------------------
 C Fill Block trks
 C-----------------------------------------------------------------------
-      IF (.TRUE.) THEN
+      IF (.FALSE.) THEN
          nT = 0.
          DO iTRKS=1, 100
            TrkInd(iTRKS) = 0.
@@ -1330,7 +1330,7 @@ C         Already filled Evt%Trk by the get function called in the previous bloc
 C-----------------------------------------------------------------------
 C Fill Block trkmc
 C-----------------------------------------------------------------------
-      IF (.TRUE.) THEN
+      IF (.FALSE.) THEN
          nTfMC = 0.
          DO iTRKMC=1, 100
            NConTr(iTRKMC) = 0.
@@ -1450,7 +1450,7 @@ C         Already filled Evt%Trk by the get function called in the previous bloc
 C-----------------------------------------------------------------------
 C Fill Block trkvold
 C-----------------------------------------------------------------------
-      IF (.TRUE.) THEN
+      IF (.FALSE.) THEN
          nTVOld = 0.
          DO iTRKVOLD=1, 30
            iVOld(iTRKVOLD) = 0.
@@ -1515,7 +1515,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block vtxold
 C-----------------------------------------------------------------------
-      IF (.TRUE.) THEN
+      IF (.FALSE.) THEN
          nVOld = 0.
          DO iVTXOLD=1, 10
            VtxOld(iVTXOLD) = 0.
@@ -1567,7 +1567,7 @@ C         Already filled Evt%Trk by the get function called in the previous bloc
 C-----------------------------------------------------------------------
 C Fill Block trkold
 C-----------------------------------------------------------------------
-      IF (.TRUE.) THEN
+      IF (.FALSE.) THEN
          nTOld = 0.
          DO iTRKOLD=1, 100
            TrkIndOld(iTRKOLD) = 0.
@@ -1667,7 +1667,7 @@ C         Already filled Evt%TrkOld by the get function called in the previous b
 C-----------------------------------------------------------------------
 C Fill Block trkmcold
 C-----------------------------------------------------------------------
-      IF (.TRUE.) THEN
+      IF (.FALSE.) THEN
          nTfMCOld = 0.
          DO iTRKMCOLD=1, 100
            nContrOld(iTRKMCOLD) = 0.
@@ -1870,37 +1870,135 @@ C
  10   Status = UIACME(MENUF,Verb,N$A) ! Display menu
 C     
       if(verb.eq.'SHOW')then
-	goto 10
-      else if(verb.eq.'TRIG')then
-      	write(Prompt,123)'TRIG'
-	Status=UIGTYE(Prompt,TRIGFLAG)
-	goto 10
-      else if(verb.eq.'TELE')then
-      	write(Prompt,123)'TELE'
-	Status=UIGTYE(Prompt,TELEFLAG)
-	goto 10
-      else if(verb.eq.'C2TRG')then
-      	write(Prompt,123)'C2TRG'
-	Status=UIGTYE(Prompt,C2TRGFLAG)
-	goto 10
-      else if(verb.eq.'TELLINA')then
-      	write(Prompt,123)'TELLINA'
-	Status=UIGTYE(Prompt,TELLINAFLAG)
-	goto 10
-      else if(verb.eq.'PIZZA')then
-      	write(Prompt,123)'PIZZA'
-	Status=UIGTYE(Prompt,PIZZAFLAG)
-	goto 10
-      else if(verb.eq.'ECLS')then
-      	write(Prompt,123)'ECLS'
-	Status=UIGTYE(Prompt,ECLSFLAG)
-	goto 10
+	    goto 10
+      else if(verb.eq.'INFO')then
+      	write(Prompt,123)'INFO'
+    	Status=UIGTYE(Prompt,INFOFLAG)
+    	goto 10
+      else if(verb.eq.'DATA')then
+      	write(Prompt,123)'DATA'
+    	Status=UIGTYE(Prompt,DATAFLAG)
+    	goto 10
       else if(verb.eq.'BPOS')then
       	write(Prompt,123)'BPOS'
-	Status=UIGTYE(Prompt,BPOSFLAG)
-	write(*,*) 'Status tk', Prompt, BPOSFLAG
-	goto 10
-
+    	Status=UIGTYE(Prompt,BPOSFLAG)
+    	goto 10
+      else if(verb.eq.'GDHIT')then
+      	write(Prompt,123)'GDHIT'
+    	Status=UIGTYE(Prompt,GDHITFLAG)
+    	goto 10
+      else if(verb.eq.'ECLS')then
+      	write(Prompt,123)'ECLS'
+	    Status=UIGTYE(Prompt,ECLSFLAG)
+    	goto 10
+      else if(verb.eq.'TRIG')then
+      	write(Prompt,123)'TRIG'
+	    Status=UIGTYE(Prompt,TRIGFLAG)
+    	goto 10
+      else if(verb.eq.'C2TRG')then
+      	write(Prompt,123)'C2TRG'
+	    Status=UIGTYE(Prompt,C2TRGFLAG)
+    	goto 10
+      else if(verb.eq.'TELLINA')then
+      	write(Prompt,123)'TELLINA'
+	    Status=UIGTYE(Prompt,TELLINAFLAG)
+    	goto 10
+      else if(verb.eq.'PIZZETTA')then
+      	write(Prompt,123)'PIZZETTA'
+	    Status=UIGTYE(Prompt,PIZZETTAFLAG)
+    	goto 10
+      else if(verb.eq.'TORTA')then
+      	write(Prompt,123)'TORTA'
+	    Status=UIGTYE(Prompt,TORTAFLAG)
+    	goto 10
+      else if(verb.eq.'TELE')then
+      	write(Prompt,123)'TELE'
+	    Status=UIGTYE(Prompt,TELEFLAG)
+	    goto 10
+      else if(verb.eq.'PIZZA')then
+      	write(Prompt,123)'PIZZA'
+	    Status=UIGTYE(Prompt,PIZZAFLAG)
+    	goto 10
+      else if(verb.eq.'TIME')then
+      	write(Prompt,123)'TIME'
+	    Status=UIGTYE(Prompt,TIMEFLAG)
+    	goto 10
+      else if(verb.eq.'CLUS')then
+      	write(Prompt,123)'CLUS'
+	    Status=UIGTYE(Prompt,CLUSFLAG)
+    	goto 10
+      else if(verb.eq.'CLUMC')then
+      	write(Prompt,123)'CLUMC'
+	    Status=UIGTYE(Prompt,CLUMCFLAG)
+    	goto 10
+      else if(verb.eq.'PRECLUS')then
+      	write(Prompt,123)'PRECLUS'
+	    Status=UIGTYE(Prompt,PRECLUSFLAG)
+    	goto 10
+      else if(verb.eq.'CWRK')then
+      	write(Prompt,123)'CWRK'
+	    Status=UIGTYE(Prompt,CWRKFLAG)
+    	goto 10
+      else if(verb.eq.'CELE')then
+      	write(Prompt,123)'CELE'
+	    Status=UIGTYE(Prompt,CELEFLAG)
+    	goto 10
+      else if(verb.eq.'CELEMC')then
+      	write(Prompt,123)'CELEMC'
+	    Status=UIGTYE(Prompt,CELEMCFLAG)
+    	goto 10
+      else if(verb.eq.'DTCE')then
+      	write(Prompt,123)'DTCE'
+	    Status=UIGTYE(Prompt,DTCEFLAG)
+    	goto 10
+      else if(verb.eq.'DTCE0')then
+      	write(Prompt,123)'DTCE0'
+	    Status=UIGTYE(Prompt,DTCE0FLAG)
+    	goto 10
+      else if(verb.eq.'DCHITS')then
+      	write(Prompt,123)'DCHITS'
+	    Status=UIGTYE(Prompt,DCHITSFLAG)
+    	goto 10
+      else if(verb.eq.'DHRE')then
+      	write(Prompt,123)'DHRE'
+	    Status=UIGTYE(Prompt,DHREFLAG)
+    	goto 10
+      else if(verb.eq.'DHSP')then
+      	write(Prompt,123)'DHSP'
+	    Status=UIGTYE(Prompt,DHSPFLAG)
+    	goto 10
+      else if(verb.eq.'TRKV')then
+      	write(Prompt,123)'TRKV'
+	    Status=UIGTYE(Prompt,TRKVFLAG)
+    	goto 10
+      else if(verb.eq.'VTX')then
+      	write(Prompt,123)'VTX'
+	    Status=UIGTYE(Prompt,VTXFLAG)
+    	goto 10
+      else if(verb.eq.'TRKS')then
+      	write(Prompt,123)'TRKS'
+	    Status=UIGTYE(Prompt,TRKSFLAG)
+    	goto 10
+      else if(verb.eq.'TRKMC')then
+      	write(Prompt,123)'TRKMC'
+	    Status=UIGTYE(Prompt,TRKMCFLAG)
+    	goto 10
+      else if(verb.eq.'TRKVOLD')then
+      	write(Prompt,123)'TRKVOLD'
+	    Status=UIGTYE(Prompt,TRKVOLDFLAG)
+    	goto 10
+      else if(verb.eq.'VTXOLD')then
+      	write(Prompt,123)'VTXOLD'
+	    Status=UIGTYE(Prompt,VTXOLDFLAG)
+    	goto 10
+      else if(verb.eq.'TRKSOLD')then
+      	write(Prompt,123)'TRKSOLD'
+	    Status=UIGTYE(Prompt,TRKSOLDFLAG)
+    	goto 10
+      else if(verb.eq.'TRKMCOLD')then
+      	write(Prompt,123)'TRKMCOLD'
+	    Status=UIGTYE(Prompt,TRKMCOLDFLAG)
+    	goto 10
       end if
 C
 123   FORMAT(1x,'Select ',a4,' Ntuple-block?')
@@ -1913,8 +2011,8 @@ C
 C=============================================================================
       SUBROUTINE SAMFI
 C===========================================================================
-	write(*,*)'Run End routine'
-      	call closetree() 
+	  write(*,*)'Run End routine'
+      call closetree() 
 
       RETURN
       END
