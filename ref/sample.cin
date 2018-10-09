@@ -197,6 +197,14 @@ C
 
       common /cele/NCel,ICl,Det,Wed,Pla,Col,Ea,Ta,Eb,Tb,NCelMc,EMc,
      1       TMc,XMc,YMc,ZMc,PTyp,KNum,NHit
+
+C
+C  Block: celeMC
+C
+      integer iCELEMC, NCelMc, PTyp(300), KNum(300), NHit(300)
+      real EMc(300), TMc(300), XMc(300), YMc(300), ZMc(300)
+
+      common /celemc/NCelMc,EMc,TMc,XMc,YMc,ZMc,PTyp,KNum,NHit
 C
 C  Block: dtce
 C

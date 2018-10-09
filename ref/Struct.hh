@@ -32,14 +32,14 @@ extern "C"{
     int pizzaFlag;
     int timeFlag;
     int clusFlag;
-    int cluMCFlag;      //TODO
+    int cluMCFlag;
     int preclusFlag;
     int cwrkFlag;
     int celeFlag;
-    int celeMCFlag;     //TODO
+    int celeMCFlag;
     int dtceFlag;
     int dtce0Flag;
-    int dchitsFlag;     //TODO
+    int dchitsFlag;
     int dhreFlag;
     int dhspFlag;
     int trkvFlag;
@@ -343,6 +343,12 @@ extern "C" {
     float Ta[NeleCluMax];
     float Eb[NeleCluMax];
     float Tb[NeleCluMax];
+  }cele_;
+}
+
+// Block:   celeMC
+extern "C" {
+  extern struct {
     int NCelMc;
     float EMc[NeleCluMax];
     float TMc[NeleCluMax];
@@ -352,7 +358,7 @@ extern "C" {
     int PTyp[NeleCluMax];
     int KNum[NeleCluMax];
     int NHit[NeleCluMax];
-  }cele_;
+  }celemc_;
 }
 
 // Block:   dtce

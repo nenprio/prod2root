@@ -47,13 +47,15 @@ TreeWriter::TreeWriter() {
     // Block Clu
     if(sammenu_.clusFlag==1)        addBlockClu();
     // Block CluMC
-    if(sammenu_.clusFlag==1)        addBlockCluMC();
+    if(sammenu_.clusMCFlag==1)      addBlockCluMC();
     // Block PreClu
     if(sammenu_.preclusFlag==1)     addBlockPreClu();
     // Block CWRK
     if(sammenu_.cwrkFlag==1)        addBlockCWRK();
     // Block Cele
     if(sammenu_.celeFlag==1)        addBlockCele();
+    // Block CeleMC
+    if(sammenu_.celeMCFlag==1)      addBlockCeleMC();
     // Block DTCE
     if(sammenu_.dtceFlag==1)        addBlockDTCE();
     // Block DTCE0
@@ -418,6 +420,13 @@ void TreeWriter::addBlockCele() {
     fNewTree->Branch("Ta",      &cele_.Ta,      "Ta[NCel]/F");
     fNewTree->Branch("Eb",      &cele_.Eb,      "Eb[NCel]/F");
     fNewTree->Branch("Tb",      &cele_.Tb,      "Tb[NCel]/F");
+}
+
+// Add to the tree all the branches realted to the block CeleMC.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockCeleMC() {
     fNewTree->Branch("nCelMc",  &cele_.NCelMc,  "NCelMc/I");
     fNewTree->Branch("EMc",     &cele_.EMc,     "EMc[NCelMc]/F");
     fNewTree->Branch("TMc",     &cele_.TMc,     "TMc[NCelMc]/F");

@@ -26,6 +26,7 @@ class TreeWriter{
          void addBlockPreClu();
          void addBlockCWRK();
          void addBlockCele();
+         void addBlockCeleMC();
          void addBlockDTCE();
          void addBlockDTCE0();
          void addBlockDCHits();

@@ -1018,6 +1018,45 @@ C-----------------------------------------------------------------------
          END IF
       END IF
 C-----------------------------------------------------------------------
+C Fill Block CeleMC
+C-----------------------------------------------------------------------
+      IF (CELEMCFLAG) THEN
+         NCel = 0.
+         DO iCELEMC=1, 300
+            EMc(iCELEMC) = 0.
+            TMc(iCELEMC) = 0.
+            XMc(iCELEMC) = 0.
+            YMc(iCELEMC) = 0.
+            ZMc(iCELEMC) = 0.
+            PTyp(iCELEMC) = 0.
+            KNum(iCELEMC) = 0.
+            NHit(iCELEMC) = 0.
+         END DO
+   
+C        Already filled Evt%Cele in previous blocks
+   
+         NCelMc = Evt%Cele%nmc
+         IF ( NCelMc < 0 .OR. NCelMc > 300 ) THEN
+            WRITE(*,*) 'ERROR CELEMC - NCelMc Out of bound : ', NCelMc
+         END IF
+   
+         IF (NCelMc > 0 .AND. NCelMc <= 300) THEN
+            DO iCELEMC=1, NCelMc
+               EMc(iCELEMC) = Evt%Cele%Etrue(iCELEMC)
+               TMc(iCELEMC) = Evt%Cele%Ttrue(iCELEMC)
+               XMc(iCELEMC) = Evt%Cele%xtrue(iCELEMC)
+               YMc(iCELEMC) = Evt%Cele%ytrue(iCELEMC)
+               ZMc(iCELEMC) = Evt%Cele%ztrue(iCELEMC)
+               PTyp(iCELEMC) = Evt%Cele%ptyp(iCELEMC)
+               KNum(iCELEMC) = Evt%Cele%knum(iCELEMC)
+               NHit(iCELEMC) = Evt%Cele%numpar(iCELEMC)
+            END DO
+         ELSE
+            WRITE(*,*) 'ERROR CELEMC - NCelMc Index not valid : ', NCelMc
+         END IF
+      END IF
+
+C-----------------------------------------------------------------------
 C Fill Block dtce
 C-----------------------------------------------------------------------
       IF (DTCEFLAG) THEN
