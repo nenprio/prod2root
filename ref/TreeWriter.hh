@@ -17,6 +17,7 @@ class TreeWriter{
          void addBlockC2Trig();
          void addBlockTellina();
          void addBlockPizzetta();
+         void addBlockTorta();
          void addBlockTele();
          void addBlockPizza();
          void addBlockClu();
@@ -28,6 +29,14 @@ class TreeWriter{
          void addBlockDCHits();
          void addBlockDHRE();
          void addBlockDHSP();
+         void addBlockTrkV();
+         void addBlockVtx();
+         void addBlockTrks();
+         void addBlockTrkMC();
+         void addBlockTrkVOld();
+         void addBlockVtxOld();
+         void addBlockTrkOld();
+         void addBlockTrkMCOld();
          TFile* getTFile();
          void fillTTree();
      private:

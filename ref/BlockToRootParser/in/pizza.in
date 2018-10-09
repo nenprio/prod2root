@@ -1,8 +1,0 @@
-CALL HBNAME(Params%NtId,'PIZZA',Evt%PIZZA%npizza,'npack:i')
-CALL HBNAME(Params%NtId,'PIZZA',Evt%PIZZA%sector,'paksect(npack):i')
-CALL HBNAME(Params%NtId,'PIZZA',Evt%PIZZA%det,'pakdet(npack):i')
-CALL HBNAME(Params%NtId,'PIZZA',Evt%PIZZA%serkind,'pakserk(npack):i')
-CALL HBNAME(Params%NtId,'PIZZA',Evt%PIZZA%Ea,'Ea_pack(npack):r')
-CALL HBNAME(Params%NtId,'PIZZA',Evt%PIZZA%Eb,'Eb_pack(npack):r')
-CALL HBNAME(Params%NtId,'PIZZA',Evt%PIZZA%E_rec,'E_rec(npack):r')
-CALL HBNAME(Params%NtId,'PIZZA',Evt%PIZZA%Z_mod,'Z_mod(npack):r')

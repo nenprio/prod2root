@@ -1,4 +1,0 @@
-call HBNAME(nId,'DTCE0',DTCEStru%NEle,'nDTCE0:I::[0,1500]')
-call HBNAME(nId,'DTCE0',DTCEStru%Lay,'iLayerDTCE0(nDTCE0):I::[1,58]')
-call HBNAME(nId,'DTCE0',DTCEStru%Wir,'iWireDTCE0(nDTCE0):I::[1,378]')
-call HBNAME(nId,'DTCE0',DTCEStru%Time,'tDTCE0(nDTCE0):R')

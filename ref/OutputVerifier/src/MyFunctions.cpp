@@ -1,4 +1,5 @@
 #include <string>
+#include <cstring>
 #include <iostream>
 #include <sys/stat.h>
 #include "MyFunctions.hh"
@@ -101,4 +102,52 @@ bool createDirRecursively(const char *ss) {
         return false;
     }
     return true;
+}
+
+// Cut the string at each occurrence of a given delimiter
+// and return the specified field.
+//
+// input:   str     string to cut
+//          del     delimiter used to cut
+//          field   number of return field
+// output:  the field-th substring delimited by del
+//          or empty string if such substring doesn't exist
+char* cut(const char *s, char *del, int field) {
+    char *result;
+    char *str = strdup(s);
+    int currentField = 0;
+    
+    // Tokenize the input string and increment the field counter 
+    result = strtok(str, del);
+    currentField++;
+
+    // Loop up to reach the required field or the end of string
+    while (currentField!=field and result!=NULL) {
+        result = strtok(NULL, del);
+        currentField++;
+    }
+    
+    // If the required field doesn't exist, return empty string
+    if (currentField<field){
+        result = "";
+    }
+    return result;
+}
+
+// My implementation of stricmp to compare 2 char strings.
+//
+// input: two char strings a and b
+// output: integer value with the following meaning
+//          < 0     b greater than a
+//          = 0     string equals
+//          > 0     a greater than b
+int myStricmp(const char *a, const char *b) {
+  int ca, cb;
+  do {
+     ca = (unsigned char) *a++;
+     cb = (unsigned char) *b++;
+     ca = tolower(toupper(ca));
+     cb = tolower(toupper(cb));
+   } while (ca == cb && ca != '\0');
+   return ca - cb;
 }

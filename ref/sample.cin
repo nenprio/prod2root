@@ -122,6 +122,19 @@ C
 
       common /pizzetta/NPiz,Add_Piz,Ea_Piz,Eb_Piz,E_Piz,Z_Piz
 C
+C  Block: torta
+C
+      integer iTORTA, Type, BPhi, EPhi, WPhi, BBha, EBha, WBha, BCos 
+      integer ECos, WCos, E1W1_Dwn, B1_Dwn, T0d_Dwn, VetoCos, VetoBha
+      integer Bdw, Rephasing, TDC1_Pht1, Dt2_T1, Fiducial, T1c, T1d
+      integer T2d, Tcr, TCaf_Tcrd, TCaf_T2d, Moka_T2d, Moka_T2Dsl(10)
+      real tSpent, tDead
+
+      common /torta/tSpent,tDead,Type,BPhi,EPhi,WPhi,BBha,EBha,WBha,
+     1       BCos,ECos,WCos,E1W1_Dwn,B1_Dwn,T0d_Dwn,VetoCos,VetoBha,
+     1       Bdw,Rephasing,TDC1_Pht1,Dt2_T1,Fiducial,T1c,T1d,T2d,Tcr,
+     1       TCaf_Tcrd,TCaf_T2d,Moka_T2d,Moka_T2Dsl
+C
 C  Block: EvtTele
 C
       integer iEVTTELE
@@ -214,3 +227,127 @@ C
       real Time(500),DPar(500),Res(500),XDh(500),YDh(500),ZDh(500)
 
       common /dhsp/NDhsp,TrkDh,Layer,Wire,Time,DPar,Res,XDh,YDh,ZDh
+C
+C  Block: trkv
+C
+      
+      integer iTRKV, nTv, iV(30), TrkNumV(30), PidTv(30)
+      real CurV(30), PhiV(30), CoTv(30), PxTv(30), PyTv(30), PzTv(30)
+      real pModV(30), LenV(30), ChiV(30), Cov11Tv(30), Cov12Tv(30)
+      real Cov13Tv(30), Cov22Tv(30), Cov23Tv(30), Cov33Tv(30)
+
+      common /trkv/nTv,iV,TrkNumV,CurV,PhiV,CoTv,PxTv,PyTv,PzTv,pModV,
+     1 LenV,ChiV,PidTv,Cov11Tv,Cov12Tv,Cov13Tv,Cov22Tv,Cov23Tv,Cov33Tv
+C
+C  Block: vtx
+C
+      
+      integer iVTX, nV, Vetx(10), QuaLv(10), FitiDv(10)
+      real xV(10), yV(10), zV(10), ChiVtx(10), VTXCov1(10), VTXCov2(10) 
+      real VTXCov3(10), VTXCov4(10), VTXCov5(10), VTXCov6(10)
+
+      common /vertices/nV,Vetx,xV,yV,zV,ChiVtx,QuaLv,FitiDv,VTXCov1,
+     1       VTXCov2,VTXCov3,VTXCov4,VTXCov5,VTXCov6
+C
+C  Block: trks
+C
+      integer iTRKS, nT, TrkInd(100), TrkVer(100), nPrHit(100)
+      integer nFitHit(100), nMskInk(100)
+      real Cur(100), Phi(100), Cot(100), Pxt(100), Pyt(100), Pzt(100)
+      real PMod(100), Len(100), xFirst(100), yFirst(100), zFirst(100)
+      real CurLa(100), PhiLa(100), CotLa(100), PxtLa(100), PytLa(100)
+      real PztLa(100), PModLa(100), SPca(100), SZeta(100), SCurV(100)
+      real SCotG(100), SPhi(100), xLast(100), yLast(100), zLast(100)
+      real xPca2(100), yPca2(100), zPca2(100), QTrk2(100), CotPca2(100)
+      real PhiPca2(100), Chi2Fit(100), Chi2Ms(100)
+
+      common /trks/nT,TrkInd,TrkVer,Cur,Phi,Cot,Pxt,Pyt,Pzt,PMod,Len,
+     1       xFirst,yFirst,zFirst,CurLa,PhiLa,CotLa,PxtLa,PytLa,PztLa,
+     1       PModLa,SPca,SZeta,SCurV,SCotG,SPhi,xLast,yLast,zLast,xPca2,
+     1       yPca2,zPca2,QTrk2,CotPca2,PhiPca2,nPrHit,nFitHit,nMskInk,
+     1       Chi2Fit,Chi2Ms
+C
+C  Block: trkmc
+C
+      integer iTRKMC, nTfMC, NConTr(100), TrkIne1(100), TrType1(100)
+      integer TrHits1(100), TrkIne2(100), TrType2(100), TrHits2(100)
+      integer TrkIn3(100), TrType3(100), TrHits3(100)
+      real xFMC(100), yFMC(100), zFMC(100), PxFMC(100), PyFMC(100)
+      real PzFMC(100), xLMC(100), yLMC(100), zLMC(100), PxLMC(100)
+      real PyLMC(100), PzLMC(100), xFMC2(100), yFMC2(100), zFMC2(100)
+      real PxFMC2(100), PyFMC2(100), PzFMC2(100), xLMC2(100), yLMC2(100)
+      real zLMC2(100), PxLMC2(100), PyLMC2(100), PzLMC2(100)
+
+      common /trkmc/nTfMC,NConTr,TrkIne1,TrType1,TrHits1,TrkIne2,
+     1       TrType2,TrHits2,TrkIn3,TrType3,TrHits3,xFMC,yFMC,zFMC,
+     1       PxFMC,PyFMC,PzFMC,xLMC,yLMC,zLMC,PxLMC,PyLMC,PzLMC,xFMC2,
+     1       yFMC2,zFMC2,PxFMC2,PyFMC2,PzFMC2,xLMC2,yLMC2,zLMC2,PxLMC2,
+     1       PyLMC2,PzLMC2
+C
+C  Block: trkvold
+C
+      integer iTRKVOLD, nTVOld, iVOld(30), TrkNumVOld(30), PidTVOld(30)
+      real CurVOld(30), PhiVOld(30), CotVOld(30), PxTVOld(30) 
+      real PyTVOld(30), PzTVOld(30), PModVOld(30), LenVOld(30)
+      real ChiVOld(30), Cov11TVOld(30), Cov12TVOld(30), Cov13TVOld(30)
+      real Cov22TVOld(30), Cov23TVOld(30), Cov33TVOld(30)
+
+      common /trkvold/nTVOld,iVOld,TrkNumVOld,CurVOld,PhiVOld,CotVOld,
+     1       PxTVOld,PyTVOld,PzTVOld,PModVOld,LenVOld,ChiVOld,PidTVOld,
+     1       Cov11TVOld,Cov12TVOld,Cov13TVOld,Cov22TVOld,Cov23TVOld,
+     1       Cov33TVOld
+C
+C  Block: vtxold
+C
+      integer iVTXOLD, nVOld, VtxOld(10), QuaLVOld(10), FitIdVOld(10)
+      real xVOld(10), yVOld(10), ZVOld(10), ChiVTxOld(10)
+      real VtxCov1Old(10), VtxCov2Old(10), VtxCov3Old(10)
+      real VtxCov4Old(10), VtxCov5Old(10), VtxCov6Old(10)
+
+      common /vtxold/nVOld,VtxOld,xVOld,yVOld,ZVOld,ChiVTxOld,QuaLVOld,
+     1       FitIdVOld,VtxCov1Old,VtxCov2Old,VtxCov3Old,VtxCov4Old,
+     1       VtxCov5Old,VtxCov6Old
+C
+C  Block: trkold
+C
+      integer iTRKOLD, nTOld, TrkIndOld(100), TrkVerOld(100)
+      integer nPrhiTOld(100), nFifthITOld(100), nMskInkOld(100)
+      real CurOld(100), PhiOld(100), CotOld(100), PxTOld(100)
+      real PyTOld(100), PzTOld(100), PModOld(100), LenOld(100)
+      real xFirstOld(100), yFirstOld(100), zFirstOld(100), CurLaOld(100)
+      real PhiLaOld(100), CotLaOld(100), PxTLaOld(100), PyTLaOld(100)
+      real PzTLaOld(100), PModLaOld(100), SPcaOld(100), SZetaOld(100)
+      real SCurVOld(100), SCotGOld(100), SPhiOld(100), xLastOld(100)
+      real yLastOld(100), zLastOld(100), xPca2Old(100), yPca2Old(100)
+      real zPca2Old(100), QTrk2Old(100), CotPca2Old(100), PhiPca2Old(100)
+      real Chi2FitOld(100), Chi2MSOld(100)
+
+      common /trkold/nTOld,TrkIndOld,TrkVerOld,CurOld,PhiOld,CotOld,
+     1       PxTOld,PyTOld,PzTOld,PModOld,LenOld,xFirstOld,yFirstOld,
+     1       zFirstOld,CurLaOld,PhiLaOld,CotLaOld,PxTLaOld,PyTLaOld,
+     1       PzTLaOld,PModLaOld,SPcaOld,SZetaOld,SCurVOld,SCotGOld,
+     1       SPhiOld,xLastOld,yLastOld,zLastOld,xPca2Old,yPca2Old,
+     1       zPca2Old,QTrk2Old,CotPca2Old,PhiPca2Old,nPrhiTOld,
+     1       nFifthITOld,nMskInkOld,Chi2FitOld,Chi2MSOld
+C
+C  Block: trkmcold
+C
+      integer iTRKMCOLD, nTfMCOld, nContrOld(100), TrkIne1Old(100)
+      integer TrType1Old(100), TrHits1Old(100), TrkIne2Old(100)
+      integer TrType2Old(100), TrHits2Old(100), TrkIne3Old(100)
+      integer TrType3Old(100), TrHits3Old(100)
+      real xFMCOld(100), yFMCOld(100), zFMCOld(100), PxFMCOld(100)
+      real PyFMCOld(100), PzFMCOld(100), xLMCOld(100), yLMCOld(100)
+      real zLMCOld(100), PxLMCOld(100), PyLMCOld(100), PzLMCOld(100)
+      real xFMC2Old(100), yFMC2Old(100), zFMC2Old(100), PxFMC2Old(100)
+      real PyFMC2Old(100), PzFMC2Old(100), xLMC2Old(100), yLMC2Old(100)
+      real zLMC2Old(100), PxLMC2Old(100), PyLMC2Old(100), PzLMC2Old(100)
+
+      common /trkmcold/nTfMCOld,nContrOld,TrkIne1Old,TrType1Old,
+     1       TrHits1Old,TrkIne2Old,TrType2Old,TrHits2Old,TrkIne3Old,
+     1       TrType3Old,TrHits3Old,xFMCOld,yFMCOld,zFMCOld,PxFMCOld,
+     1       PyFMCOld,PzFMCOld,xLMCOld,yLMCOld,zLMCOld,PxLMCOld,PyLMCOld,
+     1       PzLMCOld,xFMC2Old,yFMC2Old,zFMC2Old,PxFMC2Old,PyFMC2Old,
+     1       PzFMC2Old,xLMC2Old,yLMC2Old,zLMC2Old,PxLMC2Old,PyLMC2Old,
+     1       PzLMC2Old
+

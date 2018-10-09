@@ -10,12 +10,12 @@ class OutputVerifier {
         char* getRootFile();
         char* getHBConvFile();
         char* getOutputDir();
-        void exportTreeToTxt(TTree *tree);
-        void exportRootTree();
-        void exportHBConvTree();
-        bool verifyEvent(int i);
-        void verify();
-        void printInfo();
+        void  exportTreeToTxt(TTree *tree);
+        void  exportRootTree();
+        void  exportHBConvTree();
+        int verifyEvent(int i, bool printInfo);
+        bool  verify(int from, int to, bool printInfo);
+        void  printInfo();
     private:
         const char *rootFile;
         const char *hbConvFile;

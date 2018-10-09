@@ -103,60 +103,64 @@ def getCinContent(block_name, names, types, nameIsArray):
 # input:  -
 # output: content of kloe file as string.
 def getKloeContent(block_name, names, data, nameIsArray, ranges):
-    content = "C-----------------------------------------------------------------------\n"
+    content  = "C-----------------------------------------------------------------------\n"
     content += "C Fill Block " + block_name + "\n"
     content += "C-----------------------------------------------------------------------\n"
+    content += "      IF (.TRUE.) THEN\n"
+
     arrays = list()
     for i,n in enumerate(names):
         if nameIsArray[i]:
             arrays.append(i)
         else:
-            content += "      " + n + " = 0.\n"
+            content += "         " + n + " = 0.\n"
 
     # Initialize all arrays to zero
     if len(arrays)>0:
-        content += "      DO i" + block_name.upper() + "=1, >MAX-VALUE<\n"
+        content += "         DO i" + block_name.upper() + "=1, >MAX-VALUE<\n"
     for j in arrays:
-        content += "        " +  names[j] + "(i" + block_name.upper() + ") = 0.\n"
+        content += "           " +  names[j] + "(i" + block_name.upper() + ") = 0.\n"
     if len(arrays)>0:
-        content += "      END DO\n"
+        content += "         END DO\n"
 
     content += "\n"
-    content += "      >>>INSERT HERE THE GET FUNCTION<<<\n"
+    content += "         >>>INSERT HERE THE GET FUNCTION<<<\n"
     content += "\n"
     for i,(n,d) in enumerate(zip(names,data)):
         if not nameIsArray[i]:
             if ranges[i]=="":
-                content += "      " + n + " = " + d + "\n"
+                content += "         " + n + " = " + d + "\n"
             else:
                 min_range, max_range = ranges[i].replace("[","").replace("]","").split(",")
-                content += "      " + n + " = " + d + "\n"
-                content += "      IF ( " + n + " < " + min_range + " .OR. " + n + " > " + max_range + " ) THEN\n"
-                content += "        WRITE(*,*) \'ERROR " + block_name.upper() + " - " + n + " Out of bound : \', " + n + "\n"
-                content += "      END IF\n"
+                content += "         " + n + " = " + d + "\n"
+                content += "         IF ( " + n + " < " + min_range + " .OR. " + n + " > " + max_range + " ) THEN\n"
+                content += "            WRITE(*,*) \'ERROR " + block_name.upper() + " - " + n + " Out of bound : \', " + n + "\n"
+                content += "         END IF\n"
 
     # Initialize all arrays to zero
     if len(arrays)>0:
         content += "\n"
-        content += "      IF (>INDEX-VAR< > 0 .AND. >INDEX-VAR< <= >MAX-VALUE<) THEN\n"
-        content += "        DO i" + block_name.upper() + "=1, >INDEX-VAR<\n"
+        content += "         IF (>INDEX-VAR< > 0 .AND. >INDEX-VAR< <= >MAX-VALUE<) THEN\n"
+        content += "            DO i" + block_name.upper() + "=1, >INDEX-VAR<\n"
     for j in arrays:
         n = names[j] + "(i" + block_name.upper() + ")"
         d = data[j] + "(i" + block_name.upper() + ")"
         if ranges[j]=="":
-            content += "          " + n + " = " + d + "\n"
+            content += "                 " + n + " = " + d + "\n"
         else:
             min_range, max_range = ranges[j].replace("[","").replace("]","").split(",")
-            content += "          " + n + " = " + d + "\n"
-            content += "          IF ( " + n + " < " + min_range + " .OR. " + n + " > " + max_range + " ) THEN\n"
-            content += "            WRITE(*,*) \'ERROR " + block_name.upper() + " - " + names[j] + "[" + str(j) + "] Out of bound : \', " + n + "\n"
-            content += "          END IF\n"
+            content += "               " + n + " = " + d + "\n"
+            content += "               IF ( " + n + " < " + min_range + " .OR. " + n + " > " + max_range + " ) THEN\n"
+            content += "                  WRITE(*,*) \'ERROR " + block_name.upper() + " - " + names[j] + "[" + str(j) + "] Out of bound : \', " + n + "\n"
+            content += "               END IF\n"
 
     if len(arrays)>0:
-        content += "        END DO\n"
-        content += "      ELSE\n"
-        content += "        WRITE(*,*) \'ERROR " + block_name.upper() + " - >INDEX-VAR< Index not valid: \', >INDEX-VAR<\n"
-        content += "      END IF\n"
+        content += "           END DO\n"
+        content += "         ELSE\n"
+        content += "            WRITE(*,*) \'ERROR " + block_name.upper() + " - >INDEX-VAR< Index not valid: \', >INDEX-VAR<\n"
+        content += "         END IF\n"
+
+    content += "      END IF\n"
     return content
 
 # Create TreeWriter.cpp content

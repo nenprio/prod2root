@@ -11,6 +11,9 @@ const int MaxNPack   = 300;
 const int NeleCluMax = 300;
 const int NMaxDC     = 1500;
 const int MaxNumDHSP = 500;
+const int MaxNumTrkV = 30;
+const int MaxNumVtx  = 10;
+const int MaxNumTrk  = 100;
 
 //Verb for Talk_to module
 extern "C"{
@@ -168,6 +171,42 @@ extern "C" {
     float E_Piz[MaxTrgChan];
     float Z_Piz[MaxTrgChan];
   }pizzetta_;
+}
+
+// Block:   torta
+extern "C" {
+  extern struct {
+    float tSpent;
+    float tDead;
+    int Type;
+    int BPhi;
+    int EPhi;
+    int WPhi;
+    int BBha;
+    int EBha;
+    int WBha;
+    int BCos;
+    int ECos;
+    int WCos;
+    int E1W1_Dwn;
+    int B1_Dwn;
+    int T0d_Dwn;
+    int VetoCos;
+    int VetoBha;
+    int Bdw;
+    int Rephasing;
+    int TDC1_Pht1;
+    int Dt2_T1;
+    int Fiducial;
+    int T1c;
+    int T1d;
+    int T2d;
+    int Tcr;
+    int TCaf_Tcrd;
+    int TCaf_T2d;
+    int Moka_T2d;
+    int Moka_T2Dsl[10];
+  }torta_;
 }
 
 // Block:   evttele
@@ -345,6 +384,270 @@ extern "C" {
     float YDh[MaxNumDHSP];
     float ZDh[MaxNumDHSP];
   }dhsp_;
+}
+
+// Block:   trkv
+extern "C" {
+  extern struct {
+    int nTv;
+    int iV[MaxNumTrkV];
+    int TrkNumV[MaxNumTrkV];
+    float CurV[MaxNumTrkV];
+    float PhiV[MaxNumTrkV];
+    float CoTv[MaxNumTrkV];
+    float PxTv[MaxNumTrkV];
+    float PyTv[MaxNumTrkV];
+    float PzTv[MaxNumTrkV];
+    float pModV[MaxNumTrkV];
+    float LenV[MaxNumTrkV];
+    float ChiV[MaxNumTrkV];
+    int PidTv[MaxNumTrkV];
+    float Cov11Tv[MaxNumTrkV];
+    float Cov12Tv[MaxNumTrkV];
+    float Cov13Tv[MaxNumTrkV];
+    float Cov22Tv[MaxNumTrkV];
+    float Cov23Tv[MaxNumTrkV];
+    float Cov33Tv[MaxNumTrkV];
+  }trkv_;
+}
+
+// Block:   vtx
+extern "C" {
+  extern struct {
+    int nV;
+    int Vetx[MaxNumVtx];
+    float xV[MaxNumVtx];
+    float yV[MaxNumVtx];
+    float zV[MaxNumVtx];
+    float ChiVtx[MaxNumVtx];
+    int QuaLv[MaxNumVtx];
+    int FitiDv[MaxNumVtx];
+    float VTXCov1[MaxNumVtx];
+    float VTXCov2[MaxNumVtx];
+    float VTXCov3[MaxNumVtx];
+    float VTXCov4[MaxNumVtx];
+    float VTXCov5[MaxNumVtx];
+    float VTXCov6[MaxNumVtx];
+  }vertices_;
+}
+
+// Block:   trks
+extern "C" {
+  extern struct {
+    int nT;
+    int TrkInd[MaxNumTrk];
+    int TrkVer[MaxNumTrk];
+    float Cur[MaxNumTrk];
+    float Phi[MaxNumTrk];
+    float Cot[MaxNumTrk];
+    float Pxt[MaxNumTrk];
+    float Pyt[MaxNumTrk];
+    float Pzt[MaxNumTrk];
+    float PMod[MaxNumTrk];
+    float Len[MaxNumTrk];
+    float xFirst[MaxNumTrk];
+    float yFirst[MaxNumTrk];
+    float zFirst[MaxNumTrk];
+    float CurLa[MaxNumTrk];
+    float PhiLa[MaxNumTrk];
+    float CotLa[MaxNumTrk];
+    float PxtLa[MaxNumTrk];
+    float PytLa[MaxNumTrk];
+    float PztLa[MaxNumTrk];
+    float PModLa[MaxNumTrk];
+    float SPca[MaxNumTrk];
+    float SZeta[MaxNumTrk];
+    float SCurV[MaxNumTrk];
+    float SCotG[MaxNumTrk];
+    float SPhi[MaxNumTrk];
+    float xLast[MaxNumTrk];
+    float yLast[MaxNumTrk];
+    float zLast[MaxNumTrk];
+    float xPca2[MaxNumTrk];
+    float yPca2[MaxNumTrk];
+    float zPca2[MaxNumTrk];
+    float QTrk2[MaxNumTrk];
+    float CotPca2[MaxNumTrk];
+    float PhiPca2[MaxNumTrk];
+    int nPrHit[MaxNumTrk];
+    int nFitHit[MaxNumTrk];
+    int nMskInk[MaxNumTrk];
+    float Chi2Fit[MaxNumTrk];
+    float Chi2Ms[MaxNumTrk];
+  }trks_;
+}
+
+// Block:   trkmc
+extern "C" {
+  extern struct {
+    int nTfMC;
+    int NConTr[MaxNumTrk];
+    int TrkIne1[MaxNumTrk];
+    int TrType1[MaxNumTrk];
+    int TrHits1[MaxNumTrk];
+    int TrkIne2[MaxNumTrk];
+    int TrType2[MaxNumTrk];
+    int TrHits2[MaxNumTrk];
+    int TrkIn3[MaxNumTrk];
+    int TrType3[MaxNumTrk];
+    int TrHits3[MaxNumTrk];
+    float xFMC[MaxNumTrk];
+    float yFMC[MaxNumTrk];
+    float zFMC[MaxNumTrk];
+    float PxFMC[MaxNumTrk];
+    float PyFMC[MaxNumTrk];
+    float PzFMC[MaxNumTrk];
+    float xLMC[MaxNumTrk];
+    float yLMC[MaxNumTrk];
+    float zLMC[MaxNumTrk];
+    float PxLMC[MaxNumTrk];
+    float PyLMC[MaxNumTrk];
+    float PzLMC[MaxNumTrk];
+    float xFMC2[MaxNumTrk];
+    float yFMC2[MaxNumTrk];
+    float zFMC2[MaxNumTrk];
+    float PxFMC2[MaxNumTrk];
+    float PyFMC2[MaxNumTrk];
+    float PzFMC2[MaxNumTrk];
+    float xLMC2[MaxNumTrk];
+    float yLMC2[MaxNumTrk];
+    float zLMC2[MaxNumTrk];
+    float PxLMC2[MaxNumTrk];
+    float PyLMC2[MaxNumTrk];
+    float PzLMC2[MaxNumTrk];
+  }trkmc_;
+}
+
+// Block:   trkvold
+extern "C" {
+  extern struct {
+    int nTVOld;
+    int iVOld[MaxNumTrkV];
+    int TrkNumVOld[MaxNumTrkV];
+    float CurVOld[MaxNumTrkV];
+    float PhiVOld[MaxNumTrkV];
+    float CotVOld[MaxNumTrkV];
+    float PxTVOld[MaxNumTrkV];
+    float PyTVOld[MaxNumTrkV];
+    float PzTVOld[MaxNumTrkV];
+    float PModVOld[MaxNumTrkV];
+    float LenVOld[MaxNumTrkV];
+    float ChiVOld[MaxNumTrkV];
+    int PidTVOld[MaxNumTrkV];
+    float Cov11TVOld[MaxNumTrkV];
+    float Cov12TVOld[MaxNumTrkV];
+    float Cov13TVOld[MaxNumTrkV];
+    float Cov22TVOld[MaxNumTrkV];
+    float Cov23TVOld[MaxNumTrkV];
+    float Cov33TVOld[MaxNumTrkV];
+  }trkvold_;
+}
+
+// Block:   vtxold
+extern "C" {
+  extern struct {
+    int nVOld;
+    int VtxOld[MaxNumVtx];
+    float xVOld[MaxNumVtx];
+    float yVOld[MaxNumVtx];
+    float ZVOld[MaxNumVtx];
+    float ChiVTxOld[MaxNumVtx];
+    int QuaLVOld[MaxNumVtx];
+    int FitIdVOld[MaxNumVtx];
+    float VtxCov1Old[MaxNumVtx];
+    float VtxCov2Old[MaxNumVtx];
+    float VtxCov3Old[MaxNumVtx];
+    float VtxCov4Old[MaxNumVtx];
+    float VtxCov5Old[MaxNumVtx];
+    float VtxCov6Old[MaxNumVtx];
+  }vtxold_;
+}
+
+// Block:   trkold
+extern "C" {
+  extern struct {
+    int nTOld;
+    int TrkIndOld[MaxNumTrk];
+    int TrkVerOld[MaxNumTrk];
+    float CurOld[MaxNumTrk];
+    float PhiOld[MaxNumTrk];
+    float CotOld[MaxNumTrk];
+    float PxTOld[MaxNumTrk];
+    float PyTOld[MaxNumTrk];
+    float PzTOld[MaxNumTrk];
+    float PModOld[MaxNumTrk];
+    float LenOld[MaxNumTrk];
+    float xFirstOld[MaxNumTrk];
+    float yFirstOld[MaxNumTrk];
+    float zFirstOld[MaxNumTrk];
+    float CurLaOld[MaxNumTrk];
+    float PhiLaOld[MaxNumTrk];
+    float CotLaOld[MaxNumTrk];
+    float PxTLaOld[MaxNumTrk];
+    float PyTLaOld[MaxNumTrk];
+    float PzTLaOld[MaxNumTrk];
+    float PModLaOld[MaxNumTrk];
+    float SPcaOld[MaxNumTrk];
+    float SZetaOld[MaxNumTrk];
+    float SCurVOld[MaxNumTrk];
+    float SCotGOld[MaxNumTrk];
+    float SPhiOld[MaxNumTrk];
+    float xLastOld[MaxNumTrk];
+    float yLastOld[MaxNumTrk];
+    float zLastOld[MaxNumTrk];
+    float xPca2Old[MaxNumTrk];
+    float yPca2Old[MaxNumTrk];
+    float zPca2Old[MaxNumTrk];
+    float QTrk2Old[MaxNumTrk];
+    float CotPca2Old[MaxNumTrk];
+    float PhiPca2Old[MaxNumTrk];
+    int nPrhiTOld[MaxNumTrk];
+    int nFifthITOld[MaxNumTrk];
+    int nMskInkOld[MaxNumTrk];
+    float Chi2FitOld[MaxNumTrk];
+    float Chi2MSOld[MaxNumTrk];
+  }trkold_;
+}
+
+// Block:   trkmcold
+extern "C" {
+  extern struct {
+    int nTfMCOld;
+    int nContrOld[MaxNumTrk];
+    int TrkIne1Old[MaxNumTrk];
+    int TrType1Old[MaxNumTrk];
+    int TrHits1Old[MaxNumTrk];
+    int TrkIne2Old[MaxNumTrk];
+    int TrType2Old[MaxNumTrk];
+    int TrHits2Old[MaxNumTrk];
+    int TrkIne3Old[MaxNumTrk];
+    int TrType3Old[MaxNumTrk];
+    int TrHits3Old[MaxNumTrk];
+    float xFMCOld[MaxNumTrk];
+    float yFMCOld[MaxNumTrk];
+    float zFMCOld[MaxNumTrk];
+    float PxFMCOld[MaxNumTrk];
+    float PyFMCOld[MaxNumTrk];
+    float PzFMCOld[MaxNumTrk];
+    float xLMCOld[MaxNumTrk];
+    float yLMCOld[MaxNumTrk];
+    float zLMCOld[MaxNumTrk];
+    float PxLMCOld[MaxNumTrk];
+    float PyLMCOld[MaxNumTrk];
+    float PzLMCOld[MaxNumTrk];
+    float xFMC2Old[MaxNumTrk];
+    float yFMC2Old[MaxNumTrk];
+    float zFMC2Old[MaxNumTrk];
+    float PxFMC2Old[MaxNumTrk];
+    float PyFMC2Old[MaxNumTrk];
+    float PzFMC2Old[MaxNumTrk];
+    float xLMC2Old[MaxNumTrk];
+    float yLMC2Old[MaxNumTrk];
+    float zLMC2Old[MaxNumTrk];
+    float PxLMC2Old[MaxNumTrk];
+    float PyLMC2Old[MaxNumTrk];
+    float PzLMC2Old[MaxNumTrk];
+  }trkmcold_;
 }
 
 #endif
