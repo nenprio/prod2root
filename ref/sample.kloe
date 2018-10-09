@@ -33,18 +33,39 @@ C==============================================================================
 C
       write(*,*)"SAMIN"
 
-      TRIGFLAG    = .false.
-      TELEFLAG    = .false.
-      C2TRGFLAG   = .false.
-      TELLINAFLAG = .false.
-      PIZZAFLAG   = .false.
-      ECLSFLAG    = .true.
-      BPOSFLAG    = .false.
+      INFOFLAG      = .FALSE.
+      DATAFLAG      = .FALSE.
+      BPOSFLAG      = .FALSE.
+      GDHITFLAG     = .FALSE.
+      ECLSFLAG      = .FALSE.
+      TRIGFLAG      = .FALSE.
+      C2TRGFLAG     = .FALSE.
+      TELLINAFLAG   = .FALSE.
+      PIZZETTAFLAG  = .FALSE.
+      TORTAFLAG     = .FALSE.
+      TELEFLAG      = .FALSE.
+      PIZZAFLAG     = .FALSE.
+      TIMEFLAG      = .FALSE.
+      CLUSFLAG      = .FALSE.
+      CLUMCFLAG     = .FALSE.
+      PRECLUSFLAG   = .FALSE.
+      CWRKFLAG      = .FALSE.
+      CELEFLAG      = .FALSE.
+      CELEMCFLAG    = .FALSE.
+      DTCEFLAG      = .FALSE.
+      DTCE0FLAG     = .FALSE.
+      DCHITSFLAG    = .FALSE.
+      DHREFLAG      = .FALSE.
+      DHSPFLAG      = .FALSE.
+      TRKVFLAG      = .FALSE.
+      VTXFLAG       = .FALSE.
+      TRKSFLAG      = .FALSE.
+      TRKMCFLAG     = .FALSE.
+      TRKVOLDFLAG   = .FALSE.
+      VTXOLDFLAG    = .FALSE.
+      TRKSOLDFLAG   = .FALSE.
+      TRKMCOLDFLAG  = .FALSE.
       
-      write(*,*)'ECLSFLAG', ECLSFLAG
-
-
-
       RETURN
       END
 C
