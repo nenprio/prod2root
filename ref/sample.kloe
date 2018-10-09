@@ -215,7 +215,7 @@ C         ENDIF
 C-----------------------------------------------------------------------
 C Fill Block Info
 C-----------------------------------------------------------------------
-      IF (.FALSE.) THEN ! TODO: Change .TRUE. with flag name
+      IF (INFOFLAG) THEN
          IF (mcflag_1) THEN
             istat=blocat(iw,'BRID',1,ind1,inddat)
             Evt%Info%RunNumber = iw(inddat)
@@ -310,7 +310,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block GDHit
 C-----------------------------------------------------------------------
-      IF (.FALSE.) THEN ! TODO: Change .TRUE. with flag name
+      IF (GDHITFLAG) THEN
          DtceHit = 0.
          DhreHit = 0.
          DprsHit = 0.
@@ -333,65 +333,63 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block Ecls
 C-----------------------------------------------------------------------
-      IF (.FALSE.) THEN ! TODO: Change .TRUE. with flag name
-         IF (ECLSFLAG) THEN
-            nEcls = 0
-            EclTrgw = 0
-            EclFilfo = 0
-            DO iecls=1,8
-               EclWord(iecls) = 0
-               EclStream(iecls) = 0
-               EclTagNum(iecls) = 0
-               EclEvType(iecls) = 0
-            END DO
-            
-            nEcls2 = 0
-            EclTrgw2 = 0
-            EclFilfo2 = 0
-            DO iecls2=1,8
-               EclWord2(iecls2) = 0
-               EclStream2(iecls2) = 0
-               EclTagNum2(iecls2) = 0
-               EclEvType2(iecls2) = 0
-            END DO
-   
-            istat = GETECLS(evt%ecls)
-            
-            nEcls = evt%ecls%n
-            IF ( nEcls < 0 .OR. nEcls > 8 ) THEN
-               WRITE(*,*) 'ERROR INFO - nEcls Out of bound : ', nEcls
-            END IF
+      IF (ECLSFLAG) THEN
+         nEcls = 0
+         EclTrgw = 0
+         EclFilfo = 0
+         DO iecls=1,8
+            EclWord(iecls) = 0
+            EclStream(iecls) = 0
+            EclTagNum(iecls) = 0
+            EclEvType(iecls) = 0
+         END DO
+         
+         nEcls2 = 0
+         EclTrgw2 = 0
+         EclFilfo2 = 0
+         DO iecls2=1,8
+            EclWord2(iecls2) = 0
+            EclStream2(iecls2) = 0
+            EclTagNum2(iecls2) = 0
+            EclEvType2(iecls2) = 0
+         END DO
 
-            IF (nEcls > 0 .AND. nEcls <= 8) THEN
-               EclTrgw = evt%ecls%trigger
-               EclFilfo = evt%ecls%filfo
-               DO iecls=1,necls
-                  EclWord(iecls) = evt%ecls%TotWord(iecls)
-                  EclStream(iecls) = evt%ecls%Stream(iecls)
-                  EclTagNum(iecls) = evt%ecls%TagNum(iecls)
-                  EclEvType(iecls) = evt%ecls%EvnTyp(iecls)
-               END DO
-            ELSE
-               WRITE(*,*) 'ERROR ECLS - nEcls Index not valid: ', nEcls
-            END IF
-            
-            nEcls2 = evt%ecls%n2
-            IF ( nEcls2 < 0 .OR. nEcls2 > 8 ) THEN
-               WRITE(*,*) 'ERROR INFO - nEcls2 Out of bound : ', nEcls2
-            END IF
-   
-            IF (nEcls2 > 0 .AND. nEcls <= 8) THEN
-               EclTrgw2 = evt%ecls%trigger2
-               EclFilfo2 = evt%ecls%filfo2
-               DO iecls2=1,necls2
-                  EclWord2(iecls2) = evt%ecls%TotWord2(iecls2)
-                  EclStream2(iecls2) = evt%ecls%Stream2(iecls2)
-                  EclTagNum2(iecls2) = evt%ecls%TagNum2(iecls2)
-                  EclEvType2(iecls2) = evt%ecls%EvnTyp2(iecls2)
-               END DO
-            ELSE
-               WRITE(*,*) 'ERROR ECLS - nEcls2 Index not valid: ', nEcls2
-            END IF
+         istat = GETECLS(evt%ecls)
+         
+         nEcls = evt%ecls%n
+         IF ( nEcls < 0 .OR. nEcls > 8 ) THEN
+            WRITE(*,*) 'ERROR INFO - nEcls Out of bound : ', nEcls
+         END IF
+
+         IF (nEcls > 0 .AND. nEcls <= 8) THEN
+            EclTrgw = evt%ecls%trigger
+            EclFilfo = evt%ecls%filfo
+            DO iecls=1,necls
+               EclWord(iecls) = evt%ecls%TotWord(iecls)
+               EclStream(iecls) = evt%ecls%Stream(iecls)
+               EclTagNum(iecls) = evt%ecls%TagNum(iecls)
+               EclEvType(iecls) = evt%ecls%EvnTyp(iecls)
+            END DO
+         ELSE
+            WRITE(*,*) 'ERROR ECLS - nEcls Index not valid: ', nEcls
+         END IF
+         
+         nEcls2 = evt%ecls%n2
+         IF ( nEcls2 < 0 .OR. nEcls2 > 8 ) THEN
+            WRITE(*,*) 'ERROR INFO - nEcls2 Out of bound : ', nEcls2
+         END IF
+
+         IF (nEcls2 > 0 .AND. nEcls <= 8) THEN
+            EclTrgw2 = evt%ecls%trigger2
+            EclFilfo2 = evt%ecls%filfo2
+            DO iecls2=1,necls2
+               EclWord2(iecls2) = evt%ecls%TotWord2(iecls2)
+               EclStream2(iecls2) = evt%ecls%Stream2(iecls2)
+               EclTagNum2(iecls2) = evt%ecls%TagNum2(iecls2)
+               EclEvType2(iecls2) = evt%ecls%EvnTyp2(iecls2)
+            END DO
+         ELSE
+            WRITE(*,*) 'ERROR ECLS - nEcls2 Index not valid: ', nEcls2
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -480,7 +478,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block pizzetta
 C-----------------------------------------------------------------------
-      IF (PIZZAFLAG) THEN
+      IF (PIZZETTAFLAG) THEN
          NPiz = 0.
          DO iPIZZETTA=1, 1000
             Add_Piz(iPIZZETTA) = 0.
@@ -511,7 +509,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block Torta
 C-----------------------------------------------------------------------
-      IF (.FALSE.) THEN ! TODO: Change .TRUE. with flag name
+      IF (TORTA) THEN
          tSpent = 0.
          tDead = 0.
          Type = 0.
@@ -653,6 +651,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block Tele
 C-----------------------------------------------------------------------
+      IF (TELEFLAG) THEN
       NTele = 0.
       DO iEVTTELE=1, 300
         Det_Trg(iEVTTELE) = 0.
@@ -663,83 +662,88 @@ C-----------------------------------------------------------------------
         Eb_Trg(iEVTTELE) = 0.
         Ta_Trg(iEVTTELE) = 0.
         Tb_Trg(iEVTTELE) = 0.
-      END DO
-
-      istat = GETTELESTRU(Evt%TELE)
-
-      NTele = Evt%TELE%ntele
-      IF ( NTele < 0 .OR. NTele > 300 ) THEN
-         WRITE(*,*) 'ERROR TELE - NTele Out of bound : ', NTele
-      END IF
-      IF (NTele > 0 .AND. NTele <= 300) THEN
-        DO iEVTTELE=1, NTele
-           Det_Trg(iEVTTELE) = Evt%TELE%Det(iEVTTELE)
-           IF ( Det_Trg(iEVTTELE) < 0 .OR. Det_Trg(iEVTTELE) > 3 ) THEN
-              WRITE(*,*) 'ERROR TELE - Det_Trg[0] Out of bound : ', Det_Trg(iEVTTELE)
-           END IF
-           BitP(iEVTTELE) = Evt%TELE%Bitp(iEVTTELE)
-           IF ( BitP(iEVTTELE) < 0 .OR. BitP(iEVTTELE) > 1100 ) THEN
-              WRITE(*,*) 'ERROR TELE - BitP[1] Out of bound : ', BitP(iEVTTELE)
-           END IF
-           Sector(iEVTTELE) = Evt%TELE%Sector(iEVTTELE)
-           IF ( Sector(iEVTTELE) < 0 .OR. Sector(iEVTTELE) > 50 ) THEN
-              WRITE(*,*) 'ERROR TELE - Sector[2] Out of bound : ', Sector(iEVTTELE)
-           END IF
-           SerKind(iEVTTELE) = Evt%TELE%Serkind(iEVTTELE)
-           IF ( SerKind(iEVTTELE) < 0 .OR. SerKind(iEVTTELE) > 3 ) THEN
-              WRITE(*,*) 'ERROR TELE - SerKind[3] Out of bound : ', SerKind(iEVTTELE)
-           END IF
-           Ea_Trg(iEVTTELE) = Evt%TELE%Ea(iEVTTELE)
-           Eb_Trg(iEVTTELE) = Evt%TELE%Eb(iEVTTELE)
-           Ta_Trg(iEVTTELE) = Evt%TELE%Ta(iEVTTELE)
-           Tb_Trg(iEVTTELE) = Evt%TELE%Tb(iEVTTELE)
-        END DO
-      ELSE
-        WRITE(*,*) 'ERROR EVTTELE - NTele Index not valid : ', NTele
+         END DO
+   
+         istat = GETTELESTRU(Evt%TELE)
+   
+         NTele = Evt%TELE%ntele
+         IF ( NTele < 0 .OR. NTele > 300 ) THEN
+            WRITE(*,*) 'ERROR TELE - NTele Out of bound : ', NTele
+         END IF
+         IF (NTele > 0 .AND. NTele <= 300) THEN
+           DO iEVTTELE=1, NTele
+              Det_Trg(iEVTTELE) = Evt%TELE%Det(iEVTTELE)
+              IF ( Det_Trg(iEVTTELE) < 0 .OR. Det_Trg(iEVTTELE) > 3 ) THEN
+                 WRITE(*,*) 'ERROR TELE - Det_Trg[0] Out of bound : ', Det_Trg(iEVTTELE)
+              END IF
+              BitP(iEVTTELE) = Evt%TELE%Bitp(iEVTTELE)
+              IF ( BitP(iEVTTELE) < 0 .OR. BitP(iEVTTELE) > 1100 ) THEN
+                 WRITE(*,*) 'ERROR TELE - BitP[1] Out of bound : ', BitP(iEVTTELE)
+              END IF
+              Sector(iEVTTELE) = Evt%TELE%Sector(iEVTTELE)
+              IF ( Sector(iEVTTELE) < 0 .OR. Sector(iEVTTELE) > 50 ) THEN
+                 WRITE(*,*) 'ERROR TELE - Sector[2] Out of bound : ', Sector(iEVTTELE)
+              END IF
+              SerKind(iEVTTELE) = Evt%TELE%Serkind(iEVTTELE)
+              IF ( SerKind(iEVTTELE) < 0 .OR. SerKind(iEVTTELE) > 3 ) THEN
+                 WRITE(*,*) 'ERROR TELE - SerKind[3] Out of bound : ', SerKind(iEVTTELE)
+              END IF
+              Ea_Trg(iEVTTELE) = Evt%TELE%Ea(iEVTTELE)
+              Eb_Trg(iEVTTELE) = Evt%TELE%Eb(iEVTTELE)
+              Ta_Trg(iEVTTELE) = Evt%TELE%Ta(iEVTTELE)
+              Tb_Trg(iEVTTELE) = Evt%TELE%Tb(iEVTTELE)
+           END DO
+         ELSE
+           WRITE(*,*) 'ERROR EVTTELE - NTele Index not valid : ', NTele
+         END IF
       END IF
 C-----------------------------------------------------------------------
 C Fill Block pizza
 C-----------------------------------------------------------------------
-      NPack = 0.
-      DO iPIZZA=1, 300
-        PakSect(iPIZZA) = 0.
-        PakDet(iPIZZA) = 0.
-        PakSerk(iPIZZA) = 0.
-        Ea_Pack(iPIZZA) = 0.
-        Eb_Pack(iPIZZA) = 0.
-        E_Rec(iPIZZA) = 0.
-        Z_mod(iPIZZA) = 0.
-      END DO
-
-      istat = PIZZA_RESET(Evt%PIZZA)
-      istat = GETPIZZASTRU(Evt%PIZZA)
-
-      NPack = Evt%PIZZA%npizza
-      IF ( NPack < 0 .OR. NPack > 300 ) THEN
-         WRITE(*,*) 'ERROR CLU - NPack Out of bound : ', NPack
-      END IF
-      IF (NPack > 0 .AND. NPack <= 300) THEN
-        DO iPIZZA=1, NPack
-          PakSect(iPIZZA) = Evt%PIZZA%sector(iPIZZA)
-          PakDet(iPIZZA) = Evt%PIZZA%det(iPIZZA)
-          PakSerk(iPIZZA) = Evt%PIZZA%serkind(iPIZZA)
-          Ea_Pack(iPIZZA) = Evt%PIZZA%Ea(iPIZZA)
-          Eb_Pack(iPIZZA) = Evt%PIZZA%Eb(iPIZZA)
-          E_Rec(iPIZZA) = Evt%PIZZA%E_rec(iPIZZA)
-          Z_mod(iPIZZA) = Evt%PIZZA%Z_mod(iPIZZA)
-        END DO
-      ELSE
-        WRITE(*,*) 'ERROR PIZZA - NPack Index not valid : ', NPack
+      IF (PIZZAFLAG) THEN
+         NPack = 0.
+         DO iPIZZA=1, 300
+           PakSect(iPIZZA) = 0.
+           PakDet(iPIZZA) = 0.
+           PakSerk(iPIZZA) = 0.
+           Ea_Pack(iPIZZA) = 0.
+           Eb_Pack(iPIZZA) = 0.
+           E_Rec(iPIZZA) = 0.
+           Z_mod(iPIZZA) = 0.
+         END DO
+   
+         istat = PIZZA_RESET(Evt%PIZZA)
+         istat = GETPIZZASTRU(Evt%PIZZA)
+   
+         NPack = Evt%PIZZA%npizza
+         IF ( NPack < 0 .OR. NPack > 300 ) THEN
+            WRITE(*,*) 'ERROR CLU - NPack Out of bound : ', NPack
+         END IF
+         IF (NPack > 0 .AND. NPack <= 300) THEN
+           DO iPIZZA=1, NPack
+             PakSect(iPIZZA) = Evt%PIZZA%sector(iPIZZA)
+             PakDet(iPIZZA) = Evt%PIZZA%det(iPIZZA)
+             PakSerk(iPIZZA) = Evt%PIZZA%serkind(iPIZZA)
+             Ea_Pack(iPIZZA) = Evt%PIZZA%Ea(iPIZZA)
+             Eb_Pack(iPIZZA) = Evt%PIZZA%Eb(iPIZZA)
+             E_Rec(iPIZZA) = Evt%PIZZA%E_rec(iPIZZA)
+             Z_mod(iPIZZA) = Evt%PIZZA%Z_mod(iPIZZA)
+           END DO
+         ELSE
+           WRITE(*,*) 'ERROR PIZZA - NPack Index not valid : ', NPack
+         END IF
       END IF
 C-----------------------------------------------------------------------
 C Fill Block Time
 C-----------------------------------------------------------------------
-      istat = T0GLRD(T0Dc0,T0Hit0,T0Clu0,T0Step1,DelayCable,TBunch)
-      istat = T0MCRD(TPhased_mc)
+      IF (TIMEFLAG) THEN
+         istat = T0GLRD(T0Dc0,T0Hit0,T0Clu0,T0Step1,DelayCable,TBunch)
+         istat = T0MCRD(TPhased_mc)
+      END IF
 C-----------------------------------------------------------------------
 C Fill Block EMC Clusters
 C-----------------------------------------------------------------------
-      IF (.FALSE.) THEN ! TODO: Change .TRUE. with flag name
+      IF (CLUSFLAG) THEN ! TODO: Change .TRUE. with flag name
          NClu = 0.
          NCluMc = 0.
          DO iEVTCLU=1, 100
@@ -833,7 +837,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block Pre-Clusters
 C-----------------------------------------------------------------------
-      IF (.FALSE.) THEN ! TODO: Change .TRUE. with flag name
+      IF (PRECLUSFLAG): THEN
          NPClu = 0.
          DO iPRECLU=1, 100
            EPre(iPRECLU) = 0.
@@ -872,7 +876,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block CWRK
 C-----------------------------------------------------------------------
-      IF (.FALSE.) THEN ! TODO: Change .TRUE. with flag name
+      IF (CWRKFLAG) THEN
          NCHit = 0.
          DO iCWRK=1, 300
             IClu(iCWRK) = 0.
@@ -913,7 +917,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block cele
 C-----------------------------------------------------------------------
-      IF (.FALSE.) THEN ! TODO: Change .TRUE. with flag name
+      IF (CELEFLAG) THEN
          NCel = 0.
          NCelMc = 0.
          DO iCELE=1, 300
@@ -980,7 +984,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block dtce
 C-----------------------------------------------------------------------
-      IF (.FALSE.) THEN ! TODO: Change .TRUE. with flag name
+      IF (DTCEFLAG) THEN
          nDTCE = 0.
          nSmall = 0.
          DO iDTCE=1, 1500
@@ -1019,7 +1023,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block dtce0
 C-----------------------------------------------------------------------
-      IF (.FALSE.) THEN ! TODO: Change .TRUE. with flag name
+      IF (DTCE0FLAG) THEN
          nDTCE0 = 0.
          DO iDTCE0=1, 1500
             iLayerDTCE0(iDTCE0) = 0.
@@ -1053,7 +1057,7 @@ C        DTCEStru is initialized in raw2dtce.cin
 C-----------------------------------------------------------------------
 C Fill Block dchits
 C-----------------------------------------------------------------------
-      IF (.FALSE.) THEN ! TODO: Change .TRUE. with flag name
+      IF (DCHITSFLAG) THEN ! TODO: Change .TRUE. with flag name
          nDCHR = 0.
          nSmallDCm = 0.
          nSmallDCp = 0.
@@ -1075,7 +1079,7 @@ C        Already filled Evt%DTCE and DTCEStru in previous blocks
 C-----------------------------------------------------------------------
 C Fill Block dhsp
 C-----------------------------------------------------------------------
-      IF (.FALSE.) THEN ! TODO: Change .TRUE. with flag name
+      IF (DHSPFLAG) THEN ! TODO: Change .TRUE. with flag name
          nDHSP = 0.
          DO iDHSP=1, 500
             TrkDh(iDHSP) = 0.
@@ -1115,7 +1119,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block trkv
 C-----------------------------------------------------------------------
-      IF (.FALSE.) THEN ! TODO: Change .TRUE. with flag name
+      IF (TRKVFLAG) THEN
          nTv = 0.
          DO iTRKV=1, 30
            iV(iTRKV) = 0.
@@ -1179,7 +1183,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block Vertices
 C-----------------------------------------------------------------------
-      IF (.FALSE.) THEN ! TODO: Change .TRUE. with flag name
+      IF (VTXFLAG) THEN
          nV = 0.
          DO iVTX=1, 10
            Vetx(iVTX) = 0.
@@ -1230,7 +1234,7 @@ C         Already filled Evt%Vtx by the get function called in the previous bloc
 C-----------------------------------------------------------------------
 C Fill Block trks
 C-----------------------------------------------------------------------
-      IF (.FALSE.) THEN
+      IF (TRKSFLAG) THEN
          nT = 0.
          DO iTRKS=1, 100
            TrkInd(iTRKS) = 0.
@@ -1330,7 +1334,7 @@ C         Already filled Evt%Trk by the get function called in the previous bloc
 C-----------------------------------------------------------------------
 C Fill Block trkmc
 C-----------------------------------------------------------------------
-      IF (.FALSE.) THEN
+      IF (TRKMCFLAG) THEN
          nTfMC = 0.
          DO iTRKMC=1, 100
            NConTr(iTRKMC) = 0.
@@ -1450,7 +1454,7 @@ C         Already filled Evt%Trk by the get function called in the previous bloc
 C-----------------------------------------------------------------------
 C Fill Block trkvold
 C-----------------------------------------------------------------------
-      IF (.FALSE.) THEN
+      IF (TRKVOLDFLAG) THEN
          nTVOld = 0.
          DO iTRKVOLD=1, 30
            iVOld(iTRKVOLD) = 0.
@@ -1515,7 +1519,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block vtxold
 C-----------------------------------------------------------------------
-      IF (.FALSE.) THEN
+      IF (VTXOLDFLAG) THEN
          nVOld = 0.
          DO iVTXOLD=1, 10
            VtxOld(iVTXOLD) = 0.
@@ -1567,7 +1571,7 @@ C         Already filled Evt%Trk by the get function called in the previous bloc
 C-----------------------------------------------------------------------
 C Fill Block trkold
 C-----------------------------------------------------------------------
-      IF (.FALSE.) THEN
+      IF (TRKSOLDFLAG) THEN
          nTOld = 0.
          DO iTRKOLD=1, 100
            TrkIndOld(iTRKOLD) = 0.
@@ -1667,7 +1671,7 @@ C         Already filled Evt%TrkOld by the get function called in the previous b
 C-----------------------------------------------------------------------
 C Fill Block trkmcold
 C-----------------------------------------------------------------------
-      IF (.FALSE.) THEN
+      IF (TRKMCOLDFLAG) THEN
          nTfMCOld = 0.
          DO iTRKMCOLD=1, 100
            nContrOld(iTRKMCOLD) = 0.
