@@ -43,8 +43,6 @@ C
       
       write(*,*)'ECLSFLAG', ECLSFLAG
 
-C    Initialization tree for ROOT
-      call inittree()
 
 
       RETURN
@@ -1817,6 +1815,7 @@ C
 $$INCLUDE 'C$INC:ERLEVL.INC'
 $$INCLUDE 'CALIBINC:ANERROR.INC'
 $$include 'sample.inc'
+$$include 'sample_talk.cin'
 C
 C Local declarations
 C
@@ -1826,6 +1825,11 @@ C      INTEGER    NtuId ! Comment to avoid conflict with raw2dtce.cin
 C
 C==============================================================================
 C
+C    Initialization tree for ROOT
+      write(*,*)'bposflag hb', BPOSFLAG
+
+      call inittree()
+
       RETURN 
       END
 C
@@ -1846,11 +1850,15 @@ $$include 'sample_talk.inc'
 C
 C External functions
 C
-      INTEGER   UIDFFI, UIUSGP, UIACME, UIGTYE
+ C
+      INTEGER   UIDFFI, UIUSGP, UIACME
+      INTEGER   UIGTYE, UIGTRE, UIGTIN
+
 C
 C Local declarations
 C
       INTEGER   Status, MENUF, MENUL, IGROUP
+      CHARACTER*3 flag
       CHARACTER Verb*40, Prompt*100
 C
 C==============================================================================
@@ -1890,12 +1898,14 @@ C
       else if(verb.eq.'BPOS')then
       	write(Prompt,123)'BPOS'
 	Status=UIGTYE(Prompt,BPOSFLAG)
+	write(*,*) 'Status tk', Prompt, BPOSFLAG
 	goto 10
 
       end if
 C
 123   FORMAT(1x,'Select ',a4,' Ntuple-block?')
 C
+      WRITE(*,*)'bposflag tk', BPOSFLAG
       RETURN
       END
 C     
