@@ -164,6 +164,13 @@ C
      1       YRmsCl,ZrmsCl,TrmsCl,FlagCl,NCluMc,NPar,PNum1,Pid1,PNum2,
      1       Pid2,PNum3,Pid3
 C
+C  Block: CluMC
+C
+      integer iCLUMC,NCluMc,NPar(100),PNum1(100), Pid1(100)
+      integer PNum2(100), Pid2(100), PNum3(100), Pid3(100)
+
+      common /clumc/NCluMc,NPar,PNum1,Pid1,PNum2,Pid2,PNum3,Pid3
+C
 C  Block: preclu
 C
       integer iPRECLU, NPClu

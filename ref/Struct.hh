@@ -280,6 +280,12 @@ extern "C" {
     float ZrmsCl[MaxNumClu];
     float TrmsCl[MaxNumClu];
     int FlagCl[MaxNumClu];
+  }evtclu_;
+}
+
+// Block:   CluMC
+extern "C" {
+  extern struct {
     int NCluMc;
     int NPar[MaxNumClu];
     int PNum1[MaxNumClu];
@@ -288,7 +294,7 @@ extern "C" {
     int Pid2[MaxNumClu];
     int PNum3[MaxNumClu];
     int Pid3[MaxNumClu];
-  }evtclu_;
+  }clumc_;
 }
 
 // Block:   preclu

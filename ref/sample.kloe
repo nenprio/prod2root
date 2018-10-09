@@ -747,11 +747,10 @@ C-----------------------------------------------------------------------
          istat = T0MCRD(TPhased_mc)
       END IF
 C-----------------------------------------------------------------------
-C Fill Block EMC Clusters
+C Fill Block Clus
 C-----------------------------------------------------------------------
-      IF (CLUSFLAG) THEN ! TODO: Change .TRUE. with flag name
+      IF (CLUSFLAG) THEN
          NClu = 0.
-         NCluMc = 0.
          DO iEVTCLU=1, 100
             EneCl(iEVTCLU) = 0.
             TCl(iEVTCLU) = 0.
@@ -766,13 +765,6 @@ C-----------------------------------------------------------------------
             ZrmsCl(iEVTCLU) = 0.
             TrmsCl(iEVTCLU) = 0.
             FlagCl(iEVTCLU) = 0.
-            NPar(iEVTCLU) = 0.
-            PNum1(iEVTCLU) = 0.
-            Pid1(iEVTCLU) = 0.
-            PNum2(iEVTCLU) = 0.
-            Pid2(iEVTCLU) = 0.
-            PNum3(iEVTCLU) = 0.
-            Pid3(iEVTCLU) = 0.
          END DO
    
          istat = GETCLUSTRU(Evt%Clu)
@@ -780,10 +772,6 @@ C-----------------------------------------------------------------------
          NClu = Evt%Clu%n 
          IF ( NClu < 0 .OR. NClu > 100 ) THEN
             WRITE(*,*) 'ERROR CLU - NClu Out of bound : ', NClu
-         END IF
-         NCluMc = Evt%Clu%nmc
-         IF ( NCluMc < 0 .OR. NCluMc > 100 ) THEN
-            WRITE(*,*) 'ERROR CLU - NCluMc Out of bound : ', NCluMc
          END IF
          IF (NClu > 0 .AND. NClu <= 100) THEN
             DO iEVTCLU=1, NClu
@@ -804,40 +792,61 @@ C-----------------------------------------------------------------------
          ELSE
             WRITE(*,*) 'ERROR EVTCLU - NClu Index not valid : ', NClu
          END IF
-   
+      END IF
+-----------------------------------------------------------------------
+C Fill Block CluMC
+C-----------------------------------------------------------------------
+      IF (CLUSMCFLAG) THEN
+         NCluMc = 0.
+         DO iEVTCLUMC=1, 100
+            NPar(iEVTCLUMC) = 0.
+            PNum1(iEVTCLUMC) = 0.
+            Pid1(iEVTCLUMC) = 0.
+            PNum2(iEVTCLUMC) = 0.
+            Pid2(iEVTCLUMC) = 0.
+            PNum3(iEVTCLUMC) = 0.
+            Pid3(iEVTCLUMC) = 0.
+         END DO
+  
+C        Already filled Evt%Clu in previous blocks
+
+         NCluMc = Evt%Clu%nmc
+         IF ( NCluMc < 0 .OR. NCluMc > 100 ) THEN
+            WRITE(*,*) 'ERROR CLU - NCluMc Out of bound : ', NCluMc
+         END IF
          IF (NCluMc > 0 .AND. NCluMc <= 100) THEN
-            DO iEVTCLU=1, NCluMc
-               NPar(iEVTCLU) = Evt%Clu%Npart(iEVTCLU)
-               IF ( NPar(iEVTCLU) < 0 .OR. NPar(iEVTCLU) > 10 ) THEN
-                  WRITE(*,*) 'ERROR EVTCLU - NPar[0] Out of bound : ', NPar(iEVTCLU)
+            DO iEVTCLUMC=1, NCluMc
+               NPar(iEVTCLUMC) = Evt%Clu%Npart(iEVTCLUMC)
+               IF ( NPar(iEVTCLUMC) < 0 .OR. NPar(iEVTCLUMC) > 10 ) THEN
+                  WRITE(*,*) 'ERROR EVTCLUMC - NPar[0] Out of bound : ', NPar(iEVTCLUMC)
                END IF
-               PNum1(iEVTCLU) = Evt%Clu%part1(iEVTCLU)
-               IF ( PNum1(iEVTCLU) < 0 .OR. PNum1(iEVTCLU) > 100 ) THEN
-                  WRITE(*,*) 'ERROR EVTCLU - PNum1[1] Out of bound : ', PNum1(iEVTCLU)
+               PNum1(iEVTCLUMC) = Evt%Clu%part1(iEVTCLUMC)
+               IF ( PNum1(iEVTCLUMC) < 0 .OR. PNum1(iEVTCLUMC) > 100 ) THEN
+                  WRITE(*,*) 'ERROR EVTCLUMC - PNum1[1] Out of bound : ', PNum1(iEVTCLUMC)
                END IF
-               Pid1(iEVTCLU) = Evt%Clu%pid1(iEVTCLU)
-               IF ( Pid1(iEVTCLU) < 0 .OR. Pid1(iEVTCLU) > 100 ) THEN
-                  WRITE(*,*) 'ERROR EVTCLU - Pid1[2] Out of bound : ', Pid1(iEVTCLU)
+               Pid1(iEVTCLUMC) = Evt%Clu%pid1(iEVTCLUMC)
+               IF ( Pid1(iEVTCLUMC) < 0 .OR. Pid1(iEVTCLUMC) > 100 ) THEN
+                  WRITE(*,*) 'ERROR EVTCLUMC - Pid1[2] Out of bound : ', Pid1(iEVTCLUMC)
                END IF
-               PNum2(iEVTCLU) = Evt%Clu%part2(iEVTCLU)
-               IF ( PNum2(iEVTCLU) < 0 .OR. PNum2(iEVTCLU) > 100 ) THEN
-                  WRITE(*,*) 'ERROR EVTCLU - PNum2[3] Out of bound : ', PNum2(iEVTCLU)
+               PNum2(iEVTCLUMC) = Evt%Clu%part2(iEVTCLUMC)
+               IF ( PNum2(iEVTCLUMC) < 0 .OR. PNum2(iEVTCLUMC) > 100 ) THEN
+                  WRITE(*,*) 'ERROR EVTCLUMC - PNum2[3] Out of bound : ', PNum2(iEVTCLUMC)
                END IF
-               Pid2(iEVTCLU) = Evt%Clu%pid2(iEVTCLU)
-               IF ( Pid2(iEVTCLU) < 0 .OR. Pid2(iEVTCLU) > 100 ) THEN
-                  WRITE(*,*) 'ERROR EVTCLU - Pid2[4] Out of bound : ', Pid2(iEVTCLU)
+               Pid2(iEVTCLUMC) = Evt%Clu%pid2(iEVTCLUMC)
+               IF ( Pid2(iEVTCLUMC) < 0 .OR. Pid2(iEVTCLUMC) > 100 ) THEN
+                  WRITE(*,*) 'ERROR EVTCLUMC - Pid2[4] Out of bound : ', Pid2(iEVTCLUMC)
                END IF
-               PNum3(iEVTCLU) = Evt%Clu%part3(iEVTCLU)
-               IF ( PNum3(iEVTCLU) < 0 .OR. PNum3(iEVTCLU) > 100 ) THEN
-                  WRITE(*,*) 'ERROR EVTCLU - PNum3[5] Out of bound : ', PNum3(iEVTCLU)
+               PNum3(iEVTCLUMC) = Evt%Clu%part3(iEVTCLUMC)
+               IF ( PNum3(iEVTCLUMC) < 0 .OR. PNum3(iEVTCLUMC) > 100 ) THEN
+                  WRITE(*,*) 'ERROR EVTCLUMC - PNum3[5] Out of bound : ', PNum3(iEVTCLUMC)
                END IF
-               Pid3(iEVTCLU) = Evt%Clu%pid3(iEVTCLU)
-               IF ( Pid3(iEVTCLU) < 0 .OR. Pid3(iEVTCLU) > 100 ) THEN
-                  WRITE(*,*) 'ERROR EVTCLU - Pid3[6] Out of bound : ', Pid3(iEVTCLU)
+               Pid3(iEVTCLUMC) = Evt%Clu%pid3(iEVTCLUMC)
+               IF ( Pid3(iEVTCLUMC) < 0 .OR. Pid3(iEVTCLUMC) > 100 ) THEN
+                  WRITE(*,*) 'ERROR EVTCLUMC - Pid3[6] Out of bound : ', Pid3(iEVTCLUMC)
                END IF
             END DO
          ELSE
-            WRITE(*,*) 'ERROR EVTCLU - NCluMc Index not valid : ', NCluMc
+            WRITE(*,*) 'ERROR EVTCLUMC - NCluMc Index not valid : ', NCluMc
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -1083,6 +1092,44 @@ C        Already filled Evt%DTCE and DTCEStru in previous blocks
          nSmallDC = Evt%DTCE%nSmall
       END IF
 C-----------------------------------------------------------------------
+C Fill Block dhre
+C-----------------------------------------------------------------------
+      IF (.TRUE.) THEN
+         nDHRE = 0.
+         DO iDHRE=1, 1500
+           iLayerDHRE(iDHRE) = 0.
+           iWireDHRE(iDHRE) = 0.
+           iTrkDHRE(iDHRE) = 0.
+           rDHRE(iDHRE) = 0.
+           eDHRE(iDHRE) = 0.
+         END DO
+
+         CALL GETDHRESTRU(Evt%DHRE) 
+
+         nDHRE = Evt%DHRE%nDHRE
+         IF ( nDHRE < 0 .OR. nDHRE > nMaxDC//range ) THEN
+            WRITE(*,*) 'ERROR DHRE - nDHRE Out of bound : ', nDHRE
+         END IF
+
+         IF (nDHRE > 0 .AND. nDHRE <= 1500) THEN
+            DO iDHRE=1, nDHRE
+               iLayerDHRE(iDHRE) = Evt%DHRE%iLayerDHRE(iDHRE)
+               IF ( iLayerDHRE(iDHRE) < 1 .OR. iLayerDHRE(iDHRE) > 58 ) THEN
+                  WRITE(*,*) 'ERROR DHRE - iLayerDHRE[1] Out of bound : ', iLayerDHRE(iDHRE)
+               END IF
+               iWireDHRE(iDHRE) = Evt%DHRE%iWireDHRE(iDHRE)
+               IF ( iWireDHRE(iDHRE) < 1 .OR. iWireDHRE(iDHRE) > 378 ) THEN
+                  WRITE(*,*) 'ERROR DHRE - iWireDHRE[2] Out of bound : ', iWireDHRE(iDHRE)
+               END IF
+                 iTrkDHRE(iDHRE) = Evt%DHRE%iTrkDHRE(iDHRE)
+                 rDHRE(iDHRE) = Evt%DHRE%rDHRE(iDHRE)
+                 eDHRE(iDHRE) = Evt%DHRE%eDHRE(iDHRE)
+           END DO
+         ELSE
+            WRITE(*,*) 'ERROR DHRE - nDHRE Index not valid: ', nDHRE
+         END IF
+      END IF
+C-----------------------------------------------------------------------
 C Fill Block dhsp
 C-----------------------------------------------------------------------
       IF (DHSPFLAG) THEN ! TODO: Change .TRUE. with flag name
@@ -1099,10 +1146,10 @@ C-----------------------------------------------------------------------
             ZDh(iDHSP) = 0.
          END DO
    
-         CALL GETDHRESTRU(Evt%DHRE) 
+         istat =  GETDHSPSTRU(evt%trk%n,evt%dhsp)
    
          nDHSP = Evt%DHSP%numDHSP
-         IF ( nDHSP < 0 .OR. nDHSP > 1500 ) THEN
+         IF ( nDHSP < 0 .OR. nDHSP > 500 ) THEN
             WRITE(*,*) 'ERROR DHSP - nDHSP Out of bound : ', nDHSP
          END IF
    
