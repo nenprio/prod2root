@@ -47,7 +47,7 @@ TreeWriter::TreeWriter() {
     // Block Clu
     if(sammenu_.clusFlag==1)        addBlockClu();
     // Block CluMC
-    if(sammenu_.clusMCFlag==1)      addBlockCluMC();
+    if(sammenu_.cluMCFlag==1)      addBlockCluMC();
     // Block PreClu
     if(sammenu_.preclusFlag==1)     addBlockPreClu();
     // Block CWRK
@@ -339,14 +339,14 @@ void TreeWriter::addBlockTime() {
 // input:   -
 // output: -
 void TreeWriter::addBlockCluMC() {
-    fNewTree->Branch("nCluMC", &evtclu_.NCluMc, "NCluMc/I");
-    fNewTree->Branch("nPar",   &evtclu_.NPar,   "NPar[NCluMc]/I");
-    fNewTree->Branch("PNum1",  &evtclu_.PNum1,  "PNum1[NCluMc]/I");
-    fNewTree->Branch("Pid1",   &evtclu_.Pid1,   "Pid1[NCluMc]/I");
-    fNewTree->Branch("PNum2",  &evtclu_.PNum2,  "PNum2[NCluMc]/I");
-    fNewTree->Branch("Pid2",   &evtclu_.Pid2,   "Pid2[NCluMc]/I");
-    fNewTree->Branch("PNum3",  &evtclu_.PNum3,  "PNum3[NCluMc]/I");
-    fNewTree->Branch("Pid3",   &evtclu_.Pid3,   "Pid3[NCluMc]/I");
+    fNewTree->Branch("nCluMC", &clumc_.NCluMc, "NCluMc/I");
+    fNewTree->Branch("nPar",   &clumc_.NPar,   "NPar[NCluMc]/I");
+    fNewTree->Branch("PNum1",  &clumc_.PNum1,  "PNum1[NCluMc]/I");
+    fNewTree->Branch("Pid1",   &clumc_.Pid1,   "Pid1[NCluMc]/I");
+    fNewTree->Branch("PNum2",  &clumc_.PNum2,  "PNum2[NCluMc]/I");
+    fNewTree->Branch("Pid2",   &clumc_.Pid2,   "Pid2[NCluMc]/I");
+    fNewTree->Branch("PNum3",  &clumc_.PNum3,  "PNum3[NCluMc]/I");
+    fNewTree->Branch("Pid3",   &clumc_.Pid3,   "Pid3[NCluMc]/I");
 }
 
 // Add to the tree all the branches realted to the block Clu.
@@ -427,15 +427,15 @@ void TreeWriter::addBlockCele() {
 // input:	-
 // output: -
 void TreeWriter::addBlockCeleMC() {
-    fNewTree->Branch("nCelMc",  &cele_.NCelMc,  "NCelMc/I");
-    fNewTree->Branch("EMc",     &cele_.EMc,     "EMc[NCelMc]/F");
-    fNewTree->Branch("TMc",     &cele_.TMc,     "TMc[NCelMc]/F");
-    fNewTree->Branch("XMc",     &cele_.XMc,     "XMc[NCelMc]/F");
-    fNewTree->Branch("YMc",     &cele_.YMc,     "YMc[NCelMc]/F");
-    fNewTree->Branch("ZMc",     &cele_.ZMc,     "ZMc[NCelMc]/F");
-    fNewTree->Branch("PTyp",    &cele_.PTyp,    "PTyp[NCelMc]/I");
-    fNewTree->Branch("KNum",    &cele_.KNum,    "KNum[NCelMc]/I");
-    fNewTree->Branch("nHit",    &cele_.NHit,    "NHit[NCelMc]/I");
+    fNewTree->Branch("nCelMc",  &celemc_.NCelMc,  "NCelMc/I");
+    fNewTree->Branch("EMc",     &celemc_.EMc,     "EMc[NCelMc]/F");
+    fNewTree->Branch("TMc",     &celemc_.TMc,     "TMc[NCelMc]/F");
+    fNewTree->Branch("XMc",     &celemc_.XMc,     "XMc[NCelMc]/F");
+    fNewTree->Branch("YMc",     &celemc_.YMc,     "YMc[NCelMc]/F");
+    fNewTree->Branch("ZMc",     &celemc_.ZMc,     "ZMc[NCelMc]/F");
+    fNewTree->Branch("PTyp",    &celemc_.PTyp,    "PTyp[NCelMc]/I");
+    fNewTree->Branch("KNum",    &celemc_.KNum,    "KNum[NCelMc]/I");
+    fNewTree->Branch("nHit",    &celemc_.NHit,    "NHit[NCelMc]/I");
 }
 
 // Add to the tree all the branches realted to the block DTCE.
@@ -556,7 +556,7 @@ void TreeWriter::addBlockVtx() {
 //
 // input:	-
 // output: -
-void TreeWriter::addBlockTrks() {
+void TreeWriter::addBlockTrkS() {
     fNewTree->Branch("nT", &trks_.nT, "nT/I");
     fNewTree->Branch("TrkInd", &trks_.TrkInd, "TrkInd[nT]/I");
     fNewTree->Branch("TrkVer", &trks_.TrkVer, "TrkVer[nT]/I");

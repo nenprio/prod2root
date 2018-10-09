@@ -19,7 +19,7 @@ int main() {
    
     bool debug = true;
     /* verifier->verifyEvent(52, debug); */
-    verifier->verify(52, 100, debug);
+    verifier->verify(52, 150, debug);
 
     return(0);
 }

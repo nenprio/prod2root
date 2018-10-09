@@ -814,10 +814,10 @@ C-----------------------------------------------------------------------
             WRITE(*,*) 'ERROR EVTCLU - NClu Index not valid : ', NClu
          END IF
       END IF
------------------------------------------------------------------------
+C-----------------------------------------------------------------------
 C Fill Block CluMC
 C-----------------------------------------------------------------------
-      IF (CLUSMCFLAG) THEN
+      IF (CLUMCFLAG) THEN
          NCluMc = 0.
          DO iEVTCLUMC=1, 100
             NPar(iEVTCLUMC) = 0.
@@ -873,7 +873,7 @@ C        Already filled Evt%Clu in previous blocks
 C-----------------------------------------------------------------------
 C Fill Block Pre-Clusters
 C-----------------------------------------------------------------------
-      IF (PRECLUSFLAG): THEN
+      IF (PRECLUSFLAG) THEN
          NPClu = 0.
          DO iPRECLU=1, 100
            EPre(iPRECLU) = 0.
@@ -1167,7 +1167,7 @@ C-----------------------------------------------------------------------
          CALL GETDHRESTRU(Evt%DHRE) 
 
          nDHRE = Evt%DHRE%nDHRE
-         IF ( nDHRE < 0 .OR. nDHRE > nMaxDC//range ) THEN
+         IF ( nDHRE < 0 .OR. nDHRE > 1500 ) THEN
             WRITE(*,*) 'ERROR DHRE - nDHRE Out of bound : ', nDHRE
          END IF
 

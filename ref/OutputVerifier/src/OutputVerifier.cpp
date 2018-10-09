@@ -260,6 +260,10 @@ int OutputVerifier::verifyEvent(int i, bool printInfo) {
     delete ErrorFileOpen;
     delete ErrorLeafDiff;
     delete ErrorLeafNotFound;
+    delete nameRoot;
+    delete nameHB;
+    delete valueRoot;
+    delete valueHB;
 
     // Return the number of errors found
     return errorCounter;
@@ -285,24 +289,25 @@ bool OutputVerifier::verify(int from, int to, bool printInfo) {
     bool result  = true;
     int eventRes;
 
-    // First check: Number events of trees
-    TFile *fRoot      = new TFile(rootFile,   "READ");
-    TFile *fHB        = new TFile(hbConvFile, "READ");
-    TTree *rTree      = (TTree*) fRoot->Get("sample");
-    TTree *hbTree     = (TTree*) fHB->Get("PROD2NTU/h1");
-    Int_t rootEntries = rTree->GetEntries();
-    Int_t hbEntries   = hbTree->GetEntries();
+/*     // First check: Number events of trees */
+/*     TFile *fRoot      = new TFile(rootFile,   "READ"); */
+/*     TFile *fHB        = new TFile(hbConvFile, "READ"); */
+/*     TTree *rTree      = (TTree*) fRoot->Get("sample"); */
+/*     TTree *hbTree     = (TTree*) fHB->Get("PROD2NTU/h1"); */
+/*     Int_t rootEntries = rTree->GetEntries(); */
+/*     Int_t hbEntries   = hbTree->GetEntries(); */
 
-    // Check if both trees have the same number of events
-    if(rootEntries!=hbEntries) {
-        if (printInfo) {
-            error.Form("%s - (%d != %d)", ErrorNumEvents, rootEntries, hbEntries);
-            println(error.Data());
-        }
-        result = false;
-    }
+/*     // Check if both trees have the same number of events */
+/*     if(rootEntries!=hbEntries) { */
+/*         if (printInfo) { */
+/*             error.Form("%s - (%d != %d)", ErrorNumEvents, rootEntries, hbEntries); */
+/*             println(error.Data()); */
+/*         } */
+/*         result = false; */
+/*     } */
 
     // Loop on events in [0, rootEntries]
+    Int_t rootEntries = 1000;
     if (from<0)
         from = 0;
     if (to+1>rootEntries)
@@ -333,17 +338,17 @@ bool OutputVerifier::verify(int from, int to, bool printInfo) {
         }
     }
     
-    fRoot->Close();
-    fHB->Close();
+    /* fRoot->Close(); */
+    /* fHB->Close(); */
 
-    if (fRoot) {
-        delete fRoot;
-        fRoot = NULL;
-    }
-    if (fHB) {
-        delete fHB;
-        fHB = NULL;
-    }
+    /* if (fRoot) { */
+    /*     delete fRoot; */
+    /*     fRoot = NULL; */
+    /* } */
+    /* if (fHB) { */
+    /*     delete fHB; */
+    /*     fHB = NULL; */
+    /* } */
 
     delete ErrorNumEvents;
     delete ErrorEventDiff;  
