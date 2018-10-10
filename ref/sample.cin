@@ -361,4 +361,14 @@ C
      1       PzLMCOld,xFMC2Old,yFMC2Old,zFMC2Old,PxFMC2Old,PyFMC2Old,
      1       PzFMC2Old,xLMC2Old,yLMC2Old,zLMC2Old,PxLMC2Old,PyLMC2Old,
      1       PzLMC2Old
+C
+C  Block: dhit
+C
+      integer iDHIT, nDHIT, DHPid(2500)
+      integer DHKin(2500), DHAdd(2500), DHFlag(2500)
+      real DHx(2500), DHy(2500), DHz(2500), DHPx(2500), DHPy(2500)
+      real DHPz(2500), DHt(2500), DHDedx(2500), DHTLen(2500)
+      real DHDTime(2500), DHDFromW(2500)
 
+      common /dhit/nDHIT,DHPid,DHKin,DHAdd,DHx,DHy,DHz,DHPx,DHPy,
+     1       DHPz,DHt,DHDedx,DHTLen,DHDTime,DHDFromW,DHFlag

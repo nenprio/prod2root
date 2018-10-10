@@ -536,7 +536,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block Torta
 C-----------------------------------------------------------------------
-      IF (TORTA) THEN
+      IF (TORTAFLAG) THEN
          tSpent = 0.
          tDead = 0.
          Type = 0.
@@ -1899,6 +1899,59 @@ C         Already filled Evt%TrkMCOld by the get function called in the previous
            END DO
          ELSE
             WRITE(*,*) 'ERROR TRKMCOLD - nTfMCOld Index not valid: ', nTfMCOld
+         END IF
+      END IF
+C-----------------------------------------------------------------------
+C Fill Block dhit
+C-----------------------------------------------------------------------
+      IF (.TRUE.) THEN
+         nDHIT = 0.
+         DO iDHIT=1, 2500
+           DHPid(iDHIT) = 0.
+           DHKin(iDHIT) = 0.
+           DHAdd(iDHIT) = 0.
+           DHx(iDHIT) = 0.
+           DHy(iDHIT) = 0.
+           DHz(iDHIT) = 0.
+           DHPx(iDHIT) = 0.
+           DHPy(iDHIT) = 0.
+           DHPz(iDHIT) = 0.
+           DHt(iDHIT) = 0.
+           DHDedx(iDHIT) = 0.
+           DHTLen(iDHIT) = 0.
+           DHDTime(iDHIT) = 0.
+           DHDFromW(iDHIT) = 0.
+           DHFlag(iDHIT) = 0.
+         END DO
+C
+C        TODO: Get function didn't find in prod2ntu.kloe. Find it! 
+C        >>>INSERT HERE THE GET FUNCTION<<<
+C
+         nDHIT = Evt%DHIT%n
+         IF ( nDHIT < 0 .OR. nDHIT > 2500 ) THEN
+            WRITE(*,*) 'ERROR DHIT - nDHIT Out of bound : ', nDHIT
+         END IF
+
+         IF (nDHIT > 0 .AND. nDHIT <= 2500) THEN
+            DO iDHIT=1, nDHIT
+                 DHPid(iDHIT) = Evt%DHIT%pid(iDHIT)
+                 DHKin(iDHIT) = Evt%DHIT%kinum(iDHIT)
+                 DHAdd(iDHIT) = Evt%DHIT%celadr(iDHIT)
+                 DHx(iDHIT) = Evt%DHIT%x(iDHIT)
+                 DHy(iDHIT) = Evt%DHIT%y(iDHIT)
+                 DHz(iDHIT) = Evt%DHIT%z(iDHIT)
+                 DHPx(iDHIT) = Evt%DHIT%px(iDHIT)
+                 DHPy(iDHIT) = Evt%DHIT%py(iDHIT)
+                 DHPz(iDHIT) = Evt%DHIT%pz(iDHIT)
+                 DHt(iDHIT) = Evt%DHIT%time(iDHIT)
+                 DHDedx(iDHIT) = Evt%DHIT%dedx(iDHIT)
+                 DHTLen(iDHIT) = Evt%DHIT%tlen(iDHIT)
+                 DHDTime(iDHIT) = Evt%DHIT%dtime(iDHIT)
+                 DHDFromW(iDHIT) = Evt%DHIT%dfromw(iDHIT)
+                 DHFlag(iDHIT) = Evt%DHIT%flag(iDHIT)
+           END DO
+         ELSE
+            WRITE(*,*) 'ERROR DHIT - nDHIT Index not valid: ', nDHIT
          END IF
       END IF
 C-----------------------------------------------------------------------

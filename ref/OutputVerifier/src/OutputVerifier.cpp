@@ -70,6 +70,14 @@ OutputVerifier::OutputVerifier(const char *rFile, const char *hbFile, const char
     // Close the files
     fRoot->Close();
     fHB->Close();
+    if (fRoot) {
+        delete fRoot;
+        fRoot = NULL;
+    }
+    if (fHB) {
+        delete fHB;
+        fHB = NULL;
+    }
 }
 
 // Destruct the OutputVerifier object.
@@ -78,18 +86,21 @@ OutputVerifier::OutputVerifier(const char *rFile, const char *hbFile, const char
 // input:   -
 // output:  -
 OutputVerifier::~OutputVerifier() {
-    if(rootFile) {
-        delete rootFile;
-        rootFile = NULL;
-    }
-    if(hbConvFile) {
-        delete hbConvFile;
-        hbConvFile = NULL;
-    }
-    if(outputDir) {
-        delete outputDir;
-        outputDir = NULL;
-    }
+    /* rootFile, hbConvFile, outputDir are const char * */
+    /* then since constante, they are saved in a read-only mem area */
+    /* call delete on them cause segmentation fault */
+    /* if(rootFile) { */
+    /*     delete rootFile; */
+    /*     rootFile = NULL; */
+    /* } */
+    /* if(hbConvFile) { */
+    /*     delete hbConvFile; */
+        /* hbConvFile = NULL; */
+    /* } */
+    /* if(outputDir) { */
+        /* delete outputDir; */
+        /* outputDir = NULL; */
+    /* } */
 
     println("[Info] Run ends. Memory released.");
 }
@@ -255,14 +266,6 @@ int OutputVerifier::verifyEvent(int i, bool printInfo) {
     fRoot.close();
     fHB.close();
 
-    delete ErrorFileOpen;
-    delete ErrorLeafDiff;
-    delete ErrorLeafNotFound;
-    delete nameRoot;
-    delete nameHB;
-    delete valueRoot;
-    delete valueHB;
-
     // Return the number of errors found
     return errorCounter;
 }
@@ -308,28 +311,29 @@ bool OutputVerifier::verify(int from, int to, bool printInfo) {
     Int_t rootEntries = 1000;
     if (from<0)
         from = 0;
-    if (to+1>rootEntries)
-        to = rootEntries;
+    if (to>rootEntries-1) //Because events start from 0 to #entries-1
+        to = rootEntries-1;
+    printf("[Info] Verification events between %d and %d\n", from, to);
     for(Int_t i=from; i<to+1; i++) {
-        eventRes = verifyEvent(i, false);
+        eventRes = verifyEvent(i, true);
         switch (eventRes ) {
             case -1:                // Error during the initial phase (file opening...)
                 if (printInfo) {
-                    error.Form("%s", ErrorInitialPhase);
-                    println(error.Data());
+                    error.Form("%s\n", ErrorInitialPhase);
+                    printf("%s", error.Data());
                 }
                 result = false;
             break;
             case 0:                 // No error occurs
                 if (printInfo) {
-                    printout.Form("%s", InfoNoError);
-                    println(printout.Data());
+                    printout.Form("%s\n", InfoNoError);
+                    printf("%s", printout.Data());
                 }
             break;
             default:                // Error during scanning leaves
                 if (printInfo) {
-                    error.Form("%s (Event #%d > %d errors)", ErrorEventDiff, i, eventRes);
-                    println(error.Data());
+                    error.Form("%s (Event #%d > %d errors)\n", ErrorEventDiff, i, eventRes);
+                    printf("%s", error.Data());
                 }
                 result = false;
             break;
@@ -347,13 +351,6 @@ bool OutputVerifier::verify(int from, int to, bool printInfo) {
     /*     delete fHB; */
     /*     fHB = NULL; */
     /* } */
-
-    delete ErrorNumEvents;
-    delete ErrorEventDiff;  
-    delete ErrorInitialPhase;
-    delete InfoNoError;
-    delete error;
-    delete printout;
 
     // Return boolean result
     return result;

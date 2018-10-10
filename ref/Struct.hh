@@ -14,6 +14,7 @@ const int MaxNumDHSP = 500;
 const int MaxNumTrkV = 30;
 const int MaxNumVtx  = 10;
 const int MaxNumTrk  = 100;
+const int MaxNumDHIT = 2500;
 
 //Verb for Talk_to module
 extern "C"{
@@ -685,6 +686,28 @@ extern "C" {
     float PyLMC2Old[MaxNumTrk];
     float PzLMC2Old[MaxNumTrk];
   }trkmcold_;
+}
+
+// Block:   dhit
+extern "C" {
+  extern struct {
+    int nDHIT;
+    int DHPid[MaxNumDHIT];
+    int DHKin[MaxNumDHIT];
+    int DHAdd[MaxNumDHIT];
+    float DHx[MaxNumDHIT];
+    float DHy[MaxNumDHIT];
+    float DHz[MaxNumDHIT];
+    float DHPx[MaxNumDHIT];
+    float DHPy[MaxNumDHIT];
+    float DHPz[MaxNumDHIT];
+    float DHt[MaxNumDHIT];
+    float DHDedx[MaxNumDHIT];
+    float DHTLen[MaxNumDHIT];
+    float DHDTime[MaxNumDHIT];
+    float DHDFromW[MaxNumDHIT];
+    int DHFlag[MaxNumDHIT];
+  }dhit_;
 }
 
 #endif
