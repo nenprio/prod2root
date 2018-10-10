@@ -101,7 +101,7 @@ OutputVerifier::~OutputVerifier() {
 // input:    -
 // output:   -
 void OutputVerifier::exportTreeToTxt(TTree *fTree) {
-    ofstream myfile;
+    std::ofstream myfile;
     TString name; 
     std::string currentFile;
     
@@ -177,8 +177,8 @@ int OutputVerifier::verifyEvent(int i, bool printInfo) {
     TString hbEventFile;
     TString error;
     TString printout;
-    ifstream fRoot;
-    ifstream fHB;
+    std::ifstream fRoot;
+    std::ifstream fHB;
     std::string lRoot;
     std::string lHB;
 
@@ -191,14 +191,14 @@ int OutputVerifier::verifyEvent(int i, bool printInfo) {
 
     // Check open file
     if(!fRoot.is_open()){
-        error.Form("%s %s", ErrorFileOpen, rEventFile);
+        error.Form("%s %s", ErrorFileOpen, rEventFile.Data());
         if (printInfo) {
             println(error.Data());
         }
         return -1;
     }
     if(!fHB.is_open()){
-        error.Form("%s %s", ErrorFileOpen, hbEventFile);
+        error.Form("%s %s", ErrorFileOpen, hbEventFile.Data());
         if (printInfo) {
             println(error.Data());
         }
@@ -247,7 +247,7 @@ int OutputVerifier::verifyEvent(int i, bool printInfo) {
         }
         // Reset hb file to the beginning
         fHB.clear();
-        fHB.seekg (0, ios::beg);
+        fHB.seekg (0, std::ios::beg);
         nLinesRoot ++;
     }
 
@@ -255,8 +255,6 @@ int OutputVerifier::verifyEvent(int i, bool printInfo) {
     fRoot.close();
     fHB.close();
 
-    delete fRoot;
-    delete fHB;
     delete ErrorFileOpen;
     delete ErrorLeafDiff;
     delete ErrorLeafNotFound;
