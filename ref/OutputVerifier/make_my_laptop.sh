@@ -2,7 +2,7 @@
 
 echo "[Info] Starting compilation..."
 rm -rf main.o
-g++ -o main.o main.cpp src/MyFunctions.cpp src/OutputVerifier.cpp -I . `root-config --cflags --libs`
+g++ -o main main.cpp src/MyFunctions.cpp src/OutputVerifier.cpp -I . `root-config --cflags --libs`
 echo "[Info] Compilation    DONE"
 
 echo ""
