@@ -70,6 +70,14 @@ OutputVerifier::OutputVerifier(const char *rFile, const char *hbFile, const char
     // Close the files
     fRoot->Close();
     fHB->Close();
+    if (fRoot) {
+        delete fRoot;
+        fRoot = NULL;
+    }
+    if (fHB) {
+        delete fHB;
+        fHB = NULL;
+    }
 }
 
 // Destruct the OutputVerifier object.
@@ -78,18 +86,21 @@ OutputVerifier::OutputVerifier(const char *rFile, const char *hbFile, const char
 // input:   -
 // output:  -
 OutputVerifier::~OutputVerifier() {
-    if(rootFile) {
-        delete rootFile;
-        rootFile = NULL;
-    }
-    if(hbConvFile) {
-        delete hbConvFile;
-        hbConvFile = NULL;
-    }
-    if(outputDir) {
-        delete outputDir;
-        outputDir = NULL;
-    }
+    /* rootFile, hbConvFile, outputDir are const char * */
+    /* then since constante, they are saved in a read-only mem area */
+    /* call delete on them cause segmentation fault */
+    /* if(rootFile) { */
+    /*     delete rootFile; */
+    /*     rootFile = NULL; */
+    /* } */
+    /* if(hbConvFile) { */
+    /*     delete hbConvFile; */
+        /* hbConvFile = NULL; */
+    /* } */
+    /* if(outputDir) { */
+        /* delete outputDir; */
+        /* outputDir = NULL; */
+    /* } */
 
     println("[Info] Run ends. Memory released.");
 }
@@ -101,7 +112,7 @@ OutputVerifier::~OutputVerifier() {
 // input:    -
 // output:   -
 void OutputVerifier::exportTreeToTxt(TTree *fTree) {
-    ofstream myfile;
+    std::ofstream myfile;
     TString name; 
     std::string currentFile;
     
@@ -177,8 +188,8 @@ int OutputVerifier::verifyEvent(int i, bool printInfo) {
     TString hbEventFile;
     TString error;
     TString printout;
-    ifstream fRoot;
-    ifstream fHB;
+    std::ifstream fRoot;
+    std::ifstream fHB;
     std::string lRoot;
     std::string lHB;
 
@@ -191,14 +202,14 @@ int OutputVerifier::verifyEvent(int i, bool printInfo) {
 
     // Check open file
     if(!fRoot.is_open()){
-        error.Form("%s %s", ErrorFileOpen, rEventFile);
+        error.Form("%s %s", ErrorFileOpen, rEventFile.Data());
         if (printInfo) {
             println(error.Data());
         }
         return -1;
     }
     if(!fHB.is_open()){
-        error.Form("%s %s", ErrorFileOpen, hbEventFile);
+        error.Form("%s %s", ErrorFileOpen, hbEventFile.Data());
         if (printInfo) {
             println(error.Data());
         }
@@ -247,19 +258,13 @@ int OutputVerifier::verifyEvent(int i, bool printInfo) {
         }
         // Reset hb file to the beginning
         fHB.clear();
-        fHB.seekg (0, ios::beg);
+        fHB.seekg (0, std::ios::beg);
         nLinesRoot ++;
     }
 
     // Close files
     fRoot.close();
     fHB.close();
-
-    delete fRoot;
-    delete fHB;
-    delete ErrorFileOpen;
-    delete ErrorLeafDiff;
-    delete ErrorLeafNotFound;
 
     // Return the number of errors found
     return errorCounter;
@@ -285,72 +290,67 @@ bool OutputVerifier::verify(int from, int to, bool printInfo) {
     bool result  = true;
     int eventRes;
 
-    // First check: Number events of trees
-    TFile *fRoot      = new TFile(rootFile,   "READ");
-    TFile *fHB        = new TFile(hbConvFile, "READ");
-    TTree *rTree      = (TTree*) fRoot->Get("sample");
-    TTree *hbTree     = (TTree*) fHB->Get("PROD2NTU/h1");
-    Int_t rootEntries = rTree->GetEntries();
-    Int_t hbEntries   = hbTree->GetEntries();
+/*     // First check: Number events of trees */
+/*     TFile *fRoot      = new TFile(rootFile,   "READ"); */
+/*     TFile *fHB        = new TFile(hbConvFile, "READ"); */
+/*     TTree *rTree      = (TTree*) fRoot->Get("sample"); */
+/*     TTree *hbTree     = (TTree*) fHB->Get("PROD2NTU/h1"); */
+/*     Int_t rootEntries = rTree->GetEntries(); */
+/*     Int_t hbEntries   = hbTree->GetEntries(); */
 
-    // Check if both trees have the same number of events
-    if(rootEntries!=hbEntries) {
-        if (printInfo) {
-            error.Form("%s - (%d != %d)", ErrorNumEvents, rootEntries, hbEntries);
-            println(error.Data());
-        }
-        result = false;
-    }
+/*     // Check if both trees have the same number of events */
+/*     if(rootEntries!=hbEntries) { */
+/*         if (printInfo) { */
+/*             error.Form("%s - (%d != %d)", ErrorNumEvents, rootEntries, hbEntries); */
+/*             println(error.Data()); */
+/*         } */
+/*         result = false; */
+/*     } */
 
     // Loop on events in [0, rootEntries]
+    Int_t rootEntries = 1000;
     if (from<0)
         from = 0;
-    if (to+1>rootEntries)
-        to = rootEntries;
+    if (to>rootEntries-1) //Because events start from 0 to #entries-1
+        to = rootEntries-1;
+    printf("[Info] Verification events between %d and %d\n", from, to);
     for(Int_t i=from; i<to+1; i++) {
-        eventRes = verifyEvent(i, false);
+        eventRes = verifyEvent(i, true);
         switch (eventRes ) {
             case -1:                // Error during the initial phase (file opening...)
                 if (printInfo) {
-                    error.Form("%s", ErrorInitialPhase);
-                    println(error.Data());
+                    error.Form("%s\n", ErrorInitialPhase);
+                    printf("%s", error.Data());
                 }
                 result = false;
             break;
             case 0:                 // No error occurs
                 if (printInfo) {
-                    printout.Form("%s", InfoNoError);
-                    println(printout.Data());
+                    printout.Form("%s\n", InfoNoError);
+                    printf("%s", printout.Data());
                 }
             break;
             default:                // Error during scanning leaves
                 if (printInfo) {
-                    error.Form("%s (Event #%d > %d errors)", ErrorEventDiff, i, eventRes);
-                    println(error.Data());
+                    error.Form("%s (Event #%d > %d errors)\n", ErrorEventDiff, i, eventRes);
+                    printf("%s", error.Data());
                 }
                 result = false;
             break;
         }
     }
     
-    fRoot->Close();
-    fHB->Close();
+    /* fRoot->Close(); */
+    /* fHB->Close(); */
 
-    if (fRoot) {
-        delete fRoot;
-        fRoot = NULL;
-    }
-    if (fHB) {
-        delete fHB;
-        fHB = NULL;
-    }
-
-    delete ErrorNumEvents;
-    delete ErrorEventDiff;  
-    delete ErrorInitialPhase;
-    delete InfoNoError;
-    delete error;
-    delete printout;
+    /* if (fRoot) { */
+    /*     delete fRoot; */
+    /*     fRoot = NULL; */
+    /* } */
+    /* if (fHB) { */
+    /*     delete fHB; */
+    /*     fHB = NULL; */
+    /* } */
 
     // Return boolean result
     return result;

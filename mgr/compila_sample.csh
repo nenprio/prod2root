@@ -58,6 +58,9 @@ set ROOTCONFIG = 'root-config '
 set ROOTLIBS   = `$ROOTCONFIG --libs`
 echo "ROOTLIBS : $ROOTLIBS"
 
+# Set SAMPLE path for sample_talk.cin
+setenv SAMPLE "../ref"
+
 setenv MYLIBS "$ROOTLIBS -lm -lC -Wl,-bloadmap:map.txt"
 echo "MYLIBS : $MYLIBS"
 

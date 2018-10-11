@@ -6,14 +6,38 @@
 !==============================================================================
 Group #+0
 !
+Verb INFO
+Verb DATA
+Verb BPOS
+Verb GDHIT
+Verb ECLS
 Verb TRIG
 Verb C2TRG
 Verb TELLINA
-Verb PIZZA
+Verb PIZZETTA
 Verb TORTA
 Verb TELE
-Verb ECLS
-Verb BPOS
+Verb PIZZA
+Verb TIME
+Verb CLUS
+Verb CLUMC
+Verb PRECLUS
+Verb CWRK
+Verb CELE
+Verb CELEMC
+Verb DTCE
+Verb DTCE0
+Verb DCHITS
+Verb DHRE
+Verb DHSP
+Verb TRKV
+Verb VTX
+Verb TRKS
+Verb TRKMC
+Verb TRKVOLD
+Verb VTXOLD
+Verb TRKSOLD
+Verb TRKMCOLD
 Verb SHOW
 Verb EXIT
 !
@@ -22,16 +46,43 @@ Alias RETURN EXIT
 !
 MENU #+0/Title="Select your action"/Prompt="SAMTK> "
 !
-Button 1   /Description="Select TRIGGER  CWN block"/Response="TRIG"
-Button 2   /Description="Select CLUS2TRG CWN block"/Response="C2TRG"
-Button 3   /Description="Select TELLINA  CWN block"/Response="TELLINA"
-Button 4   /Description="Select PIZZA    CWN block"/Response="PIZZA"
-Button 5   /Description="Select TORTA  CWN block"/Response="TORTA"
-Button 6   /Description="Select TRIG-ELE CWN block"/Response="TELE"
-Button 7   /Description="Select ECLS     CWN block"/Response="ECLS"
-Button 8   /Description="Select BPOS     CWN block"/Response="BPOS"
-Button 9   /Description="Show single process selection"/Response="SHOW"
-Button 10  /Description="Go Back to the AC prompt" /Response="EXIT"
+
+Button 1    /Description="Select INFO     CWN block"/Response="INFO"
+Button 2    /Description="Select DATA     CWN block"/Response="DATA"
+Button 3    /Description="Select BPOS     CWN block"/Response="BPOS"
+Button 4    /Description="Select GDHIT     CWN block"/Response="GDHIT"
+Button 5    /Description="Select ECLS     CWN block"/Response="ECLS"
+Button 6    /Description="Select TRIGGER  CWN block"/Response="TRIG"
+Button 7    /Description="Select CLUS2TRG CWN block"/Response="C2TRG"
+Button 8    /Description="Select TELLINA  CWN block"/Response="TELLINA"
+Button 9    /Description="Select PIZZETTA    CWN block"/Response="PIZZETTA"
+Button 10   /Description="Select TORTA  CWN block"/Response="TORTA"
+Button 11   /Description="Select TRIG-ELE CWN block"/Response="TELE"
+Button 12   /Description="Select PIZZA    CWN block"/Response="PIZZA"
+Button 13   /Description="Select TIME     CWN block"/Response="TIME"
+Button 14   /Description="Select CLUS     CWN block"/Response="CLUS"
+Button 15   /Description="Select CLUMC     CWN block"/Response="CLUMC"
+Button 16   /Description="Select PRECLUS     CWN block"/Response="PRECLUS"
+Button 17   /Description="Select CWRK     CWN block"/Response="CWRK"
+Button 18   /Description="Select CELE     CWN block"/Response="CELE"
+Button 19   /Description="Select CELEMC     CWN block"/Response="CELEMC"
+Button 20   /Description="Select DTCE     CWN block"/Response="DTCE"
+Button 21   /Description="Select DTCE0     CWN block"/Response="DTCE0"
+Button 22   /Description="Select DCHITS     CWN block"/Response="DCHITS"
+Button 23   /Description="Select DHRE     CWN block"/Response="DHRE"
+Button 24   /Description="Select DHSP     CWN block"/Response="DHSP"
+Button 25   /Description="Select TRKV     CWN block"/Response="TRKV"
+Button 26   /Description="Select VTX     CWN block"/Response="VTX"
+Button 27   /Description="Select TRKS     CWN block"/Response="TRKS"
+Button 28   /Description="Select TRKMC     CWN block"/Response="TRKMC"
+Button 29   /Description="Select TRKVOLD     CWN block"/Response="TRKVOLD"
+Button 30   /Description="Select VTXOLD     CWN block"/Response="VTXOLD"
+Button 31   /Description="Select TRKSOLD     CWN block"/Response="TRKSOLD"
+Button 32   /Description="Select TRKMCOLD     CWN block"/Response="TRKMCOLD"
+Button 33   /Description="Select DHIT       CWN block"/Response="DHIT"
+
+Button 34   /Description="Show single process selection"/Response="SHOW"
+Button 35   /Description="Go Back to the AC prompt" /Response="EXIT"
 !==============================================================================
 
 

@@ -14,65 +14,74 @@
 TreeWriter::TreeWriter() {
     outfile  = new TFile("sample.root", "recreate");    //Open or create file 
     fNewTree = new TTree("sample", "Event Infos");      //Create "sample" tree
-    // TODO: create a function printHeader()
-    std::cout<<"Flags "<<sammenu_.bposFlag<<" "<<sammenu_.eclsFlag<<" "<<sammenu_.trigFlag<<" "<<sammenu_.c2trgFlag<<" "<<sammenu_.tellinaFlag<<" "<<sammenu_.pizzaFlag<<std::endl;
-    
+  
+    // Print Header with Flags and values assigned
+    printHeaderFlags();
+
     // Block Info
-    addBlockInfo();
+    if(sammenu_.infoFlag==1)        addBlockInfo();
     // Block Data
-    addBlockData();
-    // Block Time
-    addBlockTime();
+    if(sammenu_.dataFlag==1)        addBlockData();
     // Block BPOS
-    if(sammenu_.bposFlag) addBlockBPOS();
+    if(sammenu_.bposFlag==1)        addBlockBPOS();
     // Block GdHit
-    addBlockGdHit();
+    if(sammenu_.gdhitFlag==1)       addBlockGdHit();
     // Block Ecl
-    if(sammenu_.eclsFlag) addBlockEcl();
+    if(sammenu_.eclsFlag==1)        addBlockEcl();
     // Block Trig
-    if(sammenu_.trigFlag) addBlockTrig();
+    if(sammenu_.trigFlag==1)        addBlockTrig();
     // Block C2Trig
-    if(sammenu_.c2trgFlag) addBlockC2Trig();
+    if(sammenu_.c2trgFlag==1)       addBlockC2Trig();
     // Block Tellina
-    if(sammenu_.tellinaFlag) addBlockTellina();
+    if(sammenu_.tellinaFlag==1)     addBlockTellina();
     // Block Pizzetta
-    if(sammenu_.pizzaFlag) addBlockPizzetta();
+    if(sammenu_.pizzettaFlag==1)    addBlockPizzetta();
     // Block Torta
-    addBlockTorta();
+    if(sammenu_.tortaFlag==1)       addBlockTorta();
     // Block Tele
-    addBlockTele();
+    if(sammenu_.teleFlag==1)        addBlockTele();
     // Block Pizza
-    addBlockPizza();
+    if(sammenu_.pizzaFlag==1)       addBlockPizza();
+    // Block Time
+    if(sammenu_.timeFlag==1)        addBlockTime();
     // Block Clu
-    addBlockClu();
+    if(sammenu_.clusFlag==1)        addBlockClu();
+    // Block CluMC
+    if(sammenu_.cluMCFlag==1)      addBlockCluMC();
     // Block PreClu
-    addBlockPreClu();
+    if(sammenu_.preclusFlag==1)     addBlockPreClu();
     // Block CWRK
-    addBlockCWRK();
+    if(sammenu_.cwrkFlag==1)        addBlockCWRK();
     // Block Cele
-    addBlockCele();
+    if(sammenu_.celeFlag==1)        addBlockCele();
+    // Block CeleMC
+    if(sammenu_.celeMCFlag==1)      addBlockCeleMC();
     // Block DTCE
-    addBlockDTCE();
+    if(sammenu_.dtceFlag==1)        addBlockDTCE();
     // Block DTCE0
-    addBlockDTCE0();
+    if(sammenu_.dtce0Flag==1)       addBlockDTCE0();
     // Block DHRE
-    addBlockDHRE();
+    if(sammenu_.dhreFlag==1)        addBlockDHRE();
     // Block DHSP
-    addBlockDHSP();
+    if(sammenu_.dhspFlag==1)        addBlockDHSP();
     // Block TrkV
-    addBlockTrkV();
+    if(sammenu_.trkvFlag==1)        addBlockTrkV();
     // Block Vtx
-    addBlockVtx();
+    if(sammenu_.vtxFlag==1)         addBlockVtx();
     // Block Trks
-    addBlockTrks();
+    if(sammenu_.trksFlag==1)        addBlockTrkS();
     // Block TrkMC
-    addBlockTrkMC();
-    // Block VtxOld
-    addBlockVtxOld();
+    if(sammenu_.trkMCFlag==1)       addBlockTrkMC();
     // Block TrkOld
-    addBlockTrkOld();
+    if(sammenu_.trkvOldFlag==1)     addBlockTrkVOld();
+    // Block VtxOld
+    if(sammenu_.vtxOldFlag==1)      addBlockVtxOld();
+    // Block TrkOld
+    if(sammenu_.trksOldFlag==1)     addBlockTrkSOld();
     // Block TrkMCOld
-    addBlockTrkMCOld();
+    if(sammenu_.trkMCFlag==1)       addBlockTrkMCOld();
+    // Block DHIT
+    if(sammenu_.dhitFlag==1)        addBlockDHIT();
 
     // Write to the disk
     outfile->Write();
@@ -92,10 +101,17 @@ TreeWriter::~TreeWriter() {
         outfile->Write(0,TObject::kOverwrite);
         outfile->Close();
         delete outfile;
-	outfile = NULL;
+    	outfile = NULL;
     }
 }
 
+void TreeWriter::printHeaderFlags() {
+    TString header;
+    header.Form("Flags:\tBPOS %d\tECLS %d\tTRIG %d\tC2TRG %d\tTELLINA %d\tPIZZA %d\n",
+                sammenu_.bposFlag, sammenu_.eclsFlag, sammenu_.trigFlag, sammenu_.c2trgFlag, 
+                sammenu_.tellinaFlag, sammenu_.pizzaFlag);
+    std::cout << header.Data() << std::endl;
+}
 // Add to the tree all the branches related to the block Info.
 //
 // input:   -
@@ -199,16 +215,16 @@ void TreeWriter::addBlockTrig() {
 // input:	-
 // output: -
 void TreeWriter::addBlockC2Trig() {
-    fNewTree->Branch("nSec", &evtc2trig_.NSec, "NSec/I");
+    fNewTree->Branch("nSec",       &evtc2trig_.NSec,       "NSec/I");
     fNewTree->Branch("nSec_NoClu", &evtc2trig_.NSec_NoClu, "NSec_NoClu/I");
-    fNewTree->Branch("nSec2Clu", &evtc2trig_.NSec2Clu, "NSec2Clu/I");
-    fNewTree->Branch("nClu2s", &evtc2trig_.NClu2s, "NClu2s/I");
-    fNewTree->Branch("nNorm", &evtc2trig_.NNorm, "NNorm[NClu2s]/I");
-    fNewTree->Branch("NormAdd", &evtc2trig_.NormAdd, "NormAdd[NClu2s]/I");
-    fNewTree->Branch("nOver", &evtc2trig_.NOver, "NOver[NClu2s]/I");
-    fNewTree->Branch("OverAdd", &evtc2trig_.OverAdd, "OverAdd[NClu2s]/I");
-    fNewTree->Branch("nCosm", &evtc2trig_.NCosm, "NCosm[NClu2s]/I");
-    fNewTree->Branch("CosmAdd", &evtc2trig_.CosmAdd, "CosmAdd[NClu2s]/I");
+    fNewTree->Branch("nSec2Clu",   &evtc2trig_.NSec2Clu,   "NSec2Clu/I");
+    fNewTree->Branch("nClu2s",     &evtc2trig_.NClu2s,     "NClu2s/I");
+    fNewTree->Branch("nNorm",      &evtc2trig_.NNorm,      "NNorm[NClu2s]/I");
+    fNewTree->Branch("NormAdd",    &evtc2trig_.NormAdd,    "NormAdd[NClu2s]/I");
+    fNewTree->Branch("nOver",      &evtc2trig_.NOver,      "NOver[NClu2s]/I");
+    fNewTree->Branch("OverAdd",    &evtc2trig_.OverAdd,    "OverAdd[NClu2s]/I");
+    fNewTree->Branch("nCosm",      &evtc2trig_.NCosm,      "NCosm[NClu2s]/I");
+    fNewTree->Branch("CosmAdd",    &evtc2trig_.CosmAdd,    "CosmAdd[NClu2s]/I");
 }
 
 // Add to the tree all the branches realted to the block TELLINA.
@@ -243,18 +259,18 @@ void TreeWriter::addBlockPizzetta() {
 // input:	-
 // output: -
 void TreeWriter::addBlockTorta() {
-    fNewTree->Branch("tSpent", &torta_.tSpent, "tSpent/F");
-    fNewTree->Branch("tDead",  &torta_.tDead,  "tDead/F");
-    fNewTree->Branch("Type",   &torta_.Type,   "Type/I");
-    fNewTree->Branch("BPhi",   &torta_.BPhi,   "BPhi/I");
-    fNewTree->Branch("EPhi",   &torta_.EPhi,   "EPhi/I");
-    fNewTree->Branch("WPhi",   &torta_.WPhi,   "WPhi/I");
-    fNewTree->Branch("BBha",   &torta_.BBha,   "BBha/I");
-    fNewTree->Branch("EBha",   &torta_.EBha,   "EBha/I");
-    fNewTree->Branch("WBha",   &torta_.WBha,   "WBha/I");
-    fNewTree->Branch("BCos",   &torta_.BCos,   "BCos/I");
-    fNewTree->Branch("ECos",   &torta_.ECos,   "ECos/I");
-    fNewTree->Branch("WCos",   &torta_.WCos,   "WCos/I");
+    fNewTree->Branch("tSpent",     &torta_.tSpent, "tSpent/F");
+    fNewTree->Branch("tDead",      &torta_.tDead,  "tDead/F");
+    fNewTree->Branch("Type",       &torta_.Type,   "Type/I");
+    fNewTree->Branch("BPhi",       &torta_.BPhi,   "BPhi/I");
+    fNewTree->Branch("EPhi",       &torta_.EPhi,   "EPhi/I");
+    fNewTree->Branch("WPhi",       &torta_.WPhi,   "WPhi/I");
+    fNewTree->Branch("BBha",       &torta_.BBha,   "BBha/I");
+    fNewTree->Branch("EBha",       &torta_.EBha,   "EBha/I");
+    fNewTree->Branch("WBha",       &torta_.WBha,   "WBha/I");
+    fNewTree->Branch("BCos",       &torta_.BCos,   "BCos/I");
+    fNewTree->Branch("ECos",       &torta_.ECos,   "ECos/I");
+    fNewTree->Branch("WCos",       &torta_.WCos,   "WCos/I");
     fNewTree->Branch("E1W1_Dwn",   &torta_.E1W1_Dwn,   "E1W1_Dwn/I");
     fNewTree->Branch("B1_Dwn",     &torta_.B1_Dwn,     "B1_Dwn/I");
     fNewTree->Branch("T0d_Dwn",    &torta_.T0d_Dwn,    "T0d_Dwn/I");
@@ -320,6 +336,21 @@ void TreeWriter::addBlockTime() {
     fNewTree->Branch("TBunch",     &evttime_.TBunch,     "TBunch/F");
 }
 
+// Add to the tree all the branches realted to the block CluMC.
+//
+// input:   -
+// output: -
+void TreeWriter::addBlockCluMC() {
+    fNewTree->Branch("nCluMC", &clumc_.NCluMc, "NCluMc/I");
+    fNewTree->Branch("nPar",   &clumc_.NPar,   "NPar[NCluMc]/I");
+    fNewTree->Branch("PNum1",  &clumc_.PNum1,  "PNum1[NCluMc]/I");
+    fNewTree->Branch("Pid1",   &clumc_.Pid1,   "Pid1[NCluMc]/I");
+    fNewTree->Branch("PNum2",  &clumc_.PNum2,  "PNum2[NCluMc]/I");
+    fNewTree->Branch("Pid2",   &clumc_.Pid2,   "Pid2[NCluMc]/I");
+    fNewTree->Branch("PNum3",  &clumc_.PNum3,  "PNum3[NCluMc]/I");
+    fNewTree->Branch("Pid3",   &clumc_.Pid3,   "Pid3[NCluMc]/I");
+}
+
 // Add to the tree all the branches realted to the block Clu.
 //
 // input:   -
@@ -339,14 +370,6 @@ void TreeWriter::addBlockClu() {
     fNewTree->Branch("ZrmsCl", &evtclu_.ZrmsCl, "ZrmsCl[NClu]/F");
     fNewTree->Branch("TrmsCl", &evtclu_.TrmsCl, "TrmsCl[NClu]/F");
     fNewTree->Branch("FlagCl", &evtclu_.FlagCl, "FlagCl[NClu]/I");
-    fNewTree->Branch("nCluMC", &evtclu_.NCluMc, "NCluMc/I");
-    fNewTree->Branch("nPar",   &evtclu_.NPar,   "NPar[NCluMc]/I");
-    fNewTree->Branch("PNum1",  &evtclu_.PNum1,  "PNum1[NCluMc]/I");
-    fNewTree->Branch("Pid1",   &evtclu_.Pid1,   "Pid1[NCluMc]/I");
-    fNewTree->Branch("PNum2",  &evtclu_.PNum2,  "PNum2[NCluMc]/I");
-    fNewTree->Branch("Pid2",   &evtclu_.Pid2,   "Pid2[NCluMc]/I");
-    fNewTree->Branch("PNum3",  &evtclu_.PNum3,  "PNum3[NCluMc]/I");
-    fNewTree->Branch("Pid3",   &evtclu_.Pid3,   "Pid3[NCluMc]/I");
 }
 
 // Add to the tree all the branches realted to the block PreClu.
@@ -399,15 +422,22 @@ void TreeWriter::addBlockCele() {
     fNewTree->Branch("Ta",      &cele_.Ta,      "Ta[NCel]/F");
     fNewTree->Branch("Eb",      &cele_.Eb,      "Eb[NCel]/F");
     fNewTree->Branch("Tb",      &cele_.Tb,      "Tb[NCel]/F");
-    fNewTree->Branch("nCelMc",  &cele_.NCelMc,  "NCelMc/I");
-    fNewTree->Branch("EMc",     &cele_.EMc,     "EMc[NCelMc]/F");
-    fNewTree->Branch("TMc",     &cele_.TMc,     "TMc[NCelMc]/F");
-    fNewTree->Branch("XMc",     &cele_.XMc,     "XMc[NCelMc]/F");
-    fNewTree->Branch("YMc",     &cele_.YMc,     "YMc[NCelMc]/F");
-    fNewTree->Branch("ZMc",     &cele_.ZMc,     "ZMc[NCelMc]/F");
-    fNewTree->Branch("PTyp",    &cele_.PTyp,    "PTyp[NCelMc]/I");
-    fNewTree->Branch("KNum",    &cele_.KNum,    "KNum[NCelMc]/I");
-    fNewTree->Branch("nHit",    &cele_.NHit,    "NHit[NCelMc]/I");
+}
+
+// Add to the tree all the branches realted to the block CeleMC.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockCeleMC() {
+    fNewTree->Branch("nCelMc",  &celemc_.NCelMc,  "NCelMc/I");
+    fNewTree->Branch("EMc",     &celemc_.EMc,     "EMc[NCelMc]/F");
+    fNewTree->Branch("TMc",     &celemc_.TMc,     "TMc[NCelMc]/F");
+    fNewTree->Branch("XMc",     &celemc_.XMc,     "XMc[NCelMc]/F");
+    fNewTree->Branch("YMc",     &celemc_.YMc,     "YMc[NCelMc]/F");
+    fNewTree->Branch("ZMc",     &celemc_.ZMc,     "ZMc[NCelMc]/F");
+    fNewTree->Branch("PTyp",    &celemc_.PTyp,    "PTyp[NCelMc]/I");
+    fNewTree->Branch("KNum",    &celemc_.KNum,    "KNum[NCelMc]/I");
+    fNewTree->Branch("nHit",    &celemc_.NHit,    "NHit[NCelMc]/I");
 }
 
 // Add to the tree all the branches realted to the block DTCE.
@@ -415,11 +445,11 @@ void TreeWriter::addBlockCele() {
 // input:	-
 // output: -
 void TreeWriter::addBlockDTCE() {
-    fNewTree->Branch("nDTCE", &dtce_.nDTCE, "nDTCE/I");
-    fNewTree->Branch("nSmall", &dtce_.nSmall, "nSmall/I");
+    fNewTree->Branch("nDTCE",      &dtce_.nDTCE,      "nDTCE/I");
+    fNewTree->Branch("nSmall",     &dtce_.nSmall,     "nSmall/I");
     fNewTree->Branch("iLayerDTCE", &dtce_.iLayerDTCE, "iLayerDTCE[nDTCE]/I");
-    fNewTree->Branch("iWireDTCE", &dtce_.iWireDTCE, "iWireDTCE[nDTCE]/I");
-    fNewTree->Branch("tDTCE", &dtce_.tDTCE, "tDTCE[nDTCE]/F");
+    fNewTree->Branch("iWireDTCE",  &dtce_.iWireDTCE,  "iWireDTCE[nDTCE]/I");
+    fNewTree->Branch("tDTCE",      &dtce_.tDTCE,      "tDTCE[nDTCE]/F");
 }
 
 // Add to the tree all the branches realted to the block DTCE0.
@@ -427,10 +457,10 @@ void TreeWriter::addBlockDTCE() {
 // input:	-
 // output: -
 void TreeWriter::addBlockDTCE0() {
-    fNewTree->Branch("nDTCE0", &dtce0_.nDTCE0, "nDTCE0/I");
+    fNewTree->Branch("nDTCE0",      &dtce0_.nDTCE0,      "nDTCE0/I");
     fNewTree->Branch("iLayerDTCE0", &dtce0_.iLayerDTCE0, "iLayerDTCE0[nDTCE0]/I");
-    fNewTree->Branch("iWireDTCE0", &dtce0_.iWireDTCE0, "iWireDTCE0[nDTCE0]/I");
-    fNewTree->Branch("tDTCE0", &dtce0_.tDTCE0, "tDTCE0[nDTCE0]/F");
+    fNewTree->Branch("iWireDTCE0",  &dtce0_.iWireDTCE0,  "iWireDTCE0[nDTCE0]/I");
+    fNewTree->Branch("tDTCE0",      &dtce0_.tDTCE0,      "tDTCE0[nDTCE0]/F");
 }
 
 // Add to the tree all the branches realted to the block DCHits.
@@ -438,13 +468,13 @@ void TreeWriter::addBlockDTCE0() {
 // input:	-
 // output: -
 void TreeWriter::addBlockDCHits() {
-    fNewTree->Branch("nDCHR", &dchits_.nDCHR, "nDCHR/I");
+    fNewTree->Branch("nDCHR",     &dchits_.nDCHR,     "nDCHR/I");
     fNewTree->Branch("nSmallDCm", &dchits_.nSmallDCm, "nSmallDCm/I");
     fNewTree->Branch("nSmallDCp", &dchits_.nSmallDCp, "nSmallDCp/I");
-    fNewTree->Branch("nBigDCm", &dchits_.nBigDCm, "nBigDCm/I");
-    fNewTree->Branch("nBigDCp", &dchits_.nBigDCp, "nBigDCp/I");
-    fNewTree->Branch("nCellDC", &dchits_.nCellDC, "nCellDC/I");
-    fNewTree->Branch("nSmallDC", &dchits_.nSmallDC, "nSmallDC/I");
+    fNewTree->Branch("nBigDCm",   &dchits_.nBigDCm,   "nBigDCm/I");
+    fNewTree->Branch("nBigDCp",   &dchits_.nBigDCp,   "nBigDCp/I");
+    fNewTree->Branch("nCellDC",   &dchits_.nCellDC,   "nCellDC/I");
+    fNewTree->Branch("nSmallDC",  &dchits_.nSmallDC,  "nSmallDC/I");
 }
 
 // Add to the tree all the branches realted to the block DHRE.
@@ -452,12 +482,12 @@ void TreeWriter::addBlockDCHits() {
 // input:	-
 // output: -
 void TreeWriter::addBlockDHRE() {
-    fNewTree->Branch("nDHRE", &dhre_.nDHRE, "nDHRE/I");
+    fNewTree->Branch("nDHRE",      &dhre_.nDHRE,      "nDHRE/I");
     fNewTree->Branch("iLayerDHRE", &dhre_.iLayerDHRE, "iLayerDHRE[nDHRE]/I");
-    fNewTree->Branch("iWireDHRE", &dhre_.iWireDHRE, "iWireDHRE[nDHRE]/I");
-    fNewTree->Branch("iTrkDHRE", &dhre_.iTrkDHRE, "iTrkDHRE[nDHRE]/I");
-    fNewTree->Branch("rDHRE", &dhre_.rDHRE, "rDHRE[nDHRE]/F");
-    fNewTree->Branch("eDHRE", &dhre_.eDHRE, "eDHRE[nDHRE]/F");
+    fNewTree->Branch("iWireDHRE",  &dhre_.iWireDHRE,  "iWireDHRE[nDHRE]/I");
+    fNewTree->Branch("iTrkDHRE",   &dhre_.iTrkDHRE,   "iTrkDHRE[nDHRE]/I");
+    fNewTree->Branch("rDHRE",      &dhre_.rDHRE,      "rDHRE[nDHRE]/F");
+    fNewTree->Branch("eDHRE",      &dhre_.eDHRE,      "eDHRE[nDHRE]/F");
 }
 
 // Add to the tree all the branches realted to the block DHSP.
@@ -468,13 +498,13 @@ void TreeWriter::addBlockDHSP() {
     fNewTree->Branch("nDHSP", &dhsp_.nDHSP, "nDHSP/I");
     fNewTree->Branch("TrkDh", &dhsp_.TrkDh, "TrkDh[nDHSP]/I");
     fNewTree->Branch("Layer", &dhsp_.Layer, "Layer[nDHSP]/I");
-    fNewTree->Branch("Wire", &dhsp_.Wire, "Wire[nDHSP]/I");
-    fNewTree->Branch("Time", &dhsp_.Time, "Time[nDHSP]/F");
-    fNewTree->Branch("DPar", &dhsp_.DPar, "DPar[nDHSP]/F");
-    fNewTree->Branch("Res", &dhsp_.Res, "Res[nDHSP]/F");
-    fNewTree->Branch("XDh", &dhsp_.XDh, "XDh[nDHSP]/F");
-    fNewTree->Branch("YDh", &dhsp_.YDh, "YDh[nDHSP]/F");
-    fNewTree->Branch("ZDh", &dhsp_.ZDh, "ZDh[nDHSP]/F");
+    fNewTree->Branch("Wire",  &dhsp_.Wire,  "Wire[nDHSP]/I");
+    fNewTree->Branch("Time",  &dhsp_.Time,  "Time[nDHSP]/F");
+    fNewTree->Branch("DPar",  &dhsp_.DPar,  "DPar[nDHSP]/F");
+    fNewTree->Branch("Res",   &dhsp_.Res,   "Res[nDHSP]/F");
+    fNewTree->Branch("XDh",   &dhsp_.XDh,   "XDh[nDHSP]/F");
+    fNewTree->Branch("YDh",   &dhsp_.YDh,   "YDh[nDHSP]/F");
+    fNewTree->Branch("ZDh",   &dhsp_.ZDh,   "ZDh[nDHSP]/F");
 }
 
 // Add to the tree all the branches realted to the block TrkV.
@@ -528,47 +558,47 @@ void TreeWriter::addBlockVtx() {
 //
 // input:	-
 // output: -
-void TreeWriter::addBlockTrks() {
-    fNewTree->Branch("nT", &trks_.nT, "nT/I");
-    fNewTree->Branch("TrkInd", &trks_.TrkInd, "TrkInd[nT]/I");
-    fNewTree->Branch("TrkVer", &trks_.TrkVer, "TrkVer[nT]/I");
-    fNewTree->Branch("Cur", &trks_.Cur, "Cur[nT]/F");
-    fNewTree->Branch("Phi", &trks_.Phi, "Phi[nT]/F");
-    fNewTree->Branch("Cot", &trks_.Cot, "Cot[nT]/F");
-    fNewTree->Branch("Pxt", &trks_.Pxt, "Pxt[nT]/F");
-    fNewTree->Branch("Pyt", &trks_.Pyt, "Pyt[nT]/F");
-    fNewTree->Branch("Pzt", &trks_.Pzt, "Pzt[nT]/F");
-    fNewTree->Branch("PMod", &trks_.PMod, "PMod[nT]/F");
-    fNewTree->Branch("Len", &trks_.Len, "Len[nT]/F");
-    fNewTree->Branch("xFirst", &trks_.xFirst, "xFirst[nT]/F");
-    fNewTree->Branch("yFirst", &trks_.yFirst, "yFirst[nT]/F");
-    fNewTree->Branch("zFirst", &trks_.zFirst, "zFirst[nT]/F");
-    fNewTree->Branch("CurLa", &trks_.CurLa, "CurLa[nT]/F");
-    fNewTree->Branch("PhiLa", &trks_.PhiLa, "PhiLa[nT]/F");
-    fNewTree->Branch("CotLa", &trks_.CotLa, "CotLa[nT]/F");
-    fNewTree->Branch("PxtLa", &trks_.PxtLa, "PxtLa[nT]/F");
-    fNewTree->Branch("PytLa", &trks_.PytLa, "PytLa[nT]/F");
-    fNewTree->Branch("PztLa", &trks_.PztLa, "PztLa[nT]/F");
-    fNewTree->Branch("PModLa", &trks_.PModLa, "PModLa[nT]/F");
-    fNewTree->Branch("SPca", &trks_.SPca, "SPca[nT]/F");
-    fNewTree->Branch("SZeta", &trks_.SZeta, "SZeta[nT]/F");
-    fNewTree->Branch("SCurV", &trks_.SCurV, "SCurV[nT]/F");
-    fNewTree->Branch("SCotG", &trks_.SCotG, "SCotG[nT]/F");
-    fNewTree->Branch("SPhi", &trks_.SPhi, "SPhi[nT]/F");
-    fNewTree->Branch("xLast", &trks_.xLast, "xLast[nT]/F");
-    fNewTree->Branch("yLast", &trks_.yLast, "yLast[nT]/F");
-    fNewTree->Branch("zLast", &trks_.zLast, "zLast[nT]/F");
-    fNewTree->Branch("xPca2", &trks_.xPca2, "xPca2[nT]/F");
-    fNewTree->Branch("yPca2", &trks_.yPca2, "yPca2[nT]/F");
-    fNewTree->Branch("zPca2", &trks_.zPca2, "zPca2[nT]/F");
-    fNewTree->Branch("QTrk2", &trks_.QTrk2, "QTrk2[nT]/F");
+void TreeWriter::addBlockTrkS() {
+    fNewTree->Branch("nT",      &trks_.nT,      "nT/I");
+    fNewTree->Branch("TrkInd",  &trks_.TrkInd,  "TrkInd[nT]/I");
+    fNewTree->Branch("TrkVer",  &trks_.TrkVer,  "TrkVer[nT]/I");
+    fNewTree->Branch("Cur",     &trks_.Cur,     "Cur[nT]/F");
+    fNewTree->Branch("Phi",     &trks_.Phi,     "Phi[nT]/F");
+    fNewTree->Branch("Cot",     &trks_.Cot,     "Cot[nT]/F");
+    fNewTree->Branch("Pxt",     &trks_.Pxt,     "Pxt[nT]/F");
+    fNewTree->Branch("Pyt",     &trks_.Pyt,     "Pyt[nT]/F");
+    fNewTree->Branch("Pzt",     &trks_.Pzt,     "Pzt[nT]/F");
+    fNewTree->Branch("PMod",    &trks_.PMod,    "PMod[nT]/F");
+    fNewTree->Branch("Len",     &trks_.Len,     "Len[nT]/F");
+    fNewTree->Branch("xFirst",  &trks_.xFirst,  "xFirst[nT]/F");
+    fNewTree->Branch("yFirst",  &trks_.yFirst,  "yFirst[nT]/F");
+    fNewTree->Branch("zFirst",  &trks_.zFirst,  "zFirst[nT]/F");
+    fNewTree->Branch("CurLa",   &trks_.CurLa,   "CurLa[nT]/F");
+    fNewTree->Branch("PhiLa",   &trks_.PhiLa,   "PhiLa[nT]/F");
+    fNewTree->Branch("CotLa",   &trks_.CotLa,   "CotLa[nT]/F");
+    fNewTree->Branch("PxtLa",   &trks_.PxtLa,   "PxtLa[nT]/F");
+    fNewTree->Branch("PytLa",   &trks_.PytLa,   "PytLa[nT]/F");
+    fNewTree->Branch("PztLa",   &trks_.PztLa,   "PztLa[nT]/F");
+    fNewTree->Branch("PModLa",  &trks_.PModLa,  "PModLa[nT]/F");
+    fNewTree->Branch("SPca",    &trks_.SPca,    "SPca[nT]/F");
+    fNewTree->Branch("SZeta",   &trks_.SZeta,   "SZeta[nT]/F");
+    fNewTree->Branch("SCurV",   &trks_.SCurV,   "SCurV[nT]/F");
+    fNewTree->Branch("SCotG",   &trks_.SCotG,   "SCotG[nT]/F");
+    fNewTree->Branch("SPhi",    &trks_.SPhi,    "SPhi[nT]/F");
+    fNewTree->Branch("xLast",   &trks_.xLast,   "xLast[nT]/F");
+    fNewTree->Branch("yLast",   &trks_.yLast,   "yLast[nT]/F");
+    fNewTree->Branch("zLast",   &trks_.zLast,   "zLast[nT]/F");
+    fNewTree->Branch("xPca2",   &trks_.xPca2,   "xPca2[nT]/F");
+    fNewTree->Branch("yPca2",   &trks_.yPca2,   "yPca2[nT]/F");
+    fNewTree->Branch("zPca2",   &trks_.zPca2,   "zPca2[nT]/F");
+    fNewTree->Branch("QTrk2",   &trks_.QTrk2,   "QTrk2[nT]/F");
     fNewTree->Branch("CotPca2", &trks_.CotPca2, "CotPca2[nT]/F");
     fNewTree->Branch("PhiPca2", &trks_.PhiPca2, "PhiPca2[nT]/F");
-    fNewTree->Branch("nPrHit", &trks_.nPrHit, "nPrHit[nT]/I");
+    fNewTree->Branch("nPrHit",  &trks_.nPrHit,  "nPrHit[nT]/I");
     fNewTree->Branch("nFitHit", &trks_.nFitHit, "nFitHit[nT]/I");
     fNewTree->Branch("nMskInk", &trks_.nMskInk, "nMskInk[nT]/I");
     fNewTree->Branch("Chi2Fit", &trks_.Chi2Fit, "Chi2Fit[nT]/F");
-    fNewTree->Branch("Chi2Ms", &trks_.Chi2Ms, "Chi2Ms[nT]/F");
+    fNewTree->Branch("Chi2Ms",  &trks_.Chi2Ms,  "Chi2Ms[nT]/F");
 }
 
 // Add to the tree all the branches realted to the block TrkMC.
@@ -576,41 +606,41 @@ void TreeWriter::addBlockTrks() {
 // input:	-
 // output: -
 void TreeWriter::addBlockTrkMC() {
-    fNewTree->Branch("nTfMC", &trkmc_.nTfMC, "nTfMC/I");
-    fNewTree->Branch("NConTr", &trkmc_.NConTr, "NConTr[nTfMC]/I");
+    fNewTree->Branch("nTfMC",   &trkmc_.nTfMC,   "nTfMC/I");
+    fNewTree->Branch("NConTr",  &trkmc_.NConTr,  "NConTr[nTfMC]/I");
     fNewTree->Branch("TrkIne1", &trkmc_.TrkIne1, "TrkIne1[nTfMC]/I");
     fNewTree->Branch("TrType1", &trkmc_.TrType1, "TrType1[nTfMC]/I");
     fNewTree->Branch("TrHits1", &trkmc_.TrHits1, "TrHits1[nTfMC]/I");
     fNewTree->Branch("TrkIne2", &trkmc_.TrkIne2, "TrkIne2[nTfMC]/I");
     fNewTree->Branch("TrType2", &trkmc_.TrType2, "TrType2[nTfMC]/I");
     fNewTree->Branch("TrHits2", &trkmc_.TrHits2, "TrHits2[nTfMC]/I");
-    fNewTree->Branch("TrkIn3", &trkmc_.TrkIn3, "TrkIn3[nTfMC]/I");
+    fNewTree->Branch("TrkIn3",  &trkmc_.TrkIn3,  "TrkIn3[nTfMC]/I");
     fNewTree->Branch("TrType3", &trkmc_.TrType3, "TrType3[nTfMC]/I");
     fNewTree->Branch("TrHits3", &trkmc_.TrHits3, "TrHits3[nTfMC]/I");
-    fNewTree->Branch("xFMC", &trkmc_.xFMC, "xFMC[nTfMC]/F");
-    fNewTree->Branch("yFMC", &trkmc_.yFMC, "yFMC[nTfMC]/F");
-    fNewTree->Branch("zFMC", &trkmc_.zFMC, "zFMC[nTfMC]/F");
-    fNewTree->Branch("PxFMC", &trkmc_.PxFMC, "PxFMC[nTfMC]/F");
-    fNewTree->Branch("PyFMC", &trkmc_.PyFMC, "PyFMC[nTfMC]/F");
-    fNewTree->Branch("PzFMC", &trkmc_.PzFMC, "PzFMC[nTfMC]/F");
-    fNewTree->Branch("xLMC", &trkmc_.xLMC, "xLMC[nTfMC]/F");
-    fNewTree->Branch("yLMC", &trkmc_.yLMC, "yLMC[nTfMC]/F");
-    fNewTree->Branch("zLMC", &trkmc_.zLMC, "zLMC[nTfMC]/F");
-    fNewTree->Branch("PxLMC", &trkmc_.PxLMC, "PxLMC[nTfMC]/F");
-    fNewTree->Branch("PyLMC", &trkmc_.PyLMC, "PyLMC[nTfMC]/F");
-    fNewTree->Branch("PzLMC", &trkmc_.PzLMC, "PzLMC[nTfMC]/F");
-    fNewTree->Branch("xFMC2", &trkmc_.xFMC2, "xFMC2[nTfMC]/F");
-    fNewTree->Branch("yFMC2", &trkmc_.yFMC2, "yFMC2[nTfMC]/F");
-    fNewTree->Branch("zFMC2", &trkmc_.zFMC2, "zFMC2[nTfMC]/F");
-    fNewTree->Branch("PxFMC2", &trkmc_.PxFMC2, "PxFMC2[nTfMC]/F");
-    fNewTree->Branch("PyFMC2", &trkmc_.PyFMC2, "PyFMC2[nTfMC]/F");
-    fNewTree->Branch("PzFMC2", &trkmc_.PzFMC2, "PzFMC2[nTfMC]/F");
-    fNewTree->Branch("xLMC2", &trkmc_.xLMC2, "xLMC2[nTfMC]/F");
-    fNewTree->Branch("yLMC2", &trkmc_.yLMC2, "yLMC2[nTfMC]/F");
-    fNewTree->Branch("zLMC2", &trkmc_.zLMC2, "zLMC2[nTfMC]/F");
-    fNewTree->Branch("PxLMC2", &trkmc_.PxLMC2, "PxLMC2[nTfMC]/F");
-    fNewTree->Branch("PyLMC2", &trkmc_.PyLMC2, "PyLMC2[nTfMC]/F");
-    fNewTree->Branch("PzLMC2", &trkmc_.PzLMC2, "PzLMC2[nTfMC]/F");
+    fNewTree->Branch("xFMC",    &trkmc_.xFMC,    "xFMC[nTfMC]/F");
+    fNewTree->Branch("yFMC",    &trkmc_.yFMC,    "yFMC[nTfMC]/F");
+    fNewTree->Branch("zFMC",    &trkmc_.zFMC,    "zFMC[nTfMC]/F");
+    fNewTree->Branch("PxFMC",   &trkmc_.PxFMC,   "PxFMC[nTfMC]/F");
+    fNewTree->Branch("PyFMC",   &trkmc_.PyFMC,   "PyFMC[nTfMC]/F");
+    fNewTree->Branch("PzFMC",   &trkmc_.PzFMC,   "PzFMC[nTfMC]/F");
+    fNewTree->Branch("xLMC",    &trkmc_.xLMC,    "xLMC[nTfMC]/F");
+    fNewTree->Branch("yLMC",    &trkmc_.yLMC,    "yLMC[nTfMC]/F");
+    fNewTree->Branch("zLMC",    &trkmc_.zLMC,    "zLMC[nTfMC]/F");
+    fNewTree->Branch("PxLMC",   &trkmc_.PxLMC,   "PxLMC[nTfMC]/F");
+    fNewTree->Branch("PyLMC",   &trkmc_.PyLMC,   "PyLMC[nTfMC]/F");
+    fNewTree->Branch("PzLMC",   &trkmc_.PzLMC,   "PzLMC[nTfMC]/F");
+    fNewTree->Branch("xFMC2",   &trkmc_.xFMC2,   "xFMC2[nTfMC]/F");
+    fNewTree->Branch("yFMC2",   &trkmc_.yFMC2,   "yFMC2[nTfMC]/F");
+    fNewTree->Branch("zFMC2",   &trkmc_.zFMC2,   "zFMC2[nTfMC]/F");
+    fNewTree->Branch("PxFMC2",  &trkmc_.PxFMC2,  "PxFMC2[nTfMC]/F");
+    fNewTree->Branch("PyFMC2",  &trkmc_.PyFMC2,  "PyFMC2[nTfMC]/F");
+    fNewTree->Branch("PzFMC2",  &trkmc_.PzFMC2,  "PzFMC2[nTfMC]/F");
+    fNewTree->Branch("xLMC2",   &trkmc_.xLMC2,   "xLMC2[nTfMC]/F");
+    fNewTree->Branch("yLMC2",   &trkmc_.yLMC2,   "yLMC2[nTfMC]/F");
+    fNewTree->Branch("zLMC2",   &trkmc_.zLMC2,   "zLMC2[nTfMC]/F");
+    fNewTree->Branch("PxLMC2",  &trkmc_.PxLMC2,  "PxLMC2[nTfMC]/F");
+    fNewTree->Branch("PyLMC2",  &trkmc_.PyLMC2,  "PyLMC2[nTfMC]/F");
+    fNewTree->Branch("PzLMC2",  &trkmc_.PzLMC2,  "PzLMC2[nTfMC]/F");
 }
 
 // Add to the tree all the branches realted to the block TrkVOld.
@@ -618,19 +648,19 @@ void TreeWriter::addBlockTrkMC() {
 // input:	-
 // output: -
 void TreeWriter::addBlockTrkVOld() {
-    fNewTree->Branch("nTVOld", &trkvold_.nTVOld, "nTVOld/I");
-    fNewTree->Branch("iVOld", &trkvold_.iVOld, "iVOld[nTVOld]/I");
+    fNewTree->Branch("nTVOld",     &trkvold_.nTVOld,     "nTVOld/I");
+    fNewTree->Branch("iVOld",      &trkvold_.iVOld,      "iVOld[nTVOld]/I");
     fNewTree->Branch("TrkNumVOld", &trkvold_.TrkNumVOld, "TrkNumVOld[nTVOld]/I");
-    fNewTree->Branch("CurVOld", &trkvold_.CurVOld, "CurVOld[nTVOld]/F");
-    fNewTree->Branch("PhiVOld", &trkvold_.PhiVOld, "PhiVOld[nTVOld]/F");
-    fNewTree->Branch("CotVOld", &trkvold_.CotVOld, "CotVOld[nTVOld]/F");
-    fNewTree->Branch("PxTVOld", &trkvold_.PxTVOld, "PxTVOld[nTVOld]/F");
-    fNewTree->Branch("PyTVOld", &trkvold_.PyTVOld, "PyTVOld[nTVOld]/F");
-    fNewTree->Branch("PzTVOld", &trkvold_.PzTVOld, "PzTVOld[nTVOld]/F");
-    fNewTree->Branch("PModVOld", &trkvold_.PModVOld, "PModVOld[nTVOld]/F");
-    fNewTree->Branch("LenVOld", &trkvold_.LenVOld, "LenVOld[nTVOld]/F");
-    fNewTree->Branch("ChiVOld", &trkvold_.ChiVOld, "ChiVOld[nTVOld]/F");
-    fNewTree->Branch("PidTVOld", &trkvold_.PidTVOld, "PidTVOld[nTVOld]/I");
+    fNewTree->Branch("CurVOld",    &trkvold_.CurVOld,    "CurVOld[nTVOld]/F");
+    fNewTree->Branch("PhiVOld",    &trkvold_.PhiVOld,    "PhiVOld[nTVOld]/F");
+    fNewTree->Branch("CotVOld",    &trkvold_.CotVOld,    "CotVOld[nTVOld]/F");
+    fNewTree->Branch("PxTVOld",    &trkvold_.PxTVOld,    "PxTVOld[nTVOld]/F");
+    fNewTree->Branch("PyTVOld",    &trkvold_.PyTVOld,    "PyTVOld[nTVOld]/F");
+    fNewTree->Branch("PzTVOld",    &trkvold_.PzTVOld,    "PzTVOld[nTVOld]/F");
+    fNewTree->Branch("PModVOld",   &trkvold_.PModVOld,   "PModVOld[nTVOld]/F");
+    fNewTree->Branch("LenVOld",    &trkvold_.LenVOld,    "LenVOld[nTVOld]/F");
+    fNewTree->Branch("ChiVOld",    &trkvold_.ChiVOld,    "ChiVOld[nTVOld]/F");
+    fNewTree->Branch("PidTVOld",   &trkvold_.PidTVOld,   "PidTVOld[nTVOld]/I");
     fNewTree->Branch("Cov11TVOld", &trkvold_.Cov11TVOld, "Cov11TVOld[nTVOld]/F");
     fNewTree->Branch("Cov12TVOld", &trkvold_.Cov12TVOld, "Cov12TVOld[nTVOld]/F");
     fNewTree->Branch("Cov13TVOld", &trkvold_.Cov13TVOld, "Cov13TVOld[nTVOld]/F");
@@ -644,14 +674,14 @@ void TreeWriter::addBlockTrkVOld() {
 // input:	-
 // output: -
 void TreeWriter::addBlockVtxOld() {
-    fNewTree->Branch("nVOld", &vtxold_.nVOld, "nVOld/I");
-    fNewTree->Branch("VtxOld", &vtxold_.VtxOld, "VtxOld[nVOld]/I");
-    fNewTree->Branch("xVOld", &vtxold_.xVOld, "xVOld[nVOld]/F");
-    fNewTree->Branch("yVOld", &vtxold_.yVOld, "yVOld[nVOld]/F");
-    fNewTree->Branch("ZVOld", &vtxold_.ZVOld, "ZVOld[nVOld]/F");
-    fNewTree->Branch("ChiVTxOld", &vtxold_.ChiVTxOld, "ChiVTxOld[nVOld]/F");
-    fNewTree->Branch("QuaLVOld", &vtxold_.QuaLVOld, "QuaLVOld[nVOld]/I");
-    fNewTree->Branch("FitIdVOld", &vtxold_.FitIdVOld, "FitIdVOld[nVOld]/I");
+    fNewTree->Branch("nVOld",      &vtxold_.nVOld,      "nVOld/I");
+    fNewTree->Branch("VtxOld",     &vtxold_.VtxOld,     "VtxOld[nVOld]/I");
+    fNewTree->Branch("xVOld",      &vtxold_.xVOld,      "xVOld[nVOld]/F");
+    fNewTree->Branch("yVOld",      &vtxold_.yVOld,      "yVOld[nVOld]/F");
+    fNewTree->Branch("ZVOld",      &vtxold_.ZVOld,      "ZVOld[nVOld]/F");
+    fNewTree->Branch("ChiVTxOld",  &vtxold_.ChiVTxOld,  "ChiVTxOld[nVOld]/F");
+    fNewTree->Branch("QuaLVOld",   &vtxold_.QuaLVOld,   "QuaLVOld[nVOld]/I");
+    fNewTree->Branch("FitIdVOld",  &vtxold_.FitIdVOld,  "FitIdVOld[nVOld]/I");
     fNewTree->Branch("VtxCov1Old", &vtxold_.VtxCov1Old, "VtxCov1Old[nVOld]/F");
     fNewTree->Branch("VtxCov2Old", &vtxold_.VtxCov2Old, "VtxCov2Old[nVOld]/F");
     fNewTree->Branch("VtxCov3Old", &vtxold_.VtxCov3Old, "VtxCov3Old[nVOld]/F");
@@ -664,47 +694,47 @@ void TreeWriter::addBlockVtxOld() {
 //
 // input:	-
 // output: -
-void TreeWriter::addBlockTrkOld() {
-    fNewTree->Branch("nTOld", &trkold_.nTOld, "nTOld/I");
-    fNewTree->Branch("TrkIndOld", &trkold_.TrkIndOld, "TrkIndOld[nTOld]/I");
-    fNewTree->Branch("TrkVerOld", &trkold_.TrkVerOld, "TrkVerOld[nTOld]/I");
-    fNewTree->Branch("CurOld", &trkold_.CurOld, "CurOld[nTOld]/F");
-    fNewTree->Branch("PhiOld", &trkold_.PhiOld, "PhiOld[nTOld]/F");
-    fNewTree->Branch("CotOld", &trkold_.CotOld, "CotOld[nTOld]/F");
-    fNewTree->Branch("PxTOld", &trkold_.PxTOld, "PxTOld[nTOld]/F");
-    fNewTree->Branch("PyTOld", &trkold_.PyTOld, "PyTOld[nTOld]/F");
-    fNewTree->Branch("PzTOld", &trkold_.PzTOld, "PzTOld[nTOld]/F");
-    fNewTree->Branch("PModOld", &trkold_.PModOld, "PModOld[nTOld]/F");
-    fNewTree->Branch("LenOld", &trkold_.LenOld, "LenOld[nTOld]/F");
-    fNewTree->Branch("xFirstOld", &trkold_.xFirstOld, "xFirstOld[nTOld]/F");
-    fNewTree->Branch("yFirstOld", &trkold_.yFirstOld, "yFirstOld[nTOld]/F");
-    fNewTree->Branch("zFirstOld", &trkold_.zFirstOld, "zFirstOld[nTOld]/F");
-    fNewTree->Branch("CurLaOld", &trkold_.CurLaOld, "CurLaOld[nTOld]/F");
-    fNewTree->Branch("PhiLaOld", &trkold_.PhiLaOld, "PhiLaOld[nTOld]/F");
-    fNewTree->Branch("CotLaOld", &trkold_.CotLaOld, "CotLaOld[nTOld]/F");
-    fNewTree->Branch("PxTLaOld", &trkold_.PxTLaOld, "PxTLaOld[nTOld]/F");
-    fNewTree->Branch("PyTLaOld", &trkold_.PyTLaOld, "PyTLaOld[nTOld]/F");
-    fNewTree->Branch("PzTLaOld", &trkold_.PzTLaOld, "PzTLaOld[nTOld]/F");
-    fNewTree->Branch("PModLaOld", &trkold_.PModLaOld, "PModLaOld[nTOld]/F");
-    fNewTree->Branch("SPcaOld", &trkold_.SPcaOld, "SPcaOld[nTOld]/F");
-    fNewTree->Branch("SZetaOld", &trkold_.SZetaOld, "SZetaOld[nTOld]/F");
-    fNewTree->Branch("SCurVOld", &trkold_.SCurVOld, "SCurVOld[nTOld]/F");
-    fNewTree->Branch("SCotGOld", &trkold_.SCotGOld, "SCotGOld[nTOld]/F");
-    fNewTree->Branch("SPhiOld", &trkold_.SPhiOld, "SPhiOld[nTOld]/F");
-    fNewTree->Branch("xLastOld", &trkold_.xLastOld, "xLastOld[nTOld]/F");
-    fNewTree->Branch("yLastOld", &trkold_.yLastOld, "yLastOld[nTOld]/F");
-    fNewTree->Branch("zLastOld", &trkold_.zLastOld, "zLastOld[nTOld]/F");
-    fNewTree->Branch("xPca2Old", &trkold_.xPca2Old, "xPca2Old[nTOld]/F");
-    fNewTree->Branch("yPca2Old", &trkold_.yPca2Old, "yPca2Old[nTOld]/F");
-    fNewTree->Branch("zPca2Old", &trkold_.zPca2Old, "zPca2Old[nTOld]/F");
-    fNewTree->Branch("QTrk2Old", &trkold_.QTrk2Old, "QTrk2Old[nTOld]/F");
-    fNewTree->Branch("CotPca2Old", &trkold_.CotPca2Old, "CotPca2Old[nTOld]/F");
-    fNewTree->Branch("PhiPca2Old", &trkold_.PhiPca2Old, "PhiPca2Old[nTOld]/F");
-    fNewTree->Branch("nPrhiTOld", &trkold_.nPrhiTOld, "nPrhiTOld[nTOld]/I");
+void TreeWriter::addBlockTrkSOld() {
+    fNewTree->Branch("nTOld",       &trkold_.nTOld,       "nTOld/I");
+    fNewTree->Branch("TrkIndOld",   &trkold_.TrkIndOld,   "TrkIndOld[nTOld]/I");
+    fNewTree->Branch("TrkVerOld",   &trkold_.TrkVerOld,   "TrkVerOld[nTOld]/I");
+    fNewTree->Branch("CurOld",      &trkold_.CurOld,      "CurOld[nTOld]/F");
+    fNewTree->Branch("PhiOld",      &trkold_.PhiOld,      "PhiOld[nTOld]/F");
+    fNewTree->Branch("CotOld",      &trkold_.CotOld,      "CotOld[nTOld]/F");
+    fNewTree->Branch("PxTOld",      &trkold_.PxTOld,      "PxTOld[nTOld]/F");
+    fNewTree->Branch("PyTOld",      &trkold_.PyTOld,      "PyTOld[nTOld]/F");
+    fNewTree->Branch("PzTOld",      &trkold_.PzTOld,      "PzTOld[nTOld]/F");
+    fNewTree->Branch("PModOld",     &trkold_.PModOld,     "PModOld[nTOld]/F");
+    fNewTree->Branch("LenOld",      &trkold_.LenOld,      "LenOld[nTOld]/F");
+    fNewTree->Branch("xFirstOld",   &trkold_.xFirstOld,   "xFirstOld[nTOld]/F");
+    fNewTree->Branch("yFirstOld",   &trkold_.yFirstOld,   "yFirstOld[nTOld]/F");
+    fNewTree->Branch("zFirstOld",   &trkold_.zFirstOld,   "zFirstOld[nTOld]/F");
+    fNewTree->Branch("CurLaOld",    &trkold_.CurLaOld,    "CurLaOld[nTOld]/F");
+    fNewTree->Branch("PhiLaOld",    &trkold_.PhiLaOld,    "PhiLaOld[nTOld]/F");
+    fNewTree->Branch("CotLaOld",    &trkold_.CotLaOld,    "CotLaOld[nTOld]/F");
+    fNewTree->Branch("PxTLaOld",    &trkold_.PxTLaOld,    "PxTLaOld[nTOld]/F");
+    fNewTree->Branch("PyTLaOld",    &trkold_.PyTLaOld,    "PyTLaOld[nTOld]/F");
+    fNewTree->Branch("PzTLaOld",    &trkold_.PzTLaOld,    "PzTLaOld[nTOld]/F");
+    fNewTree->Branch("PModLaOld",   &trkold_.PModLaOld,   "PModLaOld[nTOld]/F");
+    fNewTree->Branch("SPcaOld",     &trkold_.SPcaOld,     "SPcaOld[nTOld]/F");
+    fNewTree->Branch("SZetaOld",    &trkold_.SZetaOld,    "SZetaOld[nTOld]/F");
+    fNewTree->Branch("SCurVOld",    &trkold_.SCurVOld,    "SCurVOld[nTOld]/F");
+    fNewTree->Branch("SCotGOld",    &trkold_.SCotGOld,    "SCotGOld[nTOld]/F");
+    fNewTree->Branch("SPhiOld",     &trkold_.SPhiOld,     "SPhiOld[nTOld]/F");
+    fNewTree->Branch("xLastOld",    &trkold_.xLastOld,    "xLastOld[nTOld]/F");
+    fNewTree->Branch("yLastOld",    &trkold_.yLastOld,    "yLastOld[nTOld]/F");
+    fNewTree->Branch("zLastOld",    &trkold_.zLastOld,    "zLastOld[nTOld]/F");
+    fNewTree->Branch("xPca2Old",    &trkold_.xPca2Old,    "xPca2Old[nTOld]/F");
+    fNewTree->Branch("yPca2Old",    &trkold_.yPca2Old,    "yPca2Old[nTOld]/F");
+    fNewTree->Branch("zPca2Old",    &trkold_.zPca2Old,    "zPca2Old[nTOld]/F");
+    fNewTree->Branch("QTrk2Old",    &trkold_.QTrk2Old,    "QTrk2Old[nTOld]/F");
+    fNewTree->Branch("CotPca2Old",  &trkold_.CotPca2Old,  "CotPca2Old[nTOld]/F");
+    fNewTree->Branch("PhiPca2Old",  &trkold_.PhiPca2Old,  "PhiPca2Old[nTOld]/F");
+    fNewTree->Branch("nPrhiTOld",   &trkold_.nPrhiTOld,   "nPrhiTOld[nTOld]/I");
     fNewTree->Branch("nFifthITOld", &trkold_.nFifthITOld, "nFifthITOld[nTOld]/I");
-    fNewTree->Branch("nMskInkOld", &trkold_.nMskInkOld, "nMskInkOld[nTOld]/I");
-    fNewTree->Branch("Chi2FitOld", &trkold_.Chi2FitOld, "Chi2FitOld[nTOld]/F");
-    fNewTree->Branch("Chi2MSOld", &trkold_.Chi2MSOld, "Chi2MSOld[nTOld]/F");
+    fNewTree->Branch("nMskInkOld",  &trkold_.nMskInkOld,  "nMskInkOld[nTOld]/I");
+    fNewTree->Branch("Chi2FitOld",  &trkold_.Chi2FitOld,  "Chi2FitOld[nTOld]/F");
+    fNewTree->Branch("Chi2MSOld",   &trkold_.Chi2MSOld,   "Chi2MSOld[nTOld]/F");
 }
 
 // Add to the tree all the branches realted to the block TrkMCOld.
@@ -712,8 +742,8 @@ void TreeWriter::addBlockTrkOld() {
 // input:	-
 // output: -
 void TreeWriter::addBlockTrkMCOld() {
-    fNewTree->Branch("nTfMCOld", &trkmcold_.nTfMCOld, "nTfMCOld/I");
-    fNewTree->Branch("nContrOld", &trkmcold_.nContrOld, "nContrOld[nTfMCOld]/I");
+    fNewTree->Branch("nTfMCOld",   &trkmcold_.nTfMCOld,   "nTfMCOld/I");
+    fNewTree->Branch("nContrOld",  &trkmcold_.nContrOld,  "nContrOld[nTfMCOld]/I");
     fNewTree->Branch("TrkIne1Old", &trkmcold_.TrkIne1Old, "TrkIne1Old[nTfMCOld]/I");
     fNewTree->Branch("TrType1Old", &trkmcold_.TrType1Old, "TrType1Old[nTfMCOld]/I");
     fNewTree->Branch("TrHits1Old", &trkmcold_.TrHits1Old, "TrHits1Old[nTfMCOld]/I");
@@ -723,30 +753,53 @@ void TreeWriter::addBlockTrkMCOld() {
     fNewTree->Branch("TrkIne3Old", &trkmcold_.TrkIne3Old, "TrkIne3Old[nTfMCOld]/I");
     fNewTree->Branch("TrType3Old", &trkmcold_.TrType3Old, "TrType3Old[nTfMCOld]/I");
     fNewTree->Branch("TrHits3Old", &trkmcold_.TrHits3Old, "TrHits3Old[nTfMCOld]/I");
-    fNewTree->Branch("xFMCOld", &trkmcold_.xFMCOld, "xFMCOld[nTfMCOld]/F");
-    fNewTree->Branch("yFMCOld", &trkmcold_.yFMCOld, "yFMCOld[nTfMCOld]/F");
-    fNewTree->Branch("zFMCOld", &trkmcold_.zFMCOld, "zFMCOld[nTfMCOld]/F");
-    fNewTree->Branch("PxFMCOld", &trkmcold_.PxFMCOld, "PxFMCOld[nTfMCOld]/F");
-    fNewTree->Branch("PyFMCOld", &trkmcold_.PyFMCOld, "PyFMCOld[nTfMCOld]/F");
-    fNewTree->Branch("PzFMCOld", &trkmcold_.PzFMCOld, "PzFMCOld[nTfMCOld]/F");
-    fNewTree->Branch("xLMCOld", &trkmcold_.xLMCOld, "xLMCOld[nTfMCOld]/F");
-    fNewTree->Branch("yLMCOld", &trkmcold_.yLMCOld, "yLMCOld[nTfMCOld]/F");
-    fNewTree->Branch("zLMCOld", &trkmcold_.zLMCOld, "zLMCOld[nTfMCOld]/F");
-    fNewTree->Branch("PxLMCOld", &trkmcold_.PxLMCOld, "PxLMCOld[nTfMCOld]/F");
-    fNewTree->Branch("PyLMCOld", &trkmcold_.PyLMCOld, "PyLMCOld[nTfMCOld]/F");
-    fNewTree->Branch("PzLMCOld", &trkmcold_.PzLMCOld, "PzLMCOld[nTfMCOld]/F");
-    fNewTree->Branch("xFMC2Old", &trkmcold_.xFMC2Old, "xFMC2Old[nTfMCOld]/F");
-    fNewTree->Branch("yFMC2Old", &trkmcold_.yFMC2Old, "yFMC2Old[nTfMCOld]/F");
-    fNewTree->Branch("zFMC2Old", &trkmcold_.zFMC2Old, "zFMC2Old[nTfMCOld]/F");
-    fNewTree->Branch("PxFMC2Old", &trkmcold_.PxFMC2Old, "PxFMC2Old[nTfMCOld]/F");
-    fNewTree->Branch("PyFMC2Old", &trkmcold_.PyFMC2Old, "PyFMC2Old[nTfMCOld]/F");
-    fNewTree->Branch("PzFMC2Old", &trkmcold_.PzFMC2Old, "PzFMC2Old[nTfMCOld]/F");
-    fNewTree->Branch("xLMC2Old", &trkmcold_.xLMC2Old, "xLMC2Old[nTfMCOld]/F");
-    fNewTree->Branch("yLMC2Old", &trkmcold_.yLMC2Old, "yLMC2Old[nTfMCOld]/F");
-    fNewTree->Branch("zLMC2Old", &trkmcold_.zLMC2Old, "zLMC2Old[nTfMCOld]/F");
-    fNewTree->Branch("PxLMC2Old", &trkmcold_.PxLMC2Old, "PxLMC2Old[nTfMCOld]/F");
-    fNewTree->Branch("PyLMC2Old", &trkmcold_.PyLMC2Old, "PyLMC2Old[nTfMCOld]/F");
-    fNewTree->Branch("PzLMC2Old", &trkmcold_.PzLMC2Old, "PzLMC2Old[nTfMCOld]/F");
+    fNewTree->Branch("xFMCOld",    &trkmcold_.xFMCOld,    "xFMCOld[nTfMCOld]/F");
+    fNewTree->Branch("yFMCOld",    &trkmcold_.yFMCOld,    "yFMCOld[nTfMCOld]/F");
+    fNewTree->Branch("zFMCOld",    &trkmcold_.zFMCOld,    "zFMCOld[nTfMCOld]/F");
+    fNewTree->Branch("PxFMCOld",   &trkmcold_.PxFMCOld,   "PxFMCOld[nTfMCOld]/F");
+    fNewTree->Branch("PyFMCOld",   &trkmcold_.PyFMCOld,   "PyFMCOld[nTfMCOld]/F");
+    fNewTree->Branch("PzFMCOld",   &trkmcold_.PzFMCOld,   "PzFMCOld[nTfMCOld]/F");
+    fNewTree->Branch("xLMCOld",    &trkmcold_.xLMCOld,    "xLMCOld[nTfMCOld]/F");
+    fNewTree->Branch("yLMCOld",    &trkmcold_.yLMCOld,    "yLMCOld[nTfMCOld]/F");
+    fNewTree->Branch("zLMCOld",    &trkmcold_.zLMCOld,    "zLMCOld[nTfMCOld]/F");
+    fNewTree->Branch("PxLMCOld",   &trkmcold_.PxLMCOld,   "PxLMCOld[nTfMCOld]/F");
+    fNewTree->Branch("PyLMCOld",   &trkmcold_.PyLMCOld,   "PyLMCOld[nTfMCOld]/F");
+    fNewTree->Branch("PzLMCOld",   &trkmcold_.PzLMCOld,   "PzLMCOld[nTfMCOld]/F");
+    fNewTree->Branch("xFMC2Old",   &trkmcold_.xFMC2Old,   "xFMC2Old[nTfMCOld]/F");
+    fNewTree->Branch("yFMC2Old",   &trkmcold_.yFMC2Old,   "yFMC2Old[nTfMCOld]/F");
+    fNewTree->Branch("zFMC2Old",   &trkmcold_.zFMC2Old,   "zFMC2Old[nTfMCOld]/F");
+    fNewTree->Branch("PxFMC2Old",  &trkmcold_.PxFMC2Old,  "PxFMC2Old[nTfMCOld]/F");
+    fNewTree->Branch("PyFMC2Old",  &trkmcold_.PyFMC2Old,  "PyFMC2Old[nTfMCOld]/F");
+    fNewTree->Branch("PzFMC2Old",  &trkmcold_.PzFMC2Old,  "PzFMC2Old[nTfMCOld]/F");
+    fNewTree->Branch("xLMC2Old",   &trkmcold_.xLMC2Old,   "xLMC2Old[nTfMCOld]/F");
+    fNewTree->Branch("yLMC2Old",   &trkmcold_.yLMC2Old,   "yLMC2Old[nTfMCOld]/F");
+    fNewTree->Branch("zLMC2Old",   &trkmcold_.zLMC2Old,   "zLMC2Old[nTfMCOld]/F");
+    fNewTree->Branch("PxLMC2Old",  &trkmcold_.PxLMC2Old,  "PxLMC2Old[nTfMCOld]/F");
+    fNewTree->Branch("PyLMC2Old",  &trkmcold_.PyLMC2Old,  "PyLMC2Old[nTfMCOld]/F");
+    fNewTree->Branch("PzLMC2Old",  &trkmcold_.PzLMC2Old,  "PzLMC2Old[nTfMCOld]/F");
+}
+
+// Add to the tree all the branches realted to the block DHIT.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockDHIT() {
+    fNewTree->Branch("nDHIT",    &dhit_.nDHIT,    "nDHIT/I");
+    fNewTree->Branch("DHPid",    &dhit_.DHPid,    "DHPid[nDHIT]/I");
+    fNewTree->Branch("DHKin",    &dhit_.DHKin,    "DHKin[nDHIT]/I");
+    fNewTree->Branch("DHAdd",    &dhit_.DHAdd,    "DHAdd[nDHIT]/I");
+    fNewTree->Branch("DHx",      &dhit_.DHx,      "DHx[nDHIT]/F");
+    fNewTree->Branch("DHy",      &dhit_.DHy,      "DHy[nDHIT]/F");
+    fNewTree->Branch("DHz",      &dhit_.DHz,      "DHz[nDHIT]/F");
+    fNewTree->Branch("DHPx",     &dhit_.DHPx,     "DHPx[nDHIT]/F");
+    fNewTree->Branch("DHPy",     &dhit_.DHPy,     "DHPy[nDHIT]/F");
+    fNewTree->Branch("DHPz",     &dhit_.DHPz,     "DHPz[nDHIT]/F");
+    fNewTree->Branch("DHt",      &dhit_.DHt,      "DHt[nDHIT]/F");
+    fNewTree->Branch("DHDedx",   &dhit_.DHDedx,   "DHDedx[nDHIT]/F");
+    fNewTree->Branch("DHTLen",   &dhit_.DHTLen,   "DHTLen[nDHIT]/F");
+    fNewTree->Branch("DHDTime",  &dhit_.DHDTime,  "DHDTime[nDHIT]/F");
+    fNewTree->Branch("DHDFromW", &dhit_.DHDFromW, "DHDFromW[nDHIT]/F");
+    fNewTree->Branch("DHFlag",   &dhit_.DHFlag,   "DHFlag[nDHIT]/I");
 }
 
 // Returns the output file object.

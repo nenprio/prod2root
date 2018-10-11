@@ -154,15 +154,20 @@ C
 C
 C  Block: evtclu
 C
-      integer iEVTCLU,NClu,FlagCl(100),NCluMc,NPar(100),PNum1(100)
-      integer Pid1(100), PNum2(100), Pid2(100), PNum3(100), Pid3(100)
+      integer iEVTCLU,NClu,FlagCl(100)
       real EneCl(100), TCl(100), XCl(100), YCl(100), ZCl(100)
       real XaCl(100), YaCl(100), ZaCl(100), XRmCl(100)
       real YRmsCl(100), ZrmsCl(100), TrmsCl(100)
 
       common /evtclu/NClu,EneCl,TCl,XCl,YCl,ZCl,XaCl,YaCl,ZaCl,XRmCl,
-     1       YRmsCl,ZrmsCl,TrmsCl,FlagCl,NCluMc,NPar,PNum1,Pid1,PNum2,
-     1       Pid2,PNum3,Pid3
+     1       YRmsCl,ZrmsCl,TrmsCl,FlagCl
+C
+C  Block: CluMC
+C
+      integer iEVTCLUMC,NCluMc,NPar(100),PNum1(100), Pid1(100)
+      integer PNum2(100), Pid2(100), PNum3(100), Pid3(100)
+
+      common /clumc/NCluMc,NPar,PNum1,Pid1,PNum2,Pid2,PNum3,Pid3
 C
 C  Block: preclu
 C
@@ -183,13 +188,19 @@ C
 C
 C  Block: cele
 C
-      integer iCELE, NCel, ICl(300), Det(300), Wed(300), Pla(300)
-      integer Col(300), NCelMc, PTyp(300), KNum(300), NHit(300)
-      real Ea(300), Ta(300), Eb(300), Tb(300), EMc(300)
-      real TMc(300), XMc(300), YMc(300), ZMc(300)
+      integer iCELE, NCel, ICl(300), Det(300)
+      integer Wed(300), Pla(300), Col(300)
+      real Ea(300), Ta(300), Eb(300), Tb(300)
 
-      common /cele/NCel,ICl,Det,Wed,Pla,Col,Ea,Ta,Eb,Tb,NCelMc,EMc,
-     1       TMc,XMc,YMc,ZMc,PTyp,KNum,NHit
+      common /cele/NCel,ICl,Det,Wed,Pla,Col,Ea,Ta,Eb,Tb
+
+C
+C  Block: celeMC
+C
+      integer iCELEMC, NCelMc, PTyp(300), KNum(300), NHit(300)
+      real EMc(300), TMc(300), XMc(300), YMc(300), ZMc(300)
+
+      common /celemc/NCelMc,EMc,TMc,XMc,YMc,ZMc,PTyp,KNum,NHit
 C
 C  Block: dtce
 C
@@ -350,4 +361,14 @@ C
      1       PzLMCOld,xFMC2Old,yFMC2Old,zFMC2Old,PxFMC2Old,PyFMC2Old,
      1       PzFMC2Old,xLMC2Old,yLMC2Old,zLMC2Old,PxLMC2Old,PyLMC2Old,
      1       PzLMC2Old
+C
+C  Block: dhit
+C
+      integer iDHIT, nDHIT, DHPid(2500)
+      integer DHKin(2500), DHAdd(2500), DHFlag(2500)
+      real DHx(2500), DHy(2500), DHz(2500), DHPx(2500), DHPy(2500)
+      real DHPz(2500), DHt(2500), DHDedx(2500), DHTLen(2500)
+      real DHDTime(2500), DHDFromW(2500)
 
+      common /dhit/nDHIT,DHPid,DHKin,DHAdd,DHx,DHy,DHz,DHPx,DHPy,
+     1       DHPz,DHt,DHDedx,DHTLen,DHDTime,DHDFromW,DHFlag

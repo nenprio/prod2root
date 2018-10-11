@@ -14,17 +14,44 @@ const int MaxNumDHSP = 500;
 const int MaxNumTrkV = 30;
 const int MaxNumVtx  = 10;
 const int MaxNumTrk  = 100;
+const int MaxNumDHIT = 2500;
 
 //Verb for Talk_to module
 extern "C"{
   extern struct{
-    bool trigFlag;
-    bool teleFlag;
-    bool c2trgFlag;
-    bool tellinaFlag;
-    bool pizzaFlag;
-    bool eclsFlag;
-    bool bposFlag;
+    int infoFlag;
+    int dataFlag;
+    int bposFlag;
+    int gdhitFlag;
+    int eclsFlag;
+    int trigFlag;
+    int c2trgFlag;
+    int tellinaFlag;
+    int pizzettaFlag;
+    int tortaFlag;
+    int teleFlag;
+    int pizzaFlag;
+    int timeFlag;
+    int clusFlag;
+    int cluMCFlag;
+    int preclusFlag;
+    int cwrkFlag;
+    int celeFlag;
+    int celeMCFlag;
+    int dtceFlag;
+    int dtce0Flag;
+    int dchitsFlag;
+    int dhreFlag;
+    int dhspFlag;
+    int trkvFlag;
+    int vtxFlag;
+    int trksFlag;
+    int trkMCFlag;
+    int trkvOldFlag;
+    int vtxOldFlag;
+    int trksOldFlag;
+    int trkMCOldFlag;
+    int dhitFlag;
   }sammenu_;
 }
 // Block:   evtinfo
@@ -255,6 +282,12 @@ extern "C" {
     float ZrmsCl[MaxNumClu];
     float TrmsCl[MaxNumClu];
     int FlagCl[MaxNumClu];
+  }evtclu_;
+}
+
+// Block:   CluMC
+extern "C" {
+  extern struct {
     int NCluMc;
     int NPar[MaxNumClu];
     int PNum1[MaxNumClu];
@@ -263,7 +296,7 @@ extern "C" {
     int Pid2[MaxNumClu];
     int PNum3[MaxNumClu];
     int Pid3[MaxNumClu];
-  }evtclu_;
+  }clumc_;
 }
 
 // Block:   preclu
@@ -312,6 +345,12 @@ extern "C" {
     float Ta[NeleCluMax];
     float Eb[NeleCluMax];
     float Tb[NeleCluMax];
+  }cele_;
+}
+
+// Block:   celeMC
+extern "C" {
+  extern struct {
     int NCelMc;
     float EMc[NeleCluMax];
     float TMc[NeleCluMax];
@@ -321,7 +360,7 @@ extern "C" {
     int PTyp[NeleCluMax];
     int KNum[NeleCluMax];
     int NHit[NeleCluMax];
-  }cele_;
+  }celemc_;
 }
 
 // Block:   dtce
@@ -648,6 +687,28 @@ extern "C" {
     float PyLMC2Old[MaxNumTrk];
     float PzLMC2Old[MaxNumTrk];
   }trkmcold_;
+}
+
+// Block:   dhit
+extern "C" {
+  extern struct {
+    int nDHIT;
+    int DHPid[MaxNumDHIT];
+    int DHKin[MaxNumDHIT];
+    int DHAdd[MaxNumDHIT];
+    float DHx[MaxNumDHIT];
+    float DHy[MaxNumDHIT];
+    float DHz[MaxNumDHIT];
+    float DHPx[MaxNumDHIT];
+    float DHPy[MaxNumDHIT];
+    float DHPz[MaxNumDHIT];
+    float DHt[MaxNumDHIT];
+    float DHDedx[MaxNumDHIT];
+    float DHTLen[MaxNumDHIT];
+    float DHDTime[MaxNumDHIT];
+    float DHDFromW[MaxNumDHIT];
+    int DHFlag[MaxNumDHIT];
+  }dhit_;
 }
 
 #endif

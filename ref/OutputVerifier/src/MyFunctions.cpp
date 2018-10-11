@@ -112,7 +112,7 @@ bool createDirRecursively(const char *ss) {
 //          field   number of return field
 // output:  the field-th substring delimited by del
 //          or empty string if such substring doesn't exist
-char* cut(const char *s, char *del, int field) {
+char* cut(const char *s, const char *del, int field) {
     char *result;
     char *str = strdup(s);
     int currentField = 0;
@@ -129,7 +129,7 @@ char* cut(const char *s, char *del, int field) {
     
     // If the required field doesn't exist, return empty string
     if (currentField<field){
-        result = "";
+        result = strdup("");
     }
     return result;
 }
