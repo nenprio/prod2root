@@ -65,6 +65,7 @@ C
       VTXOLDFLAG    = .FALSE.
       TRKSOLDFLAG   = .FALSE.
       TRKMCOLDFLAG  = .FALSE.
+      DHITFLAG      = .FALSE.
       
       RETURN
       END
@@ -150,18 +151,19 @@ $$include 'k$itls:cluostruct.cin'
 $$include 'k$itls:cluomcstruct.cin'
 $$include 'k$itls:dhitstruct.cin'
 $$include 'k$itls:dedx2stru.inc'
-$$INCLUDE 'K$ITLS:eleqcaltstru.inc' !QCALT
-c$$INCLUDE 'K$ITLS:qcalthitstru.cin' !QCALT hit Struc
-$$INCLUDE 'K$ITLS:ele2hitqcalt.cin'    ! QCALT hit structure
-$$INCLUDE 'K$ITLS:CCALTNUM.INC'        ! CCALT stu dimensioner
-$$INCLUDE 'K$ITLS:ccaltstru.inc'   ! CCALT Stru
-$$INCLUDE 'k$itls:letestruct.cin'  !LET Stru
-C$$INCLUDE 'k$itls:raw2itce.cin'  ! IT Stru
-$$INCLUDE 'k$itls:itcestruct.cin'  ! IT Stru
-$$INCLUDE 'k$itls:hetenum.cin'      ! HET max dim
-$$INCLUDE 'k$itls:hetestru.cin'  !LET Stru
+$$INCLUDE 'K$ITLS:eleqcaltstru.inc'     ! QCALT
+c$$INCLUDE 'K$ITLS:qcalthitstru.cin'    ! QCALT hit Struc
+$$INCLUDE 'K$ITLS:ele2hitqcalt.cin'     ! QCALT hit structure
+$$INCLUDE 'K$ITLS:CCALTNUM.INC'         ! CCALT stu dimensioner
+$$INCLUDE 'K$ITLS:ccaltstru.inc'        ! CCALT Stru
+$$INCLUDE 'k$itls:letestruct.cin'       ! LET Stru
+C$$INCLUDE 'k$itls:raw2itce.cin'        ! IT Stru
+$$INCLUDE 'k$itls:itcestruct.cin'       ! IT Stru
+$$INCLUDE 'k$itls:hetenum.cin'          ! HET max dim
+$$INCLUDE 'k$itls:hetestru.cin'         ! LET Stru
 $$include 'k$itls:prod2ntu.inc'
 $$INCLUDE 'k$itls:raw2dtce.cin'
+$$include 'k$tls:[ref]dhit_maker.kloe'   ! To fill DHIT struct
 
 $$include 'sample.inc'
 $$include 'sample_talk.inc'
@@ -1904,7 +1906,7 @@ C         Already filled Evt%TrkMCOld by the get function called in the previous
 C-----------------------------------------------------------------------
 C Fill Block dhit
 C-----------------------------------------------------------------------
-      IF (.TRUE.) THEN
+      IF (DHITFLAG) THEN
          nDHIT = 0.
          DO iDHIT=1, 2500
            DHPid(iDHIT) = 0.
@@ -1923,10 +1925,9 @@ C-----------------------------------------------------------------------
            DHDFromW(iDHIT) = 0.
            DHFlag(iDHIT) = 0.
          END DO
-C
-C        TODO: Get function didn't find in prod2ntu.kloe. Find it! 
-C        >>>INSERT HERE THE GET FUNCTION<<<
-C
+         
+         istat = DHIT_UPK(evt%dhit)
+         
          nDHIT = Evt%DHIT%n
          IF ( nDHIT < 0 .OR. nDHIT > 2500 ) THEN
             WRITE(*,*) 'ERROR DHIT - nDHIT Out of bound : ', nDHIT
@@ -2168,6 +2169,10 @@ C
       else if(verb.eq.'TRKMCOLD')then
       	write(Prompt,123)'TRKMCOLD'
 	    Status=UIGTYE(Prompt,TRKMCOLDFLAG)
+    	goto 10
+      else if(verb.eq.'DHIT')then
+      	write(Prompt,123)'DHIT'
+	    Status=UIGTYE(Prompt,DHITFLAG)
     	goto 10
       end if
 C

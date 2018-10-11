@@ -51,6 +51,7 @@ extern "C"{
     int vtxOldFlag;
     int trksOldFlag;
     int trkMCOldFlag;
+    int dhitFlag;
   }sammenu_;
 }
 // Block:   evtinfo

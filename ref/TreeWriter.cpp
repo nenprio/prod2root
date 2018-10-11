@@ -81,7 +81,7 @@ TreeWriter::TreeWriter() {
     // Block TrkMCOld
     if(sammenu_.trkMCFlag==1)       addBlockTrkMCOld();
     // Block DHIT
-    if(sammenu_.DHIT==1)            addBlockDHIT();
+    if(sammenu_.dhitFlag==1)        addBlockDHIT();
 
     // Write to the disk
     outfile->Write();

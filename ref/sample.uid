@@ -79,9 +79,10 @@ Button 29   /Description="Select TRKVOLD     CWN block"/Response="TRKVOLD"
 Button 30   /Description="Select VTXOLD     CWN block"/Response="VTXOLD"
 Button 31   /Description="Select TRKSOLD     CWN block"/Response="TRKSOLD"
 Button 32   /Description="Select TRKMCOLD     CWN block"/Response="TRKMCOLD"
+Button 33   /Description="Select DHIT       CWN block"/Response="DHIT"
 
-Button 33   /Description="Show single process selection"/Response="SHOW"
-Button 34   /Description="Go Back to the AC prompt" /Response="EXIT"
+Button 34   /Description="Show single process selection"/Response="SHOW"
+Button 35   /Description="Go Back to the AC prompt" /Response="EXIT"
 !==============================================================================
 
 
