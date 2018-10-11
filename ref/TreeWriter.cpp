@@ -106,10 +106,46 @@ TreeWriter::~TreeWriter() {
 }
 
 void TreeWriter::printHeaderFlags() {
-    TString header;
-    header.Form("Flags:\tBPOS %d\tECLS %d\tTRIG %d\tC2TRG %d\tTELLINA %d\tPIZZA %d\n",
-                sammenu_.bposFlag, sammenu_.eclsFlag, sammenu_.trigFlag, sammenu_.c2trgFlag, 
-                sammenu_.tellinaFlag, sammenu_.pizzaFlag);
+    TString header = "\n==========================================================================\n";
+    header = "\n                                   FLAGS\n";
+    header = "\n==========================================================================\n";
+    
+    header += Form("INFO: %d ", sammenu_.infoFlag); 
+    header += Form("DATA: %d ", sammenu_.dataFlag);
+    header += Form("BPOS: %d ", sammenu_.bposFlag);
+    header += Form("GDHIT: %d ", sammenu_.gdhitFlag);
+    header += Form("ECLS: %d ", sammenu_.eclsFlag);
+    header += Form("TRIG: %d ", sammenu_.trigFlag);
+    header += Form("C2TRG: %d ", sammenu_.c2trgFlag);
+    header += Form("TELLINA: %d\n", sammenu_.tellinaFlag);
+    header += Form("PIZZETTA: %d ", sammenu_.pizzettaFlag);
+    header += Form("TORTA: %d ", sammenu_.tortaFlag);
+    header += Form("TELE: %d ", sammenu_.teleFlag);
+    header += Form("PIZZA: %d ", sammenu_.pizzaFlag);
+    header += Form("TIME: %d ", sammenu_.timeFlag);
+    header += Form("CLUS: %d ", sammenu_.clusFlag);
+    header += Form("CLUMC: %d ", sammenu_.cluMCFlag);
+    header += Form("PRECLUS: %d\n", sammenu_.preclusFlag);
+    header += Form("CWRK: %d ", sammenu_.cwrkFlag);
+    header += Form("CELE: %d ", sammenu_.celeFlag);
+    header += Form("CELEMC: %d ", sammenu_.celeMCFlag);
+    header += Form("DTCE: %d ", sammenu_.dtceFlag);
+    header += Form("DTCE0: %d ", sammenu_.dtce0Flag);
+    header += Form("DCHITS: %d ", sammenu_.dchitsFlag);
+    header += Form("DHRE: %d ", sammenu_.dhreFlag);
+    header += Form("DHSP: %d\n", sammenu_.dhspFlag);
+    header += Form("TRKV: %d ", sammenu_.trkvFlag);
+    header += Form("VTX: %d ", sammenu_.vtxFlag);
+    header += Form("TRKS: %d ", sammenu_.trksFlag);
+    header += Form("TRKMC: %d ", sammenu_.trkMCFlag);
+    header += Form("TRKVOLD: %d ", sammenu_.trkvOldFlag);
+    header += Form("VTXOLD: %d ", sammenu_.vtxOldFlag);
+    header += Form("TRKSOLD: %d ", sammenu_.trksOldFlag);
+    header += Form("TRKMCOLD: %d\n", sammenu_.trkMCOldFlag);
+    header += Form("DHIT: %d ", sammenu_.dhitFlag);
+    header += "\n==========================================================================\n";
+    
+    // Print to std output
     std::cout << header.Data() << std::endl;
 }
 // Add to the tree all the branches related to the block Info.

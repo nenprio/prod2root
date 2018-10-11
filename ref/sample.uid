@@ -24,20 +24,20 @@ Verb CLUMC
 Verb PRECLUS
 Verb CWRK
 Verb CELE
-Verb CELEMC
+Verb CELMC
 Verb DTCE
-Verb DTCE0
+Verb DTC0
 Verb DCHITS
 Verb DHRE
 Verb DHSP
-Verb TRKV
+Verb TRV
 Verb VTX
-Verb TRKS
-Verb TRKMC
-Verb TRKVOLD
-Verb VTXOLD
-Verb TRKSOLD
-Verb TRKMCOLD
+Verb TRS
+Verb TRMC
+Verb TRKVO
+Verb VTO
+Verb TRKSO
+Verb TRKMCO
 Verb DHIT
 Verb SHOW
 Verb EXIT
@@ -47,40 +47,39 @@ Alias RETURN EXIT
 !
 MENU #+0/Title="Select your action"/Prompt="SAMTK> "
 !
-
-Button 1    /Description="Select INFO     CWN block"/Response="INFO"
-Button 2    /Description="Select DATA     CWN block"/Response="DATA"
-Button 3    /Description="Select BPOS     CWN block"/Response="BPOS"
-Button 4    /Description="Select GDHIT     CWN block"/Response="GDHIT"
-Button 5    /Description="Select ECLS     CWN block"/Response="ECLS"
-Button 6    /Description="Select TRIGGER  CWN block"/Response="TRIG"
-Button 7    /Description="Select CLUS2TRG CWN block"/Response="C2TRG"
-Button 8    /Description="Select TELLINA  CWN block"/Response="TELLINA"
-Button 9    /Description="Select PIZZETTA    CWN block"/Response="PIZZETTA"
-Button 10   /Description="Select TORTA  CWN block"/Response="TORTA"
-Button 11   /Description="Select TRIG-ELE CWN block"/Response="TELE"
-Button 12   /Description="Select PIZZA    CWN block"/Response="PIZZA"
-Button 13   /Description="Select TIME     CWN block"/Response="TIME"
-Button 14   /Description="Select CLUS     CWN block"/Response="CLUS"
-Button 15   /Description="Select CLUMC     CWN block"/Response="CLUMC"
-Button 16   /Description="Select PRECLUS     CWN block"/Response="PRECLUS"
-Button 17   /Description="Select CWRK     CWN block"/Response="CWRK"
-Button 18   /Description="Select CELE     CWN block"/Response="CELE"
-Button 19   /Description="Select CELEMC     CWN block"/Response="CELEMC"
-Button 20   /Description="Select DTCE     CWN block"/Response="DTCE"
-Button 21   /Description="Select DTCE0     CWN block"/Response="DTCE0"
-Button 22   /Description="Select DCHITS     CWN block"/Response="DCHITS"
-Button 23   /Description="Select DHRE     CWN block"/Response="DHRE"
-Button 24   /Description="Select DHSP     CWN block"/Response="DHSP"
-Button 25   /Description="Select TRKV     CWN block"/Response="TRKV"
-Button 26   /Description="Select VTX     CWN block"/Response="VTX"
-Button 27   /Description="Select TRKS     CWN block"/Response="TRKS"
-Button 28   /Description="Select TRKMC     CWN block"/Response="TRKMC"
-Button 29   /Description="Select TRKVOLD     CWN block"/Response="TRKVOLD"
-Button 30   /Description="Select VTXOLD     CWN block"/Response="VTXOLD"
-Button 31   /Description="Select TRKSOLD     CWN block"/Response="TRKSOLD"
-Button 32   /Description="Select TRKMCOLD     CWN block"/Response="TRKMCOLD"
-Button 33   /Description="Select DHIT       CWN block"/Response="DHIT"
+Button 1    /Description="Select INFO       block"/Response="INFO"
+Button 2    /Description="Select DATA       block"/Response="DATA"
+Button 3    /Description="Select BPOS       block"/Response="BPOS"
+Button 4    /Description="Select GDHIT      block"/Response="GDHIT"
+Button 5    /Description="Select ECLS       block"/Response="ECLS"
+Button 6    /Description="Select TRIGGER    block"/Response="TRIG"
+Button 7    /Description="Select CLUS2TRG   block"/Response="C2TRG"
+Button 8    /Description="Select TELLINA    block"/Response="TELLINA"
+Button 9    /Description="Select PIZZETTA   block"/Response="PIZZETTA"
+Button 10   /Description="Select TORTA      block"/Response="TORTA"
+Button 11   /Description="Select TRIG-ELE   block"/Response="TELE"
+Button 12   /Description="Select PIZZA      block"/Response="PIZZA"
+Button 13   /Description="Select TIME       block"/Response="TIME"
+Button 14   /Description="Select CLUSTER    block"/Response="CLUS"
+Button 15   /Description="Select CLUSTER MC block"/Response="CLUMC"
+Button 16   /Description="Select PRECLUS    block"/Response="PRECLUS"
+Button 17   /Description="Select CWRK       block"/Response="CWRK"
+Button 18   /Description="Select CELE       block"/Response="CELE"
+Button 19   /Description="Select CELE MC    block"/Response="CELMC"
+Button 20   /Description="Select DTCE       block"/Response="DTCE"
+Button 21   /Description="Select DTCE0      block"/Response="DTC0"
+Button 22   /Description="Select DC HITS    block"/Response="DCHITS"
+Button 23   /Description="Select DHRE       block"/Response="DHRE"
+Button 24   /Description="Select DHSP       block"/Response="DHSP"
+Button 25   /Description="Select TRACK VTX  block"/Response="TRV"
+Button 26   /Description="Select VERTICES   block"/Response="VTX"
+Button 27   /Description="Select TRACKS     block"/Response="TRS"
+Button 28   /Description="Select TRACKS MC  block"/Response="TRMC"
+Button 29   /Description="Select TRKVTX OLD block"/Response="TRKVO"
+Button 30   /Description="Select VERTIC OLD block"/Response="VTO"
+Button 31   /Description="Select TRACKS OLD block"/Response="TRKSO"
+Button 32   /Description="Select TRK MC OLD block"/Response="TRKMCO"
+Button 33   /Description="Select DHIT       block"/Response="DHIT"
 
 Button 34   /Description="Show single process selection"/Response="SHOW"
 Button 35   /Description="Go Back to the AC prompt" /Response="EXIT"

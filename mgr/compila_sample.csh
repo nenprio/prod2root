@@ -60,6 +60,7 @@ echo "ROOTLIBS : $ROOTLIBS"
 
 # Set SAMPLE path for sample_talk.cin
 # setenv SAMPLE /afs/kloe.infn.it/user/b/berducci/prod2root/ref
+setenv SAMPLE ../ref
 
 setenv MYLIBS "$ROOTLIBS -lm -lC -Wl,-bloadmap:map.txt"
 echo "MYLIBS : $MYLIBS"

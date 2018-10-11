@@ -35,7 +35,7 @@ C
 
       INFOFLAG      = .FALSE.
       DATAFLAG      = .FALSE.
-      BPOSFLAG      = .FALSE.
+      BPOSFLAG      = .true.
       GDHITFLAG     = .FALSE.
       ECLSFLAG      = .FALSE.
       TRIGFLAG      = .FALSE.
@@ -2113,16 +2113,16 @@ C
       	write(Prompt,123)'CELE'
 	    Status=UIGTYE(Prompt,CELEFLAG)
     	goto 10
-      else if(verb.eq.'CELEMC')then
-      	write(Prompt,123)'CELEMC'
+      else if(verb.eq.'CELMC')then
+      	write(Prompt,123)'CELMC'
 	    Status=UIGTYE(Prompt,CELEMCFLAG)
     	goto 10
       else if(verb.eq.'DTCE')then
       	write(Prompt,123)'DTCE'
 	    Status=UIGTYE(Prompt,DTCEFLAG)
     	goto 10
-      else if(verb.eq.'DTCE0')then
-      	write(Prompt,123)'DTCE0'
+      else if(verb.eq.'DTC0')then
+      	write(Prompt,123)'DTC0'
 	    Status=UIGTYE(Prompt,DTCE0FLAG)
     	goto 10
       else if(verb.eq.'DCHITS')then
@@ -2137,7 +2137,7 @@ C
       	write(Prompt,123)'DHSP'
 	    Status=UIGTYE(Prompt,DHSPFLAG)
     	goto 10
-      else if(verb.eq.'TRKV')then
+      else if(verb.eq.'TRV')then
       	write(Prompt,123)'TRKV'
 	    Status=UIGTYE(Prompt,TRKVFLAG)
     	goto 10
@@ -2145,28 +2145,28 @@ C
       	write(Prompt,123)'VTX'
 	    Status=UIGTYE(Prompt,VTXFLAG)
     	goto 10
-      else if(verb.eq.'TRKS')then
+      else if(verb.eq.'TRS')then
       	write(Prompt,123)'TRKS'
 	    Status=UIGTYE(Prompt,TRKSFLAG)
     	goto 10
-      else if(verb.eq.'TRKMC')then
-      	write(Prompt,123)'TRKMC'
+      else if(verb.eq.'TRMC')then
+      	write(Prompt,123)'TRMC'
 	    Status=UIGTYE(Prompt,TRKMCFLAG)
     	goto 10
-      else if(verb.eq.'TRKVOLD')then
-      	write(Prompt,123)'TRKVOLD'
+      else if(verb.eq.'TRKVO')then
+      	write(Prompt,123)'TRKVO'
 	    Status=UIGTYE(Prompt,TRKVOLDFLAG)
     	goto 10
-      else if(verb.eq.'VTXOLD')then
-      	write(Prompt,123)'VTXOLD'
+      else if(verb.eq.'VTO')then
+      	write(Prompt,123)'VTO'
 	    Status=UIGTYE(Prompt,VTXOLDFLAG)
     	goto 10
-      else if(verb.eq.'TRKSOLD')then
-      	write(Prompt,123)'TRKSOLD'
+      else if(verb.eq.'TRKSO')then
+      	write(Prompt,123)'TRKSO'
 	    Status=UIGTYE(Prompt,TRKSOLDFLAG)
     	goto 10
-      else if(verb.eq.'TRKMCOLD')then
-      	write(Prompt,123)'TRKMCOLD'
+      else if(verb.eq.'TRKMCO')then
+      	write(Prompt,123)'TRKMCO'
 	    Status=UIGTYE(Prompt,TRKMCOLDFLAG)
     	goto 10
       else if(verb.eq.'DHIT')then
