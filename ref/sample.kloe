@@ -163,7 +163,6 @@ $$INCLUDE 'k$itls:hetenum.cin'          ! HET max dim
 $$INCLUDE 'k$itls:hetestru.cin'         ! LET Stru
 $$include 'k$itls:prod2ntu.inc'
 $$INCLUDE 'k$itls:raw2dtce.cin'
-$$include 'k$tls:[ref]dhit_maker.kloe'   ! To fill DHIT struct
 
 $$include 'sample.inc'
 $$include 'sample_talk.inc'
