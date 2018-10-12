@@ -1988,8 +1988,8 @@ C-----------------------------------------------------------------------
 
          IF (nDEDx > 0 .AND. nDEDx <= 20) THEN
            DO iiDEDX=1, nDEDx
-              nADC(iiDEDX) = Evt%DEDX2STRU%numeroadc(jjDEDX,iiDEDX)
-              IDEDx(iiDEDX) = Evt%DEDX2STRU%indicededx(jjDEDX,iiDEDX)
+              nADC(iiDEDX) = Evt%DEDX2STRU%numeroadc(iiDEDX)
+              IDEDx(iiDEDX) = Evt%DEDX2STRU%indicededx(iiDEDX)
               DO jjDEDX=1, 100
                  ADCLayer(jjDEDX,iiDEDX) = 
      1                         Evt%DEDX2STRU%lay(jjDEDX,iiDEDX)
