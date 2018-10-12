@@ -1,0 +1,5 @@
+CALL HBNAME(Params%NtId,'HETE',Evt%hete%nhetdcs,'nhetdcs:i::[0,1920]')
+CALL HBNAME(Params%NtId,'HETE',Evt%hete%hdet,'hdet(nhetdcs):i::[1,2]')
+CALL HBNAME(Params%NtId,'HETE',Evt%hete%hcol,'hcol(nhetdcs):i::[1,32]')
+CALL HBNAME(Params%NtId,'HETE',Evt%hete%nturnhet,'nturnhet(nhetdcs):i::[1,4]')
+CALL HBNAME(Params%NtId,'HETE',Evt%hete%timehet,'timehet(nhetdcs):r')

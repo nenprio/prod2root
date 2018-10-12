@@ -1,0 +1,8 @@
+CALL HBName(Params%NtId,'CLUO',Evt%CLUO%N,'NCLUO:i::[0,100]')
+CALL HBName(Params%NtId,'CLUO',Evt%CLUO%Ncel,'CluCel(ncluo):i')
+CALL HBName(Params%NtId,'CLUO',Evt%CLUO%Flag,'CluFl(ncluo):r')
+CALL HBName(Params%NtId,'CLUO',Evt%CLUO%E,'CluE(Ncluo):r')
+CALL HBName(Params%NtId,'CLUO',Evt%CLUO%X,'CluX(Ncluo):r')
+CALL HBName(Params%NtId,'CLUO',Evt%CLUO%Y,'CluY(Ncluo):r')
+CALL HBName(Params%NtId,'CLUO',Evt%CLUO%Z,'CluZ(Ncluo):r')
+CALL HBName(Params%NtId,'CLUO',Evt%CLUO%T,'CluT(Ncluo):r')

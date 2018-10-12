@@ -1,0 +1,8 @@
+CALL HBNAME(Params%NtId,'LETE',Evt%LETE%Calib,'letecalib:i')
+CALL HBNAME(Params%NtId,'LETE',Evt%LETE%NEle,'nlete:i::[0,40]')
+CALL HBNAME(Params%NtId,'LETE',Evt%LETE%Cry,'lete_cry(nlete):i::[0,40]')
+CALL HBNAME(Params%NtId,'LETE',Evt%LETE%Det,'lete_det(nlete):i')
+CALL HBNAME(Params%NtId,'LETE',Evt%LETE%Col,'lete_col(nlete):i::[0,4]')
+CALL HBNAME(Params%NtId,'LETE',Evt%LETE%Pla,'lete_pla(nlete):i::[0,5]')
+CALL HBNAME(Params%NtId,'LETE',Evt%LETE%E,'lete_e(nlete):r')
+CALL HBNAME(Params%NtId,'LETE',Evt%LETE%T,'lete_time(nlete):r')
