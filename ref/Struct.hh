@@ -3,19 +3,21 @@
 // This header contains all the structs needed to 
 // write ntuple data to C++ format.
 
-const int MaxNumClu  = 100;
-const int MaxEclSize = 8;
-const int MaxTrgChan = 1000;
-const int TriggerElm = 300;
-const int MaxNTele   = 300;
-const int MaxNPack   = 300;
-const int NeleCluMax = 2000;
-const int NMaxDC     = 1500;
-const int MaxNumDHSP = 500;
-const int MaxNumTrkV = 30;
-const int MaxNumVtx  = 10;
-const int MaxNumTrk  = 100;
-const int MaxNumDHIT = 2500;
+const int MaxNumClu   = 100;
+const int MaxEclSize  = 8;
+const int MaxTrgChan  = 1000;
+const int TriggerElm  = 300;
+const int MaxNTele    = 300;
+const int MaxNPack    = 300;
+const int NeleCluMax  = 2000;
+const int NMaxDC      = 1500;
+const int MaxNumDHSP  = 500;
+const int MaxNumTrkV  = 30;
+const int MaxNumVtx   = 10;
+const int MaxNumTrk   = 100;
+const int MaxNumDHIT  = 2500;
+const int MaxRowsDEDx = 20;
+const int MaxColsDEDx = 100;
 
 //Verb for Talk_to module
 extern "C"{
@@ -710,6 +712,23 @@ extern "C" {
     float DHDFromW[MaxNumDHIT];
     int DHFlag[MaxNumDHIT];
   }dhit_;
+}
+
+// Block:   dedx
+extern "C" {
+  extern struct {
+    int nDEDx;
+    int nADC[MaxRowsDEDx][MaxColsDEDx];
+    int iDEDx[MaxRowsDEDx][MaxColsDEDx];
+    int ADCLayer[MaxRowsDEDx][MaxColsDEDx];
+    int ADCWi1[MaxRowsDEDx][MaxColsDEDx];
+    int ADCWi2[MaxRowsDEDx][MaxColsDEDx];
+    float ADCLen[MaxRowsDEDx][MaxColsDEDx];
+    float ADCLeff[MaxRowsDEDx][MaxColsDEDx];
+    float ADCTim1[MaxRowsDEDx][MaxColsDEDx];
+    float ADCTim2[MaxRowsDEDx][MaxColsDEDx];
+    float ADCCharge[MaxRowsDEDx][MaxColsDEDx];
+  }dedx_;
 }
 
 #endif

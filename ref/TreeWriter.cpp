@@ -14,7 +14,7 @@
 TreeWriter::TreeWriter() {
     outfile  = new TFile("sample.root", "recreate");    //Open or create file 
     fNewTree = new TTree("sample", "Event Infos");      //Create "sample" tree
-  
+ 
     // Print Header with Flags and values assigned
     printHeaderFlags();
 
@@ -82,6 +82,8 @@ TreeWriter::TreeWriter() {
     if(sammenu_.trkMCFlag==1)       addBlockTrkMCOld();
     // Block DHIT
     if(sammenu_.dhitFlag==1)        addBlockDHIT();
+    // Block DEDx
+    if(sammenu_.dedxFlag==1)        addBlockDEDx();
 
     // Write to the disk
     outfile->Write();
@@ -836,6 +838,24 @@ void TreeWriter::addBlockDHIT() {
     fNewTree->Branch("DHDTime",  &dhit_.DHDTime,  "DHDTime[nDHIT]/F");
     fNewTree->Branch("DHDFromW", &dhit_.DHDFromW, "DHDFromW[nDHIT]/F");
     fNewTree->Branch("DHFlag",   &dhit_.DHFlag,   "DHFlag[nDHIT]/I");
+}
+
+// Add to the tree all the branches realted to the block DEDx.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockDEDx() {
+    fNewTree->Branch("nDEDx", &dedx_.nDEDx, "nDEDx/I");
+    fNewTree->Branch("nADC", &dedx_.nADC, "nADC[nDEDx][100]/I");
+    fNewTree->Branch("IDEDx", &dedx_.IDEDx, "IDEDx[nDEDx][100]/I");
+    fNewTree->Branch("ADCLayer", &dedx_.ADCLayer, "ADCLayer[nDEDx][100]/I");
+    fNewTree->Branch("ADCWi1", &dedx_.ADCWi1, "ADCWi1[nDEDx][100]/I");
+    fNewTree->Branch("ADCWi2", &dedx_.ADCWi2, "ADCWi2[nDEDx][100]/I");
+    fNewTree->Branch("ADCLen", &dedx_.ADCLen, "ADCLen[nDEDx][100]/F");
+    fNewTree->Branch("ADCLeff", &dedx_.ADCLeff, "ADCLeff[nDEDx][100]/F");
+    fNewTree->Branch("ADCTim1", &dedx_.ADCTim1, "ADCTim1[nDEDx][100]/F");
+    fNewTree->Branch("ADCTim2", &dedx_.ADCTim2, "ADCTim2[nDEDx][100]/F");
+    fNewTree->Branch("ADCCharge", &dedx_.ADCCharge, "ADCCharge[nDEDx][100]/F");
 }
 
 // Returns the output file object.

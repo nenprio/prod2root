@@ -35,7 +35,7 @@ C
 
       INFOFLAG      = .FALSE.
       DATAFLAG      = .FALSE.
-      BPOSFLAG      = .true.
+      BPOSFLAG      = .FALSE.
       GDHITFLAG     = .FALSE.
       ECLSFLAG      = .FALSE.
       TRIGFLAG      = .FALSE.
@@ -66,10 +66,23 @@ C
       TRKSOLDFLAG   = .FALSE.
       TRKMCOLDFLAG  = .FALSE.
       DHITFLAG      = .FALSE.
+      DEDXFLAG      = .FALSE.
       
 C      write(*,*)"[SAMIN] INFOFLAG: ", INFOFLAG
 C      write(*,*)"[SAMIN] BPOSFLAG: ", BPOSFLAG
 C      write(*,*)" "
+
+      write(*,*)"[SAMIN] Initialize my matrix." 
+      n = 0
+      DO jj=1,5
+         DO ii=1,3
+            MYMATRIX(jj,ii) = 3*n
+            write(*,*)"[MATRIX] Element (", ii, ",", jj, 
+     1                "):", MYMATRIX(jj,ii)
+            n = n+1
+         END DO
+      END DO
+      write(*,*)"[SAMIN] Num elements my matrix: ", n 
 
       RETURN
       END
@@ -1958,6 +1971,63 @@ C-----------------------------------------------------------------------
          END IF
       END IF
 C-----------------------------------------------------------------------
+C Fill Block dedx
+C-----------------------------------------------------------------------
+      IF (DEDXFLAG) THEN
+         nDEDx = 0.
+         DO iiDEDX=1, 20
+            DO jjDEDX=1, 100
+               nADC(jjDEDX,iiDEDX) = 0.
+               IDEDx(jjDEDX,iiDEDX) = 0.
+               ADCLayer(jjDEDX,iiDEDX) = 0.
+               ADCWi1(jjDEDX,iiDEDX) = 0.
+               ADCWi2(jjDEDX,iiDEDX) = 0.
+               ADCLen(jjDEDX,iiDEDX) = 0.
+               ADCLeff(jjDEDX,iiDEDX) = 0.
+               ADCTim1(jjDEDX,iiDEDX) = 0.
+               ADCTim2(jjDEDX,iiDEDX) = 0.
+               ADCCharge(jjDEDX,iiDEDX) = 0.
+            END DO
+         END DO
+
+         istat = DEDX2STRU_Reset(Evt%DEDX2STRU)
+         istat = DEDX2STRU_GET(Evt%DEDX2STRU)
+
+         nDEDx = Evt%DEDX2STRU%numdedx
+         IF ( nDEDx < 0 .OR. nDEDx > 20 ) THEN
+            WRITE(*,*) 'ERROR DEDX - nDEDx Out of bound : ', nDEDx
+         END IF
+
+         IF (nDEDx > 0 .AND. nDEDx <= 20) THEN
+           DO iiDEDX=1, nDEDx
+              DO jjDEDX=1, 100
+                 nADC(jjDEDX,iiDEDX) = 
+     1                         Evt%DEDX2STRU%numeroadc(jjDEDX,iiDEDX)
+                 IDEDx(jjDEDX,iiDEDX) = 
+     1                         Evt%DEDX2STRU%indicededx(jjDEDX,iiDEDX)
+                 ADCLayer(jjDEDX,iiDEDX) = 
+     1                         Evt%DEDX2STRU%lay(jjDEDX,iiDEDX)
+                 ADCWi1(jjDEDX,iiDEDX) = 
+     1                         Evt%DEDX2STRU%wir1(jjDEDX,iiDEDX)
+                 ADCWi2(jjDEDX,iiDEDX) = 
+     1                         Evt%DEDX2STRU%wir2(jjDEDX,iiDEDX)
+                 ADCLen(jjDEDX,iiDEDX) = 
+     1                         Evt%DEDX2STRU%step(jjDEDX,iiDEDX)
+                 ADCLeff(jjDEDX,iiDEDX) = 
+     1                         Evt%DEDX2STRU%effs(jjDEDX,iiDEDX)
+                 ADCTim1(jjDEDX,iiDEDX) = 
+     1                         Evt%DEDX2STRU%tim1(jjDEDX,iiDEDX)
+                 ADCTim2(jjDEDX,iiDEDX) = 
+     1                         Evt%DEDX2STRU%tim2(jjDEDX,iiDEDX)
+                 ADCCharge(jjDEDX,iiDEDX) = 
+     1                         Evt%DEDX2STRU%carica(jjDEDX,iiDEDX)
+              END DO
+           END DO
+         ELSE
+            WRITE(*,*) 'ERROR DEDX - nDEDx Index not valid: ', nDEDx
+         END IF
+      END IF
+C-----------------------------------------------------------------------
 C Fill Root
 C-----------------------------------------------------------------------
       call fillntu() 	
@@ -2180,6 +2250,10 @@ C      write(*,*)" "
       else if(verb.eq.'DHIT')then
       	write(Prompt,123)'DHIT'
 	    Status=UIGTYE(Prompt,DHITFLAG)
+    	goto 10
+      else if(verb.eq.'DEDX')then
+      	write(Prompt,123)'DEDX'
+	    Status=UIGTYE(Prompt,DEDXFLAG)
     	goto 10
       end if
 C

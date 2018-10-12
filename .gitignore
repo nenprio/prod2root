@@ -8,6 +8,7 @@ README
 *~
 *.cdf
 *.in
+*.out
 paw*
 ref/OutputVerifier/trash
 ref/OutputVerifier/out
