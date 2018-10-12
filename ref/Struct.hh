@@ -60,6 +60,7 @@ extern "C"{
     int dhitFlag;
     int dedxFlag;
     int dprsFlag;
+    int mcFlag;
   }sammenu_;
 }
 // Block:   evtinfo

@@ -149,6 +149,8 @@ void TreeWriter::printHeaderFlags() {
     header += Form("TRKSOLD: %d ", sammenu_.trksOldFlag);
     header += Form("TRKMCOLD: %d\n", sammenu_.trkMCOldFlag);
     header += Form("DHIT: %d ", sammenu_.dhitFlag);
+    header += Form("DPRS: %d ", sammenu_.dprsFlag);
+    header += Form("MC: %d ", sammenu_.mcFlag);
     header += "\n==========================================================================\n";
     
     // Print to std output

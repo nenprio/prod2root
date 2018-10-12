@@ -68,7 +68,7 @@ C
       DHITFLAG      = .FALSE.
       DEDXFLAG      = .FALSE.
       DPRSFLAG      = .FALSE.
-      MCFLAG        = .FALSE.
+      GEANFIFLAG    = .FALSE.
       
 C      write(*,*)"[SAMIN] INFOFLAG: ", INFOFLAG
 C      write(*,*)"[SAMIN] BPOSFLAG: ", BPOSFLAG
@@ -2020,25 +2020,25 @@ C Fill Block dprs
 C-----------------------------------------------------------------------
       IF (DPRSFLAG) THEN
          nDPRS = 0.
-         DO iDPRS=1, 200
-           nView(iDPRS) = 0.
-           iDPRS(iDPRS) = 0.
-           DPRSVer(iDPRS) = 0.
-           nPos(iDPRS) = 0.
-           nNeg(iDPRS) = 0.
-           xPCA(iDPRS) = 0.
-           yPCA(iDPRS) = 0.
-           zPCA(iDPRS) = 0.
-           xLst(iDPRS) = 0.
-           yLst(iDPRS) = 0.
-           zLst(iDPRS) = 0.
-           CurP(iDPRS) = 0.
-           PhiP(iDPRS) = 0.
-           CotP(iDPRS) = 0.
-           Qual(iDPRS) = 0.
-           iPFl(iDPRS) = 0.
-           PrKine(iDPRS) = 0.
-           PrKHit(iDPRS) = 0.
+         DO iiDPRS=1, 200
+           nView(iiDPRS) = 0.
+           iDPRS(iiDPRS) = 0.
+           DPRSVer(iiDPRS) = 0.
+           nPos(iiDPRS) = 0.
+           nNeg(iiDPRS) = 0.
+           xPCA(iiDPRS) = 0.
+           yPCA(iiDPRS) = 0.
+           zPCA(iiDPRS) = 0.
+           xLst(iiDPRS) = 0.
+           yLst(iiDPRS) = 0.
+           zLst(iiDPRS) = 0.
+           CurP(iiDPRS) = 0.
+           PhiP(iiDPRS) = 0.
+           CotP(iiDPRS) = 0.
+           Qual(iiDPRS) = 0.
+           iPFl(iiDPRS) = 0.
+           PrKine(iiDPRS) = 0.
+           PrKHit(iiDPRS) = 0.
          END DO
 
          istat = GET_DPRS_STRUCT(Evt%DPRS%NDPRS)
@@ -2049,26 +2049,26 @@ C-----------------------------------------------------------------------
          END IF
 
          IF (nDPRS > 0 .AND. nDPRS <= 200) THEN
-            DO iDPRS=1, nDPRS
-                 nView(iDPRS) =  Evt%DPRS%NDPRS(iDPRS)
-                 iDPRS(iDPRS) =  Evt%DPRS%NDPRS(iDPRS)
-                 DPRSVer(iDPRS) =  Evt%DPRS%NDPRS(iDPRS)
-                 nPos(iDPRS) =  Evt%DPRS%NDPRS(iDPRS)
-                 nNeg(iDPRS) =  Evt%DPRS%NDPRS(iDPRS)
-                 xPCA(iDPRS) =  Evt%DPRS%NDPRS(iDPRS)
-                 yPCA(iDPRS) =  Evt%DPRS%NDPRS(iDPRS)
-                 zPCA(iDPRS) =  Evt%DPRS%NDPRS(iDPRS)
-                 xLst(iDPRS) =  Evt%DPRS%NDPRS(iDPRS)
-                 yLst(iDPRS) =  Evt%DPRS%NDPRS(iDPRS)
-                 zLst(iDPRS) =  Evt%DPRS%NDPRS(iDPRS)
-                 CurP(iDPRS) =  Evt%DPRS%NDPRS(iDPRS)
-                 PhiP(iDPRS) =  Evt%DPRS%NDPRS(iDPRS)
-                 CotP(iDPRS) =  Evt%DPRS%NDPRS(iDPRS)
-                 Qual(iDPRS) =  Evt%DPRS%NDPRS(iDPRS)
-                 iPFl(iDPRS) =  Evt%DPRS%NDPRS(iDPRS)
-                 PrKine(iDPRS) =  Evt%DPRS%NDPRS(iDPRS)
-                 PrKHit(iDPRS) =  Evt%DPRS%NDPRS(iDPRS)
-           END DO
+            DO iiDPRS=1, nDPRS
+               nView(iiDPRS) =  Evt%DPRS%NVIEW(iiDPRS)
+               iDPRS(iiDPRS) =  Evt%DPRS%IDPRS(iiDPRS)
+               DPRSVer(iiDPRS) =  Evt%DPRS%VERS(iiDPRS)
+               nPos(iiDPRS) =  Evt%DPRS%NPOS(iiDPRS)
+               nNeg(iiDPRS) =  Evt%DPRS%NNEG(iiDPRS)
+               xPCA(iiDPRS) =  Evt%DPRS%XPCA(iiDPRS)
+               yPCA(iiDPRS) =  Evt%DPRS%YPCA(iiDPRS)
+               zPCA(iiDPRS) =  Evt%DPRS%ZPCA(iiDPRS)
+               xLst(iiDPRS) =  Evt%DPRS%XLST(iiDPRS)
+               yLst(iiDPRS) =  Evt%DPRS%YLST(iiDPRS)
+               zLst(iiDPRS) =  Evt%DPRS%ZLST(iiDPRS)
+               CurP(iiDPRS) =  Evt%DPRS%CURP(iiDPRS)
+               PhiP(iiDPRS) =  Evt%DPRS%PHIP(iiDPRS)
+               CotP(iiDPRS) =  Evt%DPRS%COTP(iiDPRS)
+               Qual(iiDPRS) =  Evt%DPRS%QUAL(iiDPRS)
+               iPFl(iiDPRS) =  Evt%DPRS%IPFL(iiDPRS)
+               PrKine(iiDPRS) =  Evt%DPRS%KINE(iiDPRS)
+               PrKHit(iiDPRS) =  Evt%DPRS%NHKINE(iiDPRS)
+            END DO
          ELSE
             WRITE(*,*) 'ERROR DPRS - nDPRS Index not valid: ', nDPRS
          END IF
@@ -2076,7 +2076,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block mc
 C-----------------------------------------------------------------------
-      IF (MCFLAG) THEN
+      IF (GEANFIFLAG) THEN
          nTMC = 0.
          nVtxMC = 0.
          DO iMC=1, 50
@@ -2425,9 +2425,9 @@ C      write(*,*)" "
       	write(Prompt,123)'DPRS'
 	    Status=UIGTYE(Prompt,DPRSFLAG)
     	goto 10
-      else if(verb.eq.'MC')then
-      	write(Prompt,123)'MC'
-	    Status=UIGTYE(Prompt,MCFLAG)
+      else if(verb.eq.'GEANFI')then
+      	write(Prompt,123)'GEANFI'
+	    Status=UIGTYE(Prompt,GEANFIFLAG)
     	goto 10
       end if
 C
