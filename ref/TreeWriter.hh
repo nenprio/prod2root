@@ -46,6 +46,7 @@ class TreeWriter{
          void addBlockMC();
          TFile* getTFile();
          void fillTTree();
+         bool logicalToBool(int flag);
      private:
          TFile* outfile;
          TTree* fNewTree;
