@@ -381,4 +381,17 @@ C
       real ADCLen(100,20), ADCLeff(100,20), ADCTim1(100,20)
       real ADCTim2(100,20), ADCCharge(100,20)
 
-      common /dedx/nDEDx,nADC,iDEDx,ADCLayer,ADCWi1,ADCWi2,ADCLen,ADCLeff,ADCTim1,ADCTim2,ADCCharge
+      common /dedx/nDEDx,nADC,iDEDx,ADCLayer,ADCWi1,ADCWi2,ADCLen,
+     1       ADCLeff,ADCTim1,ADCTim2,ADCCharge
+C
+C  Block: dprs
+C
+      integer iDPRS
+      unsigned nDPRS, iPFl(200), nView(200),  iDPRS(200),  DPRSver(200)
+      unsigned nPos(200),  nNeg(200),  prKINE(200),  prKHIT(200)
+      real  xPCA(200),  yPCA(200),  zPCA(200),  xLst(200),  yLst(200)
+      real zLst(200),  curP(200),  phiP(200),  cotP(200),  qual(200)
+
+      common /dprs/ nDPRS, nView, iDPRS, DPRSver, nPos, nNeg, xPCA, 
+     1       yPCA, zPCA, xLst, yLst, zLst, curP, phiP, cotP, qual, 
+     1       iPFl, prKINE, prKHIT

@@ -18,6 +18,7 @@ const int MaxNumTrk   = 100;
 const int MaxNumDHIT  = 2500;
 const int MaxRowsDEDx = 20;
 const int MaxColsDEDx = 100;
+const int MaxNumDPRS  = 200;
 
 //Verb for Talk_to module
 extern "C"{
@@ -731,5 +732,7 @@ extern "C" {
     float ADCCharge[MaxRowsDEDx][MaxColsDEDx];
   }dedx_;
 }
+
+
 
 #endif
