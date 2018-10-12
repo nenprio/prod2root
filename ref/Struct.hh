@@ -19,6 +19,8 @@ const int MaxNumDHIT  = 2500;
 const int MaxRowsDEDx = 20;
 const int MaxColsDEDx = 100;
 const int MaxNumDPRS  = 200;
+const int MaxNTrkGen  = 50;
+const int MaxNVtxGen  = 30;
 
 //Verb for Talk_to module
 extern "C"{
@@ -757,6 +759,47 @@ extern "C" {
     unsigned int PrKine[MaxNumDPRS];
     unsigned int PrKHit[MaxNumDPRS];
   }dprs_;
+}
+
+// Block:   mc
+extern "C" {
+  extern struct {
+    int nTMC;
+    int Kine[MaxNTrkGen];
+    int PidMC[MaxNTrkGen];
+    int VirMom[MaxNTrkGen];
+    float PxMC[MaxNTrkGen];
+    float PyMC[MaxNTrkGen];
+    float PzMC[MaxNTrkGen];
+    float xCv[MaxNTrkGen];
+    float yCv[MaxNTrkGen];
+    float zCv[MaxNTrkGen];
+    float TOfCv[MaxNTrkGen];
+    float TheMC[MaxNTrkGen];
+    float PhiMC[MaxNTrkGen];
+    int VtxMC[MaxNTrkGen];
+    int nDchMC[MaxNTrkGen];
+    float xFhMC[MaxNTrkGen];
+    float yFhMC[MaxNTrkGen];
+    float zFhMC[MaxNTrkGen];
+    float PxFhMC[MaxNTrkGen];
+    float PyFhMC[MaxNTrkGen];
+    float PzFhMC[MaxNTrkGen];
+    float xLhMC[MaxNTrkGen];
+    float yLhMC[MaxNTrkGen];
+    float zLhMC[MaxNTrkGen];
+    float PxLhMC[MaxNTrkGen];
+    float PyLhMC[MaxNTrkGen];
+    float PzLhMC[MaxNTrkGen];
+    int nVtxMC;
+    int KinMom[MaxNVtxGen];
+    int Mother[MaxNVtxGen];
+    float xVMC[MaxNVtxGen];
+    float yVMC[MaxNVtxGen];
+    float zVMC[MaxNVtxGen];
+    float TOfVMC[MaxNVtxGen];
+    float nTvTx[MaxNVtxGen];
+  }mc_;
 }
 
 #endif

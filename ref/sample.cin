@@ -394,3 +394,19 @@ C
 
       common /dprs/nDPRS,nView,iDPRS,DPRSVer,nPos,nNeg,xPCA,yPCA,zPCA,
      1       xLst,yLst,zLst,CurP,PhiP,CotP,Qual,iPFl,PrKine,PrKHit
+C
+C  Block: mc
+C
+      integer iMC, nTMC, Kine(50), PidMC(50), VirMom(50)
+      integer VtxMC(50), nDchMC(50)
+      integer nVtxMC, KinMom(30), Mother(30)
+      real PxMC(50), PyMC(50), PzMC(50), xCv(50), yCv(50), zCv(50)
+      real TOfCv(50), TheMC(50), PhiMC(50), xFhMC(50), yFhMC(50)
+      real zFhMC(50), PxFhMC(50), PyFhMC(50), PzFhMC(50), xLhMC(50)
+      real yLhMC(50), zLhMC(50), PxLhMC(50), PyLhMC(50), PzLhMC(50)
+      real xVMC(30), yVMC(30), zVMC(30), TOfVMC(30), nTvTx(30)
+
+      common /mc/nTMC,Kine,PidMC,VirMom,PxMC,PyMC,PzMC,xCv,yCv,zCv,
+     1       TOfCv,TheMC,PhiMC,VtxMC,nDchMC,xFhMC,yFhMC,zFhMC,PxFhMC,
+     1       PyFhMC,PzFhMC,xLhMC,yLhMC,zLhMC,PxLhMC,PyLhMC,PzLhMC,
+     1       nVtxMC,KinMom,Mother,xVMC,yVMC,zVMC,TOfVMC,nTvTx

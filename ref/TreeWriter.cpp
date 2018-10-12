@@ -86,6 +86,8 @@ TreeWriter::TreeWriter() {
     if(sammenu_.dedxFlag==1)        addBlockDEDx();
     // Block DPRS
     if(sammenu_.dprsFlag==1)        addBlockDPRS();
+    // Block MC
+    if(sammenu_.mcFlag==1)          addBlockMC();
 
     // Write to the disk
     outfile->Write();
@@ -884,6 +886,48 @@ void TreeWriter::addBlockDPRS() {
     fNewTree->Branch("iPFl",    &dprs_.iPFl,    "iPFl[nDPRS]/b");
     fNewTree->Branch("PrKine",  &dprs_.PrKine,  "PrKine[nDPRS]/b");
     fNewTree->Branch("PrKHit",  &dprs_.PrKHit,  "PrKHit[nDPRS]/b");
+}
+
+// Add to the tree all the branches realted to the block MC.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockMC() {
+    fNewTree->Branch("nTMC",   &mc_.nTMC,   "nTMC/I");
+    fNewTree->Branch("Kine",   &mc_.Kine,   "Kine[nTMC]/I");
+    fNewTree->Branch("PidMC",  &mc_.PidMC,  "PidMC[nTMC]/I");
+    fNewTree->Branch("VirMom", &mc_.VirMom, "VirMom[nTMC]/I");
+    fNewTree->Branch("PxMC",   &mc_.PxMC,   "PxMC[nTMC]/F");
+    fNewTree->Branch("PyMC",   &mc_.PyMC,   "PyMC[nTMC]/F");
+    fNewTree->Branch("PzMC",   &mc_.PzMC,   "PzMC[nTMC]/F");
+    fNewTree->Branch("xCv",    &mc_.xCv,    "xCv[nTMC]/F");
+    fNewTree->Branch("yCv",    &mc_.yCv,    "yCv[nTMC]/F");
+    fNewTree->Branch("zCv",    &mc_.zCv,    "zCv[nTMC]/F");
+    fNewTree->Branch("TOfCv",  &mc_.TOfCv,  "TOfCv[nTMC]/F");
+    fNewTree->Branch("TheMC",  &mc_.TheMC,  "TheMC[nTMC]/F");
+    fNewTree->Branch("PhiMC",  &mc_.PhiMC,  "PhiMC[nTMC]/F");
+    fNewTree->Branch("VtxMC",  &mc_.VtxMC,  "VtxMC[nTMC]/I");
+    fNewTree->Branch("nDchMC", &mc_.nDchMC, "nDchMC[nTMC]/I");
+    fNewTree->Branch("xFhMC",  &mc_.xFhMC,  "xFhMC[nTMC]/F");
+    fNewTree->Branch("yFhMC",  &mc_.yFhMC,  "yFhMC[nTMC]/F");
+    fNewTree->Branch("zFhMC",  &mc_.zFhMC,  "zFhMC[nTMC]/F");
+    fNewTree->Branch("PxFhMC", &mc_.PxFhMC, "PxFhMC[nTMC]/F");
+    fNewTree->Branch("PyFhMC", &mc_.PyFhMC, "PyFhMC[nTMC]/F");
+    fNewTree->Branch("PzFhMC", &mc_.PzFhMC, "PzFhMC[nTMC]/F");
+    fNewTree->Branch("xLhMC",  &mc_.xLhMC,  "xLhMC[nTMC]/F");
+    fNewTree->Branch("yLhMC",  &mc_.yLhMC,  "yLhMC[nTMC]/F");
+    fNewTree->Branch("zLhMC",  &mc_.zLhMC,  "zLhMC[nTMC]/F");
+    fNewTree->Branch("PxLhMC", &mc_.PxLhMC, "PxLhMC[nTMC]/F");
+    fNewTree->Branch("PyLhMC", &mc_.PyLhMC, "PyLhMC[nTMC]/F");
+    fNewTree->Branch("PzLhMC", &mc_.PzLhMC, "PzLhMC[nTMC]/F");
+    fNewTree->Branch("nVtxMC", &mc_.nVtxMC, "nVtxMC/I");
+    fNewTree->Branch("KinMom", &mc_.KinMom, "KinMom[nVtxMC]/I");
+    fNewTree->Branch("Mother", &mc_.Mother, "Mother[nVtxMC]/I");
+    fNewTree->Branch("xVMC",   &mc_.xVMC,   "xVMC[nVtxMC]/F");
+    fNewTree->Branch("yVMC",   &mc_.yVMC,   "yVMC[nVtxMC]/F");
+    fNewTree->Branch("zVMC",   &mc_.zVMC,   "zVMC[nVtxMC]/F");
+    fNewTree->Branch("TOfVMC", &mc_.TOfVMC, "TOfVMC[nVtxMC]/F");
+    fNewTree->Branch("nTvTx",  &mc_.nTvTx,  "nTvTx[nVtxMC]/F");
 }
 
 // Returns the output file object.

@@ -43,6 +43,7 @@ class TreeWriter{
          void addBlockDHIT();
          void addBlockDEDx();
          void addBlockDPRS();
+         void addBlockMC();
          TFile* getTFile();
          void fillTTree();
      private:

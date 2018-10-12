@@ -68,6 +68,7 @@ C
       DHITFLAG      = .FALSE.
       DEDXFLAG      = .FALSE.
       DPRSFLAG      = .FALSE.
+      MCFLAG        = .FALSE.
       
 C      write(*,*)"[SAMIN] INFOFLAG: ", INFOFLAG
 C      write(*,*)"[SAMIN] BPOSFLAG: ", BPOSFLAG
@@ -2073,6 +2074,126 @@ C-----------------------------------------------------------------------
          END IF
       END IF
 C-----------------------------------------------------------------------
+C Fill Block mc
+C-----------------------------------------------------------------------
+      IF (MCFLAG) THEN
+         nTMC = 0.
+         nVtxMC = 0.
+         DO iMC=1, 50
+           Kine(iMC) = 0.
+           PidMC(iMC) = 0.
+           VirMom(iMC) = 0.
+           PxMC(iMC) = 0.
+           PyMC(iMC) = 0.
+           PzMC(iMC) = 0.
+           xCv(iMC) = 0.
+           yCv(iMC) = 0.
+           zCv(iMC) = 0.
+           TOfCv(iMC) = 0.
+           TheMC(iMC) = 0.
+           PhiMC(iMC) = 0.
+           VtxMC(iMC) = 0.
+           nDchMC(iMC) = 0.
+           xFhMC(iMC) = 0.
+           yFhMC(iMC) = 0.
+           zFhMC(iMC) = 0.
+           PxFhMC(iMC) = 0.
+           PyFhMC(iMC) = 0.
+           PzFhMC(iMC) = 0.
+           xLhMC(iMC) = 0.
+           yLhMC(iMC) = 0.
+           zLhMC(iMC) = 0.
+           PxLhMC(iMC) = 0.
+           PyLhMC(iMC) = 0.
+           PzLhMC(iMC) = 0.
+         END DO
+         DO iMC=1, 30
+           KinMom(iMC) = 0.
+           Mother(iMC) = 0.
+           xVMC(iMC) = 0.
+           yVMC(iMC) = 0.
+           zVMC(iMC) = 0.
+           TOfVMC(iMC) = 0.
+           nTvTx(iMC) = 0.
+         END DO
+
+         istat = GETMCSTRU(Evt%MC)
+
+         nTMC = Evt%MC%ntrk
+         IF ( nTMC < 0 .OR. nTMC > 50 ) THEN
+            WRITE(*,*) 'ERROR MC - nTMC Out of bound : ', nTMC
+         END IF
+
+         IF (nTMC > 0 .AND. nTMC <= 50) THEN
+            DO iMC=1, nTMC
+               Kine(iMC) = Evt%MC%kin(iMC)
+               IF ( Kine(iMC) < 0 .OR. Kine(iMC) > 100 ) THEN
+                  WRITE(*,*) 'ERROR MC - Kine[1] Out of bound : ', Kine(iMC)
+               END IF
+               PidMC(iMC) = Evt%MC%pid(iMC)
+               IF ( PidMC(iMC) < 0 .OR. PidMC(iMC) > 100 ) THEN
+                  WRITE(*,*) 'ERROR MC - PidMC[2] Out of bound : ', PidMC(iMC)
+               END IF
+               VirMom(iMC) = Evt%MC%virmom(iMC)
+               IF ( VirMom(iMC) < 0 .OR. VirMom(iMC) > 100 ) THEN
+                  WRITE(*,*) 'ERROR MC - VirMom[3] Out of bound : ', VirMom(iMC)
+               END IF
+               PxMC(iMC) = Evt%MC%px(iMC)
+               PyMC(iMC) = Evt%MC%py(iMC)
+               PzMC(iMC) = Evt%MC%pz(iMC)
+               xCv(iMC) = Evt%MC%xcv(iMC)
+               yCv(iMC) = Evt%MC%ycv(iMC)
+               zCv(iMC) = Evt%MC%zcv(iMC)
+               TOfCv(iMC) = Evt%MC%tofcv(iMC)
+               TheMC(iMC) = Evt%MC%theta(iMC)
+               PhiMC(iMC) = Evt%MC%phi(iMC)
+               VtxMC(iMC) = Evt%MC%Indv(iMC)
+               IF ( VtxMC(iMC) < 0 .OR. VtxMC(iMC) > 100 ) THEN
+                  WRITE(*,*) 'ERROR MC - VtxMC[13] Out of bound : ', VtxMC(iMC)
+               END IF
+               nDchMC(iMC) = Evt%MC%ndchmc(iMC)
+               xFhMC(iMC) = Evt%MC%xfhmc(iMC)
+               yFhMC(iMC) = Evt%MC%yfhmc(iMC)
+               zFhMC(iMC) = Evt%MC%zfhmc(iMC)
+               PxFhMC(iMC) = Evt%MC%pxfhmc(iMC)
+               PyFhMC(iMC) = Evt%MC%pyfhmc(iMC)
+               PzFhMC(iMC) = Evt%MC%pzfhmc(iMC)
+               xLhMC(iMC) = Evt%MC%xlhmc(iMC)
+               yLhMC(iMC) = Evt%MC%ylhmc(iMC)
+               zLhMC(iMC) = Evt%MC%zlhmc(iMC)
+               PxLhMC(iMC) = Evt%MC%pxlhmc(iMC)
+               PyLhMC(iMC) = Evt%MC%pylhmc(iMC)
+               PzLhMC(iMC) = Evt%MC%pzlhmc(iMC)
+            END DO
+         ELSE
+            WRITE(*,*) 'ERROR MC - nTMC Index not valid: ', nTMC
+         END IF
+
+         nVtxMC = Evt%MC%numvtx
+         IF ( nVtxMC < 0 .OR. nVtxMC > 30 ) THEN
+            WRITE(*,*) 'ERROR MC - nVtxMC Out of bound : ', nVtxMC
+         END IF
+         IF (nVtxMC > 0 .AND. nVtxMC <= 50) THEN
+            DO iMC=1, nVtxMC
+               KinMom(iMC) = Evt%MC%kinmom(iMC)
+               IF ( KinMom(iMC) < 0 .OR. KinMom(iMC) > 100 ) THEN
+                  WRITE(*,*) 'ERROR MC - KinMom[28] Out of bound : ', KinMom(iMC)
+               END IF
+               Mother(iMC) = Evt%MC%mother(iMC)
+               IF ( Mother(iMC) < 0 .OR. Mother(iMC) > 100 ) THEN
+                  WRITE(*,*) 'ERROR MC - Mother[29] Out of bound : ', Mother(iMC)
+               END IF
+               xVMC(iMC) = Evt%MC%xv(iMC)
+               yVMC(iMC) = Evt%MC%yv(iMC)
+               zVMC(iMC) = Evt%MC%zv(iMC)
+               TOfVMC(iMC) = Evt%MC%tof(iMC)
+               nTvTx(iMC) = Evt%MC%trkvtx(iMC)
+            END DO
+         ELSE
+            WRITE(*,*) 'ERROR MC - nVtxMC Index not valid: ', nVtxMC
+         END IF
+      END IF
+C-----------------------------------------------------------------------
 C Fill Root
 C-----------------------------------------------------------------------
       call fillntu() 	
@@ -2303,6 +2424,10 @@ C      write(*,*)" "
       else if(verb.eq.'DPRS')then
       	write(Prompt,123)'DPRS'
 	    Status=UIGTYE(Prompt,DPRSFLAG)
+    	goto 10
+      else if(verb.eq.'MC')then
+      	write(Prompt,123)'MC'
+	    Status=UIGTYE(Prompt,MCFLAG)
     	goto 10
       end if
 C
