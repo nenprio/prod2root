@@ -67,6 +67,10 @@ C
       TRKMCOLDFLAG  = .FALSE.
       DHITFLAG      = .FALSE.
       
+C      write(*,*)"[SAMIN] INFOFLAG: ", INFOFLAG
+C      write(*,*)"[SAMIN] BPOSFLAG: ", BPOSFLAG
+C      write(*,*)" "
+
       RETURN
       END
 C
@@ -470,7 +474,7 @@ C Fill Block tellina
 C-----------------------------------------------------------------------
       IF (TELLINAFLAG) THEN
          NTel = 0.
-         DO iTELLINA=1, 1000
+         DO iTELLINA=1, 300
             Add_Tel(iTELLINA) = 0.
             Bitp_Tel(iTELLINA) = 0.
             Ea_Tel(iTELLINA) = 0.
@@ -480,27 +484,26 @@ C-----------------------------------------------------------------------
          END DO
 
          istat = GETTELLINA(Evt%Tellina) 
-
+         
          NTel = Evt%Tellina%n
-         IF ( NTel < 0 .OR. NTel > 1000 ) THEN
+         IF ( NTel < 0 .OR. NTel > 300 ) THEN
             WRITE(*,*) 'ERROR TELLINA - NTel Out of bound : ', NTel
          END IF
-         IF (NTel > 0 .AND. NTel <= 1000) THEN
-            DO iTELLINA=1, NTel
-               Add_Tel(iTELLINA) = Evt%Tellina%add(iTELLINA)
+
+         IF (nTel > 0 .AND. nTel <= 300) THEN
+            DO iTELLINA=1, nTel
+                 Add_Tel(iTELLINA) = Evt%Tellina%add(iTELLINA)
                Bitp_Tel(iTELLINA) = Evt%Tellina%Bitp(iTELLINA)
-               IF ( Bitp_Tel(iTELLINA) < 0 .OR. 
-     1              Bitp_Tel(iTELLINA) > 7 ) THEN
-                  WRITE(*,*) 'ERROR TELLINA - Bitp_Tel Out of bound : ',
-     1                                                Bitp_Tel(iTELLINA)
+               IF ( Bitp_Tel(iTELLINA) < 0 .OR. Bitp_Tel(iTELLINA) > 1100 ) THEN
+                  WRITE(*,*) 'ERROR TELLINA - Bitp_Tel[2] Out of bound : ', Bitp_Tel(iTELLINA)
                END IF
-               Ea_Tel(iTELLINA) = Evt%Tellina%Ea(iTELLINA)
-               Eb_Tel(iTELLINA) = Evt%Tellina%Eb(iTELLINA)
-               Ta_Tel(iTELLINA) = Evt%Tellina%Ta(iTELLINA)
-               Tb_Tel(iTELLINA) = Evt%Tellina%Tb(iTELLINA)
-            END DO
+                 Ea_Tel(iTELLINA) = Evt%Tellina%Ea(iTELLINA)
+                 Eb_Tel(iTELLINA) = Evt%Tellina%Eb(iTELLINA)
+                 Ta_Tel(iTELLINA) = Evt%Tellina%Ta(iTELLINA)
+                 Tb_Tel(iTELLINA) = Evt%Tellina%Tb(iTELLINA)
+           END DO
          ELSE
-            WRITE(*,*) 'ERROR TELLINA - NTel Index not valid : ', NTel
+            WRITE(*,*) 'ERROR TELLINA - nTel Index not valid: ', nTel
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -508,7 +511,7 @@ C Fill Block pizzetta
 C-----------------------------------------------------------------------
       IF (PIZZETTAFLAG) THEN
          NPiz = 0.
-         DO iPIZZETTA=1, 1000
+         DO iPIZZETTA=1, 300
             Add_Piz(iPIZZETTA) = 0.
             Ea_Piz(iPIZZETTA)  = 0.
             Eb_Piz(iPIZZETTA)  = 0.
@@ -519,10 +522,10 @@ C-----------------------------------------------------------------------
          istat = GETPIZZETTA(Evt%Pizzetta)
 
          NPiz = Evt%Pizzetta%n
-         IF ( NPiz < 0 .OR. NPiz > 1000 ) THEN
+         IF ( NPiz < 0 .OR. NPiz > 300 ) THEN
             WRITE(*,*) 'ERROR PIZZETTA - NPiz Out of bound : ', NPiz
          END IF
-         IF (NPiz > 0 .OR. NPiz <= 1000) THEN
+         IF (NPiz > 0 .AND. NPiz <= 300) THEN
             DO iPIZZETTA=1, NPiz
                Add_Piz(iPIZZETTA) = Evt%Pizzetta%Add(iPIZZETTA)
                Ea_Piz(iPIZZETTA)  = Evt%Pizzetta%Ea(iPIZZETTA)
@@ -915,7 +918,7 @@ C Fill Block CWRK
 C-----------------------------------------------------------------------
       IF (CWRKFLAG) THEN
          NCHit = 0.
-         DO iCWRK=1, 300
+         DO iCWRK=1, 2000
             IClu(iCWRK) = 0.
             ICel(iCWRK) = 0.
             CAdd(iCWRK) = 0.
@@ -931,10 +934,10 @@ C-----------------------------------------------------------------------
          istat = GETCWRKSTRU(Evt%Cwrk)
    
          NCHit = Evt%CWRK%n 
-         IF ( NCHit < 0 .OR. NCHit > 300 ) THEN
+         IF ( NCHit < 0 .OR. NCHit > 2000 ) THEN
             WRITE(*,*) 'ERROR CLU - NCHit Out of bound : ', NCHit
          END IF
-         IF (NCHit > 0 .AND. NCHit <= 300) THEN
+         IF (NCHit > 0 .AND. NCHit <= 2000) THEN
             DO iCWRK=1, NCHit
                IClu(iCWRK) = Evt%CWRK%icl(iCWRK)
                ICel(iCWRK) = Evt%CWRK%cele(iCWRK)
@@ -957,7 +960,7 @@ C-----------------------------------------------------------------------
       IF (CELEFLAG) THEN
          NCel = 0.
          NCelMc = 0.
-         DO iCELE=1, 300
+         DO iCELE=1, 2000
             ICl(iCELE) = 0.
             Det(iCELE) = 0.
             Wed(iCELE) = 0.
@@ -980,14 +983,14 @@ C-----------------------------------------------------------------------
          istat = GETCELESTRU(Evt%Cele)
    
          NCel = Evt%Cele%n 
-         IF ( NCel < 0 .OR. NCel > 300 ) THEN
+         IF ( NCel < 0 .OR. NCel > 2000 ) THEN
             WRITE(*,*) 'ERROR CELE - NCel Out of bound : ', NCel
          END IF
          NCelMc = Evt%Cele%nmc
-         IF ( NCelMc < 0 .OR. NCelMc > 300 ) THEN
+         IF ( NCelMc < 0 .OR. NCelMc > 2000 ) THEN
             WRITE(*,*) 'ERROR CELE - NCelMc Out of bound : ', NCelMc
          END IF
-         IF (NCel > 0 .AND. NCel <= 300) THEN
+         IF ( NCel > 0 .AND. NCel <= 2000 ) THEN
             DO iCELE=1, NCel
               ICl(iCELE) = Evt%Cele%icl(iCELE)
               Det(iCELE) = Evt%Cele%det(iCELE)
@@ -1003,7 +1006,7 @@ C-----------------------------------------------------------------------
             WRITE(*,*) 'ERROR CELE - NCel Index not valid : ', NCel
          END IF
    
-         IF (NCelMc > 0 .AND. NCelMc <= 300) THEN
+         IF (NCelMc > 0 .AND. NCelMc <= 2000) THEN
             DO iCELE=1, NCelMc
                EMc(iCELE) = Evt%Cele%Etrue(iCELE)
                TMc(iCELE) = Evt%Cele%Ttrue(iCELE)
@@ -1023,7 +1026,7 @@ C Fill Block CeleMC
 C-----------------------------------------------------------------------
       IF (CELEMCFLAG) THEN
          NCel = 0.
-         DO iCELEMC=1, 300
+         DO iCELEMC=1, 2000
             EMc(iCELEMC) = 0.
             TMc(iCELEMC) = 0.
             XMc(iCELEMC) = 0.
@@ -1037,11 +1040,11 @@ C-----------------------------------------------------------------------
 C        Already filled Evt%Cele in previous blocks
    
          NCelMc = Evt%Cele%nmc
-         IF ( NCelMc < 0 .OR. NCelMc > 300 ) THEN
+         IF ( NCelMc < 0 .OR. NCelMc > 2000 ) THEN
             WRITE(*,*) 'ERROR CELEMC - NCelMc Out of bound : ', NCelMc
          END IF
    
-         IF (NCelMc > 0 .AND. NCelMc <= 300) THEN
+         IF (NCelMc > 0 .AND. NCelMc <= 2000) THEN
             DO iCELEMC=1, NCelMc
                EMc(iCELEMC) = Evt%Cele%Etrue(iCELEMC)
                TMc(iCELEMC) = Evt%Cele%Ttrue(iCELEMC)
@@ -2039,6 +2042,11 @@ C
       Status = UIUSGP(IGROUP,N$A)
  10   Status = UIACME(MENUF,Verb,N$A) ! Display menu
 C     
+
+C      write(*,*)"[TALKTO_INIT] INFOFLAG: ", INFOFLAG
+C      write(*,*)"[TALKTO_INIT] BPOSFLAG: ", BPOSFLAG
+C      write(*,*)" "
+
       if(verb.eq.'SHOW')then
 	    goto 10
       else if(verb.eq.'INFO')then
@@ -2177,7 +2185,11 @@ C
 C
 123   FORMAT(1x,'Select ',a4,' Ntuple-block?')
 C
-      WRITE(*,*)'bposflag tk', BPOSFLAG
+
+C      write(*,*)"[TALKTO_END] INFOFLAG: ", INFOFLAG
+C      write(*,*)"[TALKTO_END] BPOSFLAG: ", BPOSFLAG
+C      write(*,*)" "
+
       RETURN
       END
 C     
@@ -2192,17 +2204,3 @@ C===========================================================================
       END
 C
 C===========================================================================
-
-
-
-
-
-
-
-
-
-
-
-
-
-

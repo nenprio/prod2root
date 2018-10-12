@@ -6,9 +6,10 @@
 const int MaxNumClu  = 100;
 const int MaxEclSize = 8;
 const int MaxTrgChan = 1000;
+const int TriggerElm = 300;
 const int MaxNTele   = 300;
 const int MaxNPack   = 300;
-const int NeleCluMax = 300;
+const int NeleCluMax = 2000;
 const int NMaxDC     = 1500;
 const int MaxNumDHSP = 500;
 const int MaxNumTrkV = 30;
@@ -179,12 +180,12 @@ extern "C" {
 extern "C" {
   extern struct {
     int NTel;
-    int Add_Tel[MaxTrgChan];
-    int Bitp_Tel[MaxTrgChan];
-    float Ea_Tel[MaxTrgChan];
-    float Eb_Tel[MaxTrgChan];
-    float Ta_Tel[MaxTrgChan];
-    float Tb_Tel[MaxTrgChan];
+    int Add_Tel[TriggerElm];
+    int Bitp_Tel[TriggerElm];
+    float Ea_Tel[TriggerElm];
+    float Eb_Tel[TriggerElm];
+    float Ta_Tel[TriggerElm];
+    float Tb_Tel[TriggerElm];
   }tellina_;
 }
 
@@ -192,11 +193,11 @@ extern "C" {
 extern "C" {
   extern struct {
     int NPiz;
-    int Add_Piz[MaxTrgChan];
-    float Ea_Piz[MaxTrgChan];
-    float Eb_Piz[MaxTrgChan];
-    float E_Piz[MaxTrgChan];
-    float Z_Piz[MaxTrgChan];
+    int Add_Piz[TriggerElm];
+    float Ea_Piz[TriggerElm];
+    float Eb_Piz[TriggerElm];
+    float E_Piz[TriggerElm];
+    float Z_Piz[TriggerElm];
   }pizzetta_;
 }
 
