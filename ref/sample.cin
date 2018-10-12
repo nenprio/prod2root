@@ -387,11 +387,10 @@ C
 C  Block: dprs
 C
       integer iDPRS
-      unsigned nDPRS, iPFl(200), nView(200),  iDPRS(200),  DPRSver(200)
-      unsigned nPos(200),  nNeg(200),  prKINE(200),  prKHIT(200)
-      real  xPCA(200),  yPCA(200),  zPCA(200),  xLst(200),  yLst(200)
-      real zLst(200),  curP(200),  phiP(200),  cotP(200),  qual(200)
+      real xPCA(200), yPCA(200), zPCA(200), xLst(200), yLst(200)
+      real zLst(200), CurP(200), PhiP(200), CotP(200), Qual(200)
+      unsigned nDPRS, iPFl(200), nView(200), iDPRS(200), DPRSVer(200)
+      unsigned nPos(200), nNeg(200), PrKine(200), PrKHit(200)
 
-      common /dprs/ nDPRS, nView, iDPRS, DPRSver, nPos, nNeg, xPCA, 
-     1       yPCA, zPCA, xLst, yLst, zLst, curP, phiP, cotP, qual, 
-     1       iPFl, prKINE, prKHIT
+      common /dprs/nDPRS,nView,iDPRS,DPRSVer,nPos,nNeg,xPCA,yPCA,zPCA,
+     1       xLst,yLst,zLst,CurP,PhiP,CotP,Qual,iPFl,PrKine,PrKHit

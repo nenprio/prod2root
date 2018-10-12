@@ -84,6 +84,8 @@ TreeWriter::TreeWriter() {
     if(sammenu_.dhitFlag==1)        addBlockDHIT();
     // Block DEDx
     if(sammenu_.dedxFlag==1)        addBlockDEDx();
+    // Block DPRS
+    if(sammenu_.dprsFlag==1)        addBlockDPRS();
 
     // Write to the disk
     outfile->Write();
@@ -845,17 +847,43 @@ void TreeWriter::addBlockDHIT() {
 // input:	-
 // output: -
 void TreeWriter::addBlockDEDx() {
-    fNewTree->Branch("nDEDx", &dedx_.nDEDx, "nDEDx/I");
-    fNewTree->Branch("nADC", &dedx_.nADC, "nADC[nDEDx]/I");
-    fNewTree->Branch("iDEDx", &dedx_.iDEDx, "iDEDx[nDEDx]/I");
-    fNewTree->Branch("ADCLayer", &dedx_.ADCLayer, "ADCLayer[nDEDx][100]/I");
-    fNewTree->Branch("ADCWi1", &dedx_.ADCWi1, "ADCWi1[nDEDx][100]/I");
-    fNewTree->Branch("ADCWi2", &dedx_.ADCWi2, "ADCWi2[nDEDx][100]/I");
-    fNewTree->Branch("ADCLen", &dedx_.ADCLen, "ADCLen[nDEDx][100]/F");
-    fNewTree->Branch("ADCLeff", &dedx_.ADCLeff, "ADCLeff[nDEDx][100]/F");
-    fNewTree->Branch("ADCTim1", &dedx_.ADCTim1, "ADCTim1[nDEDx][100]/F");
-    fNewTree->Branch("ADCTim2", &dedx_.ADCTim2, "ADCTim2[nDEDx][100]/F");
+    fNewTree->Branch("nDEDx",     &dedx_.nDEDx,     "nDEDx/I");
+    fNewTree->Branch("nADC",      &dedx_.nADC,      "nADC[nDEDx]/I");
+    fNewTree->Branch("iDEDx",     &dedx_.iDEDx,     "iDEDx[nDEDx]/I");
+    fNewTree->Branch("ADCLayer",  &dedx_.ADCLayer,  "ADCLayer[nDEDx][100]/I");
+    fNewTree->Branch("ADCWi1",    &dedx_.ADCWi1,    "ADCWi1[nDEDx][100]/I");
+    fNewTree->Branch("ADCWi2",    &dedx_.ADCWi2,    "ADCWi2[nDEDx][100]/I");
+    fNewTree->Branch("ADCLen",    &dedx_.ADCLen,    "ADCLen[nDEDx][100]/F");
+    fNewTree->Branch("ADCLeff",   &dedx_.ADCLeff,   "ADCLeff[nDEDx][100]/F");
+    fNewTree->Branch("ADCTim1",   &dedx_.ADCTim1,   "ADCTim1[nDEDx][100]/F");
+    fNewTree->Branch("ADCTim2",   &dedx_.ADCTim2,   "ADCTim2[nDEDx][100]/F");
     fNewTree->Branch("ADCCharge", &dedx_.ADCCharge, "ADCCharge[nDEDx][100]/F");
+}
+
+// Add to the tree all the branches realted to the block DPRS.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockDPRS() {
+    fNewTree->Branch("nDPRS",   &dprs_.nDPRS,   "nDPRS/i");
+    fNewTree->Branch("nView",   &dprs_.nView,   "nView[nDPRS]/b");
+    fNewTree->Branch("iDPRS",   &dprs_.iDPRS,   "iDPRS[nDPRS]/b");
+    fNewTree->Branch("DPRSVer", &dprs_.DPRSVer, "DPRSVer[nDPRS]/b");
+    fNewTree->Branch("nPos",    &dprs_.nPos,    "nPos[nDPRS]/b");
+    fNewTree->Branch("nNeg",    &dprs_.nNeg,    "nNeg[nDPRS]/b");
+    fNewTree->Branch("xPCA",    &dprs_.xPCA,    "xPCA[nDPRS]/F");
+    fNewTree->Branch("yPCA",    &dprs_.yPCA,    "yPCA[nDPRS]/F");
+    fNewTree->Branch("zPCA",    &dprs_.zPCA,    "zPCA[nDPRS]/F");
+    fNewTree->Branch("xLst",    &dprs_.xLst,    "xLst[nDPRS]/F");
+    fNewTree->Branch("yLst",    &dprs_.yLst,    "yLst[nDPRS]/F");
+    fNewTree->Branch("zLst",    &dprs_.zLst,    "zLst[nDPRS]/F");
+    fNewTree->Branch("CurP",    &dprs_.CurP,    "CurP[nDPRS]/F");
+    fNewTree->Branch("PhiP",    &dprs_.PhiP,    "PhiP[nDPRS]/F");
+    fNewTree->Branch("CotP",    &dprs_.CotP,    "CotP[nDPRS]/F");
+    fNewTree->Branch("Qual",    &dprs_.Qual,    "Qual[nDPRS]/F");
+    fNewTree->Branch("iPFl",    &dprs_.iPFl,    "iPFl[nDPRS]/b");
+    fNewTree->Branch("PrKine",  &dprs_.PrKine,  "PrKine[nDPRS]/b");
+    fNewTree->Branch("PrKHit",  &dprs_.PrKHit,  "PrKHit[nDPRS]/b");
 }
 
 // Returns the output file object.

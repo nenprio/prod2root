@@ -40,6 +40,7 @@ Verb TRKSO
 Verb TRKMCO
 Verb DHIT
 Verb DEDX
+Verb DPRS 
 Verb SHOW
 Verb EXIT
 !
@@ -82,9 +83,10 @@ Button 31   /Description="Select TRACKS OLD block"/Response="TRKSO"
 Button 32   /Description="Select TRK MC OLD block"/Response="TRKMCO"
 Button 33   /Description="Select DHIT       block"/Response="DHIT"
 Button 34   /Description="Select DEDX       block"/Response="DEDX"
+Button 35   /Description="Select DPRS       block"/Response="DPRS"
 
-Button 35   /Description="Show single process selection"/Response="SHOW"
-Button 36   /Description="Go Back to the AC prompt" /Response="EXIT"
+Button 36   /Description="Show single process selection"/Response="SHOW"
+Button 37   /Description="Go Back to the AC prompt" /Response="EXIT"
 !==============================================================================
 
 

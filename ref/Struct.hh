@@ -57,6 +57,7 @@ extern "C"{
     int trkMCOldFlag;
     int dhitFlag;
     int dedxFlag;
+    int dprsFlag;
   }sammenu_;
 }
 // Block:   evtinfo
@@ -733,6 +734,29 @@ extern "C" {
   }dedx_;
 }
 
-
+// Block:   dprs
+extern "C" {
+  extern struct {
+    unsigned int nDPRS;
+    unsigned int nView[MaxNumDPRS];
+    unsigned int iDPRS[MaxNumDPRS];
+    unsigned int DPRSVer[MaxNumDPRS];
+    unsigned int nPos[MaxNumDPRS];
+    unsigned int nNeg[MaxNumDPRS];
+    float xPCA[MaxNumDPRS];
+    float yPCA[MaxNumDPRS];
+    float zPCA[MaxNumDPRS];
+    float xLst[MaxNumDPRS];
+    float yLst[MaxNumDPRS];
+    float zLst[MaxNumDPRS];
+    float CurP[MaxNumDPRS];
+    float PhiP[MaxNumDPRS];
+    float CotP[MaxNumDPRS];
+    float Qual[MaxNumDPRS];
+    unsigned int iPFl[MaxNumDPRS];
+    unsigned int PrKine[MaxNumDPRS];
+    unsigned int PrKHit[MaxNumDPRS];
+  }dprs_;
+}
 
 #endif
