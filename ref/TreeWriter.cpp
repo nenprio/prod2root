@@ -19,75 +19,75 @@ TreeWriter::TreeWriter() {
     printHeaderFlags();
 
     // Block Info
-    if(sammenu_.infoFlag==1)        addBlockInfo();
+    if(logicalToBool(sammenu_.infoFlag))        addBlockInfo();
     // Block Data
-    if(sammenu_.dataFlag==1)        addBlockData();
+    if(logicalToBool(sammenu_.dataFlag))        addBlockData();
     // Block BPOS
-    if(sammenu_.bposFlag==1)        addBlockBPOS();
+    if(logicalToBool(sammenu_.bposFlag))        addBlockBPOS();
     // Block GdHit
-    if(sammenu_.gdhitFlag==1)       addBlockGdHit();
+    if(logicalToBool(sammenu_.gdhitFlag))       addBlockGdHit();
     // Block Ecl
-    if(sammenu_.eclsFlag==1)        addBlockEcl();
+    if(logicalToBool(sammenu_.eclsFlag))        addBlockEcl();
     // Block Trig
-    if(sammenu_.trigFlag==1)        addBlockTrig();
+    if(logicalToBool(sammenu_.trigFlag))        addBlockTrig();
     // Block C2Trig
-    if(sammenu_.c2trgFlag==1)       addBlockC2Trig();
+    if(logicalToBool(sammenu_.c2trgFlag))       addBlockC2Trig();
     // Block Tellina
-    if(sammenu_.tellinaFlag==1)     addBlockTellina();
+    if(logicalToBool(sammenu_.tellinaFlag))     addBlockTellina();
     // Block Pizzetta
-    if(sammenu_.pizzettaFlag==1)    addBlockPizzetta();
+    if(logicalToBool(sammenu_.pizzettaFlag))    addBlockPizzetta();
     // Block Torta
-    if(sammenu_.tortaFlag==1)       addBlockTorta();
+    if(logicalToBool(sammenu_.tortaFlag))       addBlockTorta();
     // Block Tele
-    if(sammenu_.teleFlag==1)        addBlockTele();
+    if(logicalToBool(sammenu_.teleFlag))        addBlockTele();
     // Block Pizza
-    if(sammenu_.pizzaFlag==1)       addBlockPizza();
+    if(logicalToBool(sammenu_.pizzaFlag))       addBlockPizza();
     // Block Time
-    if(sammenu_.timeFlag==1)        addBlockTime();
+    if(logicalToBool(sammenu_.timeFlag))        addBlockTime();
     // Block Clu
-    if(sammenu_.clusFlag==1)        addBlockClu();
+    if(logicalToBool(sammenu_.clusFlag))        addBlockClu();
     // Block CluMC
-    if(sammenu_.cluMCFlag==1)      addBlockCluMC();
+    if(logicalToBool(sammenu_.cluMCFlag))      addBlockCluMC();
     // Block PreClu
-    if(sammenu_.preclusFlag==1)     addBlockPreClu();
+    if(logicalToBool(sammenu_.preclusFlag))     addBlockPreClu();
     // Block CWRK
-    if(sammenu_.cwrkFlag==1)        addBlockCWRK();
+    if(logicalToBool(sammenu_.cwrkFlag))        addBlockCWRK();
     // Block Cele
-    if(sammenu_.celeFlag==1)        addBlockCele();
+    if(logicalToBool(sammenu_.celeFlag))        addBlockCele();
     // Block CeleMC
-    if(sammenu_.celeMCFlag==1)      addBlockCeleMC();
+    if(logicalToBool(sammenu_.celeMCFlag))      addBlockCeleMC();
     // Block DTCE
-    if(sammenu_.dtceFlag==1)        addBlockDTCE();
+    if(logicalToBool(sammenu_.dtceFlag))        addBlockDTCE();
     // Block DTCE0
-    if(sammenu_.dtce0Flag==1)       addBlockDTCE0();
+    if(logicalToBool(sammenu_.dtce0Flag))       addBlockDTCE0();
     // Block DHRE
-    if(sammenu_.dhreFlag==1)        addBlockDHRE();
+    if(logicalToBool(sammenu_.dhreFlag))        addBlockDHRE();
     // Block DHSP
-    if(sammenu_.dhspFlag==1)        addBlockDHSP();
+    if(logicalToBool(sammenu_.dhspFlag))        addBlockDHSP();
     // Block TrkV
-    if(sammenu_.trkvFlag==1)        addBlockTrkV();
+    if(logicalToBool(sammenu_.trkvFlag))        addBlockTrkV();
     // Block Vtx
-    if(sammenu_.vtxFlag==1)         addBlockVtx();
+    if(logicalToBool(sammenu_.vtxFlag))         addBlockVtx();
     // Block Trks
-    if(sammenu_.trksFlag==1)        addBlockTrkS();
+    if(logicalToBool(sammenu_.trksFlag))        addBlockTrkS();
     // Block TrkMC
-    if(sammenu_.trkMCFlag==1)       addBlockTrkMC();
+    if(logicalToBool(sammenu_.trkMCFlag))       addBlockTrkMC();
     // Block TrkOld
-    if(sammenu_.trkvOldFlag==1)     addBlockTrkVOld();
+    if(logicalToBool(sammenu_.trkvOldFlag))     addBlockTrkVOld();
     // Block VtxOld
-    if(sammenu_.vtxOldFlag==1)      addBlockVtxOld();
+    if(logicalToBool(sammenu_.vtxOldFlag))      addBlockVtxOld();
     // Block TrkOld
-    if(sammenu_.trksOldFlag==1)     addBlockTrkSOld();
+    if(logicalToBool(sammenu_.trksOldFlag))     addBlockTrkSOld();
     // Block TrkMCOld
-    if(sammenu_.trkMCFlag==1)       addBlockTrkMCOld();
+    if(logicalToBool(sammenu_.trkMCFlag))       addBlockTrkMCOld();
     // Block DHIT
-    if(sammenu_.dhitFlag==1)        addBlockDHIT();
+    if(logicalToBool(sammenu_.dhitFlag))        addBlockDHIT();
     // Block DEDx
-    if(sammenu_.dedxFlag==1)        addBlockDEDx();
+    if(logicalToBool(sammenu_.dedxFlag))        addBlockDEDx();
     // Block DPRS
-    if(sammenu_.dprsFlag==1)        addBlockDPRS();
+    if(logicalToBool(sammenu_.dprsFlag))        addBlockDPRS();
     // Block MC
-    if(sammenu_.mcFlag==1)          addBlockMC();
+    if(logicalToBool(sammenu_.mcFlag))          addBlockMC();
 
     // Write to the disk
     outfile->Write();
@@ -947,4 +947,10 @@ TFile* TreeWriter::getTFile() {
 void TreeWriter::fillTTree() {
     TTree *tree = (TTree*)outfile->Get("sample");
     tree->Fill();
+}
+
+bool logicalToBool(int flag) {
+    if (flag == 1)
+        return true
+    return false
 }
