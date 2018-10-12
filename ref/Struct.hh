@@ -55,6 +55,7 @@ extern "C"{
     int trksOldFlag;
     int trkMCOldFlag;
     int dhitFlag;
+    int dedxFlag;
   }sammenu_;
 }
 // Block:   evtinfo
@@ -718,8 +719,8 @@ extern "C" {
 extern "C" {
   extern struct {
     int nDEDx;
-    int nADC[MaxRowsDEDx][MaxColsDEDx];
-    int iDEDx[MaxRowsDEDx][MaxColsDEDx];
+    int nADC[MaxRowsDEDx];
+    int iDEDx[MaxRowsDEDx];
     int ADCLayer[MaxRowsDEDx][MaxColsDEDx];
     int ADCWi1[MaxRowsDEDx][MaxColsDEDx];
     int ADCWi2[MaxRowsDEDx][MaxColsDEDx];

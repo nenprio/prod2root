@@ -376,7 +376,7 @@ C
 C  Block: dedx
 C
       integer iiDEDX, jjDEDX
-      integer nDEDx, nADC(100,20), iDEDx(100,20), ADCLayer(100,20)
+      integer nDEDx, nADC(20), iDEDx(20), ADCLayer(100,20)
       integer ADCWi1(100,20), ADCWi2(100,20)
       real ADCLen(100,20), ADCLeff(100,20), ADCTim1(100,20)
       real ADCTim2(100,20), ADCCharge(100,20)

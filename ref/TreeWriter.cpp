@@ -846,8 +846,8 @@ void TreeWriter::addBlockDHIT() {
 // output: -
 void TreeWriter::addBlockDEDx() {
     fNewTree->Branch("nDEDx", &dedx_.nDEDx, "nDEDx/I");
-    fNewTree->Branch("nADC", &dedx_.nADC, "nADC[nDEDx][100]/I");
-    fNewTree->Branch("IDEDx", &dedx_.IDEDx, "IDEDx[nDEDx][100]/I");
+    fNewTree->Branch("nADC", &dedx_.nADC, "nADC[nDEDx]/I");
+    fNewTree->Branch("iDEDx", &dedx_.iDEDx, "iDEDx[nDEDx]/I");
     fNewTree->Branch("ADCLayer", &dedx_.ADCLayer, "ADCLayer[nDEDx][100]/I");
     fNewTree->Branch("ADCWi1", &dedx_.ADCWi1, "ADCWi1[nDEDx][100]/I");
     fNewTree->Branch("ADCWi2", &dedx_.ADCWi2, "ADCWi2[nDEDx][100]/I");
