@@ -410,3 +410,22 @@ C
      1       TOfCv,TheMC,PhiMC,VtxMC,nDchMC,xFhMC,yFhMC,zFhMC,PxFhMC,
      1       PyFhMC,PzFhMC,xLhMC,yLhMC,zLhMC,PxLhMC,PyLhMC,PzLhMC,
      1       nVtxMC,KinMom,Mother,xVMC,yVMC,zVMC,TOfVMC,nTvTx
+C
+C  Block: tclo
+C
+      integer iTCLO, nTcl, AssTr(40), AssCl(40), VerVer(40)
+      real xExt(40), yExt(40), zExt(40), AssLenG(40), AssChi(40)
+      real ExtPx(40), ExtPy(40), ExtPz(40)
+
+      common /tclo/nTcl,AssTr,AssCl,VerVer,xExt,yExt,zExt,AssLenG,
+     1       AssChi,ExtPx,ExtPy,ExtPz
+C
+C  Block: tclold
+C
+      integer iTCLOLD
+      integer nTclOld, AssTrOld(40), AssClOld(40), VerVerOld(40)
+      real xExtOld(40), yExtOld(40), zExtOld(40), AssLenGOld(40)
+      real AssChiOld(40), ExtPxOld(40), ExtPyOld(40), ExtPzOld(40)
+
+      common /tclold/nTclOld,AssTrOld,AssClOld,VerVerOld,xExtOld,
+     1       yExtOld,zExtOld,AssLenGOld,AssChiOld,ExtPxOld,ExtPyOld,ExtPzOld

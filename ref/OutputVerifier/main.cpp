@@ -18,9 +18,9 @@ int main() {
     /* verifier->exportHBConvTree(); */
    
     bool debug = true;
-/*    verifier->verifyEvent(52, debug); */
-    verifier->verify(750, 1000, debug);
-
+    verifier->verifyEvent(52, debug); 
+/*    verifier->verify(750, 1000, debug);
+*/
     if (verifier) {
         delete verifier;
         verifier = NULL;

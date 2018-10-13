@@ -2194,6 +2194,106 @@ C-----------------------------------------------------------------------
          END IF
       END IF
 C-----------------------------------------------------------------------
+C Fill Block tclo
+C-----------------------------------------------------------------------
+      IF (TCLOFLAG) THEN
+         nTcl = 0.
+         DO iTCLO=1, 40
+           AssTr(iTCLO) = 0.
+           AssCl(iTCLO) = 0.
+           VerVer(iTCLO) = 0.
+           xExt(iTCLO) = 0.
+           yExt(iTCLO) = 0.
+           zExt(iTCLO) = 0.
+           AssLenG(iTCLO) = 0.
+           AssChi(iTCLO) = 0.
+           ExtPx(iTCLO) = 0.
+           ExtPy(iTCLO) = 0.
+           ExtPz(iTCLO) = 0.
+         END DO
+
+         istat =  GETTCLOSTRU(evt%tclo)
+
+         nTcl = Evt%Tclo%nt
+         IF ( nTcl < 0 .OR. nTcl > 40 ) THEN
+            WRITE(*,*) 'ERROR TCLO - nTcl Out of bound : ', nTcl
+         END IF
+
+         IF (nTcl > 0 .AND. nTcl <= 40) THEN
+            DO iTCLO=1, nTcl
+               AssTr(iTCLO) = Evt%Tclo%trknum(iTCLO)
+               IF ( AssTr(iTCLO) < 0 .OR. AssTr(iTCLO) > 999 ) THEN
+                  WRITE(*,*) 'ERROR TCLO - AssTr[1] Out of bound : ', AssTr(iTCLO)
+               END IF
+               AssCl(iTCLO) = Evt%Tclo%clunum(iTCLO)
+               IF ( AssCl(iTCLO) < 0 .OR. AssCl(iTCLO) > 100 ) THEN
+                  WRITE(*,*) 'ERROR TCLO - AssCl[2] Out of bound : ', AssCl(iTCLO)
+               END IF
+                 VerVer(iTCLO) = Evt%Tclo%verver(iTCLO)
+                 xExt(iTCLO) = Evt%Tclo%xext(iTCLO)
+                 yExt(iTCLO) = Evt%Tclo%yext(iTCLO)
+                 zExt(iTCLO) = Evt%Tclo%zext(iTCLO)
+                 AssLenG(iTCLO) = Evt%Tclo%leng(iTCLO)
+                 AssChi(iTCLO) = Evt%Tclo%chi(iTCLO)
+                 ExtPx(iTCLO) = Evt%Tclo%px(iTCLO)
+                 ExtPy(iTCLO) = Evt%Tclo%py(iTCLO)
+                 ExtPz(iTCLO) = Evt%Tclo%pz(iTCLO)
+           END DO
+         ELSE
+            WRITE(*,*) 'ERROR TCLO - nTcl Index not valid: ', nTcl
+         END IF
+      END IF
+C-----------------------------------------------------------------------
+C Fill Block tclold
+C-----------------------------------------------------------------------
+      IF (TCLOLDFLAG) THEN
+         nTclOld = 0.
+         DO iTCLOLD=1, 40
+           AssTrOld(iTCLOLD) = 0.
+           AssClOld(iTCLOLD) = 0.
+           VerVerOld(iTCLOLD) = 0.
+           xExtOld(iTCLOLD) = 0.
+           yExtOld(iTCLOLD) = 0.
+           zExtOld(iTCLOLD) = 0.
+           AssLenGOld(iTCLOLD) = 0.
+           AssChiOld(iTCLOLD) = 0.
+           ExtPxOld(iTCLOLD) = 0.
+           ExtPyOld(iTCLOLD) = 0.
+           ExtPzOld(iTCLOLD) = 0.
+         END DO
+
+         istat =  GETOLDTCLOSTRU(evt%tclold)
+
+         nTclOld = Evt%Tclold%nt
+         IF ( nTclOld < 0 .OR. nTclOld > 40 ) THEN
+            WRITE(*,*) 'ERROR TCLOLD - nTclOld Out of bound : ', nTclOld
+         END IF
+
+         IF (nTclOld > 0 .AND. nTclOld <= 40) THEN
+            DO iTCLOLD=1, nTclOld
+               AssTrOld(iTCLOLD) = Evt%Tclold%trknum(iTCLOLD)
+               IF ( AssTrOld(iTCLOLD) < 0 .OR. AssTrOld(iTCLOLD) > 999 ) THEN
+                  WRITE(*,*) 'ERROR TCLOLD - AssTrOld[1] Out of bound : ', AssTrOld(iTCLOLD)
+               END IF
+               AssClOld(iTCLOLD) = Evt%Tclold%clunum(iTCLOLD)
+               IF ( AssClOld(iTCLOLD) < 0 .OR. AssClOld(iTCLOLD) > 100 ) THEN
+                  WRITE(*,*) 'ERROR TCLOLD - AssClOld[2] Out of bound : ', AssClOld(iTCLOLD)
+               END IF
+                 VerVerOld(iTCLOLD) = Evt%Tclold%verver(iTCLOLD)
+                 xExtOld(iTCLOLD) = Evt%Tclold%xext(iTCLOLD)
+                 yExtOld(iTCLOLD) = Evt%Tclold%yext(iTCLOLD)
+                 zExtOld(iTCLOLD) = Evt%Tclold%zext(iTCLOLD)
+                 AssLenGOld(iTCLOLD) = Evt%Tclold%leng(iTCLOLD)
+                 AssChiOld(iTCLOLD) = Evt%Tclold%chi(iTCLOLD)
+                 ExtPxOld(iTCLOLD) = Evt%Tclold%px(iTCLOLD)
+                 ExtPyOld(iTCLOLD) = Evt%Tclold%py(iTCLOLD)
+                 ExtPzOld(iTCLOLD) = Evt%Tclold%pz(iTCLOLD)
+           END DO
+         ELSE
+            WRITE(*,*) 'ERROR TCLOLD - nTclOld Index not valid: ', nTclOld
+         END IF
+      END IF
+C-----------------------------------------------------------------------
 C Fill Root
 C-----------------------------------------------------------------------
       call fillntu() 	
@@ -2428,6 +2528,14 @@ C      write(*,*)" "
       else if(verb.eq.'GEANFI')then
       	write(Prompt,123)'GEANFI'
 	    Status=UIGTYE(Prompt,GEANFIFLAG)
+    	goto 10
+      else if(verb.eq.'TCLO')then
+      	write(Prompt,123)'TCLO'
+	    Status=UIGTYE(Prompt,TCLOFLAG)
+    	goto 10
+      else if(verb.eq.'TCOLD')then
+      	write(Prompt,123)'TCOLD'
+	    Status=UIGTYE(Prompt,TCLOLDFLAG)
     	goto 10
       end if
 C

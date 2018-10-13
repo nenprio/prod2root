@@ -88,6 +88,10 @@ TreeWriter::TreeWriter() {
     if(logicalToBool(sammenu_.dprsFlag))        addBlockDPRS();
     // Block MC
     if(logicalToBool(sammenu_.mcFlag))          addBlockMC();
+    // Block TCLO
+    if(logicalToBool(sammenu_.tcloFlag))        addBlockTCLO();
+    // Block TCLOld
+    if(logicalToBool(sammenu_.tcloldFlag))      addBlockTCLOld();
 
     // Write to the disk
     outfile->Write();
@@ -930,6 +934,44 @@ void TreeWriter::addBlockMC() {
     fNewTree->Branch("zVMC",   &mc_.zVMC,   "zVMC[nVtxMC]/F");
     fNewTree->Branch("TOfVMC", &mc_.TOfVMC, "TOfVMC[nVtxMC]/F");
     fNewTree->Branch("nTvTx",  &mc_.nTvTx,  "nTvTx[nVtxMC]/F");
+}
+
+// Add to the tree all the branches realted to the block TCLO.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockTCLO() {
+    fNewTree->Branch("nTcl",    &tclo_.nTcl,    "nTcl/I");
+    fNewTree->Branch("AssTr",   &tclo_.AssTr,   "AssTr[nTcl]/I");
+    fNewTree->Branch("AssCl",   &tclo_.AssCl,   "AssCl[nTcl]/I");
+    fNewTree->Branch("VerVer",  &tclo_.VerVer,  "VerVer[nTcl]/I");
+    fNewTree->Branch("xExt",    &tclo_.xExt,    "xExt[nTcl]/F");
+    fNewTree->Branch("yExt",    &tclo_.yExt,    "yExt[nTcl]/F");
+    fNewTree->Branch("zExt",    &tclo_.zExt,    "zExt[nTcl]/F");
+    fNewTree->Branch("AssLenG", &tclo_.AssLenG, "AssLenG[nTcl]/F");
+    fNewTree->Branch("AssChi",  &tclo_.AssChi,  "AssChi[nTcl]/F");
+    fNewTree->Branch("ExtPx",   &tclo_.ExtPx,   "ExtPx[nTcl]/F");
+    fNewTree->Branch("ExtPy",   &tclo_.ExtPy,   "ExtPy[nTcl]/F");
+    fNewTree->Branch("ExtPz",   &tclo_.ExtPz,   "ExtPz[nTcl]/F");
+}
+
+// Add to the tree all the branches realted to the block TCLOld.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockTCLOld() {
+    fNewTree->Branch("nTclOld",    &tclold_.nTclOld,    "nTclOld/I");
+    fNewTree->Branch("AssTrOld",   &tclold_.AssTrOld,   "AssTrOld[nTclOld]/I");
+    fNewTree->Branch("AssClOld",   &tclold_.AssClOld,   "AssClOld[nTclOld]/I");
+    fNewTree->Branch("VerVerOld",  &tclold_.VerVerOld,  "VerVerOld[nTclOld]/I");
+    fNewTree->Branch("xExtOld",    &tclold_.xExtOld,    "xExtOld[nTclOld]/F");
+    fNewTree->Branch("yExtOld",    &tclold_.yExtOld,    "yExtOld[nTclOld]/F");
+    fNewTree->Branch("zExtOld",    &tclold_.zExtOld,    "zExtOld[nTclOld]/F");
+    fNewTree->Branch("AssLenGOld", &tclold_.AssLenGOld, "AssLenGOld[nTclOld]/F");
+    fNewTree->Branch("AssChiOld",  &tclold_.AssChiOld,  "AssChiOld[nTclOld]/F");
+    fNewTree->Branch("ExtPxOld",   &tclold_.ExtPxOld,   "ExtPxOld[nTclOld]/F");
+    fNewTree->Branch("ExtPyOld",   &tclold_.ExtPyOld,   "ExtPyOld[nTclOld]/F");
+    fNewTree->Branch("ExtPzOld",   &tclold_.ExtPzOld,   "ExtPzOld[nTclOld]/F");
 }
 
 // Returns the output file object.

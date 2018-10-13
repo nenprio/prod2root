@@ -21,6 +21,7 @@ const int MaxColsDEDx = 100;
 const int MaxNumDPRS  = 200;
 const int MaxNTrkGen  = 50;
 const int MaxNVtxGen  = 30;
+const int MaxNumTCLO  = 40;
 
 //Verb for Talk_to module
 extern "C"{
@@ -61,6 +62,8 @@ extern "C"{
     int dedxFlag;
     int dprsFlag;
     int mcFlag;
+    int tcloFlag;
+    int tcloldFlag;
   }sammenu_;
 }
 // Block:   evtinfo
@@ -801,6 +804,42 @@ extern "C" {
     float TOfVMC[MaxNVtxGen];
     float nTvTx[MaxNVtxGen];
   }mc_;
+}
+
+// Block:   tclo
+extern "C" {
+  extern struct {
+    int nTcl;
+    int AssTr[MaxNumTCLO];
+    int AssCl[MaxNumTCLO];
+    int VerVer[MaxNumTCLO];
+    float xExt[MaxNumTCLO];
+    float yExt[MaxNumTCLO];
+    float zExt[MaxNumTCLO];
+    float AssLenG[MaxNumTCLO];
+    float AssChi[MaxNumTCLO];
+    float ExtPx[MaxNumTCLO];
+    float ExtPy[MaxNumTCLO];
+    float ExtPz[MaxNumTCLO];
+  }tclo_;
+}
+
+// Block:   tclold
+extern "C" {
+  extern struct {
+    int nTclOld;
+    int AssTrOld[MaxNumTCLO];
+    int AssClOld[MaxNumTCLO];
+    int VerVerOld[MaxNumTCLO];
+    float xExtOld[MaxNumTCLO];
+    float yExtOld[MaxNumTCLO];
+    float zExtOld[MaxNumTCLO];
+    float AssLenGOld[MaxNumTCLO];
+    float AssChiOld[MaxNumTCLO];
+    float ExtPxOld[MaxNumTCLO];
+    float ExtPyOld[MaxNumTCLO];
+    float ExtPzOld[MaxNumTCLO];
+  }tclold_;
 }
 
 #endif

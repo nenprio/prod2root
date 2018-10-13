@@ -42,6 +42,9 @@ Verb DHIT
 Verb DEDX
 Verb DPRS 
 Verb GEANFI
+Verb TCLO
+Verb TCOLD
+!
 Verb SHOW
 Verb EXIT
 !
@@ -85,8 +88,10 @@ Button 32   /Description="Select TRK MC OLD block"/Response="TRKMCO"
 Button 33   /Description="Select DHIT       block"/Response="DHIT"
 Button 34   /Description="Select DEDX       block"/Response="DEDX"
 Button 35   /Description="Select DPRS       block"/Response="DPRS"
-Button 36   /Description="Select GEANFI       block"/Response="GEANFI"
+Button 36   /Description="Select GEANFI     block"/Response="GEANFI"
+Button 37   /Description="Select TCLO       block"/Response="TCLO"
+Button 38   /Description="Select TCLOLD     block"/Response="TCOLD"
 
-Button 37   /Description="Show single process selection"/Response="SHOW"
-Button 38   /Description="Go Back to the AC prompt" /Response="EXIT"
+Button 39   /Description="Show single process selection"/Response="SHOW"
+Button 40   /Description="Go Back to the AC prompt" /Response="EXIT"
 !==============================================================================
