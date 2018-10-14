@@ -2352,6 +2352,55 @@ C-----------------------------------------------------------------------
          END IF
       END IF
 C-----------------------------------------------------------------------
+C Fill Block qihi
+C-----------------------------------------------------------------------
+      IF (QIHIFLAG) THEN
+         nQIHI = 0.
+         DO iQIHI=1, 1000
+           PidQIHI(iQIHI) = 0.
+           AddQIHI(iQIHI) = 0.
+           KinQIHI(iQIHI) = 0.
+           xQIHI(iQIHI) = 0.
+           yQIHI(iQIHI) = 0.
+           zQIHI(iQIHI) = 0.
+           PxQIHI(iQIHI) = 0.
+           PyQIHI(iQIHI) = 0.
+           PzQIHI(iQIHI) = 0.
+           TofQIHI(iQIHI) = 0.
+           EneQIHI(iQIHI) = 0.
+           TLenQIHI(iQIHI) = 0.
+         END DO
+
+C        
+C        TODO: Notice that in prod2ntu, this function was commented. Why?
+C
+         istat = GETQIHISTRU(evt%qhit)
+
+         nQIHI = Evt%QHIT%n
+         IF ( nQIHI < 0 .OR. nQIHI > 1000 ) THEN
+            WRITE(*,*) 'ERROR QIHI - nQIHI Out of bound : ', nQIHI
+         END IF
+
+         IF (nQIHI > 0 .AND. nQIHI <= 1000) THEN
+            DO iQIHI=1, nQIHI
+                 PidQIHI(iQIHI) = Evt%QHIT%pty(iQIHI)
+                 AddQIHI(iQIHI) = Evt%QHIT%add(iQIHI)
+                 KinQIHI(iQIHI) = Evt%QHIT%kine(iQIHI)
+                 xQIHI(iQIHI) = Evt%QHIT%x(iQIHI)
+                 yQIHI(iQIHI) = Evt%QHIT%Y(iQIHI)
+                 zQIHI(iQIHI) = Evt%QHIT%z(iQIHI)
+                 PxQIHI(iQIHI) = Evt%QHIT%px(iQIHI)
+                 PyQIHI(iQIHI) = Evt%QHIT%px(iQIHI)
+                 PzQIHI(iQIHI) = Evt%QHIT%pz(iQIHI)
+                 TofQIHI(iQIHI) = Evt%QHIT%tof(iQIHI)
+                 EneQIHI(iQIHI) = Evt%QHIT%ene(iQIHI)
+                 TLenQIHI(iQIHI) = Evt%QHIT%trl(iQIHI)
+           END DO
+         ELSE
+            WRITE(*,*) 'ERROR QIHI - nQIHI Index not valid: ', nQIHI
+         END IF
+      END IF
+C-----------------------------------------------------------------------
 C Fill Root
 C-----------------------------------------------------------------------
       call fillntu() 	

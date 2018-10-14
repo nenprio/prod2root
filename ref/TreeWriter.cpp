@@ -94,6 +94,8 @@ TreeWriter::TreeWriter() {
     if(logicalToBool(sammenu_.tcloldFlag))      addBlockTCLOld();
     // Block CFHI
     if(logicalToBool(sammenu_.cfhiFlag))        addBlockCFHI();
+    // Block QIHI
+    if(logicalToBool(sammenu_.qihiFlag))        addBlockQIHI();
 
     // Write to the disk
     outfile->Write();
@@ -994,6 +996,26 @@ void TreeWriter::addBlockCFHI() {
     fNewTree->Branch("PzFhi",   &cfhi_.PzFhi,   "PzFhi[nFhi]/F");
     fNewTree->Branch("TofFhi",  &cfhi_.TofFhi,  "TofFhi[nFhi]/F");
     fNewTree->Branch("TLenFhi", &cfhi_.TLenFhi, "TLenFhi[nFhi]/F");
+}
+
+// Add to the tree all the branches realted to the block QIHI.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockQIHI() {
+    fNewTree->Branch("nQIHI",    &qihi_.nQIHI,    "nQIHI/I");
+    fNewTree->Branch("PidQIHI",  &qihi_.PidQIHI,  "PidQIHI[nQIHI]/I");
+    fNewTree->Branch("AddQIHI",  &qihi_.AddQIHI,  "AddQIHI[nQIHI]/I");
+    fNewTree->Branch("KinQIHI",  &qihi_.KinQIHI,  "KinQIHI[nQIHI]/I");
+    fNewTree->Branch("xQIHI",    &qihi_.xQIHI,    "xQIHI[nQIHI]/F");
+    fNewTree->Branch("yQIHI",    &qihi_.yQIHI,    "yQIHI[nQIHI]/F");
+    fNewTree->Branch("zQIHI",    &qihi_.zQIHI,    "zQIHI[nQIHI]/F");
+    fNewTree->Branch("PxQIHI",   &qihi_.PxQIHI,   "PxQIHI[nQIHI]/F");
+    fNewTree->Branch("PyQIHI",   &qihi_.PyQIHI,   "PyQIHI[nQIHI]/F");
+    fNewTree->Branch("PzQIHI",   &qihi_.PzQIHI,   "PzQIHI[nQIHI]/F");
+    fNewTree->Branch("TofQIHI",  &qihi_.TofQIHI,  "TofQIHI[nQIHI]/F");
+    fNewTree->Branch("EneQIHI",  &qihi_.EneQIHI,  "EneQIHI[nQIHI]/F");
+    fNewTree->Branch("TLenQIHI", &qihi_.TLenQIHI, "TLenQIHI[nQIHI]/F");
 }
 
 // Returns the output file object.

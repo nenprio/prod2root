@@ -440,3 +440,14 @@ C
 
       common /cfhi/nFhi,PidFhi,KinFhi,CelFhi,FlgFhi,xFhi,yFhi,zFhi,
      1       PxFhi,PyFhi,PzFhi,TofFhi,TLenFhi
+C
+C  Block: qihi
+C
+      integer iQIHI
+      integer nQIHI, PidQIHI(1000), AddQIHI(1000), KinQIHI(1000)
+      real xQIHI(1000), yQIHI(1000), zQIHI(1000), PxQIHI(1000)
+      real PyQIHI(1000), PzQIHI(1000), TofQIHI(1000), EneQIHI(1000)
+      real TLenQIHI(1000)
+
+      common /qihi/nQIHI,PidQIHI,AddQIHI,KinQIHI,xQIHI,yQIHI,zQIHI,
+     1       PxQIHI,PyQIHI,PzQIHI,TofQIHI,EneQIHI,TLenQIHI

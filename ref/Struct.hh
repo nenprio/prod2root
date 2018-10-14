@@ -23,6 +23,7 @@ const int MaxNTrkGen     = 50;
 const int MaxNVtxGen     = 30;
 const int MaxNumTCLO     = 40;
 const int MaxNumFirstHit = 300;
+const int MaxNumQIHI     = 1000;
 
 //Verb for Talk_to module
 extern "C"{
@@ -66,8 +67,10 @@ extern "C"{
     int tcloFlag;
     int tcloldFlag;
     int cfhiFlag;
+    int qihiFlag;
   }sammenu_;
 }
+
 // Block:   evtinfo
 extern "C"{
   extern struct{
@@ -861,6 +864,25 @@ extern "C" {
     float TofFhi[MaxNumFirstHit];
     float TLenFhi[MaxNumFirstHit];
   }cfhi_;
+}
+
+// Block:   qihi
+extern "C" {
+  extern struct {
+    int nQIHI;
+    int PidQIHI[MaxNumQIHI];
+    int AddQIHI[MaxNumQIHI];
+    int KinQIHI[MaxNumQIHI];
+    float xQIHI[MaxNumQIHI];
+    float yQIHI[MaxNumQIHI];
+    float zQIHI[MaxNumQIHI];
+    float PxQIHI[MaxNumQIHI];
+    float PyQIHI[MaxNumQIHI];
+    float PzQIHI[MaxNumQIHI];
+    float TofQIHI[MaxNumQIHI];
+    float EneQIHI[MaxNumQIHI];
+    float TLenQIHI[MaxNumQIHI];
+  }qihi_;
 }
 
 #endif
