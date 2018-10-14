@@ -92,6 +92,8 @@ TreeWriter::TreeWriter() {
     if(logicalToBool(sammenu_.tcloFlag))        addBlockTCLO();
     // Block TCLOld
     if(logicalToBool(sammenu_.tcloldFlag))      addBlockTCLOld();
+    // Block CFHI
+    if(logicalToBool(sammenu_.cfhiFlag))        addBlockCFHI();
 
     // Write to the disk
     outfile->Write();
@@ -972,6 +974,26 @@ void TreeWriter::addBlockTCLOld() {
     fNewTree->Branch("ExtPxOld",   &tclold_.ExtPxOld,   "ExtPxOld[nTclOld]/F");
     fNewTree->Branch("ExtPyOld",   &tclold_.ExtPyOld,   "ExtPyOld[nTclOld]/F");
     fNewTree->Branch("ExtPzOld",   &tclold_.ExtPzOld,   "ExtPzOld[nTclOld]/F");
+}
+
+// Add to the tree all the branches realted to the block CFHI.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockCFHI() {
+    fNewTree->Branch("nFhi",    &cfhi_.nFhi,    "nFhi/I");
+    fNewTree->Branch("PidFhi",  &cfhi_.PidFhi,  "PidFhi[nFhi]/I");
+    fNewTree->Branch("KinFhi",  &cfhi_.KinFhi,  "KinFhi[nFhi]/I");
+    fNewTree->Branch("CelFhi",  &cfhi_.CelFhi,  "CelFhi[nFhi]/I");
+    fNewTree->Branch("FlgFhi",  &cfhi_.FlgFhi,  "FlgFhi[nFhi]/I");
+    fNewTree->Branch("xFhi",    &cfhi_.xFhi,    "xFhi[nFhi]/F");
+    fNewTree->Branch("yFhi",    &cfhi_.yFhi,    "yFhi[nFhi]/F");
+    fNewTree->Branch("zFhi",    &cfhi_.zFhi,    "zFhi[nFhi]/F");
+    fNewTree->Branch("PxFhi",   &cfhi_.PxFhi,   "PxFhi[nFhi]/F");
+    fNewTree->Branch("PyFhi",   &cfhi_.PyFhi,   "PyFhi[nFhi]/F");
+    fNewTree->Branch("PzFhi",   &cfhi_.PzFhi,   "PzFhi[nFhi]/F");
+    fNewTree->Branch("TofFhi",  &cfhi_.TofFhi,  "TofFhi[nFhi]/F");
+    fNewTree->Branch("TLenFhi", &cfhi_.TLenFhi, "TLenFhi[nFhi]/F");
 }
 
 // Returns the output file object.

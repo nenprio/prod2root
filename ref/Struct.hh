@@ -3,25 +3,26 @@
 // This header contains all the structs needed to 
 // write ntuple data to C++ format.
 
-const int MaxNumClu   = 100;
-const int MaxEclSize  = 8;
-const int MaxTrgChan  = 1000;
-const int TriggerElm  = 300;
-const int MaxNTele    = 300;
-const int MaxNPack    = 300;
-const int NeleCluMax  = 2000;
-const int NMaxDC      = 1500;
-const int MaxNumDHSP  = 500;
-const int MaxNumTrkV  = 30;
-const int MaxNumVtx   = 10;
-const int MaxNumTrk   = 100;
-const int MaxNumDHIT  = 2500;
-const int MaxRowsDEDx = 20;
-const int MaxColsDEDx = 100;
-const int MaxNumDPRS  = 200;
-const int MaxNTrkGen  = 50;
-const int MaxNVtxGen  = 30;
-const int MaxNumTCLO  = 40;
+const int MaxNumClu      = 100;
+const int MaxEclSize     = 8;
+const int MaxTrgChan     = 1000;
+const int TriggerElm     = 300;
+const int MaxNTele       = 300;
+const int MaxNPack       = 300;
+const int NeleCluMax     = 2000;
+const int NMaxDC         = 1500;
+const int MaxNumDHSP     = 500;
+const int MaxNumTrkV     = 30;
+const int MaxNumVtx      = 10;
+const int MaxNumTrk      = 100;
+const int MaxNumDHIT     = 2500;
+const int MaxRowsDEDx    = 20;
+const int MaxColsDEDx    = 100;
+const int MaxNumDPRS     = 200;
+const int MaxNTrkGen     = 50;
+const int MaxNVtxGen     = 30;
+const int MaxNumTCLO     = 40;
+const int MaxNumFirstHit = 300;
 
 //Verb for Talk_to module
 extern "C"{
@@ -64,6 +65,7 @@ extern "C"{
     int mcFlag;
     int tcloFlag;
     int tcloldFlag;
+    int cfhiFlag;
   }sammenu_;
 }
 // Block:   evtinfo
@@ -840,6 +842,25 @@ extern "C" {
     float ExtPyOld[MaxNumTCLO];
     float ExtPzOld[MaxNumTCLO];
   }tclold_;
+}
+
+// Block:   cfhi
+extern "C" {
+  extern struct {
+    int nFhi;
+    int PidFhi[MaxNumFirstHit];
+    int KinFhi[MaxNumFirstHit];
+    int CelFhi[MaxNumFirstHit];
+    int FlgFhi[MaxNumFirstHit];
+    float xFhi[MaxNumFirstHit];
+    float yFhi[MaxNumFirstHit];
+    float zFhi[MaxNumFirstHit];
+    float PxFhi[MaxNumFirstHit];
+    float PyFhi[MaxNumFirstHit];
+    float PzFhi[MaxNumFirstHit];
+    float TofFhi[MaxNumFirstHit];
+    float TLenFhi[MaxNumFirstHit];
+  }cfhi_;
 }
 
 #endif

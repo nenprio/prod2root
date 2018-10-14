@@ -428,4 +428,15 @@ C
       real AssChiOld(40), ExtPxOld(40), ExtPyOld(40), ExtPzOld(40)
 
       common /tclold/nTclOld,AssTrOld,AssClOld,VerVerOld,xExtOld,
-     1       yExtOld,zExtOld,AssLenGOld,AssChiOld,ExtPxOld,ExtPyOld,ExtPzOld
+     1       yExtOld,zExtOld,AssLenGOld,AssChiOld,ExtPxOld,ExtPyOld,
+     1       ExtPzOld
+C
+C  Block: cfhi
+C
+      integer iCFHI
+      integer nFhi, PidFhi(300), KinFhi(300), CelFhi(300), FlgFhi(300)
+      real xFhi(300), yFhi(300), zFhi(300), PxFhi(300), PyFhi(300)
+      real PzFhi(300), TofFhi(300), TLenFhi(300)
+
+      common /cfhi/nFhi,PidFhi,KinFhi,CelFhi,FlgFhi,xFhi,yFhi,zFhi,
+     1       PxFhi,PyFhi,PzFhi,TofFhi,TLenFhi

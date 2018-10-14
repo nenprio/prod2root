@@ -2294,6 +2294,64 @@ C-----------------------------------------------------------------------
          END IF
       END IF
 C-----------------------------------------------------------------------
+C Fill Block cfhi
+C-----------------------------------------------------------------------
+      IF (CFHIFLAG) THEN
+         nFhi = 0.
+         DO iCFHI=1, 300
+           PidFhi(iCFHI) = 0.
+           KinFhi(iCFHI) = 0.
+           CelFhi(iCFHI) = 0.
+           FlgFhi(iCFHI) = 0.
+           xFhi(iCFHI) = 0.
+           yFhi(iCFHI) = 0.
+           zFhi(iCFHI) = 0.
+           PxFhi(iCFHI) = 0.
+           PyFhi(iCFHI) = 0.
+           PzFhi(iCFHI) = 0.
+           TofFhi(iCFHI) = 0.
+           TLenFhi(iCFHI) = 0.
+         END DO
+
+         >>>INSERT HERE THE GET FUNCTION<<<
+
+         nFhi = Evt%CFHI%n
+         IF ( nFhi < 0 .OR. nFhi > 300 ) THEN
+            WRITE(*,*) 'ERROR CFHI - nFhi Out of bound : ', nFhi
+         END IF
+
+         IF (nFhi > 0 .AND. nFhi <= 300) THEN
+            DO iCFHI=1, nFhi
+               PidFhi(iCFHI) = Evt%CFHI%pid(iCFHI)
+               IF ( PidFhi(iCFHI) < 0 .OR. PidFhi(iCFHI) > 100 ) THEN
+                  WRITE(*,*) 'ERROR CFHI - PidFhi[1] Out of bound : ', PidFhi(iCFHI)
+               END IF
+               KinFhi(iCFHI) = Evt%CFHI%kinum(iCFHI)
+               IF ( KinFhi(iCFHI) < 0 .OR. KinFhi(iCFHI) > 100 ) THEN
+                  WRITE(*,*) 'ERROR CFHI - KinFhi[2] Out of bound : ', KinFhi(iCFHI)
+               END IF
+               CelFhi(iCFHI) = Evt%CFHI%celadr(iCFHI)
+               IF ( CelFhi(iCFHI) < 0 .OR. CelFhi(iCFHI) > 4880 ) THEN
+                  WRITE(*,*) 'ERROR CFHI - CelFhi[3] Out of bound : ', CelFhi(iCFHI)
+               END IF
+               FlgFhi(iCFHI) = Evt%CFHI%convfl(iCFHI)
+               IF ( FlgFhi(iCFHI) < 0 .OR. FlgFhi(iCFHI) > 1 ) THEN
+                  WRITE(*,*) 'ERROR CFHI - FlgFhi[4] Out of bound : ', FlgFhi(iCFHI)
+               END IF
+                 xFhi(iCFHI) = Evt%CFHI%x(iCFHI)
+                 yFhi(iCFHI) = Evt%CFHI%y(iCFHI)
+                 zFhi(iCFHI) = Evt%CFHI%z(iCFHI)
+                 PxFhi(iCFHI) = Evt%CFHI%px(iCFHI)
+                 PyFhi(iCFHI) = Evt%CFHI%py(iCFHI)
+                 PzFhi(iCFHI) = Evt%CFHI%pz(iCFHI)
+                 TofFhi(iCFHI) = Evt%CFHI%tof(iCFHI)
+                 TLenFhi(iCFHI) = Evt%CFHI%tlen(iCFHI)
+           END DO
+         ELSE
+            WRITE(*,*) 'ERROR CFHI - nFhi Index not valid: ', nFhi
+         END IF
+      END IF
+C-----------------------------------------------------------------------
 C Fill Root
 C-----------------------------------------------------------------------
       call fillntu() 	
