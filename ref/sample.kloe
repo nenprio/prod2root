@@ -2313,7 +2313,7 @@ C-----------------------------------------------------------------------
            TLenFhi(iCFHI) = 0.
          END DO
 
-         >>>INSERT HERE THE GET FUNCTION<<<
+         istat = GETCFHISTRU(evt%cfhi)
 
          nFhi = Evt%CFHI%n
          IF ( nFhi < 0 .OR. nFhi > 300 ) THEN
