@@ -454,7 +454,7 @@ C
 C
 C  Block: trkq
 C
-      integer iTRKQ
+      integer iTRKQ, jTRKQ
       integer nTrkQ, FlagQt, DetQt(2,100), WedQt(2,100), ItrQt(100)
       real xQt(2,100), yQt(2,100), zQt(2,100)
 
@@ -462,8 +462,14 @@ C
 C
 C  Block: qele
 C
-      integer iQELE
-      integer nQELE, QWed(32), QDet(32)
+      integer iQELE, nQELE, QWed(32), QDet(32)
       real QEne(32), QTim(32)
 
       common /qele/nQELE,QWed,QDet,QEne,QTim
+C
+C  Block: qcal
+C
+      integer iQCAL, nQCal
+      real xQCal(32), yQCal(32), zQCal(32), EQCal(32), TQCal(32)
+
+      common /qcal/nQCal,xQCal,yQCal,zQCal,EQCal,TQCal

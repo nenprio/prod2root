@@ -100,6 +100,8 @@ TreeWriter::TreeWriter() {
     if(logicalToBool(sammenu_.trkqFlag))        addBlockTRKQ();
     // Block QELE
     if(logicalToBool(sammenu_.qeleFlag))        addBlockQELE();
+    // Block QCal
+    if(logicalToBool(sammenu_.qcalFlag))        addBlockQCal();
 
     // Write to the disk
     outfile->Write();
@@ -1047,6 +1049,19 @@ void TreeWriter::addBlockQELE() {
     fNewTree->Branch("QDet",  &qele_.QDet,  "QDet[nQELE]/I");
     fNewTree->Branch("QEne",  &qele_.QEne,  "QEne[nQELE]/F");
     fNewTree->Branch("QTim",  &qele_.QTim,  "QTim[nQELE]/F");
+}
+
+// Add to the tree all the branches realted to the block QCal.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockQCal() {
+    fNewTree->Branch("nQCal", &qcal_.nQCal, "nQCal/I");
+    fNewTree->Branch("xQCal", &qcal_.xQCal, "xQCal[nQCal]/F");
+    fNewTree->Branch("yQCal", &qcal_.yQCal, "yQCal[nQCal]/F");
+    fNewTree->Branch("zQCal", &qcal_.zQCal, "zQCal[nQCal]/F");
+    fNewTree->Branch("EQCal", &qcal_.EQCal, "EQCal[nQCal]/F");
+    fNewTree->Branch("TQCal", &qcal_.TQCal, "TQCal[nQCal]/F");
 }
 
 // Returns the output file object.

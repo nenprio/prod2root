@@ -73,6 +73,7 @@ extern "C"{
     int qihiFlag;
     int trkqFlag;
     int qeleFlag;
+    int qcalFlag;
   }sammenu_;
 }
 
@@ -913,6 +914,18 @@ extern "C" {
     float QEne[MaxNumQCal];
     float QTim[MaxNumQCal];
   }qele_;
+}
+
+// Block:   qcal
+extern "C" {
+  extern struct {
+    int nQCal;
+    float xQCal[MaxNumQCal];
+    float yQCal[MaxNumQCal];
+    float zQCal[MaxNumQCal];
+    float EQCal[MaxNumQCal];
+    float TQCal[MaxNumQCal];
+  }qcal_;
 }
 
 #endif
