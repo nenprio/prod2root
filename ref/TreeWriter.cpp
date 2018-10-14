@@ -96,6 +96,8 @@ TreeWriter::TreeWriter() {
     if(logicalToBool(sammenu_.cfhiFlag))        addBlockCFHI();
     // Block QIHI
     if(logicalToBool(sammenu_.qihiFlag))        addBlockQIHI();
+    // Block TRKQ
+    if(logicalToBool(sammenu_.trkqFlag))        addBlockTRKQ();
 
     // Write to the disk
     outfile->Write();
@@ -1016,6 +1018,21 @@ void TreeWriter::addBlockQIHI() {
     fNewTree->Branch("TofQIHI",  &qihi_.TofQIHI,  "TofQIHI[nQIHI]/F");
     fNewTree->Branch("EneQIHI",  &qihi_.EneQIHI,  "EneQIHI[nQIHI]/F");
     fNewTree->Branch("TLenQIHI", &qihi_.TLenQIHI, "TLenQIHI[nQIHI]/F");
+}
+
+// Add to the tree all the branches realted to the block TRKQ.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockTRKQ() {
+    fNewTree->Branch("nTrkQ",  &trkq_.nTrkQ,  "nTrkQ/I");
+    fNewTree->Branch("FlagQt", &trkq_.FlagQt, "FlagQt/I");
+    fNewTree->Branch("DetQt",  &trkq_.DetQt,  "DetQt[nTrkQ][2]/I");
+    fNewTree->Branch("WedQt",  &trkq_.WedQt,  "WedQt[nTrkQ][2]/I");
+    fNewTree->Branch("xQt",    &trkq_.xQt,    "xQt[nTrkQ][2]/F");
+    fNewTree->Branch("yQt",    &trkq_.yQt,    "yQt[nTrkQ][2]/F");
+    fNewTree->Branch("zQt",    &trkq_.zQt,    "zQt[nTrkQ][2]/F");
+    fNewTree->Branch("ItrQt",  &trkq_.ItrQt,  "ItrQt[nTrkQ]/I");
 }
 
 // Returns the output file object.

@@ -451,3 +451,11 @@ C
 
       common /qihi/nQIHI,PidQIHI,AddQIHI,KinQIHI,xQIHI,yQIHI,zQIHI,
      1       PxQIHI,PyQIHI,PzQIHI,TofQIHI,EneQIHI,TLenQIHI
+C
+C  Block: trkq
+C
+      integer iTRKQ
+      integer nTrkQ, FlagQt, DetQt(2,100), WedQt(2,100), ItrQt(100)
+      real xQt(2,100), yQt(2,100), zQt(2,100)
+
+      common /trkq/nTrkQ,FlagQt,DetQt,WedQt,xQt,yQt,zQt,ItrQt

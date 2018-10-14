@@ -24,6 +24,8 @@ const int MaxNVtxGen     = 30;
 const int MaxNumTCLO     = 40;
 const int MaxNumFirstHit = 300;
 const int MaxNumQIHI     = 1000;
+const int MaxRowsTrkQ    = 100;
+const int MaxColsTrkQ    = 2;
 
 //Verb for Talk_to module
 extern "C"{
@@ -68,6 +70,7 @@ extern "C"{
     int tcloldFlag;
     int cfhiFlag;
     int qihiFlag;
+    int trkqFlag;
   }sammenu_;
 }
 
@@ -883,6 +886,20 @@ extern "C" {
     float EneQIHI[MaxNumQIHI];
     float TLenQIHI[MaxNumQIHI];
   }qihi_;
+}
+
+// Block:   trkq
+extern "C" {
+  extern struct {
+    int nTrkQ;
+    int FlagQt;
+    int DetQt[MaxRowsTrkQ][MaxColsTrkQ];
+    int WedQt[MaxRowsTrkQ][MaxColsTrkQ];
+    float xQt[MaxRowsTrkQ][MaxColsTrkQ];
+    float yQt[MaxRowsTrkQ][MaxColsTrkQ];
+    float zQt[MaxRowsTrkQ][MaxColsTrkQ];
+    int ItrQt[MaxRowsTrkQ];
+  }trkq_;
 }
 
 #endif

@@ -2401,6 +2401,46 @@ C
          END IF
       END IF
 C-----------------------------------------------------------------------
+C Fill Block trkq
+C-----------------------------------------------------------------------
+      IF (TRKQFLAG) THEN
+         nTrkQ = 0.
+         FlagQt = 0.
+         DO iTRKQ=1, 100
+           DO jTRKQ=1,2
+             DetQt(iTRKQ) = 0.
+             WedQt(iTRKQ) = 0.
+             xQt(iTRKQ) = 0.
+             yQt(iTRKQ) = 0.
+             zQt(iTRKQ) = 0.
+           END DO
+           ItrQt(iTRKQ) = 0.
+         END DO
+
+         istat = TRKQ2STRU( evt%trk, evt%trkq )
+
+         nTrkQ = Evt%TRKQ%n
+         IF ( nTrkQ < 0 .OR. nTrkQ > 100 ) THEN
+            WRITE(*,*) 'ERROR TRKQ - nTrkQ Out of bound : ', nTrkQ
+         END IF
+         FlagQt = Evt%TRKQ%flagqt
+
+         IF (nTrkQ > 0 .AND. nTrkQ <= 100) THEN
+           DO iTRKQ=1, nTrkQ
+             DO jTRKQ=1, 2 
+               DetQt(iTRKQ) = Evt%TRKQ%det(iTRKQ)
+               WedQt(iTRKQ) = Evt%TRKQ%wed(iTRKQ)
+               xQt(iTRKQ) = Evt%TRKQ%xi(iTRKQ)
+               yQt(iTRKQ) = Evt%TRKQ%yi(iTRKQ)
+               zQt(iTRKQ) = Evt%TRKQ%zi(iTRKQ)
+             END DO
+             ItrQt(iTRKQ) = Evt%TRKQ%itrk(iTRKQ)
+           END DO
+         ELSE
+            WRITE(*,*) 'ERROR TRKQ - nTrkQ Index not valid: ', nTrkQ
+         END IF
+      END IF
+C-----------------------------------------------------------------------
 C Fill Root
 C-----------------------------------------------------------------------
       call fillntu() 	
@@ -2643,6 +2683,18 @@ C      write(*,*)" "
       else if(verb.eq.'TCOLD')then
       	write(Prompt,123)'TCOLD'
 	    Status=UIGTYE(Prompt,TCLOLDFLAG)
+    	goto 10
+      else if(verb.eq.'CFHI')then
+      	write(Prompt,123)'CFHI'
+	    Status=UIGTYE(Prompt,CFHIFLAG)
+    	goto 10
+      else if(verb.eq.'QIHI')then
+      	write(Prompt,123)'QIHI'
+	    Status=UIGTYE(Prompt,QIHIFLAG)
+    	goto 10
+      else if(verb.eq.'TRKQ')then
+      	write(Prompt,123)'TRKQ'
+	    Status=UIGTYE(Prompt,TRKQFLAG)
     	goto 10
       end if
 C
