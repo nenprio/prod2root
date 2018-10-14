@@ -2408,11 +2408,11 @@ C-----------------------------------------------------------------------
          FlagQt = 0.
          DO iTRKQ=1, 100
            DO jTRKQ=1,2
-             DetQt(iTRKQ) = 0.
-             WedQt(iTRKQ) = 0.
-             xQt(iTRKQ) = 0.
-             yQt(iTRKQ) = 0.
-             zQt(iTRKQ) = 0.
+             DetQt(iTRKQ,jTRKQ) = 0.
+             WedQt(iTRKQ,jTRKQ) = 0.
+             xQt(iTRKQ,jTRKQ) = 0.
+             yQt(iTRKQ,jTRKQ) = 0.
+             zQt(iTRKQ,jTRKQ) = 0.
            END DO
            ItrQt(iTRKQ) = 0.
          END DO
@@ -2428,11 +2428,11 @@ C-----------------------------------------------------------------------
          IF (nTrkQ > 0 .AND. nTrkQ <= 100) THEN
            DO iTRKQ=1, nTrkQ
              DO jTRKQ=1, 2 
-               DetQt(iTRKQ) = Evt%TRKQ%det(iTRKQ)
-               WedQt(iTRKQ) = Evt%TRKQ%wed(iTRKQ)
-               xQt(iTRKQ) = Evt%TRKQ%xi(iTRKQ)
-               yQt(iTRKQ) = Evt%TRKQ%yi(iTRKQ)
-               zQt(iTRKQ) = Evt%TRKQ%zi(iTRKQ)
+               DetQt(iTRKQ,jTRKQ) = Evt%TRKQ%det(iTRKQ,jTRKQ)
+               WedQt(iTRKQ,jTRKQ) = Evt%TRKQ%wed(iTRKQ,jTRKQ)
+               xQt(iTRKQ,jTRKQ)   = Evt%TRKQ%xi(iTRKQ,jTRKQ)
+               yQt(iTRKQ,jTRKQ)   = Evt%TRKQ%yi(iTRKQ,jTRKQ)
+               zQt(iTRKQ,jTRKQ)   = Evt%TRKQ%zi(iTRKQ,jTRKQ)
              END DO
              ItrQt(iTRKQ) = Evt%TRKQ%itrk(iTRKQ)
            END DO
