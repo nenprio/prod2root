@@ -26,6 +26,7 @@ const int MaxNumFirstHit = 300;
 const int MaxNumQIHI     = 1000;
 const int MaxRowsTrkQ    = 100;
 const int MaxColsTrkQ    = 2;
+const int MaxNumQCal     = 32;
 
 //Verb for Talk_to module
 extern "C"{
@@ -71,6 +72,7 @@ extern "C"{
     int cfhiFlag;
     int qihiFlag;
     int trkqFlag;
+    int qeleFlag;
   }sammenu_;
 }
 
@@ -900,6 +902,17 @@ extern "C" {
     float zQt[MaxRowsTrkQ][MaxColsTrkQ];
     int ItrQt[MaxRowsTrkQ];
   }trkq_;
+}
+
+// Block:   qele
+extern "C" {
+  extern struct {
+    int nQELE;
+    int QWed[MaxNumQCal];
+    int QDet[MaxNumQCal];
+    float QEne[MaxNumQCal];
+    float QTim[MaxNumQCal];
+  }qele_;
 }
 
 #endif

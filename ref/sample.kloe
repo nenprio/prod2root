@@ -2441,6 +2441,36 @@ C-----------------------------------------------------------------------
          END IF
       END IF
 C-----------------------------------------------------------------------
+C Fill Block qele
+C-----------------------------------------------------------------------
+      IF (QELEFLAG) THEN
+         nQELE = 0.
+         DO iQELE=1, 32
+           QWed(iQELE) = 0.
+           QDet(iQELE) = 0.
+           QEne(iQELE) = 0.
+           QTim(iQELE) = 0.
+         END DO
+
+         istat = GETQCAESTRU(Evt%Qele)
+
+         nQELE = Evt%QELE%n
+         IF ( nQELE < 0 .OR. nQELE > 32 ) THEN
+            WRITE(*,*) 'ERROR QELE - nQELE Out of bound : ', nQELE
+         END IF
+
+         IF (nQELE > 0 .AND. nQELE <= 32) THEN
+            DO iQELE=1, nQELE
+                 QWed(iQELE) = Evt%QELE%wed(iQELE)
+                 QDet(iQELE) = Evt%QELE%det(iQELE)
+                 QEne(iQELE) = Evt%QELE%e(iQELE)
+                 QTim(iQELE) = Evt%QELE%t(iQELE)
+           END DO
+         ELSE
+            WRITE(*,*) 'ERROR QELE - nQELE Index not valid: ', nQELE
+         END IF
+      END IF
+C-----------------------------------------------------------------------
 C Fill Root
 C-----------------------------------------------------------------------
       call fillntu() 	
@@ -2695,6 +2725,10 @@ C      write(*,*)" "
       else if(verb.eq.'TRKQ')then
       	write(Prompt,123)'TRKQ'
 	    Status=UIGTYE(Prompt,TRKQFLAG)
+    	goto 10
+      else if(verb.eq.'QELE')then
+      	write(Prompt,123)'QELE'
+	    Status=UIGTYE(Prompt,QELEFLAG)
     	goto 10
       end if
 C

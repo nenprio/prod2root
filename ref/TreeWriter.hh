@@ -49,6 +49,7 @@ class TreeWriter{
          void addBlockCFHI();
          void addBlockQIHI();
          void addBlockTRKQ();
+         void addBlockQELE();
          TFile* getTFile();
          void fillTTree();
          bool logicalToBool(int flag);

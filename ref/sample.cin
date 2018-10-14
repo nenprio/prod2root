@@ -459,3 +459,11 @@ C
       real xQt(2,100), yQt(2,100), zQt(2,100)
 
       common /trkq/nTrkQ,FlagQt,DetQt,WedQt,xQt,yQt,zQt,ItrQt
+C
+C  Block: qele
+C
+      integer iQELE
+      integer nQELE, QWed(32), QDet(32)
+      real QEne(32), QTim(32)
+
+      common /qele/nQELE,QWed,QDet,QEne,QTim
