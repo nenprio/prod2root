@@ -108,8 +108,8 @@ C
 C
 C  Block: tellina
 C
-      integer iTELLINA, NTel, Add_Tel(1000), Bitp_Tel(1000)
-      real Ea_Tel(1000), Eb_Tel(1000), Ta_Tel(1000), Tb_Tel(1000)
+      integer iTELLINA, NTel, Add_Tel(300), Bitp_Tel(300)
+      real Ea_Tel(300), Eb_Tel(300), Ta_Tel(300), Tb_Tel(300)
 
       common /tellina/NTel,Add_Tel,Bitp_Tel,
      1       Ea_Tel,Eb_Tel,Ta_Tel,Tb_Tel
@@ -117,8 +117,8 @@ C
 C  Block: pizzetta
 C
       integer iPIZZETTA
-      integer NPiz, Add_Piz(1000)
-      real Ea_Piz(1000), Eb_Piz(1000), E_Piz(1000), Z_Piz(1000)
+      integer NPiz, Add_Piz(300)
+      real Ea_Piz(300), Eb_Piz(300), E_Piz(300), Z_Piz(300)
 
       common /pizzetta/NPiz,Add_Piz,Ea_Piz,Eb_Piz,E_Piz,Z_Piz
 C
@@ -180,25 +180,25 @@ C
 C
 C  Block: cwrk
 C
-      integer iCWRK, NCHit, IClu(300), ICel(300), CAdd(300) 
-      integer CmcHit(300), Ckine(300)
-      real Ene(300), T(300), X(300), Y(300), Z(300)
+      integer iCWRK, NCHit, IClu(2000), ICel(2000), CAdd(2000) 
+      integer CmcHit(2000), Ckine(2000)
+      real Ene(2000), T(2000), X(2000), Y(2000), Z(2000)
 
       common /cwrk/NCHit,IClu,ICel,CAdd,CmcHit,Ckine,Ene,T,X,Y,Z
 C
 C  Block: cele
 C
-      integer iCELE, NCel, ICl(300), Det(300)
-      integer Wed(300), Pla(300), Col(300)
-      real Ea(300), Ta(300), Eb(300), Tb(300)
+      integer iCELE, NCel, ICl(2000), Det(2000)
+      integer Wed(2000), Pla(2000), Col(2000)
+      real Ea(2000), Ta(2000), Eb(2000), Tb(2000)
 
       common /cele/NCel,ICl,Det,Wed,Pla,Col,Ea,Ta,Eb,Tb
 
 C
 C  Block: celeMC
 C
-      integer iCELEMC, NCelMc, PTyp(300), KNum(300), NHit(300)
-      real EMc(300), TMc(300), XMc(300), YMc(300), ZMc(300)
+      integer iCELEMC, NCelMc, PTyp(2000), KNum(2000), NHit(2000)
+      real EMc(2000), TMc(2000), XMc(2000), YMc(2000), ZMc(2000)
 
       common /celemc/NCelMc,EMc,TMc,XMc,YMc,ZMc,PTyp,KNum,NHit
 C
@@ -372,3 +372,104 @@ C
 
       common /dhit/nDHIT,DHPid,DHKin,DHAdd,DHx,DHy,DHz,DHPx,DHPy,
      1       DHPz,DHt,DHDedx,DHTLen,DHDTime,DHDFromW,DHFlag
+C
+C  Block: dedx
+C
+      integer iiDEDX, jjDEDX
+      integer nDEDx, nADC(20), iDEDx(20), ADCLayer(100,20)
+      integer ADCWi1(100,20), ADCWi2(100,20)
+      real ADCLen(100,20), ADCLeff(100,20), ADCTim1(100,20)
+      real ADCTim2(100,20), ADCCharge(100,20)
+
+      common /dedx/nDEDx,nADC,iDEDx,ADCLayer,ADCWi1,ADCWi2,ADCLen,
+     1       ADCLeff,ADCTim1,ADCTim2,ADCCharge
+C
+C  Block: dprs
+C
+      integer iiDPRS, nDPRS, iPFl(200), nView(200), iDPRS(200) 
+      integer DPRSVer(200), nPos(200), nNeg(200)
+      integer PrKine(200), PrKHit(200)
+      real xPCA(200), yPCA(200), zPCA(200), xLst(200), yLst(200)
+      real zLst(200), CurP(200), PhiP(200), CotP(200), Qual(200)
+
+      common /dprs/nDPRS,nView,iDPRS,DPRSVer,nPos,nNeg,xPCA,yPCA,zPCA,
+     1       xLst,yLst,zLst,CurP,PhiP,CotP,Qual,iPFl,PrKine,PrKHit
+C
+C  Block: mc
+C
+      integer iMC, nTMC, Kine(50), PidMC(50), VirMom(50)
+      integer VtxMC(50), nDchMC(50)
+      integer nVtxMC, KinMom(30), Mother(30)
+      real PxMC(50), PyMC(50), PzMC(50), xCv(50), yCv(50), zCv(50)
+      real TOfCv(50), TheMC(50), PhiMC(50), xFhMC(50), yFhMC(50)
+      real zFhMC(50), PxFhMC(50), PyFhMC(50), PzFhMC(50), xLhMC(50)
+      real yLhMC(50), zLhMC(50), PxLhMC(50), PyLhMC(50), PzLhMC(50)
+      real xVMC(30), yVMC(30), zVMC(30), TOfVMC(30), nTvTx(30)
+
+      common /mc/nTMC,Kine,PidMC,VirMom,PxMC,PyMC,PzMC,xCv,yCv,zCv,
+     1       TOfCv,TheMC,PhiMC,VtxMC,nDchMC,xFhMC,yFhMC,zFhMC,PxFhMC,
+     1       PyFhMC,PzFhMC,xLhMC,yLhMC,zLhMC,PxLhMC,PyLhMC,PzLhMC,
+     1       nVtxMC,KinMom,Mother,xVMC,yVMC,zVMC,TOfVMC,nTvTx
+C
+C  Block: tclo
+C
+      integer iTCLO, nTcl, AssTr(40), AssCl(40), VerVer(40)
+      real xExt(40), yExt(40), zExt(40), AssLenG(40), AssChi(40)
+      real ExtPx(40), ExtPy(40), ExtPz(40)
+
+      common /tclo/nTcl,AssTr,AssCl,VerVer,xExt,yExt,zExt,AssLenG,
+     1       AssChi,ExtPx,ExtPy,ExtPz
+C
+C  Block: tclold
+C
+      integer iTCLOLD
+      integer nTclOld, AssTrOld(40), AssClOld(40), VerVerOld(40)
+      real xExtOld(40), yExtOld(40), zExtOld(40), AssLenGOld(40)
+      real AssChiOld(40), ExtPxOld(40), ExtPyOld(40), ExtPzOld(40)
+
+      common /tclold/nTclOld,AssTrOld,AssClOld,VerVerOld,xExtOld,
+     1       yExtOld,zExtOld,AssLenGOld,AssChiOld,ExtPxOld,ExtPyOld,
+     1       ExtPzOld
+C
+C  Block: cfhi
+C
+      integer iCFHI
+      integer nFhi, PidFhi(300), KinFhi(300), CelFhi(300), FlgFhi(300)
+      real xFhi(300), yFhi(300), zFhi(300), PxFhi(300), PyFhi(300)
+      real PzFhi(300), TofFhi(300), TLenFhi(300)
+
+      common /cfhi/nFhi,PidFhi,KinFhi,CelFhi,FlgFhi,xFhi,yFhi,zFhi,
+     1       PxFhi,PyFhi,PzFhi,TofFhi,TLenFhi
+C
+C  Block: qihi
+C
+      integer iQIHI
+      integer nQIHI, PidQIHI(1000), AddQIHI(1000), KinQIHI(1000)
+      real xQIHI(1000), yQIHI(1000), zQIHI(1000), PxQIHI(1000)
+      real PyQIHI(1000), PzQIHI(1000), TofQIHI(1000), EneQIHI(1000)
+      real TLenQIHI(1000)
+
+      common /qihi/nQIHI,PidQIHI,AddQIHI,KinQIHI,xQIHI,yQIHI,zQIHI,
+     1       PxQIHI,PyQIHI,PzQIHI,TofQIHI,EneQIHI,TLenQIHI
+C
+C  Block: trkq
+C
+      integer iTRKQ, jTRKQ
+      integer nTrkQ, FlagQt, DetQt(2,100), WedQt(2,100), ItrQt(100)
+      real xQt(2,100), yQt(2,100), zQt(2,100)
+
+      common /trkq/nTrkQ,FlagQt,DetQt,WedQt,xQt,yQt,zQt,ItrQt
+C
+C  Block: qele
+C
+      integer iQELE, nQELE, QWed(32), QDet(32)
+      real QEne(32), QTim(32)
+
+      common /qele/nQELE,QWed,QDet,QEne,QTim
+C
+C  Block: qcal
+C
+      integer iQCAL, nQCal
+      real xQCal(32), yQCal(32), zQCal(32), EQCal(32), TQCal(32)
+
+      common /qcal/nQCal,xQCal,yQCal,zQCal,EQCal,TQCal

@@ -1,0 +1,6 @@
+call HBNAME(nId,'DHRE',Evt%DHRE%nDHRE,'nDHRE:i::[0,nMaxDC]'//range)
+call HBNAME(nId,'DHRE',Evt%DHRE%iLayerDHRE,'iLayerDHRE(nDHRE):I::[1,58]')
+call HBNAME(nId,'DHRE',Evt%DHRE%iWireDHRE,'iWireDHRE(nDHRE):I::[1,378]')
+call HBNAME(nId,'DHRE',Evt%DHRE%iTrkDHRE,'iTrkDHRE(nDHRE):I')
+call HBNAME(nId,'DHRE',Evt%DHRE%rDHRE,'rDHRE(nDHRE):R')
+call HBNAME(nId,'DHRE',Evt%DHRE%eDHRE,'eDHRE(nDHRE):R')

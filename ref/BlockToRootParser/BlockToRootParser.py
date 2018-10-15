@@ -30,9 +30,10 @@
 import os
 import sys
 
-FORT_TO_ROOT_TYPES = {"r":"F", "i":"I"}
-FORT_TO_C_TYPES = {"r":"float", "i":"int"}
-C_TO_FORT_TYPES = {"float":"real", "int":"integer"}
+# Note that unsigned int 4 bits doesn't exists in root... it is at least 8bits
+FORT_TO_ROOT_TYPES = {"r":"F", "i":"I", "u":"i", "u4":"b", "u8": "b"}
+FORT_TO_C_TYPES = {"r":"float", "i":"int", "u": "unsigned int", "u4":"unsigned int", "u8": "unsigned int"}
+C_TO_FORT_TYPES = {"float":"real", "int":"integer", "unsigned int": "unsigned"}
 
 ERROR_IN_FILE   = "[Error] Input file is not a regular file."
 ERROR_IN_ARGS   = "[Error] Not enough input arguments."

@@ -4,7 +4,7 @@ use sample
 !
 !talk prod2ntu clus no vnvo no eclo no ecls yes gdhi yes bene yes bpos yes t0gl no prec no cele no trig yes tele no c2trg yes trks no trkv no dprs no dhsp no dtce no nsdtce no dchits no dhre no gean no tclo no cfhi no qcal no cwrk no csps no mccsps no cluo no otrk no otrv no otcl no dedx no dhit no qlte no qcth no ccle no lete no itce no hete no show exit
 !
-talk sample info yes bpos yes gdhit yes ecls yes trig yes c2trg yes tellina yes pizzetta yes torta yes tele yes pizza yes time yes clus yes clumc yes preclus yes cwrk yes cele yes celemc yes dtce yes dtce0 yes dchits yes dhre yes dhsp yes trkv yes vtx yes trks yes trkmc yes trkvold yes vtxold yes trksold yes trkmcold yes show exit
+talk sample info yes bpos yes gdhit yes ecls yes trig yes c2trg yes tellina yes pizzetta yes torta yes tele yes pizza yes time yes clus yes clumc yes preclus yes cwrk yes cele yes celmc yes dtce yes dtc0 yes dchits yes dhre yes dhsp yes trv yes vtx yes trs yes trmc yes trkvo yes vto yes trkso yes trkmco yes dhit yes dprs yes geanfi yes tclo yes tcold yes cfhi yes qihi yes trkq yes qele yes show exit
 input url "dbdatarec:(run_nr=88220) and (stream_code='rad') and (version=37)"
 !
 hist open/file="./test.hbook"/max_nrec=60000

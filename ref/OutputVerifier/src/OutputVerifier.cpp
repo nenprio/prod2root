@@ -265,6 +265,10 @@ int OutputVerifier::verifyEvent(int i, bool printInfo) {
     // Close files
     fRoot.close();
     fHB.close();
+    
+    delete [] ErrorFileOpen;
+    delete [] ErrorLeafDiff;
+    delete [] ErrorLeafNotFound;
 
     // Return the number of errors found
     return errorCounter;

@@ -3,18 +3,30 @@
 // This header contains all the structs needed to 
 // write ntuple data to C++ format.
 
-const int MaxNumClu  = 100;
-const int MaxEclSize = 8;
-const int MaxTrgChan = 1000;
-const int MaxNTele   = 300;
-const int MaxNPack   = 300;
-const int NeleCluMax = 300;
-const int NMaxDC     = 1500;
-const int MaxNumDHSP = 500;
-const int MaxNumTrkV = 30;
-const int MaxNumVtx  = 10;
-const int MaxNumTrk  = 100;
-const int MaxNumDHIT = 2500;
+const int MaxNumClu      = 100;
+const int MaxEclSize     = 8;
+const int MaxTrgChan     = 1000;
+const int TriggerElm     = 300;
+const int MaxNTele       = 300;
+const int MaxNPack       = 300;
+const int NeleCluMax     = 2000;
+const int NMaxDC         = 1500;
+const int MaxNumDHSP     = 500;
+const int MaxNumTrkV     = 30;
+const int MaxNumVtx      = 10;
+const int MaxNumTrk      = 100;
+const int MaxNumDHIT     = 2500;
+const int MaxRowsDEDx    = 20;
+const int MaxColsDEDx    = 100;
+const int MaxNumDPRS     = 200;
+const int MaxNTrkGen     = 50;
+const int MaxNVtxGen     = 30;
+const int MaxNumTCLO     = 40;
+const int MaxNumFirstHit = 300;
+const int MaxNumQIHI     = 1000;
+const int MaxRowsTrkQ    = 100;
+const int MaxColsTrkQ    = 2;
+const int MaxNumQCal     = 32;
 
 //Verb for Talk_to module
 extern "C"{
@@ -52,8 +64,19 @@ extern "C"{
     int trksOldFlag;
     int trkMCOldFlag;
     int dhitFlag;
+    int dedxFlag;
+    int dprsFlag;
+    int mcFlag;
+    int tcloFlag;
+    int tcloldFlag;
+    int cfhiFlag;
+    int qihiFlag;
+    int trkqFlag;
+    int qeleFlag;
+    int qcalFlag;
   }sammenu_;
 }
+
 // Block:   evtinfo
 extern "C"{
   extern struct{
@@ -179,12 +202,12 @@ extern "C" {
 extern "C" {
   extern struct {
     int NTel;
-    int Add_Tel[MaxTrgChan];
-    int Bitp_Tel[MaxTrgChan];
-    float Ea_Tel[MaxTrgChan];
-    float Eb_Tel[MaxTrgChan];
-    float Ta_Tel[MaxTrgChan];
-    float Tb_Tel[MaxTrgChan];
+    int Add_Tel[TriggerElm];
+    int Bitp_Tel[TriggerElm];
+    float Ea_Tel[TriggerElm];
+    float Eb_Tel[TriggerElm];
+    float Ta_Tel[TriggerElm];
+    float Tb_Tel[TriggerElm];
   }tellina_;
 }
 
@@ -192,11 +215,11 @@ extern "C" {
 extern "C" {
   extern struct {
     int NPiz;
-    int Add_Piz[MaxTrgChan];
-    float Ea_Piz[MaxTrgChan];
-    float Eb_Piz[MaxTrgChan];
-    float E_Piz[MaxTrgChan];
-    float Z_Piz[MaxTrgChan];
+    int Add_Piz[TriggerElm];
+    float Ea_Piz[TriggerElm];
+    float Eb_Piz[TriggerElm];
+    float E_Piz[TriggerElm];
+    float Z_Piz[TriggerElm];
   }pizzetta_;
 }
 
@@ -709,6 +732,200 @@ extern "C" {
     float DHDFromW[MaxNumDHIT];
     int DHFlag[MaxNumDHIT];
   }dhit_;
+}
+
+// Block:   dedx
+extern "C" {
+  extern struct {
+    int nDEDx;
+    int nADC[MaxRowsDEDx];
+    int iDEDx[MaxRowsDEDx];
+    int ADCLayer[MaxRowsDEDx][MaxColsDEDx];
+    int ADCWi1[MaxRowsDEDx][MaxColsDEDx];
+    int ADCWi2[MaxRowsDEDx][MaxColsDEDx];
+    float ADCLen[MaxRowsDEDx][MaxColsDEDx];
+    float ADCLeff[MaxRowsDEDx][MaxColsDEDx];
+    float ADCTim1[MaxRowsDEDx][MaxColsDEDx];
+    float ADCTim2[MaxRowsDEDx][MaxColsDEDx];
+    float ADCCharge[MaxRowsDEDx][MaxColsDEDx];
+  }dedx_;
+}
+
+// Block:   dprs
+extern "C" {
+  extern struct {
+    unsigned int nDPRS;
+    unsigned int nView[MaxNumDPRS];
+    unsigned int iDPRS[MaxNumDPRS];
+    unsigned int DPRSVer[MaxNumDPRS];
+    unsigned int nPos[MaxNumDPRS];
+    unsigned int nNeg[MaxNumDPRS];
+    float xPCA[MaxNumDPRS];
+    float yPCA[MaxNumDPRS];
+    float zPCA[MaxNumDPRS];
+    float xLst[MaxNumDPRS];
+    float yLst[MaxNumDPRS];
+    float zLst[MaxNumDPRS];
+    float CurP[MaxNumDPRS];
+    float PhiP[MaxNumDPRS];
+    float CotP[MaxNumDPRS];
+    float Qual[MaxNumDPRS];
+    unsigned int iPFl[MaxNumDPRS];
+    unsigned int PrKine[MaxNumDPRS];
+    unsigned int PrKHit[MaxNumDPRS];
+  }dprs_;
+}
+
+// Block:   mc
+extern "C" {
+  extern struct {
+    int nTMC;
+    int Kine[MaxNTrkGen];
+    int PidMC[MaxNTrkGen];
+    int VirMom[MaxNTrkGen];
+    float PxMC[MaxNTrkGen];
+    float PyMC[MaxNTrkGen];
+    float PzMC[MaxNTrkGen];
+    float xCv[MaxNTrkGen];
+    float yCv[MaxNTrkGen];
+    float zCv[MaxNTrkGen];
+    float TOfCv[MaxNTrkGen];
+    float TheMC[MaxNTrkGen];
+    float PhiMC[MaxNTrkGen];
+    int VtxMC[MaxNTrkGen];
+    int nDchMC[MaxNTrkGen];
+    float xFhMC[MaxNTrkGen];
+    float yFhMC[MaxNTrkGen];
+    float zFhMC[MaxNTrkGen];
+    float PxFhMC[MaxNTrkGen];
+    float PyFhMC[MaxNTrkGen];
+    float PzFhMC[MaxNTrkGen];
+    float xLhMC[MaxNTrkGen];
+    float yLhMC[MaxNTrkGen];
+    float zLhMC[MaxNTrkGen];
+    float PxLhMC[MaxNTrkGen];
+    float PyLhMC[MaxNTrkGen];
+    float PzLhMC[MaxNTrkGen];
+    int nVtxMC;
+    int KinMom[MaxNVtxGen];
+    int Mother[MaxNVtxGen];
+    float xVMC[MaxNVtxGen];
+    float yVMC[MaxNVtxGen];
+    float zVMC[MaxNVtxGen];
+    float TOfVMC[MaxNVtxGen];
+    float nTvTx[MaxNVtxGen];
+  }mc_;
+}
+
+// Block:   tclo
+extern "C" {
+  extern struct {
+    int nTcl;
+    int AssTr[MaxNumTCLO];
+    int AssCl[MaxNumTCLO];
+    int VerVer[MaxNumTCLO];
+    float xExt[MaxNumTCLO];
+    float yExt[MaxNumTCLO];
+    float zExt[MaxNumTCLO];
+    float AssLenG[MaxNumTCLO];
+    float AssChi[MaxNumTCLO];
+    float ExtPx[MaxNumTCLO];
+    float ExtPy[MaxNumTCLO];
+    float ExtPz[MaxNumTCLO];
+  }tclo_;
+}
+
+// Block:   tclold
+extern "C" {
+  extern struct {
+    int nTclOld;
+    int AssTrOld[MaxNumTCLO];
+    int AssClOld[MaxNumTCLO];
+    int VerVerOld[MaxNumTCLO];
+    float xExtOld[MaxNumTCLO];
+    float yExtOld[MaxNumTCLO];
+    float zExtOld[MaxNumTCLO];
+    float AssLenGOld[MaxNumTCLO];
+    float AssChiOld[MaxNumTCLO];
+    float ExtPxOld[MaxNumTCLO];
+    float ExtPyOld[MaxNumTCLO];
+    float ExtPzOld[MaxNumTCLO];
+  }tclold_;
+}
+
+// Block:   cfhi
+extern "C" {
+  extern struct {
+    int nFhi;
+    int PidFhi[MaxNumFirstHit];
+    int KinFhi[MaxNumFirstHit];
+    int CelFhi[MaxNumFirstHit];
+    int FlgFhi[MaxNumFirstHit];
+    float xFhi[MaxNumFirstHit];
+    float yFhi[MaxNumFirstHit];
+    float zFhi[MaxNumFirstHit];
+    float PxFhi[MaxNumFirstHit];
+    float PyFhi[MaxNumFirstHit];
+    float PzFhi[MaxNumFirstHit];
+    float TofFhi[MaxNumFirstHit];
+    float TLenFhi[MaxNumFirstHit];
+  }cfhi_;
+}
+
+// Block:   qihi
+extern "C" {
+  extern struct {
+    int nQIHI;
+    int PidQIHI[MaxNumQIHI];
+    int AddQIHI[MaxNumQIHI];
+    int KinQIHI[MaxNumQIHI];
+    float xQIHI[MaxNumQIHI];
+    float yQIHI[MaxNumQIHI];
+    float zQIHI[MaxNumQIHI];
+    float PxQIHI[MaxNumQIHI];
+    float PyQIHI[MaxNumQIHI];
+    float PzQIHI[MaxNumQIHI];
+    float TofQIHI[MaxNumQIHI];
+    float EneQIHI[MaxNumQIHI];
+    float TLenQIHI[MaxNumQIHI];
+  }qihi_;
+}
+
+// Block:   trkq
+extern "C" {
+  extern struct {
+    int nTrkQ;
+    int FlagQt;
+    int DetQt[MaxRowsTrkQ][MaxColsTrkQ];
+    int WedQt[MaxRowsTrkQ][MaxColsTrkQ];
+    float xQt[MaxRowsTrkQ][MaxColsTrkQ];
+    float yQt[MaxRowsTrkQ][MaxColsTrkQ];
+    float zQt[MaxRowsTrkQ][MaxColsTrkQ];
+    int ItrQt[MaxRowsTrkQ];
+  }trkq_;
+}
+
+// Block:   qele
+extern "C" {
+  extern struct {
+    int nQELE;
+    int QWed[MaxNumQCal];
+    int QDet[MaxNumQCal];
+    float QEne[MaxNumQCal];
+    float QTim[MaxNumQCal];
+  }qele_;
+}
+
+// Block:   qcal
+extern "C" {
+  extern struct {
+    int nQCal;
+    float xQCal[MaxNumQCal];
+    float yQCal[MaxNumQCal];
+    float zQCal[MaxNumQCal];
+    float EQCal[MaxNumQCal];
+    float TQCal[MaxNumQCal];
+  }qcal_;
 }
 
 #endif

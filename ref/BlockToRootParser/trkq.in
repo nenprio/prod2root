@@ -1,0 +1,8 @@
+CALL HBName(Params%Ntid,'TRKQ',Evt%TRKQ%n,'ntrkq:i::[0,100]')
+CALL HBName(Params%Ntid,'TRKQ',Evt%TRKQ%flagqt,'flagqt:i')
+CALL HBName(Params%Ntid,'TRKQ',Evt%TRKQ%det,'detqt(2,ntrkq):i')
+CALL HBName(Params%Ntid,'TRKQ',Evt%TRKQ%wed,'wedqt(2,ntrkq):i')
+CALL HBName(Params%Ntid,'TRKQ',Evt%TRKQ%xi,'xqt(2,ntrkq):r')
+CALL HBName(Params%Ntid,'TRKQ',Evt%TRKQ%yi,'yqt(2,ntrkq):r')
+CALL HBName(Params%Ntid,'TRKQ',Evt%TRKQ%zi,'zqt(2,ntrkq):r')
+CALL HBName(Params%Ntid,'TRKQ',Evt%TRKQ%itrk,'itrqt(ntrkq):i')

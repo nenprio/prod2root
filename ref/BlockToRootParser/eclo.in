@@ -1,0 +1,7 @@
+CALL HBName(Params%NtId,'ECLO',Evt%eclo%n,'ncli:i::[0,100]')
+CALL HBName(Params%NtId,'ECLO',Evt%eclo%totword,'ECLOword(ncli):i')
+CALL HBName(Params%NtId,'ECLO',Evt%eclo%idpart,'idpart(ncli):i')
+CALL HBName(Params%NtId,'ECLO',Evt%eclo%dtclpo,'dtclpo(ncli):i')
+CALL HBName(Params%NtId,'ECLO',Evt%eclo%dvvnpo,'dvvnpo(ncli):i')
+CALL HBName(Params%NtId,'ECLO',Evt%eclo%stre,'stre(ncli):i')
+CALL HBName(Params%NtId,'ECLO',Evt%eclo%algo,'algo(ncli):i')

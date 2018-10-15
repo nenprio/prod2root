@@ -1,0 +1,2 @@
+CALL HBName(Params%NtId,'VNVB',Evt%VNVB%n,'nbnksvnvo:i::[0,40]')
+CALL HBName(Params%NtId,'VNVB',Evt%VNVB%ibank,'ibank(nbnksvnvo):i')

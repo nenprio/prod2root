@@ -41,8 +41,19 @@ class TreeWriter{
          void addBlockTrkSOld();
          void addBlockTrkMCOld();
          void addBlockDHIT();
+         void addBlockDEDx();
+         void addBlockDPRS();
+         void addBlockMC();
+         void addBlockTCLO();
+         void addBlockTCLOld();
+         void addBlockCFHI();
+         void addBlockQIHI();
+         void addBlockTRKQ();
+         void addBlockQELE();
+         void addBlockQCal();
          TFile* getTFile();
          void fillTTree();
+         bool logicalToBool(int flag);
      private:
          TFile* outfile;
          TTree* fNewTree;

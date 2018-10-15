@@ -14,74 +14,94 @@
 TreeWriter::TreeWriter() {
     outfile  = new TFile("sample.root", "recreate");    //Open or create file 
     fNewTree = new TTree("sample", "Event Infos");      //Create "sample" tree
-  
+ 
     // Print Header with Flags and values assigned
     printHeaderFlags();
 
     // Block Info
-    if(sammenu_.infoFlag==1)        addBlockInfo();
+    if(logicalToBool(sammenu_.infoFlag))        addBlockInfo();
     // Block Data
-    if(sammenu_.dataFlag==1)        addBlockData();
+    if(logicalToBool(sammenu_.dataFlag))        addBlockData();
     // Block BPOS
-    if(sammenu_.bposFlag==1)        addBlockBPOS();
+    if(logicalToBool(sammenu_.bposFlag))        addBlockBPOS();
     // Block GdHit
-    if(sammenu_.gdhitFlag==1)       addBlockGdHit();
+    if(logicalToBool(sammenu_.gdhitFlag))       addBlockGdHit();
     // Block Ecl
-    if(sammenu_.eclsFlag==1)        addBlockEcl();
+    if(logicalToBool(sammenu_.eclsFlag))        addBlockEcl();
     // Block Trig
-    if(sammenu_.trigFlag==1)        addBlockTrig();
+    if(logicalToBool(sammenu_.trigFlag))        addBlockTrig();
     // Block C2Trig
-    if(sammenu_.c2trgFlag==1)       addBlockC2Trig();
+    if(logicalToBool(sammenu_.c2trgFlag))       addBlockC2Trig();
     // Block Tellina
-    if(sammenu_.tellinaFlag==1)     addBlockTellina();
+    if(logicalToBool(sammenu_.tellinaFlag))     addBlockTellina();
     // Block Pizzetta
-    if(sammenu_.pizzettaFlag==1)    addBlockPizzetta();
+    if(logicalToBool(sammenu_.pizzettaFlag))    addBlockPizzetta();
     // Block Torta
-    if(sammenu_.tortaFlag==1)       addBlockTorta();
+    if(logicalToBool(sammenu_.tortaFlag))       addBlockTorta();
     // Block Tele
-    if(sammenu_.teleFlag==1)        addBlockTele();
+    if(logicalToBool(sammenu_.teleFlag))        addBlockTele();
     // Block Pizza
-    if(sammenu_.pizzaFlag==1)       addBlockPizza();
+    if(logicalToBool(sammenu_.pizzaFlag))       addBlockPizza();
     // Block Time
-    if(sammenu_.timeFlag==1)        addBlockTime();
+    if(logicalToBool(sammenu_.timeFlag))        addBlockTime();
     // Block Clu
-    if(sammenu_.clusFlag==1)        addBlockClu();
+    if(logicalToBool(sammenu_.clusFlag))        addBlockClu();
     // Block CluMC
-    if(sammenu_.cluMCFlag==1)      addBlockCluMC();
+    if(logicalToBool(sammenu_.cluMCFlag))      addBlockCluMC();
     // Block PreClu
-    if(sammenu_.preclusFlag==1)     addBlockPreClu();
+    if(logicalToBool(sammenu_.preclusFlag))     addBlockPreClu();
     // Block CWRK
-    if(sammenu_.cwrkFlag==1)        addBlockCWRK();
+    if(logicalToBool(sammenu_.cwrkFlag))        addBlockCWRK();
     // Block Cele
-    if(sammenu_.celeFlag==1)        addBlockCele();
+    if(logicalToBool(sammenu_.celeFlag))        addBlockCele();
     // Block CeleMC
-    if(sammenu_.celeMCFlag==1)      addBlockCeleMC();
+    if(logicalToBool(sammenu_.celeMCFlag))      addBlockCeleMC();
     // Block DTCE
-    if(sammenu_.dtceFlag==1)        addBlockDTCE();
+    if(logicalToBool(sammenu_.dtceFlag))        addBlockDTCE();
     // Block DTCE0
-    if(sammenu_.dtce0Flag==1)       addBlockDTCE0();
+    if(logicalToBool(sammenu_.dtce0Flag))       addBlockDTCE0();
     // Block DHRE
-    if(sammenu_.dhreFlag==1)        addBlockDHRE();
+    if(logicalToBool(sammenu_.dhreFlag))        addBlockDHRE();
     // Block DHSP
-    if(sammenu_.dhspFlag==1)        addBlockDHSP();
+    if(logicalToBool(sammenu_.dhspFlag))        addBlockDHSP();
     // Block TrkV
-    if(sammenu_.trkvFlag==1)        addBlockTrkV();
+    if(logicalToBool(sammenu_.trkvFlag))        addBlockTrkV();
     // Block Vtx
-    if(sammenu_.vtxFlag==1)         addBlockVtx();
+    if(logicalToBool(sammenu_.vtxFlag))         addBlockVtx();
     // Block Trks
-    if(sammenu_.trksFlag==1)        addBlockTrkS();
+    if(logicalToBool(sammenu_.trksFlag))        addBlockTrkS();
     // Block TrkMC
-    if(sammenu_.trkMCFlag==1)       addBlockTrkMC();
+    if(logicalToBool(sammenu_.trkMCFlag))       addBlockTrkMC();
     // Block TrkOld
-    if(sammenu_.trkvOldFlag==1)     addBlockTrkVOld();
+    if(logicalToBool(sammenu_.trkvOldFlag))     addBlockTrkVOld();
     // Block VtxOld
-    if(sammenu_.vtxOldFlag==1)      addBlockVtxOld();
+    if(logicalToBool(sammenu_.vtxOldFlag))      addBlockVtxOld();
     // Block TrkOld
-    if(sammenu_.trksOldFlag==1)     addBlockTrkSOld();
+    if(logicalToBool(sammenu_.trksOldFlag))     addBlockTrkSOld();
     // Block TrkMCOld
-    if(sammenu_.trkMCFlag==1)       addBlockTrkMCOld();
+    if(logicalToBool(sammenu_.trkMCFlag))       addBlockTrkMCOld();
     // Block DHIT
-    if(sammenu_.dhitFlag==1)        addBlockDHIT();
+    if(logicalToBool(sammenu_.dhitFlag))        addBlockDHIT();
+    // Block DEDx
+    if(logicalToBool(sammenu_.dedxFlag))        addBlockDEDx();
+    // Block DPRS
+    if(logicalToBool(sammenu_.dprsFlag))        addBlockDPRS();
+    // Block MC
+    if(logicalToBool(sammenu_.mcFlag))          addBlockMC();
+    // Block TCLO
+    if(logicalToBool(sammenu_.tcloFlag))        addBlockTCLO();
+    // Block TCLOld
+    if(logicalToBool(sammenu_.tcloldFlag))      addBlockTCLOld();
+    // Block CFHI
+    if(logicalToBool(sammenu_.cfhiFlag))        addBlockCFHI();
+    // Block QIHI
+    if(logicalToBool(sammenu_.qihiFlag))        addBlockQIHI();
+    // Block TRKQ
+    if(logicalToBool(sammenu_.trkqFlag))        addBlockTRKQ();
+    // Block QELE
+    if(logicalToBool(sammenu_.qeleFlag))        addBlockQELE();
+    // Block QCal
+    if(logicalToBool(sammenu_.qcalFlag))        addBlockQCal();
 
     // Write to the disk
     outfile->Write();
@@ -106,10 +126,54 @@ TreeWriter::~TreeWriter() {
 }
 
 void TreeWriter::printHeaderFlags() {
-    TString header;
-    header.Form("Flags:\tBPOS %d\tECLS %d\tTRIG %d\tC2TRG %d\tTELLINA %d\tPIZZA %d\n",
-                sammenu_.bposFlag, sammenu_.eclsFlag, sammenu_.trigFlag, sammenu_.c2trgFlag, 
-                sammenu_.tellinaFlag, sammenu_.pizzaFlag);
+    TString header = "\n==========================================================================\n";
+    header = "\n                                   FLAGS\n";
+    header = "\n==========================================================================\n";
+    
+    header += Form("INFO: %d ",      logicalToBool(sammenu_.infoFlag)); 
+    header += Form("DATA: %d ",      logicalToBool(sammenu_.dataFlag));
+    header += Form("BPOS: %d ",      logicalToBool(sammenu_.bposFlag));
+    header += Form("GDHIT: %d ",     logicalToBool(sammenu_.gdhitFlag));
+    header += Form("ECLS: %d ",      logicalToBool(sammenu_.eclsFlag));
+    header += Form("TRIG: %d ",      logicalToBool(sammenu_.trigFlag));
+    header += Form("C2TRG: %d ",     logicalToBool(sammenu_.c2trgFlag));
+    header += Form("TELLINA: %d\n",  logicalToBool(sammenu_.tellinaFlag));
+    header += Form("PIZZETTA: %d ",  logicalToBool(sammenu_.pizzettaFlag));
+    header += Form("TORTA: %d ",     logicalToBool(sammenu_.tortaFlag));
+    header += Form("TELE: %d ",      logicalToBool(sammenu_.teleFlag));
+    header += Form("PIZZA: %d ",     logicalToBool(sammenu_.pizzaFlag));
+    header += Form("TIME: %d ",      logicalToBool(sammenu_.timeFlag));
+    header += Form("CLUS: %d ",      logicalToBool(sammenu_.clusFlag));
+    header += Form("CLUMC: %d ",     logicalToBool(sammenu_.cluMCFlag));
+    header += Form("PRECLUS: %d\n",  logicalToBool(sammenu_.preclusFlag));
+    header += Form("CWRK: %d ",      logicalToBool(sammenu_.cwrkFlag));
+    header += Form("CELE: %d ",      logicalToBool(sammenu_.celeFlag));
+    header += Form("CELEMC: %d ",    logicalToBool(sammenu_.celeMCFlag));
+    header += Form("DTCE: %d ",      logicalToBool(sammenu_.dtceFlag));
+    header += Form("DTCE0: %d ",     logicalToBool(sammenu_.dtce0Flag));
+    header += Form("DCHITS: %d ",    logicalToBool(sammenu_.dchitsFlag));
+    header += Form("DHRE: %d ",      logicalToBool(sammenu_.dhreFlag));
+    header += Form("DHSP: %d\n",     logicalToBool(sammenu_.dhspFlag));
+    header += Form("TRKV: %d ",      logicalToBool(sammenu_.trkvFlag));
+    header += Form("VTX: %d ",       logicalToBool(sammenu_.vtxFlag));
+    header += Form("TRKS: %d ",      logicalToBool(sammenu_.trksFlag));
+    header += Form("TRKMC: %d ",     logicalToBool(sammenu_.trkMCFlag));
+    header += Form("TRKVOLD: %d ",   logicalToBool(sammenu_.trkvOldFlag));
+    header += Form("VTXOLD: %d ",    logicalToBool(sammenu_.vtxOldFlag));
+    header += Form("TRKSOLD: %d ",   logicalToBool(sammenu_.trksOldFlag));
+    header += Form("TRKMCOLD: %d\n", logicalToBool(sammenu_.trkMCOldFlag));
+    header += Form("DHIT: %d ",      logicalToBool(sammenu_.dhitFlag));
+    header += Form("DPRS: %d ",      logicalToBool(sammenu_.dprsFlag));
+    header += Form("MC: %d ",        logicalToBool(sammenu_.mcFlag));
+    header += Form("TCLO: %d ",      logicalToBool(sammenu_.tcloFlag));
+    header += Form("TCOLD: %d ",     logicalToBool(sammenu_.tcloldFlag));
+    header += Form("CFHI: %d ",      logicalToBool(sammenu_.cfhiFlag));
+    header += Form("QIHI: %d ",      logicalToBool(sammenu_.qihiFlag));
+    header += Form("TRKQ: %d ",      logicalToBool(sammenu_.trkqFlag));
+    header += Form("QELE: %d ",      logicalToBool(sammenu_.qeleFlag));
+    header += "\n==========================================================================\n";
+    
+    // Print to std output
     std::cout << header.Data() << std::endl;
 }
 // Add to the tree all the branches related to the block Info.
@@ -802,6 +866,210 @@ void TreeWriter::addBlockDHIT() {
     fNewTree->Branch("DHFlag",   &dhit_.DHFlag,   "DHFlag[nDHIT]/I");
 }
 
+// Add to the tree all the branches realted to the block DEDx.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockDEDx() {
+    fNewTree->Branch("nDEDx",     &dedx_.nDEDx,     "nDEDx/I");
+    fNewTree->Branch("nADC",      &dedx_.nADC,      "nADC[nDEDx]/I");
+    fNewTree->Branch("iDEDx",     &dedx_.iDEDx,     "iDEDx[nDEDx]/I");
+    fNewTree->Branch("ADCLayer",  &dedx_.ADCLayer,  "ADCLayer[nDEDx][100]/I");
+    fNewTree->Branch("ADCWi1",    &dedx_.ADCWi1,    "ADCWi1[nDEDx][100]/I");
+    fNewTree->Branch("ADCWi2",    &dedx_.ADCWi2,    "ADCWi2[nDEDx][100]/I");
+    fNewTree->Branch("ADCLen",    &dedx_.ADCLen,    "ADCLen[nDEDx][100]/F");
+    fNewTree->Branch("ADCLeff",   &dedx_.ADCLeff,   "ADCLeff[nDEDx][100]/F");
+    fNewTree->Branch("ADCTim1",   &dedx_.ADCTim1,   "ADCTim1[nDEDx][100]/F");
+    fNewTree->Branch("ADCTim2",   &dedx_.ADCTim2,   "ADCTim2[nDEDx][100]/F");
+    fNewTree->Branch("ADCCharge", &dedx_.ADCCharge, "ADCCharge[nDEDx][100]/F");
+}
+
+// Add to the tree all the branches realted to the block DPRS.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockDPRS() {
+    fNewTree->Branch("nDPRS",   &dprs_.nDPRS,   "nDPRS/i");
+    fNewTree->Branch("nView",   &dprs_.nView,   "nView[nDPRS]/b");
+    fNewTree->Branch("iDPRS",   &dprs_.iDPRS,   "iDPRS[nDPRS]/b");
+    fNewTree->Branch("DPRSVer", &dprs_.DPRSVer, "DPRSVer[nDPRS]/b");
+    fNewTree->Branch("nPos",    &dprs_.nPos,    "nPos[nDPRS]/b");
+    fNewTree->Branch("nNeg",    &dprs_.nNeg,    "nNeg[nDPRS]/b");
+    fNewTree->Branch("xPCA",    &dprs_.xPCA,    "xPCA[nDPRS]/F");
+    fNewTree->Branch("yPCA",    &dprs_.yPCA,    "yPCA[nDPRS]/F");
+    fNewTree->Branch("zPCA",    &dprs_.zPCA,    "zPCA[nDPRS]/F");
+    fNewTree->Branch("xLst",    &dprs_.xLst,    "xLst[nDPRS]/F");
+    fNewTree->Branch("yLst",    &dprs_.yLst,    "yLst[nDPRS]/F");
+    fNewTree->Branch("zLst",    &dprs_.zLst,    "zLst[nDPRS]/F");
+    fNewTree->Branch("CurP",    &dprs_.CurP,    "CurP[nDPRS]/F");
+    fNewTree->Branch("PhiP",    &dprs_.PhiP,    "PhiP[nDPRS]/F");
+    fNewTree->Branch("CotP",    &dprs_.CotP,    "CotP[nDPRS]/F");
+    fNewTree->Branch("Qual",    &dprs_.Qual,    "Qual[nDPRS]/F");
+    fNewTree->Branch("iPFl",    &dprs_.iPFl,    "iPFl[nDPRS]/b");
+    fNewTree->Branch("PrKine",  &dprs_.PrKine,  "PrKine[nDPRS]/b");
+    fNewTree->Branch("PrKHit",  &dprs_.PrKHit,  "PrKHit[nDPRS]/b");
+}
+
+// Add to the tree all the branches realted to the block MC.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockMC() {
+    fNewTree->Branch("nTMC",   &mc_.nTMC,   "nTMC/I");
+    fNewTree->Branch("Kine",   &mc_.Kine,   "Kine[nTMC]/I");
+    fNewTree->Branch("PidMC",  &mc_.PidMC,  "PidMC[nTMC]/I");
+    fNewTree->Branch("VirMom", &mc_.VirMom, "VirMom[nTMC]/I");
+    fNewTree->Branch("PxMC",   &mc_.PxMC,   "PxMC[nTMC]/F");
+    fNewTree->Branch("PyMC",   &mc_.PyMC,   "PyMC[nTMC]/F");
+    fNewTree->Branch("PzMC",   &mc_.PzMC,   "PzMC[nTMC]/F");
+    fNewTree->Branch("xCv",    &mc_.xCv,    "xCv[nTMC]/F");
+    fNewTree->Branch("yCv",    &mc_.yCv,    "yCv[nTMC]/F");
+    fNewTree->Branch("zCv",    &mc_.zCv,    "zCv[nTMC]/F");
+    fNewTree->Branch("TOfCv",  &mc_.TOfCv,  "TOfCv[nTMC]/F");
+    fNewTree->Branch("TheMC",  &mc_.TheMC,  "TheMC[nTMC]/F");
+    fNewTree->Branch("PhiMC",  &mc_.PhiMC,  "PhiMC[nTMC]/F");
+    fNewTree->Branch("VtxMC",  &mc_.VtxMC,  "VtxMC[nTMC]/I");
+    fNewTree->Branch("nDchMC", &mc_.nDchMC, "nDchMC[nTMC]/I");
+    fNewTree->Branch("xFhMC",  &mc_.xFhMC,  "xFhMC[nTMC]/F");
+    fNewTree->Branch("yFhMC",  &mc_.yFhMC,  "yFhMC[nTMC]/F");
+    fNewTree->Branch("zFhMC",  &mc_.zFhMC,  "zFhMC[nTMC]/F");
+    fNewTree->Branch("PxFhMC", &mc_.PxFhMC, "PxFhMC[nTMC]/F");
+    fNewTree->Branch("PyFhMC", &mc_.PyFhMC, "PyFhMC[nTMC]/F");
+    fNewTree->Branch("PzFhMC", &mc_.PzFhMC, "PzFhMC[nTMC]/F");
+    fNewTree->Branch("xLhMC",  &mc_.xLhMC,  "xLhMC[nTMC]/F");
+    fNewTree->Branch("yLhMC",  &mc_.yLhMC,  "yLhMC[nTMC]/F");
+    fNewTree->Branch("zLhMC",  &mc_.zLhMC,  "zLhMC[nTMC]/F");
+    fNewTree->Branch("PxLhMC", &mc_.PxLhMC, "PxLhMC[nTMC]/F");
+    fNewTree->Branch("PyLhMC", &mc_.PyLhMC, "PyLhMC[nTMC]/F");
+    fNewTree->Branch("PzLhMC", &mc_.PzLhMC, "PzLhMC[nTMC]/F");
+    fNewTree->Branch("nVtxMC", &mc_.nVtxMC, "nVtxMC/I");
+    fNewTree->Branch("KinMom", &mc_.KinMom, "KinMom[nVtxMC]/I");
+    fNewTree->Branch("Mother", &mc_.Mother, "Mother[nVtxMC]/I");
+    fNewTree->Branch("xVMC",   &mc_.xVMC,   "xVMC[nVtxMC]/F");
+    fNewTree->Branch("yVMC",   &mc_.yVMC,   "yVMC[nVtxMC]/F");
+    fNewTree->Branch("zVMC",   &mc_.zVMC,   "zVMC[nVtxMC]/F");
+    fNewTree->Branch("TOfVMC", &mc_.TOfVMC, "TOfVMC[nVtxMC]/F");
+    fNewTree->Branch("nTvTx",  &mc_.nTvTx,  "nTvTx[nVtxMC]/F");
+}
+
+// Add to the tree all the branches realted to the block TCLO.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockTCLO() {
+    fNewTree->Branch("nTcl",    &tclo_.nTcl,    "nTcl/I");
+    fNewTree->Branch("AssTr",   &tclo_.AssTr,   "AssTr[nTcl]/I");
+    fNewTree->Branch("AssCl",   &tclo_.AssCl,   "AssCl[nTcl]/I");
+    fNewTree->Branch("VerVer",  &tclo_.VerVer,  "VerVer[nTcl]/I");
+    fNewTree->Branch("xExt",    &tclo_.xExt,    "xExt[nTcl]/F");
+    fNewTree->Branch("yExt",    &tclo_.yExt,    "yExt[nTcl]/F");
+    fNewTree->Branch("zExt",    &tclo_.zExt,    "zExt[nTcl]/F");
+    fNewTree->Branch("AssLenG", &tclo_.AssLenG, "AssLenG[nTcl]/F");
+    fNewTree->Branch("AssChi",  &tclo_.AssChi,  "AssChi[nTcl]/F");
+    fNewTree->Branch("ExtPx",   &tclo_.ExtPx,   "ExtPx[nTcl]/F");
+    fNewTree->Branch("ExtPy",   &tclo_.ExtPy,   "ExtPy[nTcl]/F");
+    fNewTree->Branch("ExtPz",   &tclo_.ExtPz,   "ExtPz[nTcl]/F");
+}
+
+// Add to the tree all the branches realted to the block TCLOld.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockTCLOld() {
+    fNewTree->Branch("nTclOld",    &tclold_.nTclOld,    "nTclOld/I");
+    fNewTree->Branch("AssTrOld",   &tclold_.AssTrOld,   "AssTrOld[nTclOld]/I");
+    fNewTree->Branch("AssClOld",   &tclold_.AssClOld,   "AssClOld[nTclOld]/I");
+    fNewTree->Branch("VerVerOld",  &tclold_.VerVerOld,  "VerVerOld[nTclOld]/I");
+    fNewTree->Branch("xExtOld",    &tclold_.xExtOld,    "xExtOld[nTclOld]/F");
+    fNewTree->Branch("yExtOld",    &tclold_.yExtOld,    "yExtOld[nTclOld]/F");
+    fNewTree->Branch("zExtOld",    &tclold_.zExtOld,    "zExtOld[nTclOld]/F");
+    fNewTree->Branch("AssLenGOld", &tclold_.AssLenGOld, "AssLenGOld[nTclOld]/F");
+    fNewTree->Branch("AssChiOld",  &tclold_.AssChiOld,  "AssChiOld[nTclOld]/F");
+    fNewTree->Branch("ExtPxOld",   &tclold_.ExtPxOld,   "ExtPxOld[nTclOld]/F");
+    fNewTree->Branch("ExtPyOld",   &tclold_.ExtPyOld,   "ExtPyOld[nTclOld]/F");
+    fNewTree->Branch("ExtPzOld",   &tclold_.ExtPzOld,   "ExtPzOld[nTclOld]/F");
+}
+
+// Add to the tree all the branches realted to the block CFHI.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockCFHI() {
+    fNewTree->Branch("nFhi",    &cfhi_.nFhi,    "nFhi/I");
+    fNewTree->Branch("PidFhi",  &cfhi_.PidFhi,  "PidFhi[nFhi]/I");
+    fNewTree->Branch("KinFhi",  &cfhi_.KinFhi,  "KinFhi[nFhi]/I");
+    fNewTree->Branch("CelFhi",  &cfhi_.CelFhi,  "CelFhi[nFhi]/I");
+    fNewTree->Branch("FlgFhi",  &cfhi_.FlgFhi,  "FlgFhi[nFhi]/I");
+    fNewTree->Branch("xFhi",    &cfhi_.xFhi,    "xFhi[nFhi]/F");
+    fNewTree->Branch("yFhi",    &cfhi_.yFhi,    "yFhi[nFhi]/F");
+    fNewTree->Branch("zFhi",    &cfhi_.zFhi,    "zFhi[nFhi]/F");
+    fNewTree->Branch("PxFhi",   &cfhi_.PxFhi,   "PxFhi[nFhi]/F");
+    fNewTree->Branch("PyFhi",   &cfhi_.PyFhi,   "PyFhi[nFhi]/F");
+    fNewTree->Branch("PzFhi",   &cfhi_.PzFhi,   "PzFhi[nFhi]/F");
+    fNewTree->Branch("TofFhi",  &cfhi_.TofFhi,  "TofFhi[nFhi]/F");
+    fNewTree->Branch("TLenFhi", &cfhi_.TLenFhi, "TLenFhi[nFhi]/F");
+}
+
+// Add to the tree all the branches realted to the block QIHI.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockQIHI() {
+    fNewTree->Branch("nQIHI",    &qihi_.nQIHI,    "nQIHI/I");
+    fNewTree->Branch("PidQIHI",  &qihi_.PidQIHI,  "PidQIHI[nQIHI]/I");
+    fNewTree->Branch("AddQIHI",  &qihi_.AddQIHI,  "AddQIHI[nQIHI]/I");
+    fNewTree->Branch("KinQIHI",  &qihi_.KinQIHI,  "KinQIHI[nQIHI]/I");
+    fNewTree->Branch("xQIHI",    &qihi_.xQIHI,    "xQIHI[nQIHI]/F");
+    fNewTree->Branch("yQIHI",    &qihi_.yQIHI,    "yQIHI[nQIHI]/F");
+    fNewTree->Branch("zQIHI",    &qihi_.zQIHI,    "zQIHI[nQIHI]/F");
+    fNewTree->Branch("PxQIHI",   &qihi_.PxQIHI,   "PxQIHI[nQIHI]/F");
+    fNewTree->Branch("PyQIHI",   &qihi_.PyQIHI,   "PyQIHI[nQIHI]/F");
+    fNewTree->Branch("PzQIHI",   &qihi_.PzQIHI,   "PzQIHI[nQIHI]/F");
+    fNewTree->Branch("TofQIHI",  &qihi_.TofQIHI,  "TofQIHI[nQIHI]/F");
+    fNewTree->Branch("EneQIHI",  &qihi_.EneQIHI,  "EneQIHI[nQIHI]/F");
+    fNewTree->Branch("TLenQIHI", &qihi_.TLenQIHI, "TLenQIHI[nQIHI]/F");
+}
+
+// Add to the tree all the branches realted to the block TRKQ.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockTRKQ() {
+    fNewTree->Branch("nTrkQ",  &trkq_.nTrkQ,  "nTrkQ/I");
+    fNewTree->Branch("FlagQt", &trkq_.FlagQt, "FlagQt/I");
+    fNewTree->Branch("DetQt",  &trkq_.DetQt,  "DetQt[nTrkQ][2]/I");
+    fNewTree->Branch("WedQt",  &trkq_.WedQt,  "WedQt[nTrkQ][2]/I");
+    fNewTree->Branch("xQt",    &trkq_.xQt,    "xQt[nTrkQ][2]/F");
+    fNewTree->Branch("yQt",    &trkq_.yQt,    "yQt[nTrkQ][2]/F");
+    fNewTree->Branch("zQt",    &trkq_.zQt,    "zQt[nTrkQ][2]/F");
+    fNewTree->Branch("ItrQt",  &trkq_.ItrQt,  "ItrQt[nTrkQ]/I");
+}
+
+// Add to the tree all the branches realted to the block QELE.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockQELE() {
+    fNewTree->Branch("nQELE", &qele_.nQELE, "nQELE/I");
+    fNewTree->Branch("QWed",  &qele_.QWed,  "QWed[nQELE]/I");
+    fNewTree->Branch("QDet",  &qele_.QDet,  "QDet[nQELE]/I");
+    fNewTree->Branch("QEne",  &qele_.QEne,  "QEne[nQELE]/F");
+    fNewTree->Branch("QTim",  &qele_.QTim,  "QTim[nQELE]/F");
+}
+
+// Add to the tree all the branches realted to the block QCal.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockQCal() {
+    fNewTree->Branch("nQCal", &qcal_.nQCal, "nQCal/I");
+    fNewTree->Branch("xQCal", &qcal_.xQCal, "xQCal[nQCal]/F");
+    fNewTree->Branch("yQCal", &qcal_.yQCal, "yQCal[nQCal]/F");
+    fNewTree->Branch("zQCal", &qcal_.zQCal, "zQCal[nQCal]/F");
+    fNewTree->Branch("EQCal", &qcal_.EQCal, "EQCal[nQCal]/F");
+    fNewTree->Branch("TQCal", &qcal_.TQCal, "TQCal[nQCal]/F");
+}
+
 // Returns the output file object.
 //
 // input:   -
@@ -817,4 +1085,14 @@ TFile* TreeWriter::getTFile() {
 void TreeWriter::fillTTree() {
     TTree *tree = (TTree*)outfile->Get("sample");
     tree->Fill();
+}
+
+// Convert the integer flag from FORTRAN to a boolean.
+//
+// input:   flag to be converted.
+// output:  boolean value converted
+bool TreeWriter::logicalToBool(int flag) {
+    if (flag == 1)
+        return true;
+    return false;
 }

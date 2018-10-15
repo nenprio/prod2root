@@ -1,0 +1,8 @@
+CALL HBName(Params%NtId,'INVO',Evt%INVO%n,'ninvo:i::[0,40]')
+CALL HBName(Params%NtId,'INVO',Evt%INVO%iclps,'iclps(ninvo):i')
+CALL HBName(Params%NtId,'INVO',Evt%INVO%xi,'xinvo(ninvo):r')
+CALL HBName(Params%NtId,'INVO',Evt%INVO%yi,'yinvo(ninvo):r')
+CALL HBName(Params%NtId,'INVO',Evt%INVO%zi,'zinvo(ninvo):r')
+CALL HBName(Params%NtId,'INVO',Evt%INVO%ti,'tinvo(ninvo):r')
+CALL HBName(Params%NtId,'INVO',Evt%INVO%lk,'lk(ninvo):r')
+CALL HBName(Params%NtId,'INVO',Evt%INVO%sigmalk,'sigmalk(ninvo):r')

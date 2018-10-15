@@ -39,27 +39,21 @@ setup -e ecl development
 setup -e trk development
 setup -e trg development
 
-#
 #source rootsetup
-#echo "Compiling for $ARCH ..."
-#echo "ROOTLIBS : $ROOTLIBS"
-gmake clean
+#gmake clean
 gmake
-#
+
 # C++ software linked with AC KLOE Fortran software
 cd ../ref
-#rm -rf Fort2C.o
-#gmake -f Makefile_sample clean
-#gmake -f Makefile_sample
-#xlC -O  -L/kloe/soft/onl/root/v5.08/AIX/lib -Wl,-u,.G__cpp_setupG__Hist -Wl,-u,.G__cpp_setupG__Graf1 -Wl,-u,.G__cpp_setupG__G3D -Wl,-u,.G__cpp_setupG__GPad -Wl,-u,.G__cpp_setupG__Tree -Wl,-u,.G__cpp_setupG__Rint -Wl,-u,.G__cpp_setupG__PostScript -Wl,-u,.G__cpp_setupG__Matrix -Wl,-u,.G__cpp_setupG__Physics -Wl,-u,.G__cpp_setupG__Gui1 -lCore -lCint -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lGui  -lEG -lHtml -c Fort2C.cpp
-##este si
-#xlC -O -L/kloe/soft/onl/root/v5.08/AIX/lib `root-config --cflags --libs` -c Fort2C.cpp
+
 set ROOTCONFIG = 'root-config '
 set ROOTLIBS   = `$ROOTCONFIG --libs`
 echo "ROOTLIBS : $ROOTLIBS"
 
 # Set SAMPLE path for sample_talk.cin
-# setenv SAMPLE /afs/kloe.infn.it/user/b/berducci/prod2root/ref
+if ( $USER == "berducci" ) then
+    setenv SAMPLE /afs/kloe.infn.it/user/b/berducci/prod2root/ref
+endif
 
 setenv MYLIBS "$ROOTLIBS -lm -lC -Wl,-bloadmap:map.txt"
 echo "MYLIBS : $MYLIBS"
