@@ -104,6 +104,8 @@ TreeWriter::TreeWriter() {
     if(logicalToBool(sammenu_.qcalFlag))        addBlockQCal();
     // Block KNVO
     if(logicalToBool(sammenu_.knvoFlag))        addBlockKNVO();
+    // Block VNVO
+    if(logicalToBool(sammenu_.vnvoFlag))        addBlockVNVO();
 
     // Write to the disk
     outfile->Write();
@@ -175,6 +177,7 @@ void TreeWriter::printHeaderFlags() {
     header += Form("QELE: %d ",      logicalToBool(sammenu_.qeleFlag));
     header += Form("QCAL: %d ",      logicalToBool(sammenu_.qcalFlag));
     header += Form("KNVO: %d ",      logicalToBool(sammenu_.knvoFlag));
+    header += Form("VNVO: %d ",      logicalToBool(sammenu_.vnvoFlag));
     header += "\n==========================================================================\n";
     
     // Print to std output
@@ -1087,6 +1090,22 @@ void TreeWriter::addBlockKNVO() {
     fNewTree->Branch("PidKNVO",  &knvo_.PidKNVO,  "PidKNVO[nKNVO]/I");
     fNewTree->Branch("BankKNVO", &knvo_.BankKNVO, "BankKNVO[nKNVO]/I");
     fNewTree->Branch("nVnvKNVO", &knvo_.nVnvKNVO, "nVnvKNVO[nKNVO]/I");
+}
+
+// Add to the tree all the branches realted to the block VNVO.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockVNVO() {
+    fNewTree->Branch("nVNVO",    &vnvo_.nVNVO,    "nVNVO/I");
+    fNewTree->Branch("iVNVO",    &vnvo_.iVNVO,    "iVNVO[nVNVO]/I");
+    fNewTree->Branch("VxVNVO",   &vnvo_.VxVNVO,   "VxVNVO[nVNVO]/F");
+    fNewTree->Branch("VyVNVO",   &vnvo_.VyVNVO,   "VyVNVO[nVNVO]/F");
+    fNewTree->Branch("VzVNVO",   &vnvo_.VzVNVO,   "VzVNVO[nVNVO]/F");
+    fNewTree->Branch("KorIVNVO", &vnvo_.KorIVNVO, "KorIVNVO[nVNVO]/I");
+    fNewTree->Branch("DvfsVNVO", &vnvo_.DvfsVNVO, "DvfsVNVO[nVNVO]/I");
+    fNewTree->Branch("nBnkVNVO", &vnvo_.nBnkVNVO, "nBnkVNVO[nVNVO]/I");
+    fNewTree->Branch("fBnkVNVO", &vnvo_.fBnkVNVO, "fBnkVNVO[nVNVO]/I");
 }
 
 // Returns the output file object.
