@@ -186,7 +186,7 @@ void TreeWriter::printHeaderFlags() {
     header += Form("CFHI: %d ",      logicalToBool(sammenu_.cfhiFlag));
     header += Form("QIHI: %d ",      logicalToBool(sammenu_.qihiFlag));
     header += Form("TRKQ: %d ",      logicalToBool(sammenu_.trkqFlag));
-    header += Form("QELE: %d ",      logicalToBool(sammenu_.qeleFlag));
+    header += Form("QELE: %d\n",      logicalToBool(sammenu_.qeleFlag));
     header += Form("QCAL: %d ",      logicalToBool(sammenu_.qcalFlag));
     header += Form("KNVO: %d ",      logicalToBool(sammenu_.knvoFlag));
     header += Form("VNVO: %d ",      logicalToBool(sammenu_.vnvoFlag));
