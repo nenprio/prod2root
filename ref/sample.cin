@@ -519,3 +519,13 @@ C
       integer DvVnpo(100), Stre2(100), Algo2(100)
 
       common /eclo2/nCli2,ECLOWord2,IdPart2,DtClpo2,DvVnpo,Stre2,Algo2
+C
+C  Block: csps
+C
+      integer iCSPS, nCS, CSClu(2000), CSCel(2000), CSFla(2000)
+      integer CSAdd(2000), CSNhi(2000)
+      real CSTa(2000), CSTb(2000), CSEa(2000), CSEb(2000), CST(2000)
+      real CSE(2000), CSx(2000), CSy(2000), CSz(2000)
+
+      common /csps/nCS,CSClu,CSCel,CSFla,CSAdd,CSNhi,CSTa,CSTb,CSEa,
+     1       CSEb,CST,CSE,CSx,CSy,CSz

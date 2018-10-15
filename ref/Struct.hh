@@ -86,6 +86,7 @@ extern "C"{
     int invoFlag;
     int ecloFlag;
     int eclo2Flag;
+    int cspsFlag;
   }sammenu_;
 }
 
@@ -1015,6 +1016,27 @@ extern "C" {
     int Stre2[MaxNumCLINF];
     int Algo2[MaxNumCLINF];
   }eclo2_;
+}
+
+// Block:   csps
+extern "C" {
+  extern struct {
+    int nCS;
+    int CSClu[MaxNumHitClu];
+    int CSCel[MaxNumHitClu];
+    int CSFla[MaxNumHitClu];
+    int CSAdd[MaxNumHitClu];
+    int CSNhi[MaxNumHitClu];
+    float CSTa[MaxNumHitClu];
+    float CSTb[MaxNumHitClu];
+    float CSEa[MaxNumHitClu];
+    float CSEb[MaxNumHitClu];
+    float CST[MaxNumHitClu];
+    float CSE[MaxNumHitClu];
+    float CSx[MaxNumHitClu];
+    float CSy[MaxNumHitClu];
+    float CSz[MaxNumHitClu];
+  }csps_;
 }
 
 #endif

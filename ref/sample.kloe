@@ -2708,6 +2708,56 @@ C-----------------------------------------------------------------------
          END IF
       END IF
 C-----------------------------------------------------------------------
+C Fill Block csps
+C-----------------------------------------------------------------------
+      IF (.TRUE.) THEN
+         nCS = 0.
+         DO iCSPS=1, 2000
+           CSClu(iCSPS) = 0.
+           CSCel(iCSPS) = 0.
+           CSFla(iCSPS) = 0.
+           CSAdd(iCSPS) = 0.
+           CSNhi(iCSPS) = 0.
+           CSTa(iCSPS) = 0.
+           CSTb(iCSPS) = 0.
+           CSEa(iCSPS) = 0.
+           CSEb(iCSPS) = 0.
+           CST(iCSPS) = 0.
+           CSE(iCSPS) = 0.
+           CSx(iCSPS) = 0.
+           CSy(iCSPS) = 0.
+           CSz(iCSPS) = 0.
+         END DO
+
+         istat = GETCSPSSTRU(0,evt%CSPS,evt%CSPSMC)
+
+         nCS = Evt%CSPS%Ncel
+         IF ( nCS < 0 .OR. nCS > 2000 ) THEN
+            WRITE(*,*) 'ERROR CSPS - nCS Out of bound : ', nCS
+         END IF
+
+         IF (nCS > 0 .AND. nCS <= 2000) THEN
+            DO iCSPS=1, nCS
+                 CSClu(iCSPS) = Evt%Csps%Iclu(iCSPS)
+                 CSCel(iCSPS) = Evt%Csps%Icel(iCSPS)
+                 CSFla(iCSPS) = Evt%Csps%Flag(iCSPS)
+                 CSAdd(iCSPS) = Evt%Csps%Add(iCSPS)
+                 CSNhi(iCSPS) = Evt%Csps%Nhit(iCSPS)
+                 CSTa(iCSPS) = Evt%Csps%Ta(iCSPS)
+                 CSTb(iCSPS) = Evt%Csps%Tb(iCSPS)
+                 CSEa(iCSPS) = Evt%Csps%Ea(iCSPS)
+                 CSEb(iCSPS) = Evt%Csps%Eb(iCSPS)
+                 CST(iCSPS) = Evt%Csps%T(iCSPS)
+                 CSE(iCSPS) = Evt%Csps%E(iCSPS)
+                 CSx(iCSPS) = Evt%Csps%X(iCSPS)
+                 CSy(iCSPS) = Evt%Csps%Y(iCSPS)
+                 CSz(iCSPS) = Evt%Csps%Z(iCSPS)
+           END DO
+         ELSE
+            WRITE(*,*) 'ERROR CSPS - nCS Index not valid: ', nCS
+         END IF
+      END IF
+C-----------------------------------------------------------------------
 C Fill Root
 C-----------------------------------------------------------------------
       call fillntu() 	

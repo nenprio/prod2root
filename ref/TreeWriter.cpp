@@ -112,6 +112,10 @@ TreeWriter::TreeWriter() {
     if(logicalToBool(sammenu_.invoFlag))        addBlockINVO();
     // Block ECLO 
     if(logicalToBool(sammenu_.ecloFlag))        addBlockECLO();
+    // Block ECLO2 
+    if(logicalToBool(sammenu_.eclo2Flag))       addBlockECLO2();
+    // Block CSPS 
+    if(logicalToBool(sammenu_.cspsFlag))        addBlockCSPS();
 
     // Write to the disk
     outfile->Write();
@@ -188,6 +192,7 @@ void TreeWriter::printHeaderFlags() {
     header += Form("INVO: %d ",      logicalToBool(sammenu_.invoFlag));
     header += Form("ECLO: %d ",      logicalToBool(sammenu_.ecloFlag));
     header += Form("ECLO2: %d ",     logicalToBool(sammenu_.eclo2Flag));
+    header += Form("CSPS: %d ",     logicalToBool(sammenu_.cspsFlag));
     header += "\n==========================================================================\n";
     
     // Print to std output
@@ -1168,6 +1173,28 @@ void TreeWriter::addBlockECLO2() {
     fNewTree->Branch("DvVnpo",    &eclo2_.DvVnpo,    "DvVnpo[nCli2]/I");
     fNewTree->Branch("Stre2",     &eclo2_.Stre2,     "Stre2[nCli2]/I");
     fNewTree->Branch("Algo2",     &eclo2_.Algo2,     "Algo2[nCli2]/I");
+}
+
+// Add to the tree all the branches realted to the block CSPS.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockCSPS() {
+    fNewTree->Branch("nCS",   &csps_.nCS,   "nCS/I");
+    fNewTree->Branch("CSClu", &csps_.CSClu, "CSClu[nCS]/I");
+    fNewTree->Branch("CSCel", &csps_.CSCel, "CSCel[nCS]/I");
+    fNewTree->Branch("CSFla", &csps_.CSFla, "CSFla[nCS]/I");
+    fNewTree->Branch("CSAdd", &csps_.CSAdd, "CSAdd[nCS]/I");
+    fNewTree->Branch("CSNhi", &csps_.CSNhi, "CSNhi[nCS]/I");
+    fNewTree->Branch("CSTa",  &csps_.CSTa,  "CSTa[nCS]/F");
+    fNewTree->Branch("CSTb",  &csps_.CSTb,  "CSTb[nCS]/F");
+    fNewTree->Branch("CSEa",  &csps_.CSEa,  "CSEa[nCS]/F");
+    fNewTree->Branch("CSEb",  &csps_.CSEb,  "CSEb[nCS]/F");
+    fNewTree->Branch("CST",   &csps_.CST,   "CST[nCS]/F");
+    fNewTree->Branch("CSE",   &csps_.CSE,   "CSE[nCS]/F");
+    fNewTree->Branch("CSx",   &csps_.CSx,   "CSx[nCS]/F");
+    fNewTree->Branch("CSy",   &csps_.CSy,   "CSy[nCS]/F");
+    fNewTree->Branch("CSz",   &csps_.CSz,   "CSz[nCS]/F");
 }
 
 // Returns the output file object.
