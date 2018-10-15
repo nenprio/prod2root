@@ -3079,7 +3079,7 @@ C      write(*,*)" "
       	write(Prompt,123)'ECLO'
 	    Status=UIGTYE(Prompt,ECLOFLAG)
     	goto 10
-      else if(verb.eq.'ECLO2')then
+      else if(verb.eq.'ECLTWO')then
       	write(Prompt,123)'ECLO2'
 	    Status=UIGTYE(Prompt,ECLO2FLAG)
     	goto 10

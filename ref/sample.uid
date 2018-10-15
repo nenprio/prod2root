@@ -53,7 +53,7 @@ Verb VNVO
 Verb VNVB 
 Verb INVO 
 Verb ECLO 
-Verb ECL2
+Verb ECLTWO
 Verb CSPS
 Verb CSPMC
 !
@@ -112,7 +112,7 @@ Button 44   /Description="Select VNVO     block"/Response="VNVO"
 Button 45   /Description="Select VNVB     block"/Response="VNVB"
 Button 46   /Description="Select INVO     block"/Response="INVO"
 Button 47   /Description="Select ECLO     block"/Response="ECLO"
-Button 48   /Description="Select ECLO2    block"/Response="ECL2"
+Button 48   /Description="Select ECLO2    block"/Response="ECLTWO"
 Button 49   /Description="Select CSPS     block"/Response="CSPS"
 Button 50   /Description="Select CSPS MC  block"/Response="CSPMC"
 
