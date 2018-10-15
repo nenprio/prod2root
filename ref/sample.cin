@@ -505,3 +505,10 @@ C
       real Lk(40), SigmaLk(40)
 
       common /invo/nINVO,iClps,xINVO,yINVO,zINVO,tINVO,Lk,SigmaLk
+C
+C  Block: eclo
+C
+      integer iECLO, nCli, ECLOWord(100), IdPart(100), DtClpo(100) 
+      integer DvVnpo(100), Stre(100), Algo(100)
+
+      common /eclo/nCli,ECLOWord,IdPart,DtClpo,DvVnpo,Stre,Algo

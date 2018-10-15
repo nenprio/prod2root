@@ -110,6 +110,8 @@ TreeWriter::TreeWriter() {
     if(logicalToBool(sammenu_.vnvbFlag))        addBlockVNVB();
     // Block INVO
     if(logicalToBool(sammenu_.invoFlag))        addBlockINVO();
+    // Block ECLO 
+    if(logicalToBool(sammenu_.ecloFlag))        addBlockECLO();
 
     // Write to the disk
     outfile->Write();
@@ -184,6 +186,7 @@ void TreeWriter::printHeaderFlags() {
     header += Form("VNVO: %d ",      logicalToBool(sammenu_.vnvoFlag));
     header += Form("VNVB: %d ",      logicalToBool(sammenu_.vnvbFlag));
     header += Form("INVO: %d ",      logicalToBool(sammenu_.invoFlag));
+    header += Form("ECLO: %d ",      logicalToBool(sammenu_.ecloFlag));
     header += "\n==========================================================================\n";
     
     // Print to std output
@@ -1136,6 +1139,20 @@ void TreeWriter::addBlockINVO() {
     fNewTree->Branch("tINVO",   &invo_.tINVO,   "tINVO[nINVO]/F");
     fNewTree->Branch("Lk",      &invo_.Lk,      "Lk[nINVO]/F");
     fNewTree->Branch("SigmaLk", &invo_.SigmaLk, "SigmaLk[nINVO]/F");
+}
+
+// Add to the tree all the branches realted to the block ECLO.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockECLO() {
+    fNewTree->Branch("nCli",     &eclo_.nCli,     "nCli/I");
+    fNewTree->Branch("ECLOWord", &eclo_.ECLOWord, "ECLOWord[nCli]/I");
+    fNewTree->Branch("IdPart",   &eclo_.IdPart,   "IdPart[nCli]/I");
+    fNewTree->Branch("DtClpo",   &eclo_.DtClpo,   "DtClpo[nCli]/I");
+    fNewTree->Branch("DvVnpo",   &eclo_.DvVnpo,   "DvVnpo[nCli]/I");
+    fNewTree->Branch("Stre",     &eclo_.Stre,     "Stre[nCli]/I");
+    fNewTree->Branch("Algo",     &eclo_.Algo,     "Algo[nCli]/I");
 }
 
 // Returns the output file object.

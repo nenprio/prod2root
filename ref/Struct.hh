@@ -31,6 +31,7 @@ const int MaxNumKNVO     = 40;
 const int MaxNumVNVO     = 40;
 const int MaxNumVNVOb    = 40;
 const int MaxNumINVO     = 40;
+const int MaxNumCLINF    = 100;
 
 //Verb for Talk_to module
 extern "C"{
@@ -82,6 +83,7 @@ extern "C"{
     int vnvoFlag;
     int vnvbFlag;
     int invoFlag;
+    int ecloFlag;
   }sammenu_;
 }
 
@@ -985,6 +987,19 @@ extern "C" {
     float Lk[MaxNumINVO];
     float SigmaLk[MaxNumINVO];
   }invo_;
+}
+
+// Block:   eclo
+extern "C" {
+  extern struct {
+    int nCli;
+    int ECLOWord[MaxNumCLINF];
+    int IdPart[MaxNumCLINF];
+    int DtClpo[MaxNumCLINF];
+    int DvVnpo[MaxNumCLINF];
+    int Stre[MaxNumCLINF];
+    int Algo[MaxNumCLINF];
+  }eclo_;
 }
 
 #endif
