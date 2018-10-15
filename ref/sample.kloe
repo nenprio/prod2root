@@ -2758,6 +2758,44 @@ C-----------------------------------------------------------------------
          END IF
       END IF
 C-----------------------------------------------------------------------
+C Fill Block cspsmc
+C-----------------------------------------------------------------------
+      IF (.TRUE.) THEN
+         nCSMC = 0.
+         DO iCSPSMC=1, 2000
+           CSMCKine(iCSPSMC) = 0.
+           CSMCPoi(iCSPSMC) = 0.
+           CSMCNHit(iCSPSMC) = 0.
+           CSMCx(iCSPSMC) = 0.
+           CSMCy(iCSPSMC) = 0.
+           CSMCz(iCSPSMC) = 0.
+           CSMCt(iCSPSMC) = 0.
+           CSMCe(iCSPSMC) = 0.
+         END DO
+
+         istat = GETCSPSSTRU(0,evt%CSPS,evt%CSPSMC)
+
+         nCSMC = Evt%CSPSMC%Ncel
+         IF ( nCSMC < 0 .OR. nCSMC > 2000 ) THEN
+            WRITE(*,*) 'ERROR CSPSMC - nCSMC Out of bound : ', nCSMC
+         END IF
+
+         IF (nCSMC > 0 .AND. nCSMC <= 2000) THEN
+            DO iCSPSMC=1, nCSMC
+                 CSMCKine(iCSPSMC) = Evt%CSPSMC%Knum(iCSPSMC)
+                 CSMCPoi(iCSPSMC) = Evt%CSPSMC%Ihit(iCSPSMC)
+                 CSMCNHit(iCSPSMC) = Evt%CSPSMC%Nhit(iCSPSMC)
+                 CSMCx(iCSPSMC) = Evt%CSPSMC%X(iCSPSMC)
+                 CSMCy(iCSPSMC) = Evt%CSPSMC%Y(iCSPSMC)
+                 CSMCz(iCSPSMC) = Evt%CSPSMC%Z(iCSPSMC)
+                 CSMCt(iCSPSMC) = Evt%CSPSMC%T(iCSPSMC)
+                 CSMCe(iCSPSMC) = Evt%CSPSMC%E(iCSPSMC)
+           END DO
+         ELSE
+            WRITE(*,*) 'ERROR CSPSMC - nCSMC Index not valid: ', nCSMC
+         END IF
+      END IF
+C-----------------------------------------------------------------------
 C Fill Root
 C-----------------------------------------------------------------------
       call fillntu() 	
@@ -3044,6 +3082,10 @@ C      write(*,*)" "
       else if(verb.eq.'ECLO2')then
       	write(Prompt,123)'ECLO2'
 	    Status=UIGTYE(Prompt,ECLO2FLAG)
+    	goto 10
+      else if(verb.eq.'CSPMC')then
+      	write(Prompt,123)'CSPMC'
+	    Status=UIGTYE(Prompt,CSPMCFLAG)
     	goto 10
       end if
 C

@@ -116,6 +116,8 @@ TreeWriter::TreeWriter() {
     if(logicalToBool(sammenu_.eclo2Flag))       addBlockECLO2();
     // Block CSPS 
     if(logicalToBool(sammenu_.cspsFlag))        addBlockCSPS();
+    // Block CSPSMC 
+    if(logicalToBool(sammenu_.cspsMCFlag))      addBlockCSPSMC();
 
     // Write to the disk
     outfile->Write();
@@ -192,7 +194,8 @@ void TreeWriter::printHeaderFlags() {
     header += Form("INVO: %d ",      logicalToBool(sammenu_.invoFlag));
     header += Form("ECLO: %d ",      logicalToBool(sammenu_.ecloFlag));
     header += Form("ECLO2: %d ",     logicalToBool(sammenu_.eclo2Flag));
-    header += Form("CSPS: %d ",     logicalToBool(sammenu_.cspsFlag));
+    header += Form("CSPS: %d ",      logicalToBool(sammenu_.cspsFlag));
+    header += Form("CSPSMC: %d ",    logicalToBool(sammenu_.cspsMCFlag));
     header += "\n==========================================================================\n";
     
     // Print to std output
@@ -1195,6 +1198,22 @@ void TreeWriter::addBlockCSPS() {
     fNewTree->Branch("CSx",   &csps_.CSx,   "CSx[nCS]/F");
     fNewTree->Branch("CSy",   &csps_.CSy,   "CSy[nCS]/F");
     fNewTree->Branch("CSz",   &csps_.CSz,   "CSz[nCS]/F");
+}
+
+// Add to the tree all the branches realted to the block CSPSMC.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockCSPSMC() {
+    fNewTree->Branch("nCSMC",    &cspsmc_.nCSMC,    "nCSMC/I");
+    fNewTree->Branch("CSMCKine", &cspsmc_.CSMCKine, "CSMCKine[nCSMC]/I");
+    fNewTree->Branch("CSMCPoi",  &cspsmc_.CSMCPoi,  "CSMCPoi[nCSMC]/I");
+    fNewTree->Branch("CSMCNHit", &cspsmc_.CSMCNHit, "CSMCNHit[nCSMC]/I");
+    fNewTree->Branch("CSMCx",    &cspsmc_.CSMCx,    "CSMCx[nCSMC]/F");
+    fNewTree->Branch("CSMCy",    &cspsmc_.CSMCy,    "CSMCy[nCSMC]/F");
+    fNewTree->Branch("CSMCz",    &cspsmc_.CSMCz,    "CSMCz[nCSMC]/F");
+    fNewTree->Branch("CSMCt",    &cspsmc_.CSMCt,    "CSMCt[nCSMC]/F");
+    fNewTree->Branch("CSMCe",    &cspsmc_.CSMCe,    "CSMCe[nCSMC]/F");
 }
 
 // Returns the output file object.

@@ -58,6 +58,7 @@ class TreeWriter{
          void addBlockECLO();
          void addBlockECLO2();
          void addBlockCSPS();
+         void addBlockCSPSMC();
          TFile* getTFile();
          void fillTTree();
          bool logicalToBool(int flag);

@@ -87,6 +87,7 @@ extern "C"{
     int ecloFlag;
     int eclo2Flag;
     int cspsFlag;
+    int cspsMCFlag;
   }sammenu_;
 }
 
@@ -1037,6 +1038,21 @@ extern "C" {
     float CSy[MaxNumHitClu];
     float CSz[MaxNumHitClu];
   }csps_;
+}
+
+// Block:   cspsmc
+extern "C" {
+  extern struct {
+    int nCSMC;
+    int CSMCKine[MaxNumHitClu];
+    int CSMCPoi[MaxNumHitClu];
+    int CSMCNHit[MaxNumHitClu];
+    float CSMCx[MaxNumHitClu];
+    float CSMCy[MaxNumHitClu];
+    float CSMCz[MaxNumHitClu];
+    float CSMCt[MaxNumHitClu];
+    float CSMCe[MaxNumHitClu];
+  }cspsmc_;
 }
 
 #endif
