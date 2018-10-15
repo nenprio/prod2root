@@ -2601,6 +2601,42 @@ C        Already filled Evt%VNVB in previous blocks
          END IF
       END IF
 C-----------------------------------------------------------------------
+C Fill Block invo
+C-----------------------------------------------------------------------
+      IF (INVOFLAG) THEN
+         nINVO = 0.
+         DO iINVO=1, 40
+           iClps(iINVO) = 0.
+           xINVO(iINVO) = 0.
+           yINVO(iINVO) = 0.
+           zINVO(iINVO) = 0.
+           tINVO(iINVO) = 0.
+           Lk(iINVO) = 0.
+           SigmaLk(iINVO) = 0.
+         END DO
+
+C        Already filled Evt%INVO in previous blocks
+
+         nINVO = Evt%INVO%n
+         IF ( nINVO < 0 .OR. nINVO > 40 ) THEN
+            WRITE(*,*) 'ERROR INVO - nINVO Out of bound : ', nINVO
+         END IF
+
+         IF (nINVO > 0 .AND. nINVO <= 40) THEN
+            DO iINVO=1, nINVO
+                 iClps(iINVO) = Evt%INVO%iclps(iINVO)
+                 xINVO(iINVO) = Evt%INVO%xi(iINVO)
+                 yINVO(iINVO) = Evt%INVO%yi(iINVO)
+                 zINVO(iINVO) = Evt%INVO%zi(iINVO)
+                 tINVO(iINVO) = Evt%INVO%ti(iINVO)
+                 Lk(iINVO) = Evt%INVO%lk(iINVO)
+                 SigmaLk(iINVO) = Evt%INVO%sigmalk(iINVO)
+           END DO
+         ELSE
+            WRITE(*,*) 'ERROR INVO - nINVO Index not valid: ', nINVO
+         END IF
+      END IF
+C-----------------------------------------------------------------------
 C Fill Root
 C-----------------------------------------------------------------------
       call fillntu() 	
@@ -2875,6 +2911,10 @@ C      write(*,*)" "
       else if(verb.eq.'VNVB')then
       	write(Prompt,123)'VNVB'
 	    Status=UIGTYE(Prompt,VNVBFLAG)
+    	goto 10
+      else if(verb.eq.'INVO')then
+      	write(Prompt,123)'INVO'
+	    Status=UIGTYE(Prompt,INVOFLAG)
     	goto 10
       end if
 C

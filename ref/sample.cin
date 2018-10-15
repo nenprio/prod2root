@@ -497,3 +497,11 @@ C
       integer iVNVB, nBnksVNVO, iBank(40)
 
       common /vnvb/nBnksVNVO,iBank
+C
+C  Block: invo
+C
+      integer iINVO, nINVO, iClps(40)
+      real xINVO(40), yINVO(40), zINVO(40), tINVO(40)
+      real Lk(40), SigmaLk(40)
+
+      common /invo/nINVO,iClps,xINVO,yINVO,zINVO,tINVO,Lk,SigmaLk

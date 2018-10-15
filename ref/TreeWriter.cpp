@@ -108,6 +108,8 @@ TreeWriter::TreeWriter() {
     if(logicalToBool(sammenu_.vnvoFlag))        addBlockVNVO();
     // Block VNVB
     if(logicalToBool(sammenu_.vnvbFlag))        addBlockVNVB();
+    // Block INVO
+    if(logicalToBool(sammenu_.invoFlag))        addBlockINVO();
 
     // Write to the disk
     outfile->Write();
@@ -181,6 +183,7 @@ void TreeWriter::printHeaderFlags() {
     header += Form("KNVO: %d ",      logicalToBool(sammenu_.knvoFlag));
     header += Form("VNVO: %d ",      logicalToBool(sammenu_.vnvoFlag));
     header += Form("VNVB: %d ",      logicalToBool(sammenu_.vnvbFlag));
+    header += Form("INVO: %d ",      logicalToBool(sammenu_.invoFlag));
     header += "\n==========================================================================\n";
     
     // Print to std output
@@ -1118,6 +1121,21 @@ void TreeWriter::addBlockVNVO() {
 void TreeWriter::addBlockVNVB() {
     fNewTree->Branch("nBnksVNVO", &vnvb_.nBnksVNVO, "nBnksVNVO/I");
     fNewTree->Branch("iBank",     &vnvb_.iBank,     "iBank[nBnksVNVO]/I");
+}
+
+// Add to the tree all the branches realted to the block INVO.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockINVO() {
+    fNewTree->Branch("nINVO",   &invo_.nINVO,   "nINVO/I");
+    fNewTree->Branch("iClps",   &invo_.iClps,   "iClps[nINVO]/I");
+    fNewTree->Branch("xINVO",   &invo_.xINVO,   "xINVO[nINVO]/F");
+    fNewTree->Branch("yINVO",   &invo_.yINVO,   "yINVO[nINVO]/F");
+    fNewTree->Branch("zINVO",   &invo_.zINVO,   "zINVO[nINVO]/F");
+    fNewTree->Branch("tINVO",   &invo_.tINVO,   "tINVO[nINVO]/F");
+    fNewTree->Branch("Lk",      &invo_.Lk,      "Lk[nINVO]/F");
+    fNewTree->Branch("SigmaLk", &invo_.SigmaLk, "SigmaLk[nINVO]/F");
 }
 
 // Returns the output file object.
