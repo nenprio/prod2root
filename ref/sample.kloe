@@ -2510,14 +2510,14 @@ C Fill Block knvo
 C-----------------------------------------------------------------------
       IF (KNVOFLAG) THEN
          nKNVO = 0.
-         DO iKNVO=1, 40
-           iKNVO(iKNVO) = 0.
-           PxKNVO(iKNVO) = 0.
-           PyKNVO(iKNVO) = 0.
-           PzKNVO(iKNVO) = 0.
-           PidKNVO(iKNVO) = 0.
-           BankKNVO(iKNVO) = 0.
-           nVnvKNVO(iKNVO) = 0.
+         DO iiKNVO=1, 40
+           iKNVO(iiKNVO) = 0.
+           PxKNVO(iiKNVO) = 0.
+           PyKNVO(iiKNVO) = 0.
+           PzKNVO(iiKNVO) = 0.
+           PidKNVO(iiKNVO) = 0.
+           BankKNVO(iiKNVO) = 0.
+           nVnvKNVO(iiKNVO) = 0.
          END DO
 
          istat = GETNVO(evt%knvo,evt%vnvo,evt%vnvb,evt%invo)
@@ -2528,14 +2528,14 @@ C-----------------------------------------------------------------------
          END IF
 
          IF (nKNVO > 0 .AND. nKNVO <= 40) THEN
-            DO iKNVO=1, nKNVO
-                 iKNVO(iKNVO) = Evt%KNVO%iknvo(iKNVO)
-                 PxKNVO(iKNVO) = Evt%KNVO%px(iKNVO)
-                 PyKNVO(iKNVO) = Evt%KNVO%py(iKNVO)
-                 PzKNVO(iKNVO) = Evt%KNVO%pz(iKNVO)
-                 PidKNVO(iKNVO) = Evt%KNVO%pid(iKNVO)
-                 BankKNVO(iKNVO) = Evt%KNVO%bank(iKNVO)
-                 nVnvKNVO(iKNVO) = Evt%KNVO%vlinked(iKNVO)
+            DO iiKNVO=1, nKNVO
+                 iKNVO(iiKNVO) = Evt%KNVO%iknvo(iiKNVO)
+                 PxKNVO(iiKNVO) = Evt%KNVO%px(iiKNVO)
+                 PyKNVO(iiKNVO) = Evt%KNVO%py(iiKNVO)
+                 PzKNVO(iiKNVO) = Evt%KNVO%pz(iiKNVO)
+                 PidKNVO(iiKNVO) = Evt%KNVO%pid(iiKNVO)
+                 BankKNVO(iiKNVO) = Evt%KNVO%bank(iiKNVO)
+                 nVnvKNVO(iiKNVO) = Evt%KNVO%vlinked(iiKNVO)
            END DO
          ELSE
             WRITE(*,*) 'ERROR KNVO - nKNVO Index not valid: ', nKNVO
@@ -2546,15 +2546,15 @@ C Fill Block vnvo
 C-----------------------------------------------------------------------
       IF (VNVOFLAG) THEN
          nVNVO = 0.
-         DO iVNVO=1, 40
-           iVNVO(iVNVO) = 0.
-           VxVNVO(iVNVO) = 0.
-           VyVNVO(iVNVO) = 0.
-           VzVNVO(iVNVO) = 0.
-           KorIVNVO(iVNVO) = 0.
-           DvfsVNVO(iVNVO) = 0.
-           nBnkVNVO(iVNVO) = 0.
-           fBnkVNVO(iVNVO) = 0.
+         DO iiVNVO=1, 40
+           iVNVO(iiVNVO) = 0.
+           VxVNVO(iiVNVO) = 0.
+           VyVNVO(iiVNVO) = 0.
+           VzVNVO(iiVNVO) = 0.
+           KorIVNVO(iiVNVO) = 0.
+           DvfsVNVO(iiVNVO) = 0.
+           nBnkVNVO(iiVNVO) = 0.
+           fBnkVNVO(iiVNVO) = 0.
          END DO
 
          istat = GETNVO(evt%knvo,evt%vnvo,evt%vnvb,evt%invo)
@@ -2565,15 +2565,15 @@ C-----------------------------------------------------------------------
          END IF
 
          IF (nVNVO > 0 .AND. nVNVO <= 40) THEN
-            DO iVNVO=1, nVNVO
-                 iVNVO(iVNVO) = Evt%VNVO%ivnvo(iVNVO)
-                 VxVNVO(iVNVO) = Evt%VNVO%vx(iVNVO)
-                 VyVNVO(iVNVO) = Evt%VNVO%vy(iVNVO)
-                 VzVNVO(iVNVO) = Evt%VNVO%vz(iVNVO)
-                 KorIVNVO(iVNVO) = Evt%VNVO%kori(iVNVO)
-                 DvfsVNVO(iVNVO) = Evt%VNVO%idvfs(iVNVO)
-                 nBnkVNVO(iVNVO) = Evt%VNVO%nknv(iVNVO)
-                 fBnkVNVO(iVNVO) = Evt%VNVO%fknv(iVNVO)
+            DO iiVNVO=1, nVNVO
+                 iVNVO(iiVNVO) = Evt%VNVO%ivnvo(iiVNVO)
+                 VxVNVO(iiVNVO) = Evt%VNVO%vx(iiVNVO)
+                 VyVNVO(iiVNVO) = Evt%VNVO%vy(iiVNVO)
+                 VzVNVO(iiVNVO) = Evt%VNVO%vz(iiVNVO)
+                 KorIVNVO(iiVNVO) = Evt%VNVO%kori(iiVNVO)
+                 DvfsVNVO(iiVNVO) = Evt%VNVO%idvfs(iiVNVO)
+                 nBnkVNVO(iiVNVO) = Evt%VNVO%nknv(iiVNVO)
+                 fBnkVNVO(iiVNVO) = Evt%VNVO%fknv(iiVNVO)
            END DO
          ELSE
             WRITE(*,*) 'ERROR VNVO - nVNVO Index not valid: ', nVNVO
@@ -2676,13 +2676,13 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block eclo2
 C-----------------------------------------------------------------------
-      IF (.TRUE.) THEN
+      IF (ECLO2FLAG) THEN
          nCli2 = 0.
          DO iECLO2=1, 100
            ECLOWord2(iECLO2) = 0.
            IdPart2(iECLO2) = 0.
            DtClpo2(iECLO2) = 0.
-           DvVnpo(iECLO2) = 0.
+           DvVnpo2(iECLO2) = 0.
            Stre2(iECLO2) = 0.
            Algo2(iECLO2) = 0.
          END DO
@@ -2699,7 +2699,7 @@ C-----------------------------------------------------------------------
                  ECLOWord2(iECLO2) = Evt%eclo%totword2(iECLO2)
                  IdPart2(iECLO2) = Evt%eclo%idpart2(iECLO2)
                  DtClpo2(iECLO2) = Evt%eclo%dtclpo2(iECLO2)
-                 DvVnpo(iECLO2) = Evt%eclo%dvvnpo2(iECLO2)
+                 DvVnpo2(iECLO2) = Evt%eclo%dvvnpo2(iECLO2)
                  Stre2(iECLO2) = Evt%eclo%stre2(iECLO2)
                  Algo2(iECLO2) = Evt%eclo%algo2(iECLO2)
            END DO
@@ -3083,9 +3083,13 @@ C      write(*,*)" "
       	write(Prompt,123)'ECLO2'
 	    Status=UIGTYE(Prompt,ECLO2FLAG)
     	goto 10
+      else if(verb.eq.'CSPS')then
+      	write(Prompt,123)'CSPS'
+	    Status=UIGTYE(Prompt,CSPSFLAG)
+    	goto 10
       else if(verb.eq.'CSPMC')then
       	write(Prompt,123)'CSPMC'
-	    Status=UIGTYE(Prompt,CSPMCFLAG)
+	    Status=UIGTYE(Prompt,CSPSMCFLAG)
     	goto 10
       end if
 C

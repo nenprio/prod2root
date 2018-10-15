@@ -1173,7 +1173,7 @@ void TreeWriter::addBlockECLO2() {
     fNewTree->Branch("ECLOWord2", &eclo2_.ECLOWord2, "ECLOWord2[nCli2]/I");
     fNewTree->Branch("IdPart2",   &eclo2_.IdPart2,   "IdPart2[nCli2]/I");
     fNewTree->Branch("DtClpo2",   &eclo2_.DtClpo2,   "DtClpo2[nCli2]/I");
-    fNewTree->Branch("DvVnpo",    &eclo2_.DvVnpo,    "DvVnpo[nCli2]/I");
+    fNewTree->Branch("DvVnpo2",    &eclo2_.DvVnpo2,  "DvVnpo2[nCli2]/I");
     fNewTree->Branch("Stre2",     &eclo2_.Stre2,     "Stre2[nCli2]/I");
     fNewTree->Branch("Algo2",     &eclo2_.Algo2,     "Algo2[nCli2]/I");
 }

@@ -114,8 +114,8 @@ Button 46   /Description="Select INVO     block"/Response="INVO"
 Button 47   /Description="Select ECLO     block"/Response="ECLO"
 Button 48   /Description="Select ECLO2    block"/Response="ECL2"
 Button 49   /Description="Select CSPS     block"/Response="CSPS"
-Button 49   /Description="Select CSPS MC  block"/Response="CSPMC"
+Button 50   /Description="Select CSPS MC  block"/Response="CSPMC"
 
-Button 50   /Description="Show single process selection"/Response="SHOW"
-Button 51   /Description="Go Back to the AC prompt" /Response="EXIT"
+Button 51   /Description="Show single process selection"/Response="SHOW"
+Button 52   /Description="Go Back to the AC prompt" /Response="EXIT"
 !==============================================================================

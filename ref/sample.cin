@@ -476,7 +476,7 @@ C
 C
 C  Block: knvo
 C
-      integer iKNVO
+      integer iiKNVO
       integer nKNVO, iKNVO(40), PidKNVO(40), BankKNVO(40), nVnvKNVO(40)
       real PxKNVO(40), PyKNVO(40), PzKNVO(40)
 
@@ -485,7 +485,7 @@ C
 C
 C  Block: vnvo
 C
-      integer iVNVO, nVNVO, iVNVO(40), KorIVNVO(40), DvfsVNVO(40)
+      integer iiVNVO, nVNVO, iVNVO(40), KorIVNVO(40), DvfsVNVO(40)
       integer nBnkVNVO(40), fBnkVNVO(40)
       real VxVNVO(40), VyVNVO(40), VzVNVO(40)
 
@@ -516,9 +516,9 @@ C
 C  Block: eclo2
 C
       integer iECLO2, nCli2, ECLOWord2(100), IdPart2(100), DtClpo2(100)
-      integer DvVnpo(100), Stre2(100), Algo2(100)
+      integer DvVnpo2(100), Stre2(100), Algo2(100)
 
-      common /eclo2/nCli2,ECLOWord2,IdPart2,DtClpo2,DvVnpo,Stre2,Algo2
+      common /eclo2/nCli2,ECLOWord2,IdPart2,DtClpo2,DvVnpo2,Stre2,Algo2
 C
 C  Block: csps
 C

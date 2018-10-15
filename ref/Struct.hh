@@ -1013,7 +1013,7 @@ extern "C" {
     int ECLOWord2[MaxNumCLINF];
     int IdPart2[MaxNumCLINF];
     int DtClpo2[MaxNumCLINF];
-    int DvVnpo[MaxNumCLINF];
+    int DvVnpo2[MaxNumCLINF];
     int Stre2[MaxNumCLINF];
     int Algo2[MaxNumCLINF];
   }eclo2_;
