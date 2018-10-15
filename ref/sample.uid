@@ -53,6 +53,8 @@ Verb VNVO
 Verb VNVB 
 Verb INVO 
 Verb ECLO 
+Verb ECL2
+Verb CSPS
 !
 Verb SHOW
 Verb EXIT
@@ -109,7 +111,9 @@ Button 44   /Description="Select VNVO     block"/Response="VNVO"
 Button 45   /Description="Select VNVB     block"/Response="VNVB"
 Button 46   /Description="Select INVO     block"/Response="INVO"
 Button 47   /Description="Select ECLO     block"/Response="ECLO"
+Button 48   /Description="Select ECLO2    block"/Response="ECL2"
+Button 49   /Description="Select CSPS    block"/Response="CSPS"
 
-Button 48   /Description="Show single process selection"/Response="SHOW"
-Button 49   /Description="Go Back to the AC prompt" /Response="EXIT"
+Button 50   /Description="Show single process selection"/Response="SHOW"
+Button 51   /Description="Go Back to the AC prompt" /Response="EXIT"
 !==============================================================================
