@@ -50,6 +50,7 @@ Verb TRKQ
 Verb QELE
 Verb KNVO 
 Verb VNVO 
+Verb VNVB 
 !
 Verb SHOW
 Verb EXIT
@@ -103,7 +104,8 @@ Button 41   /Description="Select TRKQ     block"/Response="TRKQ"
 Button 42   /Description="Select QELE     block"/Response="QELE"
 Button 43   /Description="Select KNVO     block"/Response="KNVO"
 Button 44   /Description="Select VNVO     block"/Response="VNVO"
+Button 45   /Description="Select VNVB     block"/Response="VNVB"
 
-Button 45   /Description="Show single process selection"/Response="SHOW"
-Button 46   /Description="Go Back to the AC prompt" /Response="EXIT"
+Button 46   /Description="Show single process selection"/Response="SHOW"
+Button 47   /Description="Go Back to the AC prompt" /Response="EXIT"
 !==============================================================================

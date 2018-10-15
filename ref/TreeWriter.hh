@@ -53,6 +53,7 @@ class TreeWriter{
          void addBlockQCal();
          void addBlockKNVO();
          void addBlockVNVO();
+         void addBlockVNVB();
          TFile* getTFile();
          void fillTTree();
          bool logicalToBool(int flag);

@@ -2554,7 +2554,7 @@ C-----------------------------------------------------------------------
            fBnkVNVO(iVNVO) = 0.
          END DO
 
-         >>>INSERT HERE THE GET FUNCTION<<<
+C        Already filled Evt%VNVO in previous blocks
 
          nVNVO = Evt%VNVO%n
          IF ( nVNVO < 0 .OR. nVNVO > 40 ) THEN
@@ -2574,6 +2574,30 @@ C-----------------------------------------------------------------------
            END DO
          ELSE
             WRITE(*,*) 'ERROR VNVO - nVNVO Index not valid: ', nVNVO
+         END IF
+      END IF
+C-----------------------------------------------------------------------
+C Fill Block vnvb
+C-----------------------------------------------------------------------
+      IF (VNVBFLAG) THEN
+         nBnksVNVO = 0.
+         DO iVNVB=1, 40
+           iBank(iVNVB) = 0.
+         END DO
+
+C        Already filled Evt%VNVB in previous blocks
+
+         nBnksVNVO = Evt%VNVB%n
+         IF ( nBnksVNVO < 0 .OR. nBnksVNVO > 40 ) THEN
+            WRITE(*,*) 'ERROR VNVB - nBnksVNVO Out of bound : ', nBnksVNVO
+         END IF
+
+         IF (nBnksVNVO > 0 .AND. nBnksVNVO <= 40) THEN
+            DO iVNVB=1, nBnksVNVO
+                 iBank(iVNVB) = Evt%VNVB%ibank(iVNVB)
+           END DO
+         ELSE
+            WRITE(*,*) 'ERROR VNVB - nBnksVNVO Index not valid: ', nBnksVNVO
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2847,6 +2871,10 @@ C      write(*,*)" "
       else if(verb.eq.'VNVO')then
       	write(Prompt,123)'VNVO'
 	    Status=UIGTYE(Prompt,VNVOFLAG)
+    	goto 10
+      else if(verb.eq.'VNVB')then
+      	write(Prompt,123)'VNVB'
+	    Status=UIGTYE(Prompt,VNVBFLAG)
     	goto 10
       end if
 C

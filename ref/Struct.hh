@@ -29,6 +29,7 @@ const int MaxColsTrkQ    = 2;
 const int MaxNumQCal     = 32;
 const int MaxNumKNVO     = 40;
 const int MaxNumVNVO     = 40;
+const int MaxNumVNVOb    = 40;
 
 //Verb for Talk_to module
 extern "C"{
@@ -78,6 +79,7 @@ extern "C"{
     int qcalFlag;
     int knvoFlag;
     int vnvoFlag;
+    int vnvbFlag;
   }sammenu_;
 }
 
@@ -959,6 +961,14 @@ extern "C" {
     int nBnkVNVO[MaxNumVNVO];
     int fBnkVNVO[MaxNumVNVO];
   }vnvo_;
+}
+
+// Block:   vnvb
+extern "C" {
+  extern struct {
+    int nBnksVNVO;
+    int iBank[MaxNumVNVOb];
+  }vnvb_;
 }
 
 #endif

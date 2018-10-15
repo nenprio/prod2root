@@ -106,6 +106,8 @@ TreeWriter::TreeWriter() {
     if(logicalToBool(sammenu_.knvoFlag))        addBlockKNVO();
     // Block VNVO
     if(logicalToBool(sammenu_.vnvoFlag))        addBlockVNVO();
+    // Block VNVB
+    if(logicalToBool(sammenu_.vnvbFlag))        addBlockVNVB();
 
     // Write to the disk
     outfile->Write();
@@ -178,6 +180,7 @@ void TreeWriter::printHeaderFlags() {
     header += Form("QCAL: %d ",      logicalToBool(sammenu_.qcalFlag));
     header += Form("KNVO: %d ",      logicalToBool(sammenu_.knvoFlag));
     header += Form("VNVO: %d ",      logicalToBool(sammenu_.vnvoFlag));
+    header += Form("VNVB: %d ",      logicalToBool(sammenu_.vnvbFlag));
     header += "\n==========================================================================\n";
     
     // Print to std output
@@ -1106,6 +1109,15 @@ void TreeWriter::addBlockVNVO() {
     fNewTree->Branch("DvfsVNVO", &vnvo_.DvfsVNVO, "DvfsVNVO[nVNVO]/I");
     fNewTree->Branch("nBnkVNVO", &vnvo_.nBnkVNVO, "nBnkVNVO[nVNVO]/I");
     fNewTree->Branch("fBnkVNVO", &vnvo_.fBnkVNVO, "fBnkVNVO[nVNVO]/I");
+}
+
+// Add to the tree all the branches realted to the block VNVB.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockVNVB() {
+    fNewTree->Branch("nBnksVNVO", &vnvb_.nBnksVNVO, "nBnksVNVO/I");
+    fNewTree->Branch("iBank",     &vnvb_.iBank,     "iBank[nBnksVNVO]/I");
 }
 
 // Returns the output file object.

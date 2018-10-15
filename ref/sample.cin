@@ -491,3 +491,9 @@ C
 
       common /vnvo/nVNVO,iVNVO,VxVNVO,VyVNVO,VzVNVO,KorIVNVO,DvfsVNVO,
      1       nBnkVNVO,fBnkVNVO
+C
+C  Block: vnvb
+C
+      integer iVNVB, nBnksVNVO, iBank(40)
+
+      common /vnvb/nBnksVNVO,iBank
