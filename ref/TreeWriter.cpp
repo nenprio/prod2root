@@ -102,6 +102,8 @@ TreeWriter::TreeWriter() {
     if(logicalToBool(sammenu_.qeleFlag))        addBlockQELE();
     // Block QCal
     if(logicalToBool(sammenu_.qcalFlag))        addBlockQCal();
+    // Block KNVO
+    if(logicalToBool(sammenu_.knvoFlag))        addBlockKNVO();
 
     // Write to the disk
     outfile->Write();
@@ -171,6 +173,8 @@ void TreeWriter::printHeaderFlags() {
     header += Form("QIHI: %d ",      logicalToBool(sammenu_.qihiFlag));
     header += Form("TRKQ: %d ",      logicalToBool(sammenu_.trkqFlag));
     header += Form("QELE: %d ",      logicalToBool(sammenu_.qeleFlag));
+    header += Form("QCAL: %d ",      logicalToBool(sammenu_.qcalFlag));
+    header += Form("KNVO: %d ",      logicalToBool(sammenu_.knvoFlag));
     header += "\n==========================================================================\n";
     
     // Print to std output
@@ -1068,6 +1072,21 @@ void TreeWriter::addBlockQCal() {
     fNewTree->Branch("zQCal", &qcal_.zQCal, "zQCal[nQCal]/F");
     fNewTree->Branch("EQCal", &qcal_.EQCal, "EQCal[nQCal]/F");
     fNewTree->Branch("TQCal", &qcal_.TQCal, "TQCal[nQCal]/F");
+}
+
+// Add to the tree all the branches realted to the block KNVO.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockKNVO() {
+    fNewTree->Branch("nKNVO",    &knvo_.nKNVO,    "nKNVO/I");
+    fNewTree->Branch("iKNVO",    &knvo_.iKNVO,    "iKNVO[nKNVO]/I");
+    fNewTree->Branch("PxKNVO",   &knvo_.PxKNVO,   "PxKNVO[nKNVO]/F");
+    fNewTree->Branch("PyKNVO",   &knvo_.PyKNVO,   "PyKNVO[nKNVO]/F");
+    fNewTree->Branch("PzKNVO",   &knvo_.PzKNVO,   "PzKNVO[nKNVO]/F");
+    fNewTree->Branch("PidKNVO",  &knvo_.PidKNVO,  "PidKNVO[nKNVO]/I");
+    fNewTree->Branch("BankKNVO", &knvo_.BankKNVO, "BankKNVO[nKNVO]/I");
+    fNewTree->Branch("nVnvKNVO", &knvo_.nVnvKNVO, "nVnvKNVO[nKNVO]/I");
 }
 
 // Returns the output file object.

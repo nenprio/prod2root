@@ -473,3 +473,12 @@ C
       real xQCal(32), yQCal(32), zQCal(32), EQCal(32), TQCal(32)
 
       common /qcal/nQCal,xQCal,yQCal,zQCal,EQCal,TQCal
+C
+C  Block: knvo
+C
+      integer iKNVO
+      integer nKNVO, iKNVO(40), PidKNVO(40), BankKNVO(40), nVnvKNVO(40)
+      real PxKNVO(40), PyKNVO(40), PzKNVO(40)
+
+      common /knvo/nKNVO,iKNVO,PxKNVO,PyKNVO,PzKNVO,PidKNVO,BankKNVO,
+     1       nVnvKNVO

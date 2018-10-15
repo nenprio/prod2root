@@ -2503,6 +2503,42 @@ C-----------------------------------------------------------------------
          END IF
       END IF
 C-----------------------------------------------------------------------
+C Fill Block knvo
+C-----------------------------------------------------------------------
+      IF (KNVOFLAG) THEN
+         nKNVO = 0.
+         DO iKNVO=1, 40
+           iKNVO(iKNVO) = 0.
+           PxKNVO(iKNVO) = 0.
+           PyKNVO(iKNVO) = 0.
+           PzKNVO(iKNVO) = 0.
+           PidKNVO(iKNVO) = 0.
+           BankKNVO(iKNVO) = 0.
+           nVnvKNVO(iKNVO) = 0.
+         END DO
+
+         istat = GETNVO(evt%knvo,evt%vnvo,evt%vnvb,evt%invo)
+
+         nKNVO = Evt%KNVO%n
+         IF ( nKNVO < 0 .OR. nKNVO > 40 ) THEN
+            WRITE(*,*) 'ERROR KNVO - nKNVO Out of bound : ', nKNVO
+         END IF
+
+         IF (nKNVO > 0 .AND. nKNVO <= 40) THEN
+            DO iKNVO=1, nKNVO
+                 iKNVO(iKNVO) = Evt%KNVO%iknvo(iKNVO)
+                 PxKNVO(iKNVO) = Evt%KNVO%px(iKNVO)
+                 PyKNVO(iKNVO) = Evt%KNVO%py(iKNVO)
+                 PzKNVO(iKNVO) = Evt%KNVO%pz(iKNVO)
+                 PidKNVO(iKNVO) = Evt%KNVO%pid(iKNVO)
+                 BankKNVO(iKNVO) = Evt%KNVO%bank(iKNVO)
+                 nVnvKNVO(iKNVO) = Evt%KNVO%vlinked(iKNVO)
+           END DO
+         ELSE
+            WRITE(*,*) 'ERROR KNVO - nKNVO Index not valid: ', nKNVO
+         END IF
+      END IF
+C-----------------------------------------------------------------------
 C Fill Root
 C-----------------------------------------------------------------------
       call fillntu() 	
@@ -2765,6 +2801,10 @@ C      write(*,*)" "
       else if(verb.eq.'QCAL')then
       	write(Prompt,123)'QCAL'
 	    Status=UIGTYE(Prompt,QCALFLAG)
+    	goto 10
+      else if(verb.eq.'KNVO')then
+      	write(Prompt,123)'KNVO'
+	    Status=UIGTYE(Prompt,KNVOFLAG)
     	goto 10
       end if
 C

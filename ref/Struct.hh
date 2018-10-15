@@ -27,6 +27,7 @@ const int MaxNumQIHI     = 1000;
 const int MaxRowsTrkQ    = 100;
 const int MaxColsTrkQ    = 2;
 const int MaxNumQCal     = 32;
+const int MaxNumKNVO     = 40;
 
 //Verb for Talk_to module
 extern "C"{
@@ -74,6 +75,7 @@ extern "C"{
     int trkqFlag;
     int qeleFlag;
     int qcalFlag;
+    int knvoFlag;
   }sammenu_;
 }
 
@@ -926,6 +928,20 @@ extern "C" {
     float EQCal[MaxNumQCal];
     float TQCal[MaxNumQCal];
   }qcal_;
+}
+
+// Block:   knvo
+extern "C" {
+  extern struct {
+    int nKNVO;
+    int iKNVO[MaxNumKNVO];
+    float PxKNVO[MaxNumKNVO];
+    float PyKNVO[MaxNumKNVO];
+    float PzKNVO[MaxNumKNVO];
+    int PidKNVO[MaxNumKNVO];
+    int BankKNVO[MaxNumKNVO];
+    int nVnvKNVO[MaxNumKNVO];
+  }knvo_;
 }
 
 #endif
