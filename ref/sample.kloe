@@ -2539,6 +2539,44 @@ C-----------------------------------------------------------------------
          END IF
       END IF
 C-----------------------------------------------------------------------
+C Fill Block vnvo
+C-----------------------------------------------------------------------
+      IF (VNVOFLAG) THEN
+         nVNVO = 0.
+         DO iVNVO=1, 40
+           iVNVO(iVNVO) = 0.
+           VxVNVO(iVNVO) = 0.
+           VyVNVO(iVNVO) = 0.
+           VzVNVO(iVNVO) = 0.
+           KorIVNVO(iVNVO) = 0.
+           DvfsVNVO(iVNVO) = 0.
+           nBnkVNVO(iVNVO) = 0.
+           fBnkVNVO(iVNVO) = 0.
+         END DO
+
+         >>>INSERT HERE THE GET FUNCTION<<<
+
+         nVNVO = Evt%VNVO%n
+         IF ( nVNVO < 0 .OR. nVNVO > 40 ) THEN
+            WRITE(*,*) 'ERROR VNVO - nVNVO Out of bound : ', nVNVO
+         END IF
+
+         IF (nVNVO > 0 .AND. nVNVO <= 40) THEN
+            DO iVNVO=1, nVNVO
+                 iVNVO(iVNVO) = Evt%VNVO%ivnvo(iVNVO)
+                 VxVNVO(iVNVO) = Evt%VNVO%vx(iVNVO)
+                 VyVNVO(iVNVO) = Evt%VNVO%vy(iVNVO)
+                 VzVNVO(iVNVO) = Evt%VNVO%vz(iVNVO)
+                 KorIVNVO(iVNVO) = Evt%VNVO%kori(iVNVO)
+                 DvfsVNVO(iVNVO) = Evt%VNVO%idvfs(iVNVO)
+                 nBnkVNVO(iVNVO) = Evt%VNVO%nknv(iVNVO)
+                 fBnkVNVO(iVNVO) = Evt%VNVO%fknv(iVNVO)
+           END DO
+         ELSE
+            WRITE(*,*) 'ERROR VNVO - nVNVO Index not valid: ', nVNVO
+         END IF
+      END IF
+C-----------------------------------------------------------------------
 C Fill Root
 C-----------------------------------------------------------------------
       call fillntu() 	
@@ -2805,6 +2843,10 @@ C      write(*,*)" "
       else if(verb.eq.'KNVO')then
       	write(Prompt,123)'KNVO'
 	    Status=UIGTYE(Prompt,KNVOFLAG)
+    	goto 10
+      else if(verb.eq.'VNVO')then
+      	write(Prompt,123)'VNVO'
+	    Status=UIGTYE(Prompt,VNVOFLAG)
     	goto 10
       end if
 C

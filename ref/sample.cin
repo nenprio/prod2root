@@ -482,3 +482,12 @@ C
 
       common /knvo/nKNVO,iKNVO,PxKNVO,PyKNVO,PzKNVO,PidKNVO,BankKNVO,
      1       nVnvKNVO
+C
+C  Block: vnvo
+C
+      integer iVNVO, nVNVO, iVNVO(40), KorIVNVO(40), DvfsVNVO(40)
+      integer nBnkVNVO(40), fBnkVNVO(40)
+      real VxVNVO(40), VyVNVO(40), VzVNVO(40)
+
+      common /vnvo/nVNVO,iVNVO,VxVNVO,VyVNVO,VzVNVO,KorIVNVO,DvfsVNVO,
+     1       nBnkVNVO,fBnkVNVO
