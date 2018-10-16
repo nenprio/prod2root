@@ -1,0 +1,5 @@
+REF_DIR  = ../ref
+DICT_DIR = ../dict
+EXE_DIR  = ..
+
+/sample_bj.kloe: sample_bj.uic     
