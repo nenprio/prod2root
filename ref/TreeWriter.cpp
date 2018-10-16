@@ -1324,6 +1324,18 @@ void TreeWriter::addBlockITCE() {
     fNewTree->Branch("IndItKine", &itce_.IndItKine, "IndItKine[nITCE]/I");
 }
 
+// Add to the tree all the branches realted to the block HETE.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockHETE() {
+    fNewTree->Branch("nHetDcs",  &hete_.nHetDcs,  "nHetDcs/I");
+    fNewTree->Branch("HDet",     &hete_.HDet,     "HDet[nHetDcs]/I");
+    fNewTree->Branch("HCol",     &hete_.HCol,     "HCol[nHetDcs]/I");
+    fNewTree->Branch("nTurnHet", &hete_.nTurnHet, "nTurnHet[nHetDcs]/I");
+    fNewTree->Branch("TimeHet",  &hete_.TimeHet,  "TimeHet[nHetDcs]/F");
+}
+
 // Returns the output file object.
 //
 // input:   -

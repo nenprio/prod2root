@@ -1139,7 +1139,7 @@ C        DTCEStru is initialized in raw2dtce.cin
 C-----------------------------------------------------------------------
 C Fill Block dchits
 C-----------------------------------------------------------------------
-      IF (DCHITSFLAG) THEN ! TODO: Change .TRUE. with flag name
+      IF (DCHITSFLAG) THEN
          nDCHR = 0.
          nSmallDCm = 0.
          nSmallDCp = 0.
@@ -1199,7 +1199,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block dhsp
 C-----------------------------------------------------------------------
-      IF (DHSPFLAG) THEN ! TODO: Change .TRUE. with flag name
+      IF (DHSPFLAG) THEN
          nDHSP = 0.
          DO iDHSP=1, 500
             TrkDh(iDHSP) = 0.
@@ -2991,6 +2991,45 @@ C-----------------------------------------------------------------------
            END DO
          ELSE
             WRITE(*,*) 'ERROR ITCE - nITCE Index not valid: ', nITCE
+         END IF
+      END IF
+C-----------------------------------------------------------------------
+C Fill Block hete
+C-----------------------------------------------------------------------
+      IF (HETEFLAG) THEN
+         nHetDcs = 0.
+         DO iHETE=1, 1920
+           HDet(iHETE) = 0.
+           HCol(iHETE) = 0.
+           nTurnHet(iHETE) = 0.
+           TimeHet(iHETE) = 0.
+         END DO
+
+         istat = gethetestru(evt%hete)
+
+         nHetDcs = Evt%hete%nhetdcs
+         IF ( nHetDcs < 0 .OR. nHetDcs > 1920 ) THEN
+            WRITE(*,*) 'ERROR HETE - nHetDcs Out of bound : ', nHetDcs
+         END IF
+
+         IF (nHetDcs > 0 .AND. nHetDcs <= 1920) THEN
+            DO iHETE=1, nHetDcs
+               HDet(iHETE) = Evt%hete%hdet(iHETE)
+               IF ( HDet(iHETE) < 1 .OR. HDet(iHETE) > 2 ) THEN
+                  WRITE(*,*) 'ERROR HETE - HDet[1] Out of bound : ', HDet(iHETE)
+               END IF
+               HCol(iHETE) = Evt%hete%hcol(iHETE)
+               IF ( HCol(iHETE) < 1 .OR. HCol(iHETE) > 32 ) THEN
+                  WRITE(*,*) 'ERROR HETE - HCol[2] Out of bound : ', HCol(iHETE)
+               END IF
+               nTurnHet(iHETE) = Evt%hete%nturnhet(iHETE)
+               IF ( nTurnHet(iHETE) < 1 .OR. nTurnHet(iHETE) > 4 ) THEN
+                  WRITE(*,*) 'ERROR HETE - nTurnHet[3] Out of bound : ', nTurnHet(iHETE)
+               END IF
+                 TimeHet(iHETE) = Evt%hete%timehet(iHETE)
+           END DO
+         ELSE
+            WRITE(*,*) 'ERROR HETE - nHetDcs Index not valid: ', nHetDcs
          END IF
       END IF
 C-----------------------------------------------------------------------

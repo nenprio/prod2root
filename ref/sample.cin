@@ -590,3 +590,10 @@ C
       integer View(4032), IndItKine(4032)
 
       common /itce/nITCE,Foil,Layer,Strip,View,IndItKine
+C
+C  Block: hete
+C
+      integer iHETE, nHetDcs, HDet(1920), HCol(1920), nTurnHet(1920)
+      real TimeHet(1920)
+
+      common /hete/nHetDcs,HDet,HCol,nTurnHet,TimeHet
