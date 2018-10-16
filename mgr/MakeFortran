@@ -29,7 +29,7 @@ endif
 all: init_setup $(REF_DIR)/sample_bj.f $(REF_DIR)/sample.f $(REF_DIR)/prod2ntu.f $(REF_DIR)/newt0find.f final_setup
 
 init_setup:
-    packman calib
+	packman calib
     packman kid
     setup -e emc development
     setup -e tls development
