@@ -3091,6 +3091,38 @@ C      write(*,*)" "
       	write(Prompt,123)'CSPMC'
 	    Status=UIGTYE(Prompt,CSPSMCFLAG)
     	goto 10
+      else if(verb.eq.'CLUO')then
+      	write(Prompt,123)'CLUO'
+	    Status=UIGTYE(Prompt,CLUOFLAG)
+    	goto 10
+      else if(verb.eq.'CLOMC')then
+      	write(Prompt,123)'CLOMC'
+	    Status=UIGTYE(Prompt,CLOMCFLAG)
+    	goto 10
+      else if(verb.eq.'QTELE')then
+      	write(Prompt,123)'QTELE'
+	    Status=UIGTYE(Prompt,QTELEFLAG)
+    	goto 10
+      else if(verb.eq.'QCTH')then
+      	write(Prompt,123)'QCTH'
+	    Status=UIGTYE(Prompt,QCTHFLAG)
+    	goto 10
+      else if(verb.eq.'CCELE')then
+      	write(Prompt,123)'CCELE'
+	    Status=UIGTYE(Prompt,CCELEFLAG)
+    	goto 10
+      else if(verb.eq.'LETE')then
+      	write(Prompt,123)'LETE'
+	    Status=UIGTYE(Prompt,LETEFLAG)
+    	goto 10
+      else if(verb.eq.'ITCE')then
+      	write(Prompt,123)'ITCE'
+	    Status=UIGTYE(Prompt,ITCEFLAG)
+    	goto 10
+      else if(verb.eq.'HETE')then
+      	write(Prompt,123)'HETE'
+	    Status=UIGTYE(Prompt,HETEFLAG)
+    	goto 10
       end if
 C
 123   FORMAT(1x,'Select ',a4,' Ntuple-block?')

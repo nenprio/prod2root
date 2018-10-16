@@ -88,6 +88,14 @@ extern "C"{
     int eclo2Flag;
     int cspsFlag;
     int cspsMCFlag;
+    int cluoFlag;
+    int clomcFlag;
+    int qteleFlag;
+    int qcthFlag;
+    int cceleFlag;
+    int leteFlag;
+    int itceFlag;
+    int heteFlag;
   }sammenu_;
 }
 

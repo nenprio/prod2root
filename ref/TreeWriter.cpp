@@ -186,7 +186,7 @@ void TreeWriter::printHeaderFlags() {
     header += Form("CFHI: %d ",      logicalToBool(sammenu_.cfhiFlag));
     header += Form("QIHI: %d ",      logicalToBool(sammenu_.qihiFlag));
     header += Form("TRKQ: %d ",      logicalToBool(sammenu_.trkqFlag));
-    header += Form("QELE: %d\n",      logicalToBool(sammenu_.qeleFlag));
+    header += Form("QELE: %d\n",     logicalToBool(sammenu_.qeleFlag));
     header += Form("QCAL: %d ",      logicalToBool(sammenu_.qcalFlag));
     header += Form("KNVO: %d ",      logicalToBool(sammenu_.knvoFlag));
     header += Form("VNVO: %d ",      logicalToBool(sammenu_.vnvoFlag));
@@ -194,8 +194,16 @@ void TreeWriter::printHeaderFlags() {
     header += Form("INVO: %d ",      logicalToBool(sammenu_.invoFlag));
     header += Form("ECLO: %d ",      logicalToBool(sammenu_.ecloFlag));
     header += Form("ECLO2: %d ",     logicalToBool(sammenu_.eclo2Flag));
-    header += Form("CSPS: %d ",      logicalToBool(sammenu_.cspsFlag));
-    header += Form("CSPSMC: %d ",    logicalToBool(sammenu_.cspsMCFlag));
+    header += Form("CSPS: %d",      logicalToBool(sammenu_.cspsFlag));
+    header += Form("CSPSMC: %d\n",    logicalToBool(sammenu_.cspsMCFlag));
+    header += Form("CLUO: %d ",      logicalToBool(sammenu_.cluoFlag));
+    header += Form("CLUOMC: %d ",    logicalToBool(sammenu_.clomcFlag));
+    header += Form("QTELE: %d ",     logicalToBool(sammenu_.qteleFlag));
+    header += Form("QCTH: %d ",      logicalToBool(sammenu_.qcthFlag));
+    header += Form("CCELE: %d ",     logicalToBool(sammenu_.cceleFlag));
+    header += Form("LETE: %d ",      logicalToBool(sammenu_.leteFlag));
+    header += Form("ITCE: %d ",      logicalToBool(sammenu_.itceFlag));
+    header += Form("HETE: %d ",      logicalToBool(sammenu_.heteFlag));
     header += "\n==========================================================================\n";
     
     // Print to std output
