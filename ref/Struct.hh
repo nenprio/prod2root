@@ -33,6 +33,12 @@ const int MaxNumVNVOb    = 40;
 const int MaxNumINVO     = 40;
 const int MaxNumCLINF    = 100;
 const int MaxNumHitClu   = 2000;
+const int MaxNumCluo     = 100;
+const int MaxNumQCalT    = 1920;
+const int MaxNumCCalT    = 96;
+const int MaxNumLete     = 40;
+const int MaxNumIT       = 4032;
+const int MaxNumHET      = 1920;
 
 //Verb for Talk_to module
 extern "C"{
@@ -89,7 +95,7 @@ extern "C"{
     int cspsFlag;
     int cspsMCFlag;
     int cluoFlag;
-    int clomcFlag;
+    int cluoMCFlag;
     int qteleFlag;
     int qcthFlag;
     int cceleFlag;
@@ -1061,6 +1067,20 @@ extern "C" {
     float CSMCt[MaxNumHitClu];
     float CSMCe[MaxNumHitClu];
   }cspsmc_;
+}
+
+// Block:   cluo
+extern "C" {
+  extern struct {
+    int nCluO;
+    int CluCel[MaxNumCluo];
+    float CluFl[MaxNumCluo];
+    float CluE[MaxNumCluo];
+    float CluX[MaxNumCluo];
+    float CluY[MaxNumCluo];
+    float CluZ[MaxNumCluo];
+    float CluT[MaxNumCluo];
+  }cluo_;
 }
 
 #endif

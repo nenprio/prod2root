@@ -539,3 +539,11 @@ C
 
       common /cspsmc/nCSMC,CSMCKine,CSMCPoi,CSMCNHit,CSMCx,CSMCy,CSMCz,
      1       CSMCt,CSMCe
+C
+C  Block: cluo
+C
+      integer iCLUO, nCluO, CluCel(100)
+      real CluFl(100), CluE(100), CluX(100), CluY(100), CluZ(100)
+      real CluT(100)
+
+      common /cluo/nCluO,CluCel,CluFl,CluE,CluX,CluY,CluZ,CluT

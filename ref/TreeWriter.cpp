@@ -118,6 +118,22 @@ TreeWriter::TreeWriter() {
     if(logicalToBool(sammenu_.cspsFlag))        addBlockCSPS();
     // Block CSPSMC 
     if(logicalToBool(sammenu_.cspsMCFlag))      addBlockCSPSMC();
+    // Block CLUO 
+    if(logicalToBool(sammenu_.cluoFlag))        addBlockCLUO();
+    // Block CLUOMC 
+    if(logicalToBool(sammenu_.cluoMCFlag))      addBlockCLUOMC();
+    // Block QTELE
+    if(logicalToBool(sammenu_.qteleFlag))       addBlockQTELE();
+    // Block QCTH 
+    if(logicalToBool(sammenu_.qcthFlag))        addBlockQCTH();
+    // Block CCELE 
+    if(logicalToBool(sammenu_.cceleFlag))       addBlockCCELE();
+    // Block LETE
+    if(logicalToBool(sammenu_.leteFlag))        addBlockLETE();
+    // Block ITCE 
+    if(logicalToBool(sammenu_.itceFlag))        addBlockITCE();
+    // Block HETE 
+    if(logicalToBool(sammenu_.heteFlag))        addBlockHETE();
 
     // Write to the disk
     outfile->Write();
@@ -197,7 +213,7 @@ void TreeWriter::printHeaderFlags() {
     header += Form("CSPS: %d",      logicalToBool(sammenu_.cspsFlag));
     header += Form("CSPSMC: %d\n",    logicalToBool(sammenu_.cspsMCFlag));
     header += Form("CLUO: %d ",      logicalToBool(sammenu_.cluoFlag));
-    header += Form("CLUOMC: %d ",    logicalToBool(sammenu_.clomcFlag));
+    header += Form("CLUOMC: %d ",    logicalToBool(sammenu_.cluoMCFlag));
     header += Form("QTELE: %d ",     logicalToBool(sammenu_.qteleFlag));
     header += Form("QCTH: %d ",      logicalToBool(sammenu_.qcthFlag));
     header += Form("CCELE: %d ",     logicalToBool(sammenu_.cceleFlag));
@@ -1222,6 +1238,21 @@ void TreeWriter::addBlockCSPSMC() {
     fNewTree->Branch("CSMCz",    &cspsmc_.CSMCz,    "CSMCz[nCSMC]/F");
     fNewTree->Branch("CSMCt",    &cspsmc_.CSMCt,    "CSMCt[nCSMC]/F");
     fNewTree->Branch("CSMCe",    &cspsmc_.CSMCe,    "CSMCe[nCSMC]/F");
+}
+
+// Add to the tree all the branches realted to the block CLUO.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockCLUO() {
+    fNewTree->Branch("nCluO",  &cluo_.nCluO,  "nCluO/I");
+    fNewTree->Branch("CluCel", &cluo_.CluCel, "CluCel[nCluO]/I");
+    fNewTree->Branch("CluFl",  &cluo_.CluFl,  "CluFl[nCluO]/F");
+    fNewTree->Branch("CluE",   &cluo_.CluE,   "CluE[nCluO]/F");
+    fNewTree->Branch("CluX",   &cluo_.CluX,   "CluX[nCluO]/F");
+    fNewTree->Branch("CluY",   &cluo_.CluY,   "CluY[nCluO]/F");
+    fNewTree->Branch("CluZ",   &cluo_.CluZ,   "CluZ[nCluO]/F");
+    fNewTree->Branch("CluT",   &cluo_.CluT,   "CluT[nCluO]/F");
 }
 
 // Returns the output file object.

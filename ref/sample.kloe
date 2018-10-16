@@ -2796,6 +2796,42 @@ C-----------------------------------------------------------------------
          END IF
       END IF
 C-----------------------------------------------------------------------
+C Fill Block cluo
+C-----------------------------------------------------------------------
+      IF (CLUOFLAG) THEN
+         nCluO = 0.
+         DO iCLUO=1, 100
+           CluCel(iCLUO) = 0.
+           CluFl(iCLUO) = 0.
+           CluE(iCLUO) = 0.
+           CluX(iCLUO) = 0.
+           CluY(iCLUO) = 0.
+           CluZ(iCLUO) = 0.
+           CluT(iCLUO) = 0.
+         END DO
+
+         istat = GETCLUOSTRU(Evt%CLUO)
+
+         nCluO = Evt%CLUO%N
+         IF ( nCluO < 0 .OR. nCluO > 100 ) THEN
+            WRITE(*,*) 'ERROR CLUO - nCluO Out of bound : ', nCluO
+         END IF
+
+         IF (nCluO > 0 .AND. nCluO <= 100) THEN
+            DO iCLUO=1, nCluO
+                 CluCel(iCLUO) = Evt%CLUO%Ncel(iCLUO)
+                 CluFl(iCLUO) = Evt%CLUO%Flag(iCLUO)
+                 CluE(iCLUO) = Evt%CLUO%E(iCLUO)
+                 CluX(iCLUO) = Evt%CLUO%X(iCLUO)
+                 CluY(iCLUO) = Evt%CLUO%Y(iCLUO)
+                 CluZ(iCLUO) = Evt%CLUO%Z(iCLUO)
+                 CluT(iCLUO) = Evt%CLUO%T(iCLUO)
+           END DO
+         ELSE
+            WRITE(*,*) 'ERROR CLUO - nCluO Index not valid: ', nCluO
+         END IF
+      END IF
+C-----------------------------------------------------------------------
 C Fill Root
 C-----------------------------------------------------------------------
       call fillntu() 	
