@@ -1113,4 +1113,18 @@ extern "C" {
   }ccle_;
 }
 
+// Block:   lete
+extern "C" {
+  extern struct {
+    int LeteCalib;
+    int nLete;
+    int Lete_Cry[MaxNumLete];
+    int Lete_Det[MaxNumLete];
+    int Lete_Col[MaxNumLete];
+    int Lete_Pla[MaxNumLete];
+    float Lete_E[MaxNumLete];
+    float Lete_Time[MaxNumLete];
+  }lete_;
+}
+
 #endif

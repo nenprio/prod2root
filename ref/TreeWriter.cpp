@@ -1296,6 +1296,21 @@ void TreeWriter::addBlockCCLE() {
     fNewTree->Branch("CCle_Time", &ccle_.CCle_Time, "CCle_Time[nCCle]/F");
 }
 
+// Add to the tree all the branches realted to the block LETE.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockLETE() {
+    fNewTree->Branch("LeteCalib", &lete_.LeteCalib, "LeteCalib/I");
+    fNewTree->Branch("nLete",     &lete_.nLete,     "nLete/I");
+    fNewTree->Branch("Lete_Cry",  &lete_.Lete_Cry,  "Lete_Cry[nLete]/I");
+    fNewTree->Branch("Lete_Det",  &lete_.Lete_Det,  "Lete_Det[nLete]/I");
+    fNewTree->Branch("Lete_Col",  &lete_.Lete_Col,  "Lete_Col[nLete]/I");
+    fNewTree->Branch("Lete_Pla",  &lete_.Lete_Pla,  "Lete_Pla[nLete]/I");
+    fNewTree->Branch("Lete_E",    &lete_.Lete_E,    "Lete_E[nLete]/F");
+    fNewTree->Branch("Lete_Time", &lete_.Lete_Time, "Lete_Time[nLete]/F");
+}
+
 // Returns the output file object.
 //
 // input:   -

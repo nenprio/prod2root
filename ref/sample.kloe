@@ -2917,6 +2917,51 @@ C-----------------------------------------------------------------------
          END IF
       END IF
 C-----------------------------------------------------------------------
+C Fill Block lete
+C-----------------------------------------------------------------------
+      IF (LETEFLAG) THEN
+         LeteCalib = 0.
+         nLete = 0.
+         DO iLETE=1, 40
+           Lete_Cry(iLETE) = 0.
+           Lete_Det(iLETE) = 0.
+           Lete_Col(iLETE) = 0.
+           Lete_Pla(iLETE) = 0.
+           Lete_E(iLETE) = 0.
+           Lete_Time(iLETE) = 0.
+         END DO
+
+         istat = getletestru(evt%lete)
+
+         LeteCalib = Evt%LETE%Calib
+         nLete = Evt%LETE%NEle
+         IF ( nLete < 0 .OR. nLete > 40 ) THEN
+            WRITE(*,*) 'ERROR LETE - nLete Out of bound : ', nLete
+         END IF
+
+         IF (nLete > 0 .AND. nLete <= 40) THEN
+            DO iLETE=1, nLete
+               Lete_Cry(iLETE) = Evt%LETE%Cry(iLETE)
+               IF ( Lete_Cry(iLETE) < 0 .OR. Lete_Cry(iLETE) > 40 ) THEN
+                  WRITE(*,*) 'ERROR LETE - Lete_Cry[2] Out of bound : ', Lete_Cry(iLETE)
+               END IF
+                 Lete_Det(iLETE) = Evt%LETE%Det(iLETE)
+               Lete_Col(iLETE) = Evt%LETE%Col(iLETE)
+               IF ( Lete_Col(iLETE) < 0 .OR. Lete_Col(iLETE) > 4 ) THEN
+                  WRITE(*,*) 'ERROR LETE - Lete_Col[4] Out of bound : ', Lete_Col(iLETE)
+               END IF
+               Lete_Pla(iLETE) = Evt%LETE%Pla(iLETE)
+               IF ( Lete_Pla(iLETE) < 0 .OR. Lete_Pla(iLETE) > 5 ) THEN
+                  WRITE(*,*) 'ERROR LETE - Lete_Pla[5] Out of bound : ', Lete_Pla(iLETE)
+               END IF
+                 Lete_E(iLETE) = Evt%LETE%E(iLETE)
+                 Lete_Time(iLETE) = Evt%LETE%T(iLETE)
+           END DO
+         ELSE
+            WRITE(*,*) 'ERROR LETE - nLete Index not valid: ', nLete
+         END IF
+      END IF
+C-----------------------------------------------------------------------
 C Fill Root
 C-----------------------------------------------------------------------
       call fillntu() 	

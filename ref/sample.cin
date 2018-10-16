@@ -573,3 +573,12 @@ C
       real CCle_Time(96)
 
       common /ccle/nCCle,CCle_Cry,CCle_Det,CCle_Col,CCle_Pla,CCle_Time
+C
+C  Block: lete
+C
+      integer iLETE, LeteCalib, nLete, Lete_Cry(40), Lete_Det(40)
+      integer Lete_Col(40), Lete_Pla(40)
+      real Lete_E(40), Lete_Time(40)
+
+      common /lete/LeteCalib,nLete,Lete_Cry,Lete_Det,Lete_Col,
+     1       Lete_Pla,Lete_E,Lete_Time
