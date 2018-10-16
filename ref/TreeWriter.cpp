@@ -119,11 +119,11 @@ TreeWriter::TreeWriter() {
     // Block CSPSMC 
     if(logicalToBool(sammenu_.cspsMCFlag))      addBlockCSPSMC();
     // Block CLUO 
-    if(logicalToBool(sammenu_.cluoFlag))        addBlockCLUO();
+    if(logicalToBool(sammenu_.cluoFlag))        addBlockCluO();
     // Block CLUOMC 
-    if(logicalToBool(sammenu_.cluoMCFlag))      addBlockCLUOMC();
+    if(logicalToBool(sammenu_.cluoMCFlag))      addBlockCluOMC();
     // Block QTELE
-    if(logicalToBool(sammenu_.qteleFlag))       addBlockQTELE();
+    if(logicalToBool(sammenu_.qteleFlag))       addBlockQTele();
     // Block QCTH 
     if(logicalToBool(sammenu_.qcthFlag))        addBlockQCTH();
     // Block CCELE 
@@ -1244,7 +1244,7 @@ void TreeWriter::addBlockCSPSMC() {
 //
 // input:	-
 // output: -
-void TreeWriter::addBlockCLUO() {
+void TreeWriter::addBlockCluO() {
     fNewTree->Branch("nCluO",  &cluo_.nCluO,  "nCluO/I");
     fNewTree->Branch("CluCel", &cluo_.CluCel, "CluCel[nCluO]/I");
     fNewTree->Branch("CluFl",  &cluo_.CluFl,  "CluFl[nCluO]/F");
@@ -1259,7 +1259,7 @@ void TreeWriter::addBlockCLUO() {
 //
 // input:	-
 // output: -
-void TreeWriter::addBlockCLUOMC() {
+void TreeWriter::addBlockCluOMC() {
     fNewTree->Branch("nMCPar",   &cluomc_.nMCPar,   "nMCPar/I");
     fNewTree->Branch("CluMCCel", &cluomc_.CluMCCel, "CluMCCel[nMCPar]/I");
     fNewTree->Branch("CluMCiCl", &cluomc_.CluMCiCl, "CluMCiCl[nMCPar]/I");
@@ -1275,7 +1275,7 @@ void TreeWriter::addBlockCLUOMC() {
 //
 // input:	-
 // output: -
-void TreeWriter::addBlockQTELE() {/*TODO*/}
+void TreeWriter::addBlockQTele() {/*TODO*/}
 
 // Add to the tree all the branches realted to the block CLUOMC.
 //
