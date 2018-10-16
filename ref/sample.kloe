@@ -2876,6 +2876,47 @@ C-----------------------------------------------------------------------
 C Block QCTH:  TODO
 C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
+C Fill Block ccle
+C-----------------------------------------------------------------------
+      IF (CCLEFLAG) THEN
+         nCCle = 0.
+         DO iCCLE=1, 96
+           CCle_Cry(iCCLE) = 0.
+           CCle_Det(iCCLE) = 0.
+           CCle_Col(iCCLE) = 0.
+           CCle_Pla(iCCLE) = 0.
+           CCle_Time(iCCLE) = 0.
+         END DO
+
+         istat = GETCCALTSTRU(Evt%CCLE)
+
+         nCCle = Evt%CCLE%NEle
+         IF ( nCCle < 0 .OR. nCCle > 96 ) THEN
+            WRITE(*,*) 'ERROR CCLE - nCCle Out of bound : ', nCCle
+         END IF
+
+         IF (nCCle > 0 .AND. nCCle <= 96) THEN
+            DO iCCLE=1, nCCle
+               CCle_Cry(iCCLE) = Evt%CCLE%Cry(iCCLE)
+               IF ( CCle_Cry(iCCLE) < 0 .OR. CCle_Cry(iCCLE) > 96 ) THEN
+                  WRITE(*,*) 'ERROR CCLE - CCle_Cry[1] Out of bound : ', CCle_Cry(iCCLE)
+               END IF
+                 CCle_Det(iCCLE) = Evt%CCLE%Det(iCCLE)
+               CCle_Col(iCCLE) = Evt%CCLE%Col(iCCLE)
+               IF ( CCle_Col(iCCLE) < 0 .OR. CCle_Col(iCCLE) > 24 ) THEN
+                  WRITE(*,*) 'ERROR CCLE - CCle_Col[3] Out of bound : ', CCle_Col(iCCLE)
+               END IF
+               CCle_Pla(iCCLE) = Evt%CCLE%Pla(iCCLE)
+               IF ( CCle_Pla(iCCLE) < 0 .OR. CCle_Pla(iCCLE) > 2 ) THEN
+                  WRITE(*,*) 'ERROR CCLE - CCle_Pla[4] Out of bound : ', CCle_Pla(iCCLE)
+               END IF
+                 CCle_Time(iCCLE) = Evt%CCLE%T(iCCLE)
+           END DO
+         ELSE
+            WRITE(*,*) 'ERROR CCLE - nCCle Index not valid: ', nCCle
+         END IF
+      END IF
+C-----------------------------------------------------------------------
 C Fill Root
 C-----------------------------------------------------------------------
       call fillntu() 	
@@ -3187,9 +3228,9 @@ C      write(*,*)" "
       	write(Prompt,123)'QCTH'
 	    Status=UIGTYE(Prompt,QCTHFLAG)
     	goto 10
-      else if(verb.eq.'CCELE')then
-      	write(Prompt,123)'CCELE'
-	    Status=UIGTYE(Prompt,CCELEFLAG)
+      else if(verb.eq.'CCLE')then
+      	write(Prompt,123)'CCLE'
+	    Status=UIGTYE(Prompt,CCLEFLAG)
     	goto 10
       else if(verb.eq.'LETE')then
       	write(Prompt,123)'LETE'

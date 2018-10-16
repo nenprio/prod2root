@@ -565,3 +565,11 @@ C
 C Block QCTH
 C TODO
 C
+C
+C  Block: ccle
+C
+      integer iCCLE, nCCle, CCle_Cry(96), CCle_Det(96), 
+      integer CCle_Col(96), CCle_Pla(96)
+      real CCle_Time(96)
+
+      common /ccle/nCCle,CCle_Cry,CCle_Det,CCle_Col,CCle_Pla,CCle_Time

@@ -98,7 +98,7 @@ extern "C"{
     int cluoMCFlag;
     int qteleFlag;
     int qcthFlag;
-    int cceleFlag;
+    int ccleFlag;
     int leteFlag;
     int itceFlag;
     int heteFlag;
@@ -1100,4 +1100,17 @@ extern "C" {
 
 // Block QTELE: TODO
 // Block QCTH:  TODO
+
+// Block:   ccle
+extern "C" {
+  extern struct {
+    int nCCle;
+    int CCle_Cry[MaxNumCCalT];
+    int CCle_Det[MaxNumCCalT];
+    int CCle_Col[MaxNumCCalT];
+    int CCle_Pla[MaxNumCCalT];
+    float CCle_Time[MaxNumCCalT];
+  }ccle_;
+}
+
 #endif

@@ -60,7 +60,7 @@ Verb CLUO
 Verb CLOMC
 Verb QTELE
 Verb QCTH
-Verb CCELE
+Verb CCLE
 Verb LETE
 Verb ITCE
 Verb HETE
@@ -127,7 +127,7 @@ Button 51   /Description="Select CLUO     block"/Response="CLUO"
 Button 52   /Description="Select CLOMC     block"/Response="CLOMC"
 Button 53   /Description="Select QTELE     block"/Response="QTELE"
 Button 54   /Description="Select QCTH     block"/Response="QCTH"
-Button 55   /Description="Select CCELE     block"/Response="CCELE"
+Button 55   /Description="Select CCLE     block"/Response="CCLE"
 Button 56   /Description="Select LETE     block"/Response="LETE"
 Button 57   /Description="Select ITCE     block"/Response="ITCE"
 Button 58   /Description="Select HETE     block"/Response="HETE"

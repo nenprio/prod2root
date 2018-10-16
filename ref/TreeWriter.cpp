@@ -127,7 +127,7 @@ TreeWriter::TreeWriter() {
     // Block QCTH 
     if(logicalToBool(sammenu_.qcthFlag))        addBlockQCTH();
     // Block CCELE 
-    if(logicalToBool(sammenu_.cceleFlag))       addBlockCCELE();
+    if(logicalToBool(sammenu_.ccleFlag))        addBlockCCLE();
     // Block LETE
     if(logicalToBool(sammenu_.leteFlag))        addBlockLETE();
     // Block ITCE 
@@ -216,7 +216,7 @@ void TreeWriter::printHeaderFlags() {
     header += Form("CLUOMC: %d ",    logicalToBool(sammenu_.cluoMCFlag));
     header += Form("QTELE: %d ",     logicalToBool(sammenu_.qteleFlag));
     header += Form("QCTH: %d ",      logicalToBool(sammenu_.qcthFlag));
-    header += Form("CCELE: %d ",     logicalToBool(sammenu_.cceleFlag));
+    header += Form("CCLE: %d ",     logicalToBool(sammenu_.ccleFlag));
     header += Form("LETE: %d ",      logicalToBool(sammenu_.leteFlag));
     header += Form("ITCE: %d ",      logicalToBool(sammenu_.itceFlag));
     header += Form("HETE: %d ",      logicalToBool(sammenu_.heteFlag));
@@ -1282,6 +1282,19 @@ void TreeWriter::addBlockQTELE() {/*TODO*/}
 // input:	-
 // output: -
 void TreeWriter::addBlockQCTH() {/*TODO*/}
+
+// Add to the tree all the branches realted to the block CCLE.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockCCLE() {
+    fNewTree->Branch("nCCle",     &ccle_.nCCle,     "nCCle/I");
+    fNewTree->Branch("CCle_Cry",  &ccle_.CCle_Cry,  "CCle_Cry[nCCle]/I");
+    fNewTree->Branch("CCle_Det",  &ccle_.CCle_Det,  "CCle_Det[nCCle]/I");
+    fNewTree->Branch("CCle_Col",  &ccle_.CCle_Col,  "CCle_Col[nCCle]/I");
+    fNewTree->Branch("CCle_Pla",  &ccle_.CCle_Pla,  "CCle_Pla[nCCle]/I");
+    fNewTree->Branch("CCle_Time", &ccle_.CCle_Time, "CCle_Time[nCCle]/F");
+}
 
 // Returns the output file object.
 //
