@@ -582,3 +582,11 @@ C
 
       common /lete/LeteCalib,nLete,Lete_Cry,Lete_Det,Lete_Col,
      1       Lete_Pla,Lete_E,Lete_Time
+C
+C  Block: itce
+C
+      integer 
+      integer iITCE, nITCE, Foil(4032), Layer(4032), Strip(4032)
+      integer View(4032), IndItKine(4032)
+
+      common /itce/nITCE,Foil,Layer,Strip,View,IndItKine

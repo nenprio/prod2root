@@ -2962,6 +2962,38 @@ C-----------------------------------------------------------------------
          END IF
       END IF
 C-----------------------------------------------------------------------
+C Fill Block itce
+C-----------------------------------------------------------------------
+      IF (ITCEFLAG) THEN
+         nITCE = 0.
+         DO iITCE=1, 4032
+           Foil(iITCE) = 0.
+           Layer(iITCE) = 0.
+           Strip(iITCE) = 0.
+           View(iITCE) = 0.
+           IndItKine(iITCE) = 0.
+         END DO
+
+         istat = ITCE_UPK(evt%itce)
+
+         nITCE = Evt%itce%nitce
+         IF ( nITCE < 0 .OR. nITCE > 4032 ) THEN
+            WRITE(*,*) 'ERROR ITCE - nITCE Out of bound : ', nITCE
+         END IF
+
+         IF (nITCE > 0 .AND. nITCE <= 4032) THEN
+            DO iITCE=1, nITCE
+                 Foil(iITCE) = Evt%itce%foil(iITCE)
+                 Layer(iITCE) = Evt%itce%layer(iITCE)
+                 Strip(iITCE) = Evt%itce%strip(iITCE)
+                 View(iITCE) = Evt%itce%view(iITCE)
+                 IndItKine(iITCE) = Evt%itce%inditkine(iITCE)
+           END DO
+         ELSE
+            WRITE(*,*) 'ERROR ITCE - nITCE Index not valid: ', nITCE
+         END IF
+      END IF
+C-----------------------------------------------------------------------
 C Fill Root
 C-----------------------------------------------------------------------
       call fillntu() 	

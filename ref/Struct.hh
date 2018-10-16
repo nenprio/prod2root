@@ -1127,4 +1127,16 @@ extern "C" {
   }lete_;
 }
 
+// Block:   itce
+extern "C" {
+  extern struct {
+    int nITCE;
+    int Foil[MaxNumIT];
+    int Layer[MaxNumIT];
+    int Strip[MaxNumIT];
+    int View[MaxNumIT];
+    int IndItKine[MaxNumIT];
+  }itce_;
+}
+
 #endif

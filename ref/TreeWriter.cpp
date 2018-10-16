@@ -1311,6 +1311,19 @@ void TreeWriter::addBlockLETE() {
     fNewTree->Branch("Lete_Time", &lete_.Lete_Time, "Lete_Time[nLete]/F");
 }
 
+// Add to the tree all the branches realted to the block ITCE.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockITCE() {
+    fNewTree->Branch("nITCE",     &itce_.nITCE,     "nITCE/I");
+    fNewTree->Branch("Foil",      &itce_.Foil,      "Foil[nITCE]/I");
+    fNewTree->Branch("Layer",     &itce_.Layer,     "Layer[nITCE]/I");
+    fNewTree->Branch("Strip",     &itce_.Strip,     "Strip[nITCE]/I");
+    fNewTree->Branch("View",      &itce_.View,      "View[nITCE]/I");
+    fNewTree->Branch("IndItKine", &itce_.IndItKine, "IndItKine[nITCE]/I");
+}
+
 // Returns the output file object.
 //
 // input:   -
