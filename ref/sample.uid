@@ -48,6 +48,22 @@ Verb CFHI
 Verb QIHI
 Verb TRKQ 
 Verb QELE
+Verb KNVO 
+Verb VNVO 
+Verb VNVB 
+Verb INVO 
+Verb ECLO 
+Verb ECLTWO
+Verb CSPS
+Verb CSPMC
+Verb CLUO
+Verb CLOMC
+Verb QTELE
+Verb QCTH
+Verb CCLE
+Verb LETE
+Verb ITCE
+Verb HETE
 !
 Verb SHOW
 Verb EXIT
@@ -99,7 +115,23 @@ Button 39   /Description="Select CFHI     block"/Response="CFHI"
 Button 40   /Description="Select QIHI     block"/Response="QIHI"
 Button 41   /Description="Select TRKQ     block"/Response="TRKQ"
 Button 42   /Description="Select QELE     block"/Response="QELE"
+Button 43   /Description="Select KNVO     block"/Response="KNVO"
+Button 44   /Description="Select VNVO     block"/Response="VNVO"
+Button 45   /Description="Select VNVB     block"/Response="VNVB"
+Button 46   /Description="Select INVO     block"/Response="INVO"
+Button 47   /Description="Select ECLO     block"/Response="ECLO"
+Button 48   /Description="Select ECLO2    block"/Response="ECLTWO"
+Button 49   /Description="Select CSPS     block"/Response="CSPS"
+Button 50   /Description="Select CSPS MC  block"/Response="CSPMC"
+Button 51   /Description="Select CLUO     block"/Response="CLUO"
+Button 52   /Description="Select CLOMC     block"/Response="CLOMC"
+Button 53   /Description="Select QTELE     block"/Response="QTELE"
+Button 54   /Description="Select QCTH     block"/Response="QCTH"
+Button 55   /Description="Select CCLE     block"/Response="CCLE"
+Button 56   /Description="Select LETE     block"/Response="LETE"
+Button 57   /Description="Select ITCE     block"/Response="ITCE"
+Button 58   /Description="Select HETE     block"/Response="HETE"
 
-Button 43   /Description="Show single process selection"/Response="SHOW"
-Button 44   /Description="Go Back to the AC prompt" /Response="EXIT"
+Button 59   /Description="Show single process selection"/Response="SHOW"
+Button 60   /Description="Go Back to the AC prompt" /Response="EXIT"
 !==============================================================================

@@ -87,7 +87,7 @@ TreeWriter::TreeWriter() {
     // Block DPRS
     if(logicalToBool(sammenu_.dprsFlag))        addBlockDPRS();
     // Block MC
-    if(logicalToBool(sammenu_.mcFlag))          addBlockMC();
+    if(logicalToBool(sammenu_.geanfiFlag))      addBlockMC();
     // Block TCLO
     if(logicalToBool(sammenu_.tcloFlag))        addBlockTCLO();
     // Block TCLOld
@@ -102,6 +102,38 @@ TreeWriter::TreeWriter() {
     if(logicalToBool(sammenu_.qeleFlag))        addBlockQELE();
     // Block QCal
     if(logicalToBool(sammenu_.qcalFlag))        addBlockQCal();
+    // Block KNVO
+    if(logicalToBool(sammenu_.knvoFlag))        addBlockKNVO();
+    // Block VNVO
+    if(logicalToBool(sammenu_.vnvoFlag))        addBlockVNVO();
+    // Block VNVB
+    if(logicalToBool(sammenu_.vnvbFlag))        addBlockVNVB();
+    // Block INVO
+    if(logicalToBool(sammenu_.invoFlag))        addBlockINVO();
+    // Block ECLO 
+    if(logicalToBool(sammenu_.ecloFlag))        addBlockECLO();
+    // Block ECLO2 
+    if(logicalToBool(sammenu_.eclo2Flag))       addBlockECLO2();
+    // Block CSPS 
+    if(logicalToBool(sammenu_.cspsFlag))        addBlockCSPS();
+    // Block CSPSMC 
+    if(logicalToBool(sammenu_.cspsMCFlag))      addBlockCSPSMC();
+    // Block CLUO 
+    if(logicalToBool(sammenu_.cluoFlag))        addBlockCluO();
+    // Block CLUOMC 
+    if(logicalToBool(sammenu_.cluoMCFlag))      addBlockCluOMC();
+    // Block QTELE
+    if(logicalToBool(sammenu_.qteleFlag))       addBlockQTele();
+    // Block QCTH 
+    if(logicalToBool(sammenu_.qcthFlag))        addBlockQCTH();
+    // Block CCELE 
+    if(logicalToBool(sammenu_.ccleFlag))        addBlockCCLE();
+    // Block LETE
+    if(logicalToBool(sammenu_.leteFlag))        addBlockLETE();
+    // Block ITCE 
+    if(logicalToBool(sammenu_.itceFlag))        addBlockITCE();
+    // Block HETE 
+    if(logicalToBool(sammenu_.heteFlag))        addBlockHETE();
 
     // Write to the disk
     outfile->Write();
@@ -164,13 +196,30 @@ void TreeWriter::printHeaderFlags() {
     header += Form("TRKMCOLD: %d\n", logicalToBool(sammenu_.trkMCOldFlag));
     header += Form("DHIT: %d ",      logicalToBool(sammenu_.dhitFlag));
     header += Form("DPRS: %d ",      logicalToBool(sammenu_.dprsFlag));
-    header += Form("MC: %d ",        logicalToBool(sammenu_.mcFlag));
+    header += Form("GEANFI: %d ",    logicalToBool(sammenu_.geanfiFlag));
     header += Form("TCLO: %d ",      logicalToBool(sammenu_.tcloFlag));
     header += Form("TCOLD: %d ",     logicalToBool(sammenu_.tcloldFlag));
     header += Form("CFHI: %d ",      logicalToBool(sammenu_.cfhiFlag));
     header += Form("QIHI: %d ",      logicalToBool(sammenu_.qihiFlag));
     header += Form("TRKQ: %d ",      logicalToBool(sammenu_.trkqFlag));
-    header += Form("QELE: %d ",      logicalToBool(sammenu_.qeleFlag));
+    header += Form("QELE: %d\n",     logicalToBool(sammenu_.qeleFlag));
+    header += Form("QCAL: %d ",      logicalToBool(sammenu_.qcalFlag));
+    header += Form("KNVO: %d ",      logicalToBool(sammenu_.knvoFlag));
+    header += Form("VNVO: %d ",      logicalToBool(sammenu_.vnvoFlag));
+    header += Form("VNVB: %d ",      logicalToBool(sammenu_.vnvbFlag));
+    header += Form("INVO: %d ",      logicalToBool(sammenu_.invoFlag));
+    header += Form("ECLO: %d ",      logicalToBool(sammenu_.ecloFlag));
+    header += Form("ECLO2: %d ",     logicalToBool(sammenu_.eclo2Flag));
+    header += Form("CSPS: %d",      logicalToBool(sammenu_.cspsFlag));
+    header += Form("CSPSMC: %d\n",    logicalToBool(sammenu_.cspsMCFlag));
+    header += Form("CLUO: %d ",      logicalToBool(sammenu_.cluoFlag));
+    header += Form("CLUOMC: %d ",    logicalToBool(sammenu_.cluoMCFlag));
+    header += Form("QTELE: %d ",     logicalToBool(sammenu_.qteleFlag));
+    header += Form("QCTH: %d ",      logicalToBool(sammenu_.qcthFlag));
+    header += Form("CCLE: %d ",     logicalToBool(sammenu_.ccleFlag));
+    header += Form("LETE: %d ",      logicalToBool(sammenu_.leteFlag));
+    header += Form("ITCE: %d ",      logicalToBool(sammenu_.itceFlag));
+    header += Form("HETE: %d ",      logicalToBool(sammenu_.heteFlag));
     header += "\n==========================================================================\n";
     
     // Print to std output
@@ -1068,6 +1117,223 @@ void TreeWriter::addBlockQCal() {
     fNewTree->Branch("zQCal", &qcal_.zQCal, "zQCal[nQCal]/F");
     fNewTree->Branch("EQCal", &qcal_.EQCal, "EQCal[nQCal]/F");
     fNewTree->Branch("TQCal", &qcal_.TQCal, "TQCal[nQCal]/F");
+}
+
+// Add to the tree all the branches realted to the block KNVO.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockKNVO() {
+    fNewTree->Branch("nKNVO",    &knvo_.nKNVO,    "nKNVO/I");
+    fNewTree->Branch("iKNVO",    &knvo_.iKNVO,    "iKNVO[nKNVO]/I");
+    fNewTree->Branch("PxKNVO",   &knvo_.PxKNVO,   "PxKNVO[nKNVO]/F");
+    fNewTree->Branch("PyKNVO",   &knvo_.PyKNVO,   "PyKNVO[nKNVO]/F");
+    fNewTree->Branch("PzKNVO",   &knvo_.PzKNVO,   "PzKNVO[nKNVO]/F");
+    fNewTree->Branch("PidKNVO",  &knvo_.PidKNVO,  "PidKNVO[nKNVO]/I");
+    fNewTree->Branch("BankKNVO", &knvo_.BankKNVO, "BankKNVO[nKNVO]/I");
+    fNewTree->Branch("nVnvKNVO", &knvo_.nVnvKNVO, "nVnvKNVO[nKNVO]/I");
+}
+
+// Add to the tree all the branches realted to the block VNVO.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockVNVO() {
+    fNewTree->Branch("nVNVO",    &vnvo_.nVNVO,    "nVNVO/I");
+    fNewTree->Branch("iVNVO",    &vnvo_.iVNVO,    "iVNVO[nVNVO]/I");
+    fNewTree->Branch("VxVNVO",   &vnvo_.VxVNVO,   "VxVNVO[nVNVO]/F");
+    fNewTree->Branch("VyVNVO",   &vnvo_.VyVNVO,   "VyVNVO[nVNVO]/F");
+    fNewTree->Branch("VzVNVO",   &vnvo_.VzVNVO,   "VzVNVO[nVNVO]/F");
+    fNewTree->Branch("KorIVNVO", &vnvo_.KorIVNVO, "KorIVNVO[nVNVO]/I");
+    fNewTree->Branch("DvfsVNVO", &vnvo_.DvfsVNVO, "DvfsVNVO[nVNVO]/I");
+    fNewTree->Branch("nBnkVNVO", &vnvo_.nBnkVNVO, "nBnkVNVO[nVNVO]/I");
+    fNewTree->Branch("fBnkVNVO", &vnvo_.fBnkVNVO, "fBnkVNVO[nVNVO]/I");
+}
+
+// Add to the tree all the branches realted to the block VNVB.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockVNVB() {
+    fNewTree->Branch("nBnksVNVO", &vnvb_.nBnksVNVO, "nBnksVNVO/I");
+    fNewTree->Branch("iBank",     &vnvb_.iBank,     "iBank[nBnksVNVO]/I");
+}
+
+// Add to the tree all the branches realted to the block INVO.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockINVO() {
+    fNewTree->Branch("nINVO",   &invo_.nINVO,   "nINVO/I");
+    fNewTree->Branch("iClps",   &invo_.iClps,   "iClps[nINVO]/I");
+    fNewTree->Branch("xINVO",   &invo_.xINVO,   "xINVO[nINVO]/F");
+    fNewTree->Branch("yINVO",   &invo_.yINVO,   "yINVO[nINVO]/F");
+    fNewTree->Branch("zINVO",   &invo_.zINVO,   "zINVO[nINVO]/F");
+    fNewTree->Branch("tINVO",   &invo_.tINVO,   "tINVO[nINVO]/F");
+    fNewTree->Branch("Lk",      &invo_.Lk,      "Lk[nINVO]/F");
+    fNewTree->Branch("SigmaLk", &invo_.SigmaLk, "SigmaLk[nINVO]/F");
+}
+
+// Add to the tree all the branches realted to the block ECLO.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockECLO() {
+    fNewTree->Branch("nCli",     &eclo_.nCli,     "nCli/I");
+    fNewTree->Branch("ECLOWord", &eclo_.ECLOWord, "ECLOWord[nCli]/I");
+    fNewTree->Branch("IdPart",   &eclo_.IdPart,   "IdPart[nCli]/I");
+    fNewTree->Branch("DtClpo",   &eclo_.DtClpo,   "DtClpo[nCli]/I");
+    fNewTree->Branch("DvVnpo",   &eclo_.DvVnpo,   "DvVnpo[nCli]/I");
+    fNewTree->Branch("Stre",     &eclo_.Stre,     "Stre[nCli]/I");
+    fNewTree->Branch("Algo",     &eclo_.Algo,     "Algo[nCli]/I");
+}
+
+// Add to the tree all the branches realted to the block ECLO2.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockECLO2() {
+    fNewTree->Branch("nCli2",     &eclo2_.nCli2,     "nCli2/I");
+    fNewTree->Branch("ECLOWord2", &eclo2_.ECLOWord2, "ECLOWord2[nCli2]/I");
+    fNewTree->Branch("IdPart2",   &eclo2_.IdPart2,   "IdPart2[nCli2]/I");
+    fNewTree->Branch("DtClpo2",   &eclo2_.DtClpo2,   "DtClpo2[nCli2]/I");
+    fNewTree->Branch("DvVnpo2",    &eclo2_.DvVnpo2,  "DvVnpo2[nCli2]/I");
+    fNewTree->Branch("Stre2",     &eclo2_.Stre2,     "Stre2[nCli2]/I");
+    fNewTree->Branch("Algo2",     &eclo2_.Algo2,     "Algo2[nCli2]/I");
+}
+
+// Add to the tree all the branches realted to the block CSPS.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockCSPS() {
+    fNewTree->Branch("nCS",   &csps_.nCS,   "nCS/I");
+    fNewTree->Branch("CSClu", &csps_.CSClu, "CSClu[nCS]/I");
+    fNewTree->Branch("CSCel", &csps_.CSCel, "CSCel[nCS]/I");
+    fNewTree->Branch("CSFla", &csps_.CSFla, "CSFla[nCS]/I");
+    fNewTree->Branch("CSAdd", &csps_.CSAdd, "CSAdd[nCS]/I");
+    fNewTree->Branch("CSNhi", &csps_.CSNhi, "CSNhi[nCS]/I");
+    fNewTree->Branch("CSTa",  &csps_.CSTa,  "CSTa[nCS]/F");
+    fNewTree->Branch("CSTb",  &csps_.CSTb,  "CSTb[nCS]/F");
+    fNewTree->Branch("CSEa",  &csps_.CSEa,  "CSEa[nCS]/F");
+    fNewTree->Branch("CSEb",  &csps_.CSEb,  "CSEb[nCS]/F");
+    fNewTree->Branch("CST",   &csps_.CST,   "CST[nCS]/F");
+    fNewTree->Branch("CSE",   &csps_.CSE,   "CSE[nCS]/F");
+    fNewTree->Branch("CSx",   &csps_.CSx,   "CSx[nCS]/F");
+    fNewTree->Branch("CSy",   &csps_.CSy,   "CSy[nCS]/F");
+    fNewTree->Branch("CSz",   &csps_.CSz,   "CSz[nCS]/F");
+}
+
+// Add to the tree all the branches realted to the block CSPSMC.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockCSPSMC() {
+    fNewTree->Branch("nCSMC",    &cspsmc_.nCSMC,    "nCSMC/I");
+    fNewTree->Branch("CSMCKine", &cspsmc_.CSMCKine, "CSMCKine[nCSMC]/I");
+    fNewTree->Branch("CSMCPoi",  &cspsmc_.CSMCPoi,  "CSMCPoi[nCSMC]/I");
+    fNewTree->Branch("CSMCNHit", &cspsmc_.CSMCNHit, "CSMCNHit[nCSMC]/I");
+    fNewTree->Branch("CSMCx",    &cspsmc_.CSMCx,    "CSMCx[nCSMC]/F");
+    fNewTree->Branch("CSMCy",    &cspsmc_.CSMCy,    "CSMCy[nCSMC]/F");
+    fNewTree->Branch("CSMCz",    &cspsmc_.CSMCz,    "CSMCz[nCSMC]/F");
+    fNewTree->Branch("CSMCt",    &cspsmc_.CSMCt,    "CSMCt[nCSMC]/F");
+    fNewTree->Branch("CSMCe",    &cspsmc_.CSMCe,    "CSMCe[nCSMC]/F");
+}
+
+// Add to the tree all the branches realted to the block CLUO.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockCluO() {
+    fNewTree->Branch("nCluO",  &cluo_.nCluO,  "nCluO/I");
+    fNewTree->Branch("CluCel", &cluo_.CluCel, "CluCel[nCluO]/I");
+    fNewTree->Branch("CluFl",  &cluo_.CluFl,  "CluFl[nCluO]/F");
+    fNewTree->Branch("CluE",   &cluo_.CluE,   "CluE[nCluO]/F");
+    fNewTree->Branch("CluX",   &cluo_.CluX,   "CluX[nCluO]/F");
+    fNewTree->Branch("CluY",   &cluo_.CluY,   "CluY[nCluO]/F");
+    fNewTree->Branch("CluZ",   &cluo_.CluZ,   "CluZ[nCluO]/F");
+    fNewTree->Branch("CluT",   &cluo_.CluT,   "CluT[nCluO]/F");
+}
+
+// Add to the tree all the branches realted to the block CLUOMC.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockCluOMC() {
+    fNewTree->Branch("nMCPar",   &cluomc_.nMCPar,   "nMCPar/I");
+    fNewTree->Branch("CluMCCel", &cluomc_.CluMCCel, "CluMCCel[nMCPar]/I");
+    fNewTree->Branch("CluMCiCl", &cluomc_.CluMCiCl, "CluMCiCl[nMCPar]/I");
+    fNewTree->Branch("CluMCKin", &cluomc_.CluMCKin, "CluMCKin[nMCPar]/I");
+    fNewTree->Branch("CluMCe",   &cluomc_.CluMCe,   "CluMCe[nMCPar]/F");
+    fNewTree->Branch("CluMCx",   &cluomc_.CluMCx,   "CluMCx[nMCPar]/F");
+    fNewTree->Branch("CluMCy",   &cluomc_.CluMCy,   "CluMCy[nMCPar]/F");
+    fNewTree->Branch("CluMCz",   &cluomc_.CluMCz,   "CluMCz[nMCPar]/F");
+    fNewTree->Branch("CluMCt",   &cluomc_.CluMCt,   "CluMCt[nMCPar]/F");
+}
+
+// Add to the tree all the branches realted to the block CLUOMC.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockQTele() {/*TODO*/}
+
+// Add to the tree all the branches realted to the block CLUOMC.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockQCTH() {/*TODO*/}
+
+// Add to the tree all the branches realted to the block CCLE.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockCCLE() {
+    fNewTree->Branch("nCCle",     &ccle_.nCCle,     "nCCle/I");
+    fNewTree->Branch("CCle_Cry",  &ccle_.CCle_Cry,  "CCle_Cry[nCCle]/I");
+    fNewTree->Branch("CCle_Det",  &ccle_.CCle_Det,  "CCle_Det[nCCle]/I");
+    fNewTree->Branch("CCle_Col",  &ccle_.CCle_Col,  "CCle_Col[nCCle]/I");
+    fNewTree->Branch("CCle_Pla",  &ccle_.CCle_Pla,  "CCle_Pla[nCCle]/I");
+    fNewTree->Branch("CCle_Time", &ccle_.CCle_Time, "CCle_Time[nCCle]/F");
+}
+
+// Add to the tree all the branches realted to the block LETE.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockLETE() {
+    fNewTree->Branch("LeteCalib", &lete_.LeteCalib, "LeteCalib/I");
+    fNewTree->Branch("nLete",     &lete_.nLete,     "nLete/I");
+    fNewTree->Branch("Lete_Cry",  &lete_.Lete_Cry,  "Lete_Cry[nLete]/I");
+    fNewTree->Branch("Lete_Det",  &lete_.Lete_Det,  "Lete_Det[nLete]/I");
+    fNewTree->Branch("Lete_Col",  &lete_.Lete_Col,  "Lete_Col[nLete]/I");
+    fNewTree->Branch("Lete_Pla",  &lete_.Lete_Pla,  "Lete_Pla[nLete]/I");
+    fNewTree->Branch("Lete_E",    &lete_.Lete_E,    "Lete_E[nLete]/F");
+    fNewTree->Branch("Lete_Time", &lete_.Lete_Time, "Lete_Time[nLete]/F");
+}
+
+// Add to the tree all the branches realted to the block ITCE.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockITCE() {
+    fNewTree->Branch("nITCE",     &itce_.nITCE,     "nITCE/I");
+    fNewTree->Branch("Foil",      &itce_.Foil,      "Foil[nITCE]/I");
+    fNewTree->Branch("ITLayer",   &itce_.ITLayer,   "ITLayer[nITCE]/I");
+    fNewTree->Branch("Strip",     &itce_.Strip,     "Strip[nITCE]/I");
+    fNewTree->Branch("View",      &itce_.View,      "View[nITCE]/I");
+    fNewTree->Branch("IndItKine", &itce_.IndItKine, "IndItKine[nITCE]/I");
+}
+
+// Add to the tree all the branches realted to the block HETE.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockHETE() {
+    fNewTree->Branch("nHetDcs",  &hete_.nHetDcs,  "nHetDcs/I");
+    fNewTree->Branch("HDet",     &hete_.HDet,     "HDet[nHetDcs]/I");
+    fNewTree->Branch("HCol",     &hete_.HCol,     "HCol[nHetDcs]/I");
+    fNewTree->Branch("nTurnHet", &hete_.nTurnHet, "nTurnHet[nHetDcs]/I");
+    fNewTree->Branch("TimeHet",  &hete_.TimeHet,  "TimeHet[nHetDcs]/F");
 }
 
 // Returns the output file object.

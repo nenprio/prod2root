@@ -1,6 +1,0 @@
-CALL HBNAME(Params%NtId,'CCLE',Evt%CCLE%NEle,'nccle:i::[0,96]')
-CALL HBNAME(Params%NtId,'CCLE',Evt%CCLE%Cry,'ccle_cry(nccle):i::[0,96]')
-CALL HBNAME(Params%NtId,'CCLE',Evt%CCLE%Det,'ccle_det(nccle):i')
-CALL HBNAME(Params%NtId,'CCLE',Evt%CCLE%Col,'ccle_col(nccle):i::[0,24]')
-CALL HBNAME(Params%NtId,'CCLE',Evt%CCLE%Pla,'ccle_pla(nccle):i::[0,2]')
-CALL HBNAME(Params%NtId,'CCLE',Evt%CCLE%T,'ccle_time(nccle):r')

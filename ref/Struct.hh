@@ -27,6 +27,18 @@ const int MaxNumQIHI     = 1000;
 const int MaxRowsTrkQ    = 100;
 const int MaxColsTrkQ    = 2;
 const int MaxNumQCal     = 32;
+const int MaxNumKNVO     = 40;
+const int MaxNumVNVO     = 40;
+const int MaxNumVNVOb    = 40;
+const int MaxNumINVO     = 40;
+const int MaxNumCLINF    = 100;
+const int MaxNumHitClu   = 2000;
+const int MaxNumCluo     = 100;
+const int MaxNumQCalT    = 1920;
+const int MaxNumCCalT    = 96;
+const int MaxNumLete     = 40;
+const int MaxNumIT       = 4032;
+const int MaxNumHET      = 1920;
 
 //Verb for Talk_to module
 extern "C"{
@@ -66,7 +78,7 @@ extern "C"{
     int dhitFlag;
     int dedxFlag;
     int dprsFlag;
-    int mcFlag;
+    int geanfiFlag;
     int tcloFlag;
     int tcloldFlag;
     int cfhiFlag;
@@ -74,6 +86,22 @@ extern "C"{
     int trkqFlag;
     int qeleFlag;
     int qcalFlag;
+    int knvoFlag;
+    int vnvoFlag;
+    int vnvbFlag;
+    int invoFlag;
+    int ecloFlag;
+    int eclo2Flag;
+    int cspsFlag;
+    int cspsMCFlag;
+    int cluoFlag;
+    int cluoMCFlag;
+    int qteleFlag;
+    int qcthFlag;
+    int ccleFlag;
+    int leteFlag;
+    int itceFlag;
+    int heteFlag;
   }sammenu_;
 }
 
@@ -926,6 +954,200 @@ extern "C" {
     float EQCal[MaxNumQCal];
     float TQCal[MaxNumQCal];
   }qcal_;
+}
+
+// Block:   knvo
+extern "C" {
+  extern struct {
+    int nKNVO;
+    int iKNVO[MaxNumKNVO];
+    float PxKNVO[MaxNumKNVO];
+    float PyKNVO[MaxNumKNVO];
+    float PzKNVO[MaxNumKNVO];
+    int PidKNVO[MaxNumKNVO];
+    int BankKNVO[MaxNumKNVO];
+    int nVnvKNVO[MaxNumKNVO];
+  }knvo_;
+}
+
+// Block:   vnvo
+extern "C" {
+  extern struct {
+    int nVNVO;
+    int iVNVO[MaxNumVNVO];
+    float VxVNVO[MaxNumVNVO];
+    float VyVNVO[MaxNumVNVO];
+    float VzVNVO[MaxNumVNVO];
+    int KorIVNVO[MaxNumVNVO];
+    int DvfsVNVO[MaxNumVNVO];
+    int nBnkVNVO[MaxNumVNVO];
+    int fBnkVNVO[MaxNumVNVO];
+  }vnvo_;
+}
+
+// Block:   vnvb
+extern "C" {
+  extern struct {
+    int nBnksVNVO;
+    int iBank[MaxNumVNVOb];
+  }vnvb_;
+}
+
+// Block:   invo
+extern "C" {
+  extern struct {
+    int nINVO;
+    int iClps[MaxNumINVO];
+    float xINVO[MaxNumINVO];
+    float yINVO[MaxNumINVO];
+    float zINVO[MaxNumINVO];
+    float tINVO[MaxNumINVO];
+    float Lk[MaxNumINVO];
+    float SigmaLk[MaxNumINVO];
+  }invo_;
+}
+
+// Block:   eclo
+extern "C" {
+  extern struct {
+    int nCli;
+    int ECLOWord[MaxNumCLINF];
+    int IdPart[MaxNumCLINF];
+    int DtClpo[MaxNumCLINF];
+    int DvVnpo[MaxNumCLINF];
+    int Stre[MaxNumCLINF];
+    int Algo[MaxNumCLINF];
+  }eclo_;
+}
+
+// Block:   eclo2
+extern "C" {
+  extern struct {
+    int nCli2;
+    int ECLOWord2[MaxNumCLINF];
+    int IdPart2[MaxNumCLINF];
+    int DtClpo2[MaxNumCLINF];
+    int DvVnpo2[MaxNumCLINF];
+    int Stre2[MaxNumCLINF];
+    int Algo2[MaxNumCLINF];
+  }eclo2_;
+}
+
+// Block:   csps
+extern "C" {
+  extern struct {
+    int nCS;
+    int CSClu[MaxNumHitClu];
+    int CSCel[MaxNumHitClu];
+    int CSFla[MaxNumHitClu];
+    int CSAdd[MaxNumHitClu];
+    int CSNhi[MaxNumHitClu];
+    float CSTa[MaxNumHitClu];
+    float CSTb[MaxNumHitClu];
+    float CSEa[MaxNumHitClu];
+    float CSEb[MaxNumHitClu];
+    float CST[MaxNumHitClu];
+    float CSE[MaxNumHitClu];
+    float CSx[MaxNumHitClu];
+    float CSy[MaxNumHitClu];
+    float CSz[MaxNumHitClu];
+  }csps_;
+}
+
+// Block:   cspsmc
+extern "C" {
+  extern struct {
+    int nCSMC;
+    int CSMCKine[MaxNumHitClu];
+    int CSMCPoi[MaxNumHitClu];
+    int CSMCNHit[MaxNumHitClu];
+    float CSMCx[MaxNumHitClu];
+    float CSMCy[MaxNumHitClu];
+    float CSMCz[MaxNumHitClu];
+    float CSMCt[MaxNumHitClu];
+    float CSMCe[MaxNumHitClu];
+  }cspsmc_;
+}
+
+// Block:   cluo
+extern "C" {
+  extern struct {
+    int nCluO;
+    int CluCel[MaxNumCluo];
+    float CluFl[MaxNumCluo];
+    float CluE[MaxNumCluo];
+    float CluX[MaxNumCluo];
+    float CluY[MaxNumCluo];
+    float CluZ[MaxNumCluo];
+    float CluT[MaxNumCluo];
+  }cluo_;
+}
+
+// Block:   cluomc
+extern "C" {
+  extern struct {
+    int nMCPar;
+    int CluMCCel[MaxNumCluo];
+    int CluMCiCl[MaxNumCluo];
+    int CluMCKin[MaxNumCluo];
+    float CluMCe[MaxNumCluo];
+    float CluMCx[MaxNumCluo];
+    float CluMCy[MaxNumCluo];
+    float CluMCz[MaxNumCluo];
+    float CluMCt[MaxNumCluo];
+  }cluomc_;
+}
+
+// Block QTELE: TODO
+// Block QCTH:  TODO
+
+// Block:   ccle
+extern "C" {
+  extern struct {
+    int nCCle;
+    int CCle_Cry[MaxNumCCalT];
+    int CCle_Det[MaxNumCCalT];
+    int CCle_Col[MaxNumCCalT];
+    int CCle_Pla[MaxNumCCalT];
+    float CCle_Time[MaxNumCCalT];
+  }ccle_;
+}
+
+// Block:   lete
+extern "C" {
+  extern struct {
+    int LeteCalib;
+    int nLete;
+    int Lete_Cry[MaxNumLete];
+    int Lete_Det[MaxNumLete];
+    int Lete_Col[MaxNumLete];
+    int Lete_Pla[MaxNumLete];
+    float Lete_E[MaxNumLete];
+    float Lete_Time[MaxNumLete];
+  }lete_;
+}
+
+// Block:   itce
+extern "C" {
+  extern struct {
+    int nITCE;
+    int Foil[MaxNumIT];
+    int ITLayer[MaxNumIT];
+    int Strip[MaxNumIT];
+    int View[MaxNumIT];
+    int IndItKine[MaxNumIT];
+  }itce_;
+}
+
+// Block:   hete
+extern "C" {
+  extern struct {
+    int nHetDcs;
+    int HDet[MaxNumHET];
+    int HCol[MaxNumHET];
+    int nTurnHet[MaxNumHET];
+    float TimeHet[MaxNumHET];
+  }hete_;
 }
 
 #endif
