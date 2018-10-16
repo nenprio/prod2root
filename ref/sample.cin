@@ -568,7 +568,7 @@ C
 C
 C  Block: ccle
 C
-      integer iCCLE, nCCle, CCle_Cry(96), CCle_Det(96), 
+      integer iCCLE, nCCle, CCle_Cry(96), CCle_Det(96) 
       integer CCle_Col(96), CCle_Pla(96)
       real CCle_Time(96)
 
@@ -585,11 +585,10 @@ C
 C
 C  Block: itce
 C
-      integer 
-      integer iITCE, nITCE, Foil(4032), Layer(4032), Strip(4032)
+      integer iITCE, nITCE, Foil(4032), LayerITCE(4032), Strip(4032)
       integer View(4032), IndItKine(4032)
 
-      common /itce/nITCE,Foil,Layer,Strip,View,IndItKine
+      common /itce/nITCE,Foil,LayerITCE,Strip,View,IndItKine
 C
 C  Block: hete
 C

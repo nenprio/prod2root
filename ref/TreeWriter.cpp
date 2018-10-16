@@ -1318,7 +1318,7 @@ void TreeWriter::addBlockLETE() {
 void TreeWriter::addBlockITCE() {
     fNewTree->Branch("nITCE",     &itce_.nITCE,     "nITCE/I");
     fNewTree->Branch("Foil",      &itce_.Foil,      "Foil[nITCE]/I");
-    fNewTree->Branch("Layer",     &itce_.Layer,     "Layer[nITCE]/I");
+    fNewTree->Branch("LayerITCE", &itce_.Layer,     "LayerITCE[nITCE]/I");
     fNewTree->Branch("Strip",     &itce_.Strip,     "Strip[nITCE]/I");
     fNewTree->Branch("View",      &itce_.View,      "View[nITCE]/I");
     fNewTree->Branch("IndItKine", &itce_.IndItKine, "IndItKine[nITCE]/I");

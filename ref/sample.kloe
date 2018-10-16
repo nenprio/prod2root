@@ -2968,7 +2968,7 @@ C-----------------------------------------------------------------------
          nITCE = 0.
          DO iITCE=1, 4032
            Foil(iITCE) = 0.
-           Layer(iITCE) = 0.
+           LayerITCE(iITCE) = 0.
            Strip(iITCE) = 0.
            View(iITCE) = 0.
            IndItKine(iITCE) = 0.
@@ -2984,7 +2984,7 @@ C-----------------------------------------------------------------------
          IF (nITCE > 0 .AND. nITCE <= 4032) THEN
             DO iITCE=1, nITCE
                  Foil(iITCE) = Evt%itce%foil(iITCE)
-                 Layer(iITCE) = Evt%itce%layer(iITCE)
+                 LayerITCE(iITCE) = Evt%itce%layer(iITCE)
                  Strip(iITCE) = Evt%itce%strip(iITCE)
                  View(iITCE) = Evt%itce%view(iITCE)
                  IndItKine(iITCE) = Evt%itce%inditkine(iITCE)
@@ -3334,7 +3334,7 @@ C      write(*,*)" "
     	goto 10
       else if(verb.eq.'CLOMC')then
       	write(Prompt,123)'CLOMC'
-	    Status=UIGTYE(Prompt,CLOMCFLAG)
+	    Status=UIGTYE(Prompt,CLUOMCFLAG)
     	goto 10
       else if(verb.eq.'QTELE')then
       	write(Prompt,123)'QTELE'
