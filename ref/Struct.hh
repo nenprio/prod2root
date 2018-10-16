@@ -1098,4 +1098,6 @@ extern "C" {
   }cluomc_;
 }
 
+// Block QTELE: TODO
+// Block QCTH:  TODO
 #endif

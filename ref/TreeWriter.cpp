@@ -1271,6 +1271,18 @@ void TreeWriter::addBlockCLUOMC() {
     fNewTree->Branch("CluMCt",   &cluomc_.CluMCt,   "CluMCt[nMCPar]/F");
 }
 
+// Add to the tree all the branches realted to the block CLUOMC.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockQTELE() {/*TODO*/}
+
+// Add to the tree all the branches realted to the block CLUOMC.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockQCTH() {/*TODO*/}
+
 // Returns the output file object.
 //
 // input:   -

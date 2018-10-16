@@ -557,3 +557,11 @@ C
 
       common /cluomc/nMCPar,CluMCCel,CluMCiCl,CluMCKin,CluMCe,CluMCx,
      1       CluMCy,CluMCz,CluMCt
+C
+C Block QTELE
+C TODO
+C
+C
+C Block QCTH
+C TODO
+C
