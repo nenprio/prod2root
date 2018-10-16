@@ -2,4 +2,60 @@ REF_DIR  = ../ref
 DICT_DIR = ../dict
 EXE_DIR  = ..
 
-/sample_bj.kloe: sample_bj.uic     
+$(info $(REF_DIR))
+$(info $(DICT_DIR))
+$(info $(EXE_DIR))
+
+PATH_VAR = $(PATH)
+OS       = $(shell uname -s)
+UVERSIS  = $(shell uname -v)
+
+$(info $(PATH_VAR))
+$(info $(OS))
+$(info $(UVERSIS))
+
+ifeq ($(OS), "OSF1")
+    PATH_VAR = . $(PATH_VAR) /sbin
+    $(info $(PATH_VAR))
+else
+ifeq ($(OS), "AIX")
+    PATH_VAR := $(PATH_VAR) /etc /usr/sbin
+    EXPAND_ALIAS := expaix
+    ifeq ($(UVERSIS), 7)
+        F77_ALIAS := "/opt/IBM/xlf/15.1.3/bin/xlf -O3 -qhsflt -qextname -c"
+        F90_ALIAS := "/opt/IBM/xlf/15.1.3/bin/xlf -O3 -qhsflt -qextname -c"
+    else
+    ifeq ($(UVERSIS), 5)
+        F77_ALIAS := "xlf -qarch=604 -O3 -qhsflt -qextname -c"
+        F90_ALIAS := "xlf -qarch=604 -O3 -qhsflt -qextname -c"
+    endif
+    endif
+else
+ifeq ($(OS), "SunOS")
+        #TODO
+else
+$(info QUI CI ARRIVO)
+ifeq ($(OS), "Linux")
+    EXPAND_ALIAS = $(shell echo"${EXPAND_PROGRAMS}/expand -env=linux")
+    F77_ALIAS = "f77 -c -O3  -w -fno-automatic -finit-local-zero -fdollar-ok -fno-backslash -fno-second-underscore"
+    F90_ALIAS = "f90 -c -O3"
+else
+    #EVERY OTHER CASE
+endif #Linux
+endif #SunOS
+endif #AIX
+endif #OSF1
+
+#TODO
+# set path = $(PATH)
+# alias EXPAND $(EXPAND)
+# alias F77
+# alias F90
+
+all:
+    $(info $(PATH_VAR) )
+    $(info $(EXPAND_ALIAS))
+    $(info $(F77_ALIAS))
+    $(info $(F90_ALIAS))
+
+$(REF_DIR)/sample_bj.kloe: $(DICT_DIR)/sample_bj.uic     
