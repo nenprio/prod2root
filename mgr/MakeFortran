@@ -1,67 +1,89 @@
-REF_DIR  := ../ref
+# Define working directory starting from current dir "mgr"
 DICT_DIR := ../dict
 EXE_DIR  := ../exe
-OPT_DIR  := ../opt
 MGR_DIR  := ../mgr
+OPT_DIR  := ../opt
+REF_DIR  := ../ref
 
-$(warning "Working directories:")
-$(info $(REF_DIR))
-$(info $(DICT_DIR))
-$(info $(EXE_DIR))
-
-PATH_VAR := $(PATH)
+# Extract info about OS, OS Version and current User
 OS       := $(shell uname -s)
 UVERSIS  := $(shell uname -v)
+USER     := $(shell echo $$USER)
 
-$(info $(PATH_VAR))
-$(info $(OS))
-$(info $(UVERSIS))
+# Define variable for AIX OS, according to the version 5 or 7
+PATH_VAR      := $(shell echo $$PATH | tr ':' ' ') /etc /usr/sbin .
+EXPAND_CMD    := expaix
+PACKMAN_CMD   := /kloe/soft/onl/manage/v3/mgr/packman.csh
+SETUP_CMD     := /kloe/soft/off/ups/v3_0/aix/bin/ups_setup
+BUILD_JOB_CMD := /kloe/soft/off/build_job/production/aix/programs/build_job.exe
 
-EXPAND_CMD := "expaix"
 ifeq ($(UVERSIS), 7)
-    F77_CMD    := "/opt/IBM/xlf/15.1.3/bin/xlf -O3 -qhsflt -qextname -c"
-    F90_CMD    := "/opt/IBM/xlf/15.1.3/bin/xlf -O3 -qhsflt -qextname -c"
+	F77_CMD    := "/opt/IBM/xlf/15.1.3/bin/xlf -O3 -qhsflt -qextname -c"
+	F90_CMD    := "/opt/IBM/xlf/15.1.3/bin/xlf -O3 -qhsflt -qextname -c"
 else
-    F77_CMD    := "xlf -qarch=604 -O3 -qhsflt -qextname -c"
-    F90_CMD    := "xlf -qarch=604 -O3 -qhsflt -qextname -c"
+	F77_CMD    := "xlf -qarch=604 -O3 -qhsflt -qextname -c"
+	F90_CMD    := "xlf -qarch=604 -O3 -qhsflt -qextname -c"
 endif
 
+# Define SAMPLE path according to the current user
+ifeq ($(USER), berducci)
+	SAMPLE_PATH := /afs/kloe.infn.it/user/b/berducci/prod2root/ref
+else
+ifeq ($(USER), eperez)
+	SAMPLE_PATH := /afs/kloe.infn.it/user/e/eperez/prod2root/ref
+endif           #eperez
+endif           #berducci
+
+# Initial target
 all: init_setup $(REF_DIR)/sample_bj.f $(REF_DIR)/sample.f $(REF_DIR)/prod2ntu.f $(REF_DIR)/newt0find.f final_setup
 
 init_setup:
-	packman calib
-    packman kid
-    setup -e emc development
-    setup -e tls development
-    setup -e ecl development
-    setup -e trk development
-    setup -e trg development
-    set ROOTCONFIG = 'root-config '
-    set ROOTLIBS   = `$ROOTCONFIG --libs`
-    setenv MYLIBS "$ROOTLIBS -lm -lC -Wl,-bloadmap:map.txt"
-    setenv SAMPLE /afs/kloe.infn.it/user/b/berducci/prod2root/ref
-    setenv MYLIBS "$ROOTLIBS -lm -lC -Wl,-bloadmap:map.txt"
-    rm -rf $(EXE_DIR)/sample.exe
+	set path = $(PATH_VAR)
+	$(PACKMAN_CMD) calib
+	$(PACKMAN_CMD) kid
+	$(SETUP_CMD) -e emc development
+	$(SETUP_CMD) -e tls development
+	$(SETUP_CMD) -e ecl development
+	$(SETUP_CMD) -e trk development
+	$(SETUP_CMD) -e trg development
+	set ROOTLIBS = $(shell root-config --libs)
+	export SAMPLE=$(SAMPLE_PATH)
+	export MYLIBS="$$ROOTLIBS -lm -lC -Wl,-bloadmap:map.txt"
+	rm -rf $(EXE_DIR)/sample.exe
+
+print_info:
+	echo $(PATH_VAR)
+	echo $(OS)
+	echo $(UVERSIS)
+	echo $(EXPAND_CMD)
+	echo $(F77_CMD)
+	echo $(F90_CMD)
+	echo ""
 
 final_setup:
-    $(MGR_DIR) $(EXE_DIR)/sample.exe $(OPT_DIR)/sample.opt no no
-    ls -alrt sample.exe
+	$(MGR_DIR) $(EXE_DIR)/sample.exe $(OPT_DIR)/sample.opt no no
+	ls -alrt sample.exe
 
 $(REF_DIR)/sample.f: $(REF_DIR)/sample.kloe $(REF_DIR)/sample.cin $(REF_DIR)/sample.uid $(REF_DIR)/sample_talk.cin
-    $(EXPAND) $<
+	$(EXPAND) $<
 
 $(REF_DIR)/prod2ntu.f: $(REF_DIR)/prod2ntu.kloe
-    $(EXPAND) $<
+	$(EXPAND) $<
 
-$(REF_DIR)/newt0find.f: $(REF_DIR)/newt0find.f
-    $(EXPAND) $<
+$(REF_DIR)/newt0find.f: $(REF_DIR)/newt0find.kloe
+	$(EXPAND) $<
 
-$(REF_DIR)/sample_bj.f: $(DICT_DIR)/sample_bj.kloe
-    build_job $<
-    mv $< $@
+$(REF_DIR)/sample_bj.f: $(REF_DIR)/sample_bj.kloe
+	$(EXPAND) $<
+
+$(REF_DIR)/sample_bj.kloe: $(DICT_DIR)/sample_bj.uic
+	cd $(DICT_DIR)
+	$(BUILD_JOB_CMD) sample_bj.uic
+	cd $(MGR_DIR)
+	mv sample_bj.kloe $@
 
 .PHONY: clean
 
 clean:
-    rm -rf $(REF_DIR)/*.f
-    rm -rf $(EXE_DIR)/*.exe
+	rm -ri $(REF_DIR)/*.f
+	rm -ri $(EXE_DIR)/*.exe
