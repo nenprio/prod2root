@@ -1139,4 +1139,15 @@ extern "C" {
   }itce_;
 }
 
+// Block:   hete
+extern "C" {
+  extern struct {
+    int nHetDcs;
+    int HDet[MaxNumHET];
+    int HCol[MaxNumHET];
+    int nTurnHet[MaxNumHET];
+    float TimeHet[MaxNumHET];
+  }hete_;
+}
+
 #endif
