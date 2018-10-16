@@ -87,7 +87,7 @@ TreeWriter::TreeWriter() {
     // Block DPRS
     if(logicalToBool(sammenu_.dprsFlag))        addBlockDPRS();
     // Block MC
-    if(logicalToBool(sammenu_.mcFlag))          addBlockMC();
+    if(logicalToBool(sammenu_.geanfiFlag))      addBlockMC();
     // Block TCLO
     if(logicalToBool(sammenu_.tcloFlag))        addBlockTCLO();
     // Block TCLOld
@@ -196,7 +196,7 @@ void TreeWriter::printHeaderFlags() {
     header += Form("TRKMCOLD: %d\n", logicalToBool(sammenu_.trkMCOldFlag));
     header += Form("DHIT: %d ",      logicalToBool(sammenu_.dhitFlag));
     header += Form("DPRS: %d ",      logicalToBool(sammenu_.dprsFlag));
-    header += Form("MC: %d ",        logicalToBool(sammenu_.mcFlag));
+    header += Form("GEANFI: %d ",    logicalToBool(sammenu_.geanfiFlag));
     header += Form("TCLO: %d ",      logicalToBool(sammenu_.tcloFlag));
     header += Form("TCOLD: %d ",     logicalToBool(sammenu_.tcloldFlag));
     header += Form("CFHI: %d ",      logicalToBool(sammenu_.cfhiFlag));
@@ -1318,7 +1318,7 @@ void TreeWriter::addBlockLETE() {
 void TreeWriter::addBlockITCE() {
     fNewTree->Branch("nITCE",     &itce_.nITCE,     "nITCE/I");
     fNewTree->Branch("Foil",      &itce_.Foil,      "Foil[nITCE]/I");
-    fNewTree->Branch("LayerITCE", &itce_.Layer,     "LayerITCE[nITCE]/I");
+    fNewTree->Branch("ITLayer",   &itce_.ITLayer,   "ITLayer[nITCE]/I");
     fNewTree->Branch("Strip",     &itce_.Strip,     "Strip[nITCE]/I");
     fNewTree->Branch("View",      &itce_.View,      "View[nITCE]/I");
     fNewTree->Branch("IndItKine", &itce_.IndItKine, "IndItKine[nITCE]/I");

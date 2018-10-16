@@ -78,7 +78,7 @@ extern "C"{
     int dhitFlag;
     int dedxFlag;
     int dprsFlag;
-    int mcFlag;
+    int geanfiFlag;
     int tcloFlag;
     int tcloldFlag;
     int cfhiFlag;
@@ -1132,7 +1132,7 @@ extern "C" {
   extern struct {
     int nITCE;
     int Foil[MaxNumIT];
-    int Layer[MaxNumIT];
+    int ITLayer[MaxNumIT];
     int Strip[MaxNumIT];
     int View[MaxNumIT];
     int IndItKine[MaxNumIT];

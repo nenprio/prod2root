@@ -7,7 +7,11 @@ C Follow the declarations of external functions
 C and return variables used in sample.kloe to fill the data.
 C
         REAL    rstat, GETBPOS
-        INTEGER T0GLRD, T0MCRD
+        LOGICAL MCFLAG_1
+        INTEGER istat, STATUS 
+        INTEGER NUMDHIT, MCFLAG_TG
+        INTEGER BNKNUM, ICURR, IND1, INDDAT, OldRunNumber
+        INTEGER T0GLRD, T0MCRD 
         INTEGER GETCLUSTRU, GETMCSTRU, GETCELESTRU
         INTEGER GETEVCL, GETCLUOSTRU
         INTEGER TRKV2STRU, GETTCLOSTRU, GETCFHISTRU, BLOCAT
@@ -30,7 +34,6 @@ C
         INTEGER GETCSPSSTRU, GETCLUOMCSTRU
         INTEGER TRKVOLD2STRU, GETOLDTCLOSTRU, DHIT_RESET, DHIT_UPK
         INTEGER DEDX2STRU_GET, DEDX2STRU_RESET
-        INTEGER BNKNUM, ICURR
 C
 C BLOCK STRUCTURE DECLARATIONS
 C Follow the declarations of all the variables filled by data
@@ -585,10 +588,10 @@ C
 C
 C  Block: itce
 C
-      integer iITCE, nITCE, Foil(4032), LayerITCE(4032), Strip(4032)
+      integer iITCE, nITCE, Foil(4032), ITLayer(4032), Strip(4032)
       integer View(4032), IndItKine(4032)
 
-      common /itce/nITCE,Foil,LayerITCE,Strip,View,IndItKine
+      common /itce/nITCE,Foil,ITLayer,Strip,View,IndItKine
 C
 C  Block: hete
 C
