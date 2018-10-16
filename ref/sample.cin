@@ -547,3 +547,13 @@ C
       real CluT(100)
 
       common /cluo/nCluO,CluCel,CluFl,CluE,CluX,CluY,CluZ,CluT
+C
+C  Block: cluomc
+C
+      integer iCLUOMC, nMCPar, CluMCCel(100), CluMCiCl(100)
+      integer CluMCKin(100)
+      real CluMCe(100), CluMCx(100), CluMCy(100), CluMCz(100)
+      real CluMCt(100)
+
+      common /cluomc/nMCPar,CluMCCel,CluMCiCl,CluMCKin,CluMCe,CluMCx,
+     1       CluMCy,CluMCz,CluMCt

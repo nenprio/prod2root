@@ -1255,6 +1255,22 @@ void TreeWriter::addBlockCLUO() {
     fNewTree->Branch("CluT",   &cluo_.CluT,   "CluT[nCluO]/F");
 }
 
+// Add to the tree all the branches realted to the block CLUOMC.
+//
+// input:	-
+// output: -
+void TreeWriter::addBlockCLUOMC() {
+    fNewTree->Branch("nMCPar",   &cluomc_.nMCPar,   "nMCPar/I");
+    fNewTree->Branch("CluMCCel", &cluomc_.CluMCCel, "CluMCCel[nMCPar]/I");
+    fNewTree->Branch("CluMCiCl", &cluomc_.CluMCiCl, "CluMCiCl[nMCPar]/I");
+    fNewTree->Branch("CluMCKin", &cluomc_.CluMCKin, "CluMCKin[nMCPar]/I");
+    fNewTree->Branch("CluMCe",   &cluomc_.CluMCe,   "CluMCe[nMCPar]/F");
+    fNewTree->Branch("CluMCx",   &cluomc_.CluMCx,   "CluMCx[nMCPar]/F");
+    fNewTree->Branch("CluMCy",   &cluomc_.CluMCy,   "CluMCy[nMCPar]/F");
+    fNewTree->Branch("CluMCz",   &cluomc_.CluMCz,   "CluMCz[nMCPar]/F");
+    fNewTree->Branch("CluMCt",   &cluomc_.CluMCt,   "CluMCt[nMCPar]/F");
+}
+
 // Returns the output file object.
 //
 // input:   -

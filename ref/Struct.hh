@@ -1083,4 +1083,19 @@ extern "C" {
   }cluo_;
 }
 
+// Block:   cluomc
+extern "C" {
+  extern struct {
+    int nMCPar;
+    int CluMCCel[MaxNumCluo];
+    int CluMCiCl[MaxNumCluo];
+    int CluMCKin[MaxNumCluo];
+    float CluMCe[MaxNumCluo];
+    float CluMCx[MaxNumCluo];
+    float CluMCy[MaxNumCluo];
+    float CluMCz[MaxNumCluo];
+    float CluMCt[MaxNumCluo];
+  }cluomc_;
+}
+
 #endif

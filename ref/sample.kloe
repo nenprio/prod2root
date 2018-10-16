@@ -2832,6 +2832,44 @@ C-----------------------------------------------------------------------
          END IF
       END IF
 C-----------------------------------------------------------------------
+C Fill Block cluomc
+C-----------------------------------------------------------------------
+      IF (CLUMCFLAG) THEN
+         nMCPar = 0.
+         DO iCLUOMC=1, 100
+           CluMCCel(iCLUOMC) = 0.
+           CluMCiCl(iCLUOMC) = 0.
+           CluMCKin(iCLUOMC) = 0.
+           CluMCe(iCLUOMC) = 0.
+           CluMCx(iCLUOMC) = 0.
+           CluMCy(iCLUOMC) = 0.
+           CluMCz(iCLUOMC) = 0.
+           CluMCt(iCLUOMC) = 0.
+         END DO
+
+         istat = GETCLUOMCSTRU(Evt%CLUOMC)
+
+         nMCPar = Evt%CLUOMC%Npar
+         IF ( nMCPar < 0 .OR. nMCPar > 100 ) THEN
+            WRITE(*,*) 'ERROR CLUOMC - nMCPar Out of bound : ', nMCPar
+         END IF
+
+         IF (nMCPar > 0 .AND. nMCPar <= 100) THEN
+            DO iCLUOMC=1, nMCPar
+                 CluMCCel(iCLUOMC) = Evt%CLUOMC%Ncel(iCLUOMC)
+                 CluMCiCl(iCLUOMC) = Evt%CLUOMC%Iclu(iCLUOMC)
+                 CluMCKin(iCLUOMC) = Evt%CLUOMC%Kine(iCLUOMC)
+                 CluMCe(iCLUOMC) = Evt%CLUOMC%E(iCLUOMC)
+                 CluMCx(iCLUOMC) = Evt%CLUOMC%X(iCLUOMC)
+                 CluMCy(iCLUOMC) = Evt%CLUOMC%Y(iCLUOMC)
+                 CluMCz(iCLUOMC) = Evt%CLUOMC%Z(iCLUOMC)
+                 CluMCt(iCLUOMC) = Evt%CLUOMC%T(iCLUOMC)
+           END DO
+         ELSE
+            WRITE(*,*) 'ERROR CLUOMC - nMCPar Index not valid: ', nMCPar
+         END IF
+      END IF
+C-----------------------------------------------------------------------
 C Fill Root
 C-----------------------------------------------------------------------
       call fillntu() 	
