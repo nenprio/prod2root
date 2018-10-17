@@ -2880,8 +2880,62 @@ C-----------------------------------------------------------------------
          END IF
       END IF
 C-----------------------------------------------------------------------
-C Block QTELE: TODO
+C Fill Block qtele
 C-----------------------------------------------------------------------
+      IF (QTELEFLAG) THEN
+         nQCalT = 0.
+         DO iQTELE=1, 1920
+           QLte_Hit(iQTELE) = 0.
+           QLte_Det(iQTELE) = 0.
+           QLte_Mod(iQTELE) = 0.
+           QLte_Pla(iQTELE) = 0.
+           QLte_Til(iQTELE) = 0.
+           QLte_Tim1(iQTELE) = 0.
+           QLte_Tim2(iQTELE) = 0.
+           QLte_Tim3(iQTELE) = 0.
+           QLte_Tim4(iQTELE) = 0.
+           QLte_Tim5(iQTELE) = 0.
+         END DO
+
+         istat = GETQCALTSTRU(Evt%QCALT)
+
+         nQCalT = Evt%QCALT%NEle
+         IF ( nQCalT < 0 .OR. nQCalT > 1920 ) THEN
+            WRITE(*,*) 'ERROR QTELE - nQCalT Out of bound : ', nQCalT
+         END IF
+
+         IF (nQCalT > 0 .AND. nQCalT <= 1920) THEN
+            DO iQTELE=1, nQCalT
+               QLte_Hit(iQTELE) = Evt%QCALT%Nhit(iQTELE)
+               IF ( QLte_Hit(iQTELE) < 0 .OR. QLte_Hit(iQTELE) > 5 ) THEN
+                  WRITE(*,*) 'ERROR QTELE - QLte_Hit[1] Out of bound : ', QLte_Hit(iQTELE)
+               END IF
+               QLte_Det(iQTELE) = Evt%QCALT%Qdet(iQTELE)
+               IF ( QLte_Det(iQTELE) < 0 .OR. QLte_Det(iQTELE) > 2 ) THEN
+                  WRITE(*,*) 'ERROR QTELE - QLte_Det[2] Out of bound : ', QLte_Det(iQTELE)
+               END IF
+               QLte_Mod(iQTELE) = Evt%QCALT%Qmod(iQTELE)
+               IF ( QLte_Mod(iQTELE) < 0 .OR. QLte_Mod(iQTELE) > 11 ) THEN
+                  WRITE(*,*) 'ERROR QTELE - QLte_Mod[3] Out of bound : ', QLte_Mod(iQTELE)
+               END IF
+               QLte_Pla(iQTELE) = Evt%QCALT%Qpla(iQTELE)
+               IF ( QLte_Pla(iQTELE) < 0 .OR. QLte_Pla(iQTELE) > 4 ) THEN
+                  WRITE(*,*) 'ERROR QTELE - QLte_Pla[4] Out of bound : ', QLte_Pla(iQTELE)
+               END IF
+               QLte_Til(iQTELE) = Evt%QCALT%Qtil(iQTELE)
+               IF ( QLte_Til(iQTELE) < 0 .OR. QLte_Til(iQTELE) > 15 ) THEN
+                  WRITE(*,*) 'ERROR QTELE - QLte_Til[5] Out of bound : ', QLte_Til(iQTELE)
+               END IF
+               QLte_Tim1(iQTELE) = Evt%QCALT%Time(1)(iQTELE)
+               QLte_Tim2(iQTELE) = Evt%QCALT%Time(2)(iQTELE)
+               QLte_Tim3(iQTELE) = Evt%QCALT%Time(3)(iQTELE)
+               QLte_Tim4(iQTELE) = Evt%QCALT%Time(4)(iQTELE)
+               QLte_Tim5(iQTELE) = Evt%QCALT%Time(5)(iQTELE)
+           END DO
+         ELSE
+            WRITE(*,*) 'ERROR QTELE - nQCalT Index not valid: ', nQCalT
+         END IF
+      END IF
 C-----------------------------------------------------------------------
 C Block QCTH:  TODO
 C-----------------------------------------------------------------------

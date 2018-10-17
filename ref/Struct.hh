@@ -1098,7 +1098,23 @@ extern "C" {
   }cluomc_;
 }
 
-// Block QTELE: TODO
+// Block:   qtele
+extern "C" {
+  extern struct {
+    int nQCalT;
+    int QLte_Hit[MaxNumQCalT];
+    int QLte_Det[MaxNumQCalT];
+    int QLte_Mod[MaxNumQCalT];
+    int QLte_Pla[MaxNumQCalT];
+    int QLte_Til[MaxNumQCalT];
+    float QLte_Tim1[MaxNumQCalT];
+    float QLte_Tim2[MaxNumQCalT];
+    float QLte_Tim3[MaxNumQCalT];
+    float QLte_Tim4[MaxNumQCalT];
+    float QLte_Tim5[MaxNumQCalT];
+  }qtele_;
+}
+
 // Block QCTH:  TODO
 
 // Block:   ccle

@@ -561,9 +561,15 @@ C
       common /cluomc/nMCPar,CluMCCel,CluMCiCl,CluMCKin,CluMCe,CluMCx,
      1       CluMCy,CluMCz,CluMCt
 C
-C Block QTELE
-C TODO
+C  Block: qtele
 C
+      integer iQTELE, nQCalT, QLte_Hit(1920), QLte_Det(1920)
+      integer QLte_Mod(1920), QLte_Pla(1920), QLte_Til(1920)
+      real QLte_Tim1(1920), QLte_Tim2(1920), QLte_Tim3(1920)
+      real QLte_Tim4(1920), QLte_Tim5(1920)
+
+      common /qtele/nQCalT,QLte_Hit,QLte_Det,QLte_Mod,QLte_Pla,QLte_Til,
+     1       QLte_Tim1,QLte_Tim2,QLte_Tim3,QLte_Tim4,QLte_Tim5
 C
 C Block QCTH
 C TODO

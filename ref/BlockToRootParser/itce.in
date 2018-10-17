@@ -1,6 +1,0 @@
-CALL HBNAME(Params%NtId,'ITCE',Evt%itce%nitce,'nitce:i::[0,4032]')
-CALL HBNAME(Params%NtId,'ITCE',Evt%itce%foil,'foil(nitce):i')
-CALL HBNAME(Params%NtId,'ITCE',Evt%itce%layer,'layer(nitce):i')
-CALL HBNAME(Params%NtId,'ITCE',Evt%itce%strip,'strip(nitce):i')
-CALL HBNAME(Params%NtId,'ITCE',Evt%itce%view,'view(nitce):i')
-CALL HBNAME(Params%NtId,'ITCE',Evt%itce%inditkine,'inditkine(nitce):i')
