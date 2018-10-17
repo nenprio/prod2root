@@ -123,7 +123,7 @@ TreeWriter::TreeWriter() {
     // Block CLUOMC 
     if(logicalToBool(sammenu_.cluoMCFlag))      addBlockCluOMC();
     // Block QTELE
-    if(logicalToBool(sammenu_.qteleFlag))       addBlockQTele();
+    if(logicalToBool(sammenu_.qteleFlag))       addBlockQTELE();
     // Block QCTH 
     if(logicalToBool(sammenu_.qcthFlag))        addBlockQCTH();
     // Block CCELE 
@@ -1295,10 +1295,10 @@ void TreeWriter::addBlockQTELE() {
 // output: -
 void TreeWriter::addBlockQCTH() {
     fNewTree->Branch("nQCTHEle", &qcth_.nQCTHEle, "nQCTHEle/I");
-    fNewTree->Branch("nHit",     &qcth_.nHit,     "nHit[nQCTHEle]/I");
-    fNewTree->Branch("x",        &qcth_.x,        "x[nQCTHEle]/F");
-    fNewTree->Branch("y",        &qcth_.y,        "y[nQCTHEle]/F");
-    fNewTree->Branch("z",        &qcth_.z,        "z[nQCTHEle]/F");
+    fNewTree->Branch("nQCTHHit", &qcth_.nQCTHHit, "nQCTHHit[nQCTHEle]/I");
+    fNewTree->Branch("QCTHx",    &qcth_.QCTHx,    "QCTHx[nQCTHEle]/F");
+    fNewTree->Branch("QCTHy",    &qcth_.QCTHy,    "QCTHy[nQCTHEle]/F");
+    fNewTree->Branch("QCTHz",    &qcth_.QCTHz,    "QCTHz[nQCTHEle]/F");
     fNewTree->Branch("Tim1",     &qcth_.Tim1,     "Tim1[nQCTHEle]/F");
     fNewTree->Branch("Tim2",     &qcth_.Tim2,     "Tim2[nQCTHEle]/F");
     fNewTree->Branch("Tim3",     &qcth_.Tim3,     "Tim3[nQCTHEle]/F");

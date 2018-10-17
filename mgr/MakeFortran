@@ -13,8 +13,8 @@ USER     := $(shell echo $$USER)
 # Define variable for AIX OS, according to the version 5 or 7
 PATH_VAR      := $(shell echo $$PATH | tr ':' ' ') /etc /usr/sbin .
 EXPAND_CMD    := expaix
-PACKMAN_CMD   := /kloe/soft/onl/manage/v3/mgr/packman.csh
-SETUP_CMD     := /kloe/soft/off/ups/v3_0/aix/bin/ups_setup
+PACKMAN       := /kloe/soft/onl/manage/v3/mgr/packman.csh
+SETUP         := /kloe/soft/off/ups/v3_0/aix/bin/ups_setup
 BUILD_JOB_CMD := /kloe/soft/off/build_job/production/aix/programs/build_job.exe
 
 ifeq ($(UVERSIS), 7)
@@ -34,18 +34,21 @@ ifeq ($(USER), eperez)
 endif           #eperez
 endif           #berducci
 
+OLDSHELL := SHELL
+SHELL := /usr/bin/tcsh
+
 # Initial target
 all: init_setup $(REF_DIR)/sample_bj.f $(REF_DIR)/sample.f $(REF_DIR)/prod2ntu.f $(REF_DIR)/newt0find.f final_setup
 
 init_setup:
 	set path = $(PATH_VAR)
-	$(PACKMAN_CMD) calib
-	$(PACKMAN_CMD) kid
-	$(SETUP_CMD) -e emc development
-	$(SETUP_CMD) -e tls development
-	$(SETUP_CMD) -e ecl development
-	$(SETUP_CMD) -e trk development
-	$(SETUP_CMD) -e trg development
+	shell $(PACKMAN) calib
+	shell $(PACKMAN) kid
+	shell $(SETUP) -e emc development
+	shell $(SETUP) -e tls development
+	shell $(SETUP) -e ecl development
+	shell $(SETUP) -e trk development
+	shell $(SETUP) -e trg development
 	set ROOTLIBS = $(shell root-config --libs)
 	export SAMPLE=$(SAMPLE_PATH)
 	export MYLIBS="$$ROOTLIBS -lm -lC -Wl,-bloadmap:map.txt"

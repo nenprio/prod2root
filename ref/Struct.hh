@@ -1119,15 +1119,15 @@ extern "C" {
 extern "C" {
   extern struct {
     int nQCTHEle;
-    int nHit[MaxNumQCalT];
-    float x[MaxNumQCalT];
-    float y[MaxNumQCalT];
-    float z[MaxNumQCalT];
+    int nQCTHHit[MaxNumQCalT];
+    float QCTHx[MaxNumQCalT];
+    float QCTHy[MaxNumQCalT];
+    float QCTHz[MaxNumQCalT];
     float Tim1[MaxNumQCalT];
     float Tim2[MaxNumQCalT];
     float Tim3[MaxNumQCalT];
     float Tim4[MaxNumQCalT];
-    float Tim5[>MAX-VALUE<];
+    float Tim5[MaxNumQCalT];
   }qcth_;
 }
 
