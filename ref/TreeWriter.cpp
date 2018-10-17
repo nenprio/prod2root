@@ -1289,11 +1289,22 @@ void TreeWriter::addBlockQTELE() {
     fNewTree->Branch("QLte_Tim5", &qtele_.QLte_Tim5, "QLte_Tim5[nQCalT]/F");
 }
 
-// Add to the tree all the branches realted to the block CLUOMC.
+// Add to the tree all the branches realted to the block QCTH.
 //
 // input:	-
 // output: -
-void TreeWriter::addBlockQCTH() {/*TODO*/}
+void TreeWriter::addBlockQCTH() {
+    fNewTree->Branch("nQCTHEle", &qcth_.nQCTHEle, "nQCTHEle/I");
+    fNewTree->Branch("nHit",     &qcth_.nHit,     "nHit[nQCTHEle]/I");
+    fNewTree->Branch("x",        &qcth_.x,        "x[nQCTHEle]/F");
+    fNewTree->Branch("y",        &qcth_.y,        "y[nQCTHEle]/F");
+    fNewTree->Branch("z",        &qcth_.z,        "z[nQCTHEle]/F");
+    fNewTree->Branch("Tim1",     &qcth_.Tim1,     "Tim1[nQCTHEle]/F");
+    fNewTree->Branch("Tim2",     &qcth_.Tim2,     "Tim2[nQCTHEle]/F");
+    fNewTree->Branch("Tim3",     &qcth_.Tim3,     "Tim3[nQCTHEle]/F");
+    fNewTree->Branch("Tim4",     &qcth_.Tim4,     "Tim4[nQCTHEle]/F");
+    fNewTree->Branch("Tim5",     &qcth_.Tim5,     "Tim5[nQCTHEle]/F");
+}
 
 // Add to the tree all the branches realted to the block CCLE.
 //

@@ -571,9 +571,13 @@ C
       common /qtele/nQCalT,QLte_Hit,QLte_Det,QLte_Mod,QLte_Pla,QLte_Til,
      1       QLte_Tim1,QLte_Tim2,QLte_Tim3,QLte_Tim4,QLte_Tim5
 C
-C Block QCTH
-C TODO
+C  Block: qcth
 C
+      integer iQCTH, nQCTHEle, nHit(1920)
+      real x(1920), y(1920), z(1920), Tim1(1920), Tim2(1920)
+      real Tim3(1920), Tim4(1920), Tim5(1920)
+
+      common /qcth/nQCTHEle,nHit,x,y,z,Tim1,Tim2,Tim3,Tim4,Tim5
 C
 C  Block: ccle
 C

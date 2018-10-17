@@ -2937,8 +2937,48 @@ C-----------------------------------------------------------------------
          END IF
       END IF
 C-----------------------------------------------------------------------
-C Block QCTH:  TODO
+C Fill Block qcth
 C-----------------------------------------------------------------------
+      IF (QCTHFLAG) THEN
+         nQCTHEle = 0.
+         DO iQCTH=1, 1920
+           nHit(iQCTH) = 0.
+           x(iQCTH) = 0.
+           y(iQCTH) = 0.
+           z(iQCTH) = 0.
+           Tim1(iQCTH) = 0.
+           Tim2(iQCTH) = 0.
+           Tim3(iQCTH) = 0.
+           Tim4(iQCTH) = 0.
+           Tim5(iQCTH) = 0.
+         END DO
+
+         istat = GETQCTHSTRU(Evt%QCALTHIT)
+
+         nQCTHEle = Evt%QCALTHIT%Nele
+         IF ( nQCTHEle < 0 .OR. nQCTHEle > 1920 ) THEN
+            WRITE(*,*) 'ERROR QCTH - nQCTHEle Out of bound : ', nQCTHEle
+         END IF
+
+         IF (nQCTHEle > 0 .AND. nQCTHEle <= 1920) THEN
+            DO iQCTH=1, nQCTHEle
+               nHit(iQCTH) = Evt%QCALTHIT%Nhit(iQCTH)
+               IF ( nHit(iQCTH) < 1 .OR. nHit(iQCTH) > 5 ) THEN
+                  WRITE(*,*) 'ERROR QCTH - nHit[1] Out of bound : ', nHit(iQCTH)
+               END IF
+               x(iQCTH) = Evt%QCALTHIT%X(iQCTH)
+               y(iQCTH) = Evt%QCALTHIT%Y(iQCTH)
+               z(iQCTH) = Evt%QCALTHIT%Z(iQCTH)
+               Tim1(iQCTH) = Evt%QCALTHIT%Time(1)(iQCTH)
+               Tim2(iQCTH) = Evt%QCALTHIT%Time(2)(iQCTH)
+               Tim3(iQCTH) = Evt%QCALTHIT%Time(3)(iQCTH)
+               Tim4(iQCTH) = Evt%QCALTHIT%Time(4)(iQCTH)
+               Tim5(iQCTH) = Evt%QCALTHIT%Time(5)(iQCTH)
+           END DO
+         ELSE
+            WRITE(*,*) 'ERROR QCTH - nQCTHEle Index not valid: ', nQCTHEle
+         END IF
+      END IF
 C-----------------------------------------------------------------------
 C Fill Block ccle
 C-----------------------------------------------------------------------

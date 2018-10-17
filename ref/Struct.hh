@@ -1115,7 +1115,21 @@ extern "C" {
   }qtele_;
 }
 
-// Block QCTH:  TODO
+// Block:   qcth
+extern "C" {
+  extern struct {
+    int nQCTHEle;
+    int nHit[MaxNumQCalT];
+    float x[MaxNumQCalT];
+    float y[MaxNumQCalT];
+    float z[MaxNumQCalT];
+    float Tim1[MaxNumQCalT];
+    float Tim2[MaxNumQCalT];
+    float Tim3[MaxNumQCalT];
+    float Tim4[MaxNumQCalT];
+    float Tim5[>MAX-VALUE<];
+  }qcth_;
+}
 
 // Block:   ccle
 extern "C" {
