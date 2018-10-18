@@ -192,21 +192,27 @@ C
 C=============================================================================
 C Start of Code:
 C=============================================================================
-      IF( exptyp.eq.exofsi )then ! Simulation
-         mcflag_1 = .true.
-      else
-         mcflag_1 = .false.
-      endif
+      ERROR_LINE    = "[ERROR]"
+      ERROR_MC_DATA = ERROR_LINE//"MC DATA - Try to access to missing MC data."
+      ERROR_BLOCK   = ERROR_LINE//"Block "
+      ERROR_INDEX   = "Index not valid."
+      ERROR_DOMAIN  = "Out of domain."
+      
+      IF( EXPTYP.EQ.EXOFSI ) THEN ! Simulation
+         MONTECARLOFLAG = .TRUE.
+      ELSE
+         MONTECARLOFLAG = .FALSE.
+      ENDIF
 
-      If (mcflag_1) then
-         mcflag_tg=1
-      Else
-         mcflag_tg=0
-      EndIf
+      IF (MONTECARLOFLAG) THEN
+         MCFLAG_TG=1
+      ELSE
+         MCFLAG_TG=0
+      ENDIF
 C-----------------------------------------------------------------------------
 C Fill event classification information
 C-----------------------------------------------------------------------------
-      IF( mcflag_1 )  THEN
+      IF( MONTECARLOFLAG )  THEN
          istat = GETEVCL(evt%Info)
 C         istat = BLOCAT(iw,'EVCL',1,ind1,inddat)
 C   Moved to the Block definition
@@ -241,7 +247,7 @@ C-----------------------------------------------------------------------
 C Fill Block Info
 C-----------------------------------------------------------------------
       IF (INFOFLAG) THEN
-         IF (mcflag_1) THEN
+         IF (MONTECARLOFLAG) THEN
             istat=blocat(iw,'BRID',1,ind1,inddat)
             Evt%Info%RunNumber = iw(inddat)
             IF (Evt%Info%RunNumber.ne.OldRunNumber) THEN
@@ -257,39 +263,39 @@ C-----------------------------------------------------------------------
          NumEv = Evt%Info%EventNumber
          Pileup = Evt%Info%Pileup
          IF ( Pileup < 0 .OR. Pileup > 1 ) THEN
-            WRITE(*,*) 'ERROR INFO - Pileup Out of bound : ', Pileup
+            WRITE(*,*) ERROR_BLOCK//'INFO - Pileup '//ERROR_DOMAIN, Pileup
          END IF
          GCod = Evt%Info%GenCod
          IF ( GCod < 0 .OR. GCod > 100 ) THEN
-            WRITE(*,*) 'ERROR INFO - GCod Out of bound : ', GCod
+            WRITE(*,*) ERROR_BLOCK//'INFO - GCod '//ERROR_DOMAIN, GCod
          END IF
          PhiD = Evt%Info%PhiDecay
          IF ( PhiD < 0 .OR. PhiD > 100 ) THEN
-            WRITE(*,*) 'ERROR INFO - PhiD Out of bound : ', PhiD
+            WRITE(*,*) ERROR_BLOCK//'INFO - PhiD '//ERROR_DOMAIN, PhiD
          END IF
          A1Typ = Evt%Info%A1type
          IF ( A1Typ < 0 .OR. A1Typ > 100 ) THEN
-            WRITE(*,*) 'ERROR INFO - A1Typ Out of bound : ', A1Typ
+            WRITE(*,*) ERROR_BLOCK//'INFO - A1Typ '//ERROR_DOMAIN, A1Typ
          END IF
          A2Typ = Evt%Info%A2type
          IF ( A2Typ < 0 .OR. A2Typ > 100 ) THEN
-            WRITE(*,*) 'ERROR INFO - A2Typ Out of bound : ', A2Typ
+            WRITE(*,*) ERROR_BLOCK//'INFO - A2Typ '//ERROR_DOMAIN, A2Typ
          END IF
          A3Typ = Evt%Info%A3type
          IF ( A3Typ < 0 .OR. A3Typ > 100 ) THEN
-            WRITE(*,*) 'ERROR INFO - A3Typ Out of bound : ', A3Typ
+            WRITE(*,*) ERROR_BLOCK//'INFO - A3Typ '//ERROR_DOMAIN, A3Typ
          END IF
          B1Typ = Evt%Info%B1type
          IF ( B1Typ < 0 .OR. B1Typ > 100 ) THEN
-            WRITE(*,*) 'ERROR INFO - B1Typ Out of bound : ', B1Typ
+            WRITE(*,*) ERROR_BLOCK//'INFO - B1Typ '//ERROR_DOMAIN, B1Typ
          END IF
          B2Typ = Evt%Info%B2type
          IF ( B2Typ < 0 .OR. B2Typ > 100 ) THEN
-            WRITE(*,*) 'ERROR INFO - B2Typ Out of bound : ', B2Typ
+            WRITE(*,*) ERROR_BLOCK//'INFO - B2Typ '//ERROR_DOMAIN, B2Typ
          END IF
          B3Typ = Evt%Info%B3type
          IF ( B3Typ < 0 .OR. B3Typ > 100 ) THEN
-            WRITE(*,*) 'ERROR INFO - B3Typ Out of bound : ', B3Typ
+            WRITE(*,*) ERROR_BLOCK//'INFO - B3Typ '//ERROR_DOMAIN, B3Typ
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -389,7 +395,7 @@ C-----------------------------------------------------------------------
          
          nEcls = evt%ecls%n
          IF ( nEcls < 0 .OR. nEcls > 8 ) THEN
-            WRITE(*,*) 'ERROR INFO - nEcls Out of bound : ', nEcls
+            WRITE(*,*) ERROR_BLOCK//'ECLS - nEcls '//ERROR_DOMAIN, nEcls
          END IF
 
          IF (nEcls > 0 .AND. nEcls <= 8) THEN
@@ -407,7 +413,7 @@ C-----------------------------------------------------------------------
          
          nEcls2 = evt%ecls%n2
          IF ( nEcls2 < 0 .OR. nEcls2 > 8 ) THEN
-            WRITE(*,*) 'ERROR INFO - nEcls2 Out of bound : ', nEcls2
+            WRITE(*,*) ERROR_BLOCK//'ECLS - nEcls2 '//ERROR_DOMAIN, nEcls2
          END IF
 
          IF (nEcls2 > 0 .AND. nEcls <= 8) THEN
@@ -486,7 +492,7 @@ C-----------------------------------------------------------------------
          
          NTel = Evt%Tellina%n
          IF ( NTel < 0 .OR. NTel > 300 ) THEN
-            WRITE(*,*) 'ERROR TELLINA - NTel Out of bound : ', NTel
+            WRITE(*,*) ERROR_BLOCK//'TELLINA - NTel '//ERROR_DOMAIN, NTel
          END IF
 
          IF (nTel > 0 .AND. nTel <= 300) THEN
@@ -494,7 +500,7 @@ C-----------------------------------------------------------------------
                  Add_Tel(iTELLINA) = Evt%Tellina%add(iTELLINA)
                Bitp_Tel(iTELLINA) = Evt%Tellina%Bitp(iTELLINA)
                IF ( Bitp_Tel(iTELLINA) < 0 .OR. Bitp_Tel(iTELLINA) > 1100 ) THEN
-                  WRITE(*,*) 'ERROR TELLINA - Bitp_Tel Out of bound : ', Bitp_Tel(iTELLINA)
+                  WRITE(*,*) ERROR_BLOCK//'TELLINA - Bitp_Tel '//ERROR_DOMAIN, Bitp_Tel
                END IF
                  Ea_Tel(iTELLINA) = Evt%Tellina%Ea(iTELLINA)
                  Eb_Tel(iTELLINA) = Evt%Tellina%Eb(iTELLINA)
@@ -522,7 +528,7 @@ C-----------------------------------------------------------------------
 
          NPiz = Evt%Pizzetta%n
          IF ( NPiz < 0 .OR. NPiz > 300 ) THEN
-            WRITE(*,*) 'ERROR PIZZETTA - NPiz Out of bound : ', NPiz
+            WRITE(*,*) ERROR_BLOCK//'PIZZETTA - NPiz '//ERROR_DOMAIN, NPiz
          END IF
          IF (NPiz > 0 .AND. NPiz <= 300) THEN
             DO iPIZZETTA=1, NPiz
@@ -821,57 +827,61 @@ C-----------------------------------------------------------------------
 C Fill Block CluMC
 C-----------------------------------------------------------------------
       IF (CLUMCFLAG) THEN
-         NCluMc = 0.
-         DO iEVTCLUMC=1, 100
-            NPar(iEVTCLUMC) = 0.
-            PNum1(iEVTCLUMC) = 0.
-            Pid1(iEVTCLUMC) = 0.
-            PNum2(iEVTCLUMC) = 0.
-            Pid2(iEVTCLUMC) = 0.
-            PNum3(iEVTCLUMC) = 0.
-            Pid3(iEVTCLUMC) = 0.
-         END DO
+         IF (MONTECARLOFLAG) THEN
+           NCluMc = 0.
+           DO iEVTCLUMC=1, 100
+              NPar(iEVTCLUMC) = 0.
+              PNum1(iEVTCLUMC) = 0.
+              Pid1(iEVTCLUMC) = 0.
+              PNum2(iEVTCLUMC) = 0.
+              Pid2(iEVTCLUMC) = 0.
+              PNum3(iEVTCLUMC) = 0.
+              Pid3(iEVTCLUMC) = 0.
+           END DO
+    
+           istat = GETCLUSTRU(Evt%Clu)
   
-         istat = GETCLUSTRU(Evt%Clu)
-
-         NCluMc = Evt%Clu%nmc
-         IF ( NCluMc < 0 .OR. NCluMc > 100 ) THEN
-            WRITE(*,*) 'ERROR CLU - NCluMc Out of bound : ', NCluMc
-         END IF
-         IF (NCluMc > 0 .AND. NCluMc <= 100) THEN
-            DO iEVTCLUMC=1, NCluMc
-               NPar(iEVTCLUMC) = Evt%Clu%Npart(iEVTCLUMC)
-               IF ( NPar(iEVTCLUMC) < 0 .OR. NPar(iEVTCLUMC) > 10 ) THEN
-                  WRITE(*,*) 'ERROR EVTCLUMC - NPar Out of bound : ', NPar(iEVTCLUMC)
-               END IF
-               PNum1(iEVTCLUMC) = Evt%Clu%part1(iEVTCLUMC)
-               IF ( PNum1(iEVTCLUMC) < 0 .OR. PNum1(iEVTCLUMC) > 100 ) THEN
-                  WRITE(*,*) 'ERROR EVTCLUMC - PNum1 Out of bound : ', PNum1(iEVTCLUMC)
-               END IF
-               Pid1(iEVTCLUMC) = Evt%Clu%pid1(iEVTCLUMC)
-               IF ( Pid1(iEVTCLUMC) < 0 .OR. Pid1(iEVTCLUMC) > 100 ) THEN
-                  WRITE(*,*) 'ERROR EVTCLUMC - Pid1 Out of bound : ', Pid1(iEVTCLUMC)
-               END IF
-               PNum2(iEVTCLUMC) = Evt%Clu%part2(iEVTCLUMC)
-               IF ( PNum2(iEVTCLUMC) < 0 .OR. PNum2(iEVTCLUMC) > 100 ) THEN
-                  WRITE(*,*) 'ERROR EVTCLUMC - PNum2 Out of bound : ', PNum2(iEVTCLUMC)
-               END IF
-               Pid2(iEVTCLUMC) = Evt%Clu%pid2(iEVTCLUMC)
-               IF ( Pid2(iEVTCLUMC) < 0 .OR. Pid2(iEVTCLUMC) > 100 ) THEN
-                  WRITE(*,*) 'ERROR EVTCLUMC - Pid2 Out of bound : ', Pid2(iEVTCLUMC)
-               END IF
-               PNum3(iEVTCLUMC) = Evt%Clu%part3(iEVTCLUMC)
-               IF ( PNum3(iEVTCLUMC) < 0 .OR. PNum3(iEVTCLUMC) > 100 ) THEN
-                  WRITE(*,*) 'ERROR EVTCLUMC - PNum3 Out of bound : ', PNum3(iEVTCLUMC)
-               END IF
-               Pid3(iEVTCLUMC) = Evt%Clu%pid3(iEVTCLUMC)
-               IF ( Pid3(iEVTCLUMC) < 0 .OR. Pid3(iEVTCLUMC) > 100 ) THEN
-                  WRITE(*,*) 'ERROR EVTCLUMC - Pid3 Out of bound : ', Pid3(iEVTCLUMC)
-               END IF
-            END DO
-         ELSE
-            WRITE(*,*) 'ERROR EVTCLUMC - NCluMc Index not valid : ', NCluMc
-         END IF
+           NCluMc = Evt%Clu%nmc
+           IF ( NCluMc < 0 .OR. NCluMc > 100 ) THEN
+              WRITE(*,*) 'ERROR CLU - NCluMc Out of bound : ', NCluMc
+           END IF
+           IF (NCluMc > 0 .AND. NCluMc <= 100) THEN
+              DO iEVTCLUMC=1, NCluMc
+                 NPar(iEVTCLUMC) = Evt%Clu%Npart(iEVTCLUMC)
+                 IF ( NPar(iEVTCLUMC) < 0 .OR. NPar(iEVTCLUMC) > 10 ) THEN
+                    WRITE(*,*) 'ERROR EVTCLUMC - NPar Out of bound : ', NPar(iEVTCLUMC)
+                 END IF
+                 PNum1(iEVTCLUMC) = Evt%Clu%part1(iEVTCLUMC)
+                 IF ( PNum1(iEVTCLUMC) < 0 .OR. PNum1(iEVTCLUMC) > 100 ) THEN
+                    WRITE(*,*) 'ERROR EVTCLUMC - PNum1 Out of bound : ', PNum1(iEVTCLUMC)
+                 END IF
+                 Pid1(iEVTCLUMC) = Evt%Clu%pid1(iEVTCLUMC)
+                 IF ( Pid1(iEVTCLUMC) < 0 .OR. Pid1(iEVTCLUMC) > 100 ) THEN
+                    WRITE(*,*) 'ERROR EVTCLUMC - Pid1 Out of bound : ', Pid1(iEVTCLUMC)
+                 END IF
+                 PNum2(iEVTCLUMC) = Evt%Clu%part2(iEVTCLUMC)
+                 IF ( PNum2(iEVTCLUMC) < 0 .OR. PNum2(iEVTCLUMC) > 100 ) THEN
+                    WRITE(*,*) 'ERROR EVTCLUMC - PNum2 Out of bound : ', PNum2(iEVTCLUMC)
+                 END IF
+                 Pid2(iEVTCLUMC) = Evt%Clu%pid2(iEVTCLUMC)
+                 IF ( Pid2(iEVTCLUMC) < 0 .OR. Pid2(iEVTCLUMC) > 100 ) THEN
+                    WRITE(*,*) 'ERROR EVTCLUMC - Pid2 Out of bound : ', Pid2(iEVTCLUMC)
+                 END IF
+                 PNum3(iEVTCLUMC) = Evt%Clu%part3(iEVTCLUMC)
+                 IF ( PNum3(iEVTCLUMC) < 0 .OR. PNum3(iEVTCLUMC) > 100 ) THEN
+                    WRITE(*,*) 'ERROR EVTCLUMC - PNum3 Out of bound : ', PNum3(iEVTCLUMC)
+                 END IF
+                 Pid3(iEVTCLUMC) = Evt%Clu%pid3(iEVTCLUMC)
+                 IF ( Pid3(iEVTCLUMC) < 0 .OR. Pid3(iEVTCLUMC) > 100 ) THEN
+                    WRITE(*,*) 'ERROR EVTCLUMC - Pid3 Out of bound : ', Pid3(iEVTCLUMC)
+                 END IF
+              END DO
+           ELSE
+              WRITE(*,*) 'ERROR EVTCLUMC - NCluMc Index not valid : ', NCluMc
+           END IF
+        ELSE
+              WRITE(*,*) ERROR_MC_DATA
+        END IF
       END IF
 C-----------------------------------------------------------------------
 C Fill Block Pre-Clusters
@@ -1024,41 +1034,44 @@ C-----------------------------------------------------------------------
 C Fill Block CeleMC
 C-----------------------------------------------------------------------
       IF (CELEMCFLAG) THEN
-         NCel = 0.
-         DO iCELEMC=1, 2000
-            EMc(iCELEMC) = 0.
-            TMc(iCELEMC) = 0.
-            XMc(iCELEMC) = 0.
-            YMc(iCELEMC) = 0.
-            ZMc(iCELEMC) = 0.
-            PTyp(iCELEMC) = 0.
-            KNum(iCELEMC) = 0.
-            NHit(iCELEMC) = 0.
-         END DO
-   
-         istat = GETCELESTRU(Evt%Cele)
-   
-         NCelMc = Evt%Cele%nmc
-         IF ( NCelMc < 0 .OR. NCelMc > 2000 ) THEN
-            WRITE(*,*) 'ERROR CELEMC - NCelMc Out of bound : ', NCelMc
-         END IF
-   
-         IF (NCelMc > 0 .AND. NCelMc <= 2000) THEN
-            DO iCELEMC=1, NCelMc
-               EMc(iCELEMC) = Evt%Cele%Etrue(iCELEMC)
-               TMc(iCELEMC) = Evt%Cele%Ttrue(iCELEMC)
-               XMc(iCELEMC) = Evt%Cele%xtrue(iCELEMC)
-               YMc(iCELEMC) = Evt%Cele%ytrue(iCELEMC)
-               ZMc(iCELEMC) = Evt%Cele%ztrue(iCELEMC)
-               PTyp(iCELEMC) = Evt%Cele%ptyp(iCELEMC)
-               KNum(iCELEMC) = Evt%Cele%knum(iCELEMC)
-               NHit(iCELEMC) = Evt%Cele%numpar(iCELEMC)
-            END DO
-         ELSE
-            WRITE(*,*) 'ERROR CELEMC - NCelMc Index not valid : ', NCelMc
-         END IF
+        IF (MONTECARLOFLAG) THEN
+           NCel = 0.
+           DO iCELEMC=1, 2000
+              EMc(iCELEMC) = 0.
+              TMc(iCELEMC) = 0.
+              XMc(iCELEMC) = 0.
+              YMc(iCELEMC) = 0.
+              ZMc(iCELEMC) = 0.
+              PTyp(iCELEMC) = 0.
+              KNum(iCELEMC) = 0.
+              NHit(iCELEMC) = 0.
+           END DO
+     
+           istat = GETCELESTRU(Evt%Cele)
+     
+           NCelMc = Evt%Cele%nmc
+           IF ( NCelMc < 0 .OR. NCelMc > 2000 ) THEN
+              WRITE(*,*) 'ERROR CELEMC - NCelMc Out of bound : ', NCelMc
+           END IF
+     
+           IF (NCelMc > 0 .AND. NCelMc <= 2000) THEN
+              DO iCELEMC=1, NCelMc
+                 EMc(iCELEMC) = Evt%Cele%Etrue(iCELEMC)
+                 TMc(iCELEMC) = Evt%Cele%Ttrue(iCELEMC)
+                 XMc(iCELEMC) = Evt%Cele%xtrue(iCELEMC)
+                 YMc(iCELEMC) = Evt%Cele%ytrue(iCELEMC)
+                 ZMc(iCELEMC) = Evt%Cele%ztrue(iCELEMC)
+                 PTyp(iCELEMC) = Evt%Cele%ptyp(iCELEMC)
+                 KNum(iCELEMC) = Evt%Cele%knum(iCELEMC)
+                 NHit(iCELEMC) = Evt%Cele%numpar(iCELEMC)
+              END DO
+           ELSE
+              WRITE(*,*) 'ERROR CELEMC - NCelMc Index not valid : ', NCelMc
+           END IF
+        ELSE
+           WRITE(*,*) ERROR_MC_DATA
+        END IF
       END IF
-
 C-----------------------------------------------------------------------
 C Fill Block dtce
 C-----------------------------------------------------------------------
@@ -1451,121 +1464,125 @@ C-----------------------------------------------------------------------
 C Fill Block trkmc
 C-----------------------------------------------------------------------
       IF (TRKMCFLAG) THEN
-         nTfMC = 0.
-         DO iTRKMC=1, 100
-           NConTr(iTRKMC) = 0.
-           TrkIne1(iTRKMC) = 0.
-           TrType1(iTRKMC) = 0.
-           TrHits1(iTRKMC) = 0.
-           TrkIne2(iTRKMC) = 0.
-           TrType2(iTRKMC) = 0.
-           TrHits2(iTRKMC) = 0.
-           TrkIn3(iTRKMC) = 0.
-           TrType3(iTRKMC) = 0.
-           TrHits3(iTRKMC) = 0.
-           xFMC(iTRKMC) = 0.
-           yFMC(iTRKMC) = 0.
-           zFMC(iTRKMC) = 0.
-           PxFMC(iTRKMC) = 0.
-           PyFMC(iTRKMC) = 0.
-           PzFMC(iTRKMC) = 0.
-           xLMC(iTRKMC) = 0.
-           yLMC(iTRKMC) = 0.
-           zLMC(iTRKMC) = 0.
-           PxLMC(iTRKMC) = 0.
-           PyLMC(iTRKMC) = 0.
-           PzLMC(iTRKMC) = 0.
-           xFMC2(iTRKMC) = 0.
-           yFMC2(iTRKMC) = 0.
-           zFMC2(iTRKMC) = 0.
-           PxFMC2(iTRKMC) = 0.
-           PyFMC2(iTRKMC) = 0.
-           PzFMC2(iTRKMC) = 0.
-           xLMC2(iTRKMC) = 0.
-           yLMC2(iTRKMC) = 0.
-           zLMC2(iTRKMC) = 0.
-           PxLMC2(iTRKMC) = 0.
-           PyLMC2(iTRKMC) = 0.
-           PzLMC2(iTRKMC) = 0.
-         END DO
-
-         istat = TRKV2STRU(evt%vtx,evt%trkv,evt%trk,evt%trkmc)
-
-         nTfMC = Evt%TrkMC%n
-         IF ( nTfMC < 0 .OR. nTfMC > 100 ) THEN
-            WRITE(*,*) 'ERROR TRKMC - nTfMC Out of bound : ', nTfMC
-         END IF
-
-         IF (nTfMC > 0 .AND. nTfMC <= 100) THEN
-            DO iTRKMC=1, nTfMC
-               NConTr(iTRKMC) = Evt%TrkMC%ncontr(iTRKMC)
-               IF ( NConTr(iTRKMC) < 0 .OR. NConTr(iTRKMC) > 10 ) THEN
-                  WRITE(*,*) 'ERROR TRKMC - NConTr Out of bound : ', NConTr(iTRKMC)
-               END IF
-               TrkIne1(iTRKMC) = Evt%TrkMC%kine1(iTRKMC)
-               IF ( TrkIne1(iTRKMC) < 0 .OR. TrkIne1(iTRKMC) > 100 ) THEN
-                  WRITE(*,*) 'ERROR TRKMC - TrkIne1 Out of bound : ', TrkIne1(iTRKMC)
-               END IF
-               TrType1(iTRKMC) = Evt%TrkMC%type1(iTRKMC)
-               IF ( TrType1(iTRKMC) < 0 .OR. TrType1(iTRKMC) > 100 ) THEN
-                  WRITE(*,*) 'ERROR TRKMC - TrType1 Out of bound : ', TrType1(iTRKMC)
-               END IF
-               TrHits1(iTRKMC) = Evt%TrkMC%hits1(iTRKMC)
-               IF ( TrHits1(iTRKMC) < 0 .OR. TrHits1(iTRKMC) > 1000 ) THEN
-                  WRITE(*,*) 'ERROR TRKMC - TrHits1 Out of bound : ', TrHits1(iTRKMC)
-               END IF
-               TrkIne2(iTRKMC) = Evt%TrkMC%kine2(iTRKMC)
-               IF ( TrkIne2(iTRKMC) < 0 .OR. TrkIne2(iTRKMC) > 100 ) THEN
-                  WRITE(*,*) 'ERROR TRKMC - TrkIne2 Out of bound : ', TrkIne2(iTRKMC)
-               END IF
-               TrType2(iTRKMC) = Evt%TrkMC%type2(iTRKMC)
-               IF ( TrType2(iTRKMC) < 0 .OR. TrType2(iTRKMC) > 100 ) THEN
-                  WRITE(*,*) 'ERROR TRKMC - TrType2 Out of bound : ', TrType2(iTRKMC)
-               END IF
-               TrHits2(iTRKMC) = Evt%TrkMC%hits2(iTRKMC)
-               IF ( TrHits2(iTRKMC) < 0 .OR. TrHits2(iTRKMC) > 1000 ) THEN
-                  WRITE(*,*) 'ERROR TRKMC - TrHits2 Out of bound : ', TrHits2(iTRKMC)
-               END IF
-               TrkIn3(iTRKMC) = Evt%TrkMC%kine3(iTRKMC)
-               IF ( TrkIn3(iTRKMC) < 0 .OR. TrkIn3(iTRKMC) > 100 ) THEN
-                  WRITE(*,*) 'ERROR TRKMC - TrkIn3 Out of bound : ', TrkIn3(iTRKMC)
-               END IF
-               TrType3(iTRKMC) = Evt%TrkMC%type3(iTRKMC)
-               IF ( TrType3(iTRKMC) < 0 .OR. TrType3(iTRKMC) > 100 ) THEN
-                  WRITE(*,*) 'ERROR TRKMC - TrType3 Out of bound : ', TrType3(iTRKMC)
-               END IF
-               TrHits3(iTRKMC) = Evt%TrkMC%hits3(iTRKMC)
-               IF ( TrHits3(iTRKMC) < 0 .OR. TrHits3(iTRKMC) > 1000 ) THEN
-                  WRITE(*,*) 'ERROR TRKMC - TrHits3 Out of bound : ', TrHits3(iTRKMC)
-               END IF
-                 xFMC(iTRKMC) = Evt%TrkMC%xfirst(iTRKMC)
-                 yFMC(iTRKMC) = Evt%TrkMC%yfirst(iTRKMC)
-                 zFMC(iTRKMC) = Evt%TrkMC%zfirst(iTRKMC)
-                 PxFMC(iTRKMC) = Evt%TrkMC%pxfirst(iTRKMC)
-                 PyFMC(iTRKMC) = Evt%TrkMC%pyfirst(iTRKMC)
-                 PzFMC(iTRKMC) = Evt%TrkMC%pzfirst(iTRKMC)
-                 xLMC(iTRKMC) = Evt%TrkMC%xlast(iTRKMC)
-                 yLMC(iTRKMC) = Evt%TrkMC%ylast(iTRKMC)
-                 zLMC(iTRKMC) = Evt%TrkMC%zlast(iTRKMC)
-                 PxLMC(iTRKMC) = Evt%TrkMC%pxlast(iTRKMC)
-                 PyLMC(iTRKMC) = Evt%TrkMC%pylast(iTRKMC)
-                 PzLMC(iTRKMC) = Evt%TrkMC%pzlast(iTRKMC)
-                 xFMC2(iTRKMC) = Evt%TrkMC%xmcfirst(iTRKMC)
-                 yFMC2(iTRKMC) = Evt%TrkMC%ymcfirst(iTRKMC)
-                 zFMC2(iTRKMC) = Evt%TrkMC%zmcfirst(iTRKMC)
-                 PxFMC2(iTRKMC) = Evt%TrkMC%pxmcfirst(iTRKMC)
-                 PyFMC2(iTRKMC) = Evt%TrkMC%pymcfirst(iTRKMC)
-                 PzFMC2(iTRKMC) = Evt%TrkMC%pzmcfirst(iTRKMC)
-                 xLMC2(iTRKMC) = Evt%TrkMC%xmclast(iTRKMC)
-                 yLMC2(iTRKMC) = Evt%TrkMC%ymclast(iTRKMC)
-                 zLMC2(iTRKMC) = Evt%TrkMC%zmclast(iTRKMC)
-                 PxLMC2(iTRKMC) = Evt%TrkMC%pxmclast(iTRKMC)
-                 PyLMC2(iTRKMC) = Evt%TrkMC%pymclast(iTRKMC)
-                 PzLMC2(iTRKMC) = Evt%TrkMC%pzmclast(iTRKMC)
+         IF (MONTECARLOFLAG) THEN
+           nTfMC = 0.
+           DO iTRKMC=1, 100
+             NConTr(iTRKMC) = 0.
+             TrkIne1(iTRKMC) = 0.
+             TrType1(iTRKMC) = 0.
+             TrHits1(iTRKMC) = 0.
+             TrkIne2(iTRKMC) = 0.
+             TrType2(iTRKMC) = 0.
+             TrHits2(iTRKMC) = 0.
+             TrkIn3(iTRKMC) = 0.
+             TrType3(iTRKMC) = 0.
+             TrHits3(iTRKMC) = 0.
+             xFMC(iTRKMC) = 0.
+             yFMC(iTRKMC) = 0.
+             zFMC(iTRKMC) = 0.
+             PxFMC(iTRKMC) = 0.
+             PyFMC(iTRKMC) = 0.
+             PzFMC(iTRKMC) = 0.
+             xLMC(iTRKMC) = 0.
+             yLMC(iTRKMC) = 0.
+             zLMC(iTRKMC) = 0.
+             PxLMC(iTRKMC) = 0.
+             PyLMC(iTRKMC) = 0.
+             PzLMC(iTRKMC) = 0.
+             xFMC2(iTRKMC) = 0.
+             yFMC2(iTRKMC) = 0.
+             zFMC2(iTRKMC) = 0.
+             PxFMC2(iTRKMC) = 0.
+             PyFMC2(iTRKMC) = 0.
+             PzFMC2(iTRKMC) = 0.
+             xLMC2(iTRKMC) = 0.
+             yLMC2(iTRKMC) = 0.
+             zLMC2(iTRKMC) = 0.
+             PxLMC2(iTRKMC) = 0.
+             PyLMC2(iTRKMC) = 0.
+             PzLMC2(iTRKMC) = 0.
            END DO
-         ELSE
-            WRITE(*,*) 'ERROR TRKMC - nTfMC Index not valid: ', nTfMC
-         END IF
+  
+           istat = TRKV2STRU(evt%vtx,evt%trkv,evt%trk,evt%trkmc)
+  
+           nTfMC = Evt%TrkMC%n
+           IF ( nTfMC < 0 .OR. nTfMC > 100 ) THEN
+              WRITE(*,*) 'ERROR TRKMC - nTfMC Out of bound : ', nTfMC
+           END IF
+  
+           IF (nTfMC > 0 .AND. nTfMC <= 100) THEN
+              DO iTRKMC=1, nTfMC
+                 NConTr(iTRKMC) = Evt%TrkMC%ncontr(iTRKMC)
+                 IF ( NConTr(iTRKMC) < 0 .OR. NConTr(iTRKMC) > 10 ) THEN
+                    WRITE(*,*) 'ERROR TRKMC - NConTr Out of bound : ', NConTr(iTRKMC)
+                 END IF
+                 TrkIne1(iTRKMC) = Evt%TrkMC%kine1(iTRKMC)
+                 IF ( TrkIne1(iTRKMC) < 0 .OR. TrkIne1(iTRKMC) > 100 ) THEN
+                    WRITE(*,*) 'ERROR TRKMC - TrkIne1 Out of bound : ', TrkIne1(iTRKMC)
+                 END IF
+                 TrType1(iTRKMC) = Evt%TrkMC%type1(iTRKMC)
+                 IF ( TrType1(iTRKMC) < 0 .OR. TrType1(iTRKMC) > 100 ) THEN
+                    WRITE(*,*) 'ERROR TRKMC - TrType1 Out of bound : ', TrType1(iTRKMC)
+                 END IF
+                 TrHits1(iTRKMC) = Evt%TrkMC%hits1(iTRKMC)
+                 IF ( TrHits1(iTRKMC) < 0 .OR. TrHits1(iTRKMC) > 1000 ) THEN
+                    WRITE(*,*) 'ERROR TRKMC - TrHits1 Out of bound : ', TrHits1(iTRKMC)
+                 END IF
+                 TrkIne2(iTRKMC) = Evt%TrkMC%kine2(iTRKMC)
+                 IF ( TrkIne2(iTRKMC) < 0 .OR. TrkIne2(iTRKMC) > 100 ) THEN
+                    WRITE(*,*) 'ERROR TRKMC - TrkIne2 Out of bound : ', TrkIne2(iTRKMC)
+                 END IF
+                 TrType2(iTRKMC) = Evt%TrkMC%type2(iTRKMC)
+                 IF ( TrType2(iTRKMC) < 0 .OR. TrType2(iTRKMC) > 100 ) THEN
+                    WRITE(*,*) 'ERROR TRKMC - TrType2 Out of bound : ', TrType2(iTRKMC)
+                 END IF
+                 TrHits2(iTRKMC) = Evt%TrkMC%hits2(iTRKMC)
+                 IF ( TrHits2(iTRKMC) < 0 .OR. TrHits2(iTRKMC) > 1000 ) THEN
+                    WRITE(*,*) 'ERROR TRKMC - TrHits2 Out of bound : ', TrHits2(iTRKMC)
+                 END IF
+                 TrkIn3(iTRKMC) = Evt%TrkMC%kine3(iTRKMC)
+                 IF ( TrkIn3(iTRKMC) < 0 .OR. TrkIn3(iTRKMC) > 100 ) THEN
+                    WRITE(*,*) 'ERROR TRKMC - TrkIn3 Out of bound : ', TrkIn3(iTRKMC)
+                 END IF
+                 TrType3(iTRKMC) = Evt%TrkMC%type3(iTRKMC)
+                 IF ( TrType3(iTRKMC) < 0 .OR. TrType3(iTRKMC) > 100 ) THEN
+                    WRITE(*,*) 'ERROR TRKMC - TrType3 Out of bound : ', TrType3(iTRKMC)
+                 END IF
+                 TrHits3(iTRKMC) = Evt%TrkMC%hits3(iTRKMC)
+                 IF ( TrHits3(iTRKMC) < 0 .OR. TrHits3(iTRKMC) > 1000 ) THEN
+                    WRITE(*,*) 'ERROR TRKMC - TrHits3 Out of bound : ', TrHits3(iTRKMC)
+                 END IF
+                   xFMC(iTRKMC) = Evt%TrkMC%xfirst(iTRKMC)
+                   yFMC(iTRKMC) = Evt%TrkMC%yfirst(iTRKMC)
+                   zFMC(iTRKMC) = Evt%TrkMC%zfirst(iTRKMC)
+                   PxFMC(iTRKMC) = Evt%TrkMC%pxfirst(iTRKMC)
+                   PyFMC(iTRKMC) = Evt%TrkMC%pyfirst(iTRKMC)
+                   PzFMC(iTRKMC) = Evt%TrkMC%pzfirst(iTRKMC)
+                   xLMC(iTRKMC) = Evt%TrkMC%xlast(iTRKMC)
+                   yLMC(iTRKMC) = Evt%TrkMC%ylast(iTRKMC)
+                   zLMC(iTRKMC) = Evt%TrkMC%zlast(iTRKMC)
+                   PxLMC(iTRKMC) = Evt%TrkMC%pxlast(iTRKMC)
+                   PyLMC(iTRKMC) = Evt%TrkMC%pylast(iTRKMC)
+                   PzLMC(iTRKMC) = Evt%TrkMC%pzlast(iTRKMC)
+                   xFMC2(iTRKMC) = Evt%TrkMC%xmcfirst(iTRKMC)
+                   yFMC2(iTRKMC) = Evt%TrkMC%ymcfirst(iTRKMC)
+                   zFMC2(iTRKMC) = Evt%TrkMC%zmcfirst(iTRKMC)
+                   PxFMC2(iTRKMC) = Evt%TrkMC%pxmcfirst(iTRKMC)
+                   PyFMC2(iTRKMC) = Evt%TrkMC%pymcfirst(iTRKMC)
+                   PzFMC2(iTRKMC) = Evt%TrkMC%pzmcfirst(iTRKMC)
+                   xLMC2(iTRKMC) = Evt%TrkMC%xmclast(iTRKMC)
+                   yLMC2(iTRKMC) = Evt%TrkMC%ymclast(iTRKMC)
+                   zLMC2(iTRKMC) = Evt%TrkMC%zmclast(iTRKMC)
+                   PxLMC2(iTRKMC) = Evt%TrkMC%pxmclast(iTRKMC)
+                   PyLMC2(iTRKMC) = Evt%TrkMC%pymclast(iTRKMC)
+                   PzLMC2(iTRKMC) = Evt%TrkMC%pzmclast(iTRKMC)
+             END DO
+           ELSE
+              WRITE(*,*) 'ERROR TRKMC - nTfMC Index not valid: ', nTfMC
+           END IF
+        ELSE
+           WRITE(*,*) ERROR_MC_DATA
+        END IF
       END IF
 C-----------------------------------------------------------------------
 C Fill Block trkvold
@@ -1593,8 +1610,7 @@ C-----------------------------------------------------------------------
            Cov33TVOld(iTRKVOLD) = 0.
          END DO
 
-         istat = TRKVOLD2STRU(evt%vtxold,evt%trkvold,evt%trkold
-     1                                           ,evt%trkmcold)
+         istat = TRKVOLD2STRU(evt%vtxold, evt%trkvold, evt%trkold, evt%trkmcold)
 
          nTVOld = Evt%TrkvOld%n
          IF ( nTVOld < 0 .OR. nTVOld > 30 ) THEN
@@ -1653,8 +1669,7 @@ C-----------------------------------------------------------------------
            VtxCov6Old(iVTXOLD) = 0.
          END DO
 
-         istat = TRKVOLD2STRU(evt%vtxold,evt%trkvold,evt%trkold
-     1                                           ,evt%trkmcold)
+         istat = TRKVOLD2STRU(evt%vtxold, evt%trkvold, evt%trkold, evt%trkmcold)
 
          nVOld = Evt%vtxold%n
          IF ( nVOld < 0 .OR. nVOld > 10 ) THEN
@@ -1665,8 +1680,7 @@ C-----------------------------------------------------------------------
             DO iVTXOLD=1, nVOld
                VtxOld(iVTXOLD) = Evt%Vtxold%Ntrk(iVTXOLD)
                IF ( VtxOld(iVTXOLD) < 0 .OR. VtxOld(iVTXOLD) > 10 ) THEN
-                  WRITE(*,*) 'ERROR VTXOLD - VtxOld Out of bound : ',
-     1                                                   VtxOld(iVTXOLD)
+                  WRITE(*,*) 'ERROR VTXOLD - VtxOld Out of bound : ', VtxOld(iVTXOLD)
                END IF
                  xVOld(iVTXOLD) = Evt%Vtxold%X(iVTXOLD)
                  yVOld(iVTXOLD) = Evt%Vtxold%Y(iVTXOLD)
@@ -1732,8 +1746,7 @@ C-----------------------------------------------------------------------
            Chi2MSOld(iTRKOLD) = 0.
          END DO
 
-         istat = TRKVOLD2STRU(evt%vtxold,evt%trkvold,evt%trkold
-     1                                           ,evt%trkmcold)
+         istat = TRKVOLD2STRU(evt%vtxold, evt%trkvold, evt%trkold, evt%trkmcold)
 
          nTOld = Evt%Trkold%n
          IF ( nTOld < 0 .OR. nTOld > 100 ) THEN
@@ -1790,122 +1803,125 @@ C-----------------------------------------------------------------------
 C Fill Block trkmcold
 C-----------------------------------------------------------------------
       IF (TRKMCOLDFLAG) THEN
-         nTfMCOld = 0.
-         DO iTRKMCOLD=1, 100
-           nContrOld(iTRKMCOLD) = 0.
-           TrkIne1Old(iTRKMCOLD) = 0.
-           TrType1Old(iTRKMCOLD) = 0.
-           TrHits1Old(iTRKMCOLD) = 0.
-           TrkIne2Old(iTRKMCOLD) = 0.
-           TrType2Old(iTRKMCOLD) = 0.
-           TrHits2Old(iTRKMCOLD) = 0.
-           TrkIne3Old(iTRKMCOLD) = 0.
-           TrType3Old(iTRKMCOLD) = 0.
-           TrHits3Old(iTRKMCOLD) = 0.
-           xFMCOld(iTRKMCOLD) = 0.
-           yFMCOld(iTRKMCOLD) = 0.
-           zFMCOld(iTRKMCOLD) = 0.
-           PxFMCOld(iTRKMCOLD) = 0.
-           PyFMCOld(iTRKMCOLD) = 0.
-           PzFMCOld(iTRKMCOLD) = 0.
-           xLMCOld(iTRKMCOLD) = 0.
-           yLMCOld(iTRKMCOLD) = 0.
-           zLMCOld(iTRKMCOLD) = 0.
-           PxLMCOld(iTRKMCOLD) = 0.
-           PyLMCOld(iTRKMCOLD) = 0.
-           PzLMCOld(iTRKMCOLD) = 0.
-           xFMC2Old(iTRKMCOLD) = 0.
-           yFMC2Old(iTRKMCOLD) = 0.
-           zFMC2Old(iTRKMCOLD) = 0.
-           PxFMC2Old(iTRKMCOLD) = 0.
-           PyFMC2Old(iTRKMCOLD) = 0.
-           PzFMC2Old(iTRKMCOLD) = 0.
-           xLMC2Old(iTRKMCOLD) = 0.
-           yLMC2Old(iTRKMCOLD) = 0.
-           zLMC2Old(iTRKMCOLD) = 0.
-           PxLMC2Old(iTRKMCOLD) = 0.
-           PyLMC2Old(iTRKMCOLD) = 0.
-           PzLMC2Old(iTRKMCOLD) = 0.
-         END DO
-
-         istat = TRKVOLD2STRU(evt%vtxold,evt%trkvold,evt%trkold
-     1                                           ,evt%trkmcold)
-
-         nTfMCOld = Evt%Trkmcold%n
-         IF ( nTfMCOld < 0 .OR. nTfMCOld > 100 ) THEN
-            WRITE(*,*) 'ERROR TRKMCOLD - nTfMCOld Out of bound : ', nTfMCOld
-         END IF
-
-         IF (nTfMCOld > 0 .AND. nTfMCOld <= 100) THEN
-            DO iTRKMCOLD=1, nTfMCOld
-               nContrOld(iTRKMCOLD) = Evt%Trkmcold%ncontr(iTRKMCOLD)
-               IF ( nContrOld(iTRKMCOLD) < 0 .OR. nContrOld(iTRKMCOLD) > 10 ) THEN
-                  WRITE(*,*) 'ERROR TRKMCOLD - nContrOld Out of bound : ', nContrOld(iTRKMCOLD)
-               END IF
-               TrkIne1Old(iTRKMCOLD) = Evt%Trkmcold%kine1(iTRKMCOLD)
-               IF ( TrkIne1Old(iTRKMCOLD) < 0 .OR. TrkIne1Old(iTRKMCOLD) > 100 ) THEN
-                  WRITE(*,*) 'ERROR TRKMCOLD - TrkIne1Old Out of bound : ', TrkIne1Old(iTRKMCOLD)
-               END IF
-               TrType1Old(iTRKMCOLD) = Evt%Trkmcold%type1(iTRKMCOLD)
-               IF ( TrType1Old(iTRKMCOLD) < 0 .OR. TrType1Old(iTRKMCOLD) > 100 ) THEN
-                  WRITE(*,*) 'ERROR TRKMCOLD - TrType1Old Out of bound : ', TrType1Old(iTRKMCOLD)
-               END IF
-               TrHits1Old(iTRKMCOLD) = Evt%Trkmcold%hits1(iTRKMCOLD)
-               IF ( TrHits1Old(iTRKMCOLD) < 0 .OR. TrHits1Old(iTRKMCOLD) > 1000 ) THEN
-                  WRITE(*,*) 'ERROR TRKMCOLD - TrHits1Old Out of bound : ', TrHits1Old(iTRKMCOLD)
-               END IF
-               TrkIne2Old(iTRKMCOLD) = Evt%Trkmcold%kine2(iTRKMCOLD)
-               IF ( TrkIne2Old(iTRKMCOLD) < 0 .OR. TrkIne2Old(iTRKMCOLD) > 100 ) THEN
-                  WRITE(*,*) 'ERROR TRKMCOLD - TrkIne2Old Out of bound : ', TrkIne2Old(iTRKMCOLD)
-               END IF
-               TrType2Old(iTRKMCOLD) = Evt%Trkmcold%type2(iTRKMCOLD)
-               IF ( TrType2Old(iTRKMCOLD) < 0 .OR. TrType2Old(iTRKMCOLD) > 100 ) THEN
-                  WRITE(*,*) 'ERROR TRKMCOLD - TrType2Old Out of bound : ', TrType2Old(iTRKMCOLD)
-               END IF
-               TrHits2Old(iTRKMCOLD) = Evt%Trkmcold%hits2(iTRKMCOLD)
-               IF ( TrHits2Old(iTRKMCOLD) < 0 .OR. TrHits2Old(iTRKMCOLD) > 1000 ) THEN
-                  WRITE(*,*) 'ERROR TRKMCOLD - TrHits2Old Out of bound : ', TrHits2Old(iTRKMCOLD)
-               END IF
-               TrkIne3Old(iTRKMCOLD) = Evt%Trkmcold%kine3(iTRKMCOLD)
-               IF ( TrkIne3Old(iTRKMCOLD) < 0 .OR. TrkIne3Old(iTRKMCOLD) > 100 ) THEN
-                  WRITE(*,*) 'ERROR TRKMCOLD - TrkIne3Old Out of bound : ', TrkIne3Old(iTRKMCOLD)
-               END IF
-               TrType3Old(iTRKMCOLD) = Evt%Trkmcold%type3(iTRKMCOLD)
-               IF ( TrType3Old(iTRKMCOLD) < 0 .OR. TrType3Old(iTRKMCOLD) > 100 ) THEN
-                  WRITE(*,*) 'ERROR TRKMCOLD - TrType3Old Out of bound : ', TrType3Old(iTRKMCOLD)
-               END IF
-               TrHits3Old(iTRKMCOLD) = Evt%Trkmcold%hits3(iTRKMCOLD)
-               IF ( TrHits3Old(iTRKMCOLD) < 0 .OR. TrHits3Old(iTRKMCOLD) > 1000 ) THEN
-                  WRITE(*,*) 'ERROR TRKMCOLD - TrHits3Old Out of bound : ', TrHits3Old(iTRKMCOLD)
-               END IF
-                 xFMCOld(iTRKMCOLD) = Evt%Trkmcold%xfirst(iTRKMCOLD)
-                 yFMCOld(iTRKMCOLD) = Evt%Trkmcold%yfirst(iTRKMCOLD)
-                 zFMCOld(iTRKMCOLD) = Evt%Trkmcold%zfirst(iTRKMCOLD)
-                 PxFMCOld(iTRKMCOLD) = Evt%Trkmcold%pxfirst(iTRKMCOLD)
-                 PyFMCOld(iTRKMCOLD) = Evt%Trkmcold%pyfirst(iTRKMCOLD)
-                 PzFMCOld(iTRKMCOLD) = Evt%Trkmcold%pzfirst(iTRKMCOLD)
-                 xLMCOld(iTRKMCOLD) = Evt%Trkmcold%xlast(iTRKMCOLD)
-                 yLMCOld(iTRKMCOLD) = Evt%Trkmcold%ylast(iTRKMCOLD)
-                 zLMCOld(iTRKMCOLD) = Evt%Trkmcold%zlast(iTRKMCOLD)
-                 PxLMCOld(iTRKMCOLD) = Evt%Trkmcold%pxlast(iTRKMCOLD)
-                 PyLMCOld(iTRKMCOLD) = Evt%Trkmcold%pylast(iTRKMCOLD)
-                 PzLMCOld(iTRKMCOLD) = Evt%Trkmcold%pzlast(iTRKMCOLD)
-                 xFMC2Old(iTRKMCOLD) = Evt%Trkmcold%xmcfirst(iTRKMCOLD)
-                 yFMC2Old(iTRKMCOLD) = Evt%Trkmcold%ymcfirst(iTRKMCOLD)
-                 zFMC2Old(iTRKMCOLD) = Evt%Trkmcold%zmcfirst(iTRKMCOLD)
-                 PxFMC2Old(iTRKMCOLD) = Evt%Trkmcold%pxmcfirst(iTRKMCOLD)
-                 PyFMC2Old(iTRKMCOLD) = Evt%Trkmcold%pymcfirst(iTRKMCOLD)
-                 PzFMC2Old(iTRKMCOLD) = Evt%Trkmcold%pzmcfirst(iTRKMCOLD)
-                 xLMC2Old(iTRKMCOLD) = Evt%Trkmcold%xmclast(iTRKMCOLD)
-                 yLMC2Old(iTRKMCOLD) = Evt%Trkmcold%ymclast(iTRKMCOLD)
-                 zLMC2Old(iTRKMCOLD) = Evt%Trkmcold%zmclast(iTRKMCOLD)
-                 PxLMC2Old(iTRKMCOLD) = Evt%Trkmcold%pxmclast(iTRKMCOLD)
-                 PyLMC2Old(iTRKMCOLD) = Evt%Trkmcold%pymclast(iTRKMCOLD)
-                 PzLMC2Old(iTRKMCOLD) = Evt%Trkmcold%pzmclast(iTRKMCOLD)
+        IF (MONTECARLOFLAG) THEN
+           nTfMCOld = 0.
+           DO iTRKMCOLD=1, 100
+             nContrOld(iTRKMCOLD) = 0.
+             TrkIne1Old(iTRKMCOLD) = 0.
+             TrType1Old(iTRKMCOLD) = 0.
+             TrHits1Old(iTRKMCOLD) = 0.
+             TrkIne2Old(iTRKMCOLD) = 0.
+             TrType2Old(iTRKMCOLD) = 0.
+             TrHits2Old(iTRKMCOLD) = 0.
+             TrkIne3Old(iTRKMCOLD) = 0.
+             TrType3Old(iTRKMCOLD) = 0.
+             TrHits3Old(iTRKMCOLD) = 0.
+             xFMCOld(iTRKMCOLD) = 0.
+             yFMCOld(iTRKMCOLD) = 0.
+             zFMCOld(iTRKMCOLD) = 0.
+             PxFMCOld(iTRKMCOLD) = 0.
+             PyFMCOld(iTRKMCOLD) = 0.
+             PzFMCOld(iTRKMCOLD) = 0.
+             xLMCOld(iTRKMCOLD) = 0.
+             yLMCOld(iTRKMCOLD) = 0.
+             zLMCOld(iTRKMCOLD) = 0.
+             PxLMCOld(iTRKMCOLD) = 0.
+             PyLMCOld(iTRKMCOLD) = 0.
+             PzLMCOld(iTRKMCOLD) = 0.
+             xFMC2Old(iTRKMCOLD) = 0.
+             yFMC2Old(iTRKMCOLD) = 0.
+             zFMC2Old(iTRKMCOLD) = 0.
+             PxFMC2Old(iTRKMCOLD) = 0.
+             PyFMC2Old(iTRKMCOLD) = 0.
+             PzFMC2Old(iTRKMCOLD) = 0.
+             xLMC2Old(iTRKMCOLD) = 0.
+             yLMC2Old(iTRKMCOLD) = 0.
+             zLMC2Old(iTRKMCOLD) = 0.
+             PxLMC2Old(iTRKMCOLD) = 0.
+             PyLMC2Old(iTRKMCOLD) = 0.
+             PzLMC2Old(iTRKMCOLD) = 0.
            END DO
-         ELSE
-            WRITE(*,*) 'ERROR TRKMCOLD - nTfMCOld Index not valid: ', nTfMCOld
-         END IF
+  
+           istat = TRKVOLD2STRU(evt%vtxold, evt%trkvold, evt%trkold, evt%trkmcold)
+  
+           nTfMCOld = Evt%Trkmcold%n
+           IF ( nTfMCOld < 0 .OR. nTfMCOld > 100 ) THEN
+              WRITE(*,*) 'ERROR TRKMCOLD - nTfMCOld Out of bound : ', nTfMCOld
+           END IF
+  
+           IF (nTfMCOld > 0 .AND. nTfMCOld <= 100) THEN
+              DO iTRKMCOLD=1, nTfMCOld
+                 nContrOld(iTRKMCOLD) = Evt%Trkmcold%ncontr(iTRKMCOLD)
+                 IF ( nContrOld(iTRKMCOLD) < 0 .OR. nContrOld(iTRKMCOLD) > 10 ) THEN
+                    WRITE(*,*) 'ERROR TRKMCOLD - nContrOld Out of bound : ', nContrOld(iTRKMCOLD)
+                 END IF
+                 TrkIne1Old(iTRKMCOLD) = Evt%Trkmcold%kine1(iTRKMCOLD)
+                 IF ( TrkIne1Old(iTRKMCOLD) < 0 .OR. TrkIne1Old(iTRKMCOLD) > 100 ) THEN
+                    WRITE(*,*) 'ERROR TRKMCOLD - TrkIne1Old Out of bound : ', TrkIne1Old(iTRKMCOLD)
+                 END IF
+                 TrType1Old(iTRKMCOLD) = Evt%Trkmcold%type1(iTRKMCOLD)
+                 IF ( TrType1Old(iTRKMCOLD) < 0 .OR. TrType1Old(iTRKMCOLD) > 100 ) THEN
+                    WRITE(*,*) 'ERROR TRKMCOLD - TrType1Old Out of bound : ', TrType1Old(iTRKMCOLD)
+                 END IF
+                 TrHits1Old(iTRKMCOLD) = Evt%Trkmcold%hits1(iTRKMCOLD)
+                 IF ( TrHits1Old(iTRKMCOLD) < 0 .OR. TrHits1Old(iTRKMCOLD) > 1000 ) THEN
+                    WRITE(*,*) 'ERROR TRKMCOLD - TrHits1Old Out of bound : ', TrHits1Old(iTRKMCOLD)
+                 END IF
+                 TrkIne2Old(iTRKMCOLD) = Evt%Trkmcold%kine2(iTRKMCOLD)
+                 IF ( TrkIne2Old(iTRKMCOLD) < 0 .OR. TrkIne2Old(iTRKMCOLD) > 100 ) THEN
+                    WRITE(*,*) 'ERROR TRKMCOLD - TrkIne2Old Out of bound : ', TrkIne2Old(iTRKMCOLD)
+                 END IF
+                 TrType2Old(iTRKMCOLD) = Evt%Trkmcold%type2(iTRKMCOLD)
+                 IF ( TrType2Old(iTRKMCOLD) < 0 .OR. TrType2Old(iTRKMCOLD) > 100 ) THEN
+                    WRITE(*,*) 'ERROR TRKMCOLD - TrType2Old Out of bound : ', TrType2Old(iTRKMCOLD)
+                 END IF
+                 TrHits2Old(iTRKMCOLD) = Evt%Trkmcold%hits2(iTRKMCOLD)
+                 IF ( TrHits2Old(iTRKMCOLD) < 0 .OR. TrHits2Old(iTRKMCOLD) > 1000 ) THEN
+                    WRITE(*,*) 'ERROR TRKMCOLD - TrHits2Old Out of bound : ', TrHits2Old(iTRKMCOLD)
+                 END IF
+                 TrkIne3Old(iTRKMCOLD) = Evt%Trkmcold%kine3(iTRKMCOLD)
+                 IF ( TrkIne3Old(iTRKMCOLD) < 0 .OR. TrkIne3Old(iTRKMCOLD) > 100 ) THEN
+                    WRITE(*,*) 'ERROR TRKMCOLD - TrkIne3Old Out of bound : ', TrkIne3Old(iTRKMCOLD)
+                 END IF
+                 TrType3Old(iTRKMCOLD) = Evt%Trkmcold%type3(iTRKMCOLD)
+                 IF ( TrType3Old(iTRKMCOLD) < 0 .OR. TrType3Old(iTRKMCOLD) > 100 ) THEN
+                    WRITE(*,*) 'ERROR TRKMCOLD - TrType3Old Out of bound : ', TrType3Old(iTRKMCOLD)
+                 END IF
+                 TrHits3Old(iTRKMCOLD) = Evt%Trkmcold%hits3(iTRKMCOLD)
+                 IF ( TrHits3Old(iTRKMCOLD) < 0 .OR. TrHits3Old(iTRKMCOLD) > 1000 ) THEN
+                    WRITE(*,*) 'ERROR TRKMCOLD - TrHits3Old Out of bound : ', TrHits3Old(iTRKMCOLD)
+                 END IF
+                   xFMCOld(iTRKMCOLD) = Evt%Trkmcold%xfirst(iTRKMCOLD)
+                   yFMCOld(iTRKMCOLD) = Evt%Trkmcold%yfirst(iTRKMCOLD)
+                   zFMCOld(iTRKMCOLD) = Evt%Trkmcold%zfirst(iTRKMCOLD)
+                   PxFMCOld(iTRKMCOLD) = Evt%Trkmcold%pxfirst(iTRKMCOLD)
+                   PyFMCOld(iTRKMCOLD) = Evt%Trkmcold%pyfirst(iTRKMCOLD)
+                   PzFMCOld(iTRKMCOLD) = Evt%Trkmcold%pzfirst(iTRKMCOLD)
+                   xLMCOld(iTRKMCOLD) = Evt%Trkmcold%xlast(iTRKMCOLD)
+                   yLMCOld(iTRKMCOLD) = Evt%Trkmcold%ylast(iTRKMCOLD)
+                   zLMCOld(iTRKMCOLD) = Evt%Trkmcold%zlast(iTRKMCOLD)
+                   PxLMCOld(iTRKMCOLD) = Evt%Trkmcold%pxlast(iTRKMCOLD)
+                   PyLMCOld(iTRKMCOLD) = Evt%Trkmcold%pylast(iTRKMCOLD)
+                   PzLMCOld(iTRKMCOLD) = Evt%Trkmcold%pzlast(iTRKMCOLD)
+                   xFMC2Old(iTRKMCOLD) = Evt%Trkmcold%xmcfirst(iTRKMCOLD)
+                   yFMC2Old(iTRKMCOLD) = Evt%Trkmcold%ymcfirst(iTRKMCOLD)
+                   zFMC2Old(iTRKMCOLD) = Evt%Trkmcold%zmcfirst(iTRKMCOLD)
+                   PxFMC2Old(iTRKMCOLD) = Evt%Trkmcold%pxmcfirst(iTRKMCOLD)
+                   PyFMC2Old(iTRKMCOLD) = Evt%Trkmcold%pymcfirst(iTRKMCOLD)
+                   PzFMC2Old(iTRKMCOLD) = Evt%Trkmcold%pzmcfirst(iTRKMCOLD)
+                   xLMC2Old(iTRKMCOLD) = Evt%Trkmcold%xmclast(iTRKMCOLD)
+                   yLMC2Old(iTRKMCOLD) = Evt%Trkmcold%ymclast(iTRKMCOLD)
+                   zLMC2Old(iTRKMCOLD) = Evt%Trkmcold%zmclast(iTRKMCOLD)
+                   PxLMC2Old(iTRKMCOLD) = Evt%Trkmcold%pxmclast(iTRKMCOLD)
+                   PyLMC2Old(iTRKMCOLD) = Evt%Trkmcold%pymclast(iTRKMCOLD)
+                   PzLMC2Old(iTRKMCOLD) = Evt%Trkmcold%pzmclast(iTRKMCOLD)
+             END DO
+           ELSE
+              WRITE(*,*) 'ERROR TRKMCOLD - nTfMCOld Index not valid: ', nTfMCOld
+           END IF
+        ELSE
+              WRITE(*,*) ERROR_MC_DATA
+        END IF
       END IF
 C-----------------------------------------------------------------------
 C Fill Block dhit
@@ -1992,22 +2008,14 @@ C-----------------------------------------------------------------------
               nADC(iiDEDX) = Evt%DEDX2STRU%numeroadc(iiDEDX)
               IDEDx(iiDEDX) = Evt%DEDX2STRU%indicededx(iiDEDX)
               DO jjDEDX=1, 100
-                 ADCLayer(jjDEDX,iiDEDX) = 
-     1                         Evt%DEDX2STRU%lay(jjDEDX,iiDEDX)
-                 ADCWi1(jjDEDX,iiDEDX) = 
-     1                         Evt%DEDX2STRU%wir1(jjDEDX,iiDEDX)
-                 ADCWi2(jjDEDX,iiDEDX) = 
-     1                         Evt%DEDX2STRU%wir2(jjDEDX,iiDEDX)
-                 ADCLen(jjDEDX,iiDEDX) = 
-     1                         Evt%DEDX2STRU%step(jjDEDX,iiDEDX)
-                 ADCLeff(jjDEDX,iiDEDX) = 
-     1                         Evt%DEDX2STRU%effs(jjDEDX,iiDEDX)
-                 ADCTim1(jjDEDX,iiDEDX) = 
-     1                         Evt%DEDX2STRU%tim1(jjDEDX,iiDEDX)
-                 ADCTim2(jjDEDX,iiDEDX) = 
-     1                         Evt%DEDX2STRU%tim2(jjDEDX,iiDEDX)
-                 ADCCharge(jjDEDX,iiDEDX) = 
-     1                         Evt%DEDX2STRU%carica(jjDEDX,iiDEDX)
+                 ADCLayer(jjDEDX,iiDEDX) = Evt%DEDX2STRU%lay(jjDEDX,iiDEDX)
+                 ADCWi1(jjDEDX,iiDEDX) = Evt%DEDX2STRU%wir1(jjDEDX,iiDEDX)
+                 ADCWi2(jjDEDX,iiDEDX) = Evt%DEDX2STRU%wir2(jjDEDX,iiDEDX)
+                 ADCLen(jjDEDX,iiDEDX) = Evt%DEDX2STRU%step(jjDEDX,iiDEDX)
+                 ADCLeff(jjDEDX,iiDEDX) = Evt%DEDX2STRU%effs(jjDEDX,iiDEDX)
+                 ADCTim1(jjDEDX,iiDEDX) = Evt%DEDX2STRU%tim1(jjDEDX,iiDEDX)
+                 ADCTim2(jjDEDX,iiDEDX) = Evt%DEDX2STRU%tim2(jjDEDX,iiDEDX)
+                 ADCCharge(jjDEDX,iiDEDX) = Evt%DEDX2STRU%carica(jjDEDX,iiDEDX)
               END DO
            END DO
          ELSE
@@ -2076,135 +2084,125 @@ C-----------------------------------------------------------------------
 C Fill Block mc
 C-----------------------------------------------------------------------
       IF (GEANFIFLAG) THEN
-         
-         STATUS = BLOCAT(IW, 'MC', BNKNUM, IND1, INDDAT)
-
-         write(*,*)" "
-         write(*,*)"==================================================="
-         write(*,*) "[Info] BLOCAT GEANFI=>", STATUS
-         IF (STATUS.NE.YESUCC) THEN
-            write(*,*)"[Info] STATUS==YESUCC? FALSE"
-         ELSE
-            write(*,*)"[Info] STATUS==YESUCC? TRUE"
-         END IF
-         write(*,*)"==================================================="
-         write(*,*)" "
-
-         nTMC = 0.
-         nVtxMC = 0.
-         DO iMC=1, 50
-           Kine(iMC) = 0.
-           PidMC(iMC) = 0.
-           VirMom(iMC) = 0.
-           PxMC(iMC) = 0.
-           PyMC(iMC) = 0.
-           PzMC(iMC) = 0.
-           xCv(iMC) = 0.
-           yCv(iMC) = 0.
-           zCv(iMC) = 0.
-           TOfCv(iMC) = 0.
-           TheMC(iMC) = 0.
-           PhiMC(iMC) = 0.
-           VtxMC(iMC) = 0.
-           nDchMC(iMC) = 0.
-           xFhMC(iMC) = 0.
-           yFhMC(iMC) = 0.
-           zFhMC(iMC) = 0.
-           PxFhMC(iMC) = 0.
-           PyFhMC(iMC) = 0.
-           PzFhMC(iMC) = 0.
-           xLhMC(iMC) = 0.
-           yLhMC(iMC) = 0.
-           zLhMC(iMC) = 0.
-           PxLhMC(iMC) = 0.
-           PyLhMC(iMC) = 0.
-           PzLhMC(iMC) = 0.
-         END DO
-         DO iMC=1, 30
-           KinMom(iMC) = 0.
-           Mother(iMC) = 0.
-           xVMC(iMC) = 0.
-           yVMC(iMC) = 0.
-           zVMC(iMC) = 0.
-           TOfVMC(iMC) = 0.
-           nTvTx(iMC) = 0.
-         END DO
-
-         istat = GETMCSTRU(Evt%MC)
-
-         nTMC = Evt%MC%ntrk
-         IF ( nTMC < 0 .OR. nTMC > 50 ) THEN
-            WRITE(*,*) 'ERROR MC - nTMC Out of bound : ', nTMC
-         END IF
-
-         IF (nTMC > 0 .AND. nTMC <= 50) THEN
-            DO iMC=1, nTMC
-               Kine(iMC) = Evt%MC%kin(iMC)
-               IF ( Kine(iMC) < 0 .OR. Kine(iMC) > 100 ) THEN
-                  WRITE(*,*) 'ERROR MC - Kine Out of bound : ', Kine(iMC)
-               END IF
-               PidMC(iMC) = Evt%MC%pid(iMC)
-               IF ( PidMC(iMC) < 0 .OR. PidMC(iMC) > 100 ) THEN
-                  WRITE(*,*) 'ERROR MC - PidMC Out of bound : ', PidMC(iMC)
-               END IF
-               VirMom(iMC) = Evt%MC%virmom(iMC)
-               IF ( VirMom(iMC) < 0 .OR. VirMom(iMC) > 100 ) THEN
-                  WRITE(*,*) 'ERROR MC - VirMom Out of bound : ', VirMom(iMC)
-               END IF
-               PxMC(iMC) = Evt%MC%px(iMC)
-               PyMC(iMC) = Evt%MC%py(iMC)
-               PzMC(iMC) = Evt%MC%pz(iMC)
-               xCv(iMC) = Evt%MC%xcv(iMC)
-               yCv(iMC) = Evt%MC%ycv(iMC)
-               zCv(iMC) = Evt%MC%zcv(iMC)
-               TOfCv(iMC) = Evt%MC%tofcv(iMC)
-               TheMC(iMC) = Evt%MC%theta(iMC)
-               PhiMC(iMC) = Evt%MC%phi(iMC)
-               VtxMC(iMC) = Evt%MC%Indv(iMC)
-               IF ( VtxMC(iMC) < 0 .OR. VtxMC(iMC) > 100 ) THEN
-                  WRITE(*,*) 'ERROR MC - VtxMC Out of bound : ', VtxMC(iMC)
-               END IF
-               nDchMC(iMC) = Evt%MC%ndchmc(iMC)
-               xFhMC(iMC) = Evt%MC%xfhmc(iMC)
-               yFhMC(iMC) = Evt%MC%yfhmc(iMC)
-               zFhMC(iMC) = Evt%MC%zfhmc(iMC)
-               PxFhMC(iMC) = Evt%MC%pxfhmc(iMC)
-               PyFhMC(iMC) = Evt%MC%pyfhmc(iMC)
-               PzFhMC(iMC) = Evt%MC%pzfhmc(iMC)
-               xLhMC(iMC) = Evt%MC%xlhmc(iMC)
-               yLhMC(iMC) = Evt%MC%ylhmc(iMC)
-               zLhMC(iMC) = Evt%MC%zlhmc(iMC)
-               PxLhMC(iMC) = Evt%MC%pxlhmc(iMC)
-               PyLhMC(iMC) = Evt%MC%pylhmc(iMC)
-               PzLhMC(iMC) = Evt%MC%pzlhmc(iMC)
-            END DO
-         ELSE
-            WRITE(*,*) 'ERROR MC - nTMC Index not valid: ', nTMC
-         END IF
-
-         nVtxMC = Evt%MC%numvtx
-         IF ( nVtxMC < 0 .OR. nVtxMC > 30 ) THEN
-            WRITE(*,*) 'ERROR MC - nVtxMC Out of bound : ', nVtxMC
-         END IF
-         IF (nVtxMC > 0 .AND. nVtxMC <= 50) THEN
-            DO iMC=1, nVtxMC
-               KinMom(iMC) = Evt%MC%kinmom(iMC)
-               IF ( KinMom(iMC) < 0 .OR. KinMom(iMC) > 100 ) THEN
-                  WRITE(*,*) 'ERROR MC - KinMom Out of bound : ', KinMom(iMC)
-               END IF
-               Mother(iMC) = Evt%MC%mother(iMC)
-               IF ( Mother(iMC) < 0 .OR. Mother(iMC) > 100 ) THEN
-                  WRITE(*,*) 'ERROR MC - Mother Out of bound : ', Mother(iMC)
-               END IF
-               xVMC(iMC) = Evt%MC%xv(iMC)
-               yVMC(iMC) = Evt%MC%yv(iMC)
-               zVMC(iMC) = Evt%MC%zv(iMC)
-               TOfVMC(iMC) = Evt%MC%tof(iMC)
-               nTvTx(iMC) = Evt%MC%trkvtx(iMC)
-            END DO
-         ELSE
-            WRITE(*,*) 'ERROR MC - nVtxMC Index not valid: ', nVtxMC
-         END IF
+        IF (MONTECARLOFLAG) THEN
+           nTMC = 0.
+           nVtxMC = 0.
+           DO iMC=1, 50
+             Kine(iMC) = 0.
+             PidMC(iMC) = 0.
+             VirMom(iMC) = 0.
+             PxMC(iMC) = 0.
+             PyMC(iMC) = 0.
+             PzMC(iMC) = 0.
+             xCv(iMC) = 0.
+             yCv(iMC) = 0.
+             zCv(iMC) = 0.
+             TOfCv(iMC) = 0.
+             TheMC(iMC) = 0.
+             PhiMC(iMC) = 0.
+             VtxMC(iMC) = 0.
+             nDchMC(iMC) = 0.
+             xFhMC(iMC) = 0.
+             yFhMC(iMC) = 0.
+             zFhMC(iMC) = 0.
+             PxFhMC(iMC) = 0.
+             PyFhMC(iMC) = 0.
+             PzFhMC(iMC) = 0.
+             xLhMC(iMC) = 0.
+             yLhMC(iMC) = 0.
+             zLhMC(iMC) = 0.
+             PxLhMC(iMC) = 0.
+             PyLhMC(iMC) = 0.
+             PzLhMC(iMC) = 0.
+           END DO
+           DO iMC=1, 30
+             KinMom(iMC) = 0.
+             Mother(iMC) = 0.
+             xVMC(iMC) = 0.
+             yVMC(iMC) = 0.
+             zVMC(iMC) = 0.
+             TOfVMC(iMC) = 0.
+             nTvTx(iMC) = 0.
+           END DO
+  
+           istat = GETMCSTRU(Evt%MC)
+  
+           nTMC = Evt%MC%ntrk
+           IF ( nTMC < 0 .OR. nTMC > 50 ) THEN
+              WRITE(*,*) 'ERROR MC - nTMC Out of bound : ', nTMC
+           END IF
+  
+           IF (nTMC > 0 .AND. nTMC <= 50) THEN
+              DO iMC=1, nTMC
+                 Kine(iMC) = Evt%MC%kin(iMC)
+                 IF ( Kine(iMC) < 0 .OR. Kine(iMC) > 100 ) THEN
+                    WRITE(*,*) 'ERROR MC - Kine Out of bound : ', Kine(iMC)
+                 END IF
+                 PidMC(iMC) = Evt%MC%pid(iMC)
+                 IF ( PidMC(iMC) < 0 .OR. PidMC(iMC) > 100 ) THEN
+                    WRITE(*,*) 'ERROR MC - PidMC Out of bound : ', PidMC(iMC)
+                 END IF
+                 VirMom(iMC) = Evt%MC%virmom(iMC)
+                 IF ( VirMom(iMC) < 0 .OR. VirMom(iMC) > 100 ) THEN
+                    WRITE(*,*) 'ERROR MC - VirMom Out of bound : ', VirMom(iMC)
+                 END IF
+                 PxMC(iMC) = Evt%MC%px(iMC)
+                 PyMC(iMC) = Evt%MC%py(iMC)
+                 PzMC(iMC) = Evt%MC%pz(iMC)
+                 xCv(iMC) = Evt%MC%xcv(iMC)
+                 yCv(iMC) = Evt%MC%ycv(iMC)
+                 zCv(iMC) = Evt%MC%zcv(iMC)
+                 TOfCv(iMC) = Evt%MC%tofcv(iMC)
+                 TheMC(iMC) = Evt%MC%theta(iMC)
+                 PhiMC(iMC) = Evt%MC%phi(iMC)
+                 VtxMC(iMC) = Evt%MC%Indv(iMC)
+                 IF ( VtxMC(iMC) < 0 .OR. VtxMC(iMC) > 100 ) THEN
+                    WRITE(*,*) 'ERROR MC - VtxMC Out of bound : ', VtxMC(iMC)
+                 END IF
+                 nDchMC(iMC) = Evt%MC%ndchmc(iMC)
+                 xFhMC(iMC) = Evt%MC%xfhmc(iMC)
+                 yFhMC(iMC) = Evt%MC%yfhmc(iMC)
+                 zFhMC(iMC) = Evt%MC%zfhmc(iMC)
+                 PxFhMC(iMC) = Evt%MC%pxfhmc(iMC)
+                 PyFhMC(iMC) = Evt%MC%pyfhmc(iMC)
+                 PzFhMC(iMC) = Evt%MC%pzfhmc(iMC)
+                 xLhMC(iMC) = Evt%MC%xlhmc(iMC)
+                 yLhMC(iMC) = Evt%MC%ylhmc(iMC)
+                 zLhMC(iMC) = Evt%MC%zlhmc(iMC)
+                 PxLhMC(iMC) = Evt%MC%pxlhmc(iMC)
+                 PyLhMC(iMC) = Evt%MC%pylhmc(iMC)
+                 PzLhMC(iMC) = Evt%MC%pzlhmc(iMC)
+              END DO
+           ELSE
+              WRITE(*,*) 'ERROR MC - nTMC Index not valid: ', nTMC
+           END IF
+  
+           nVtxMC = Evt%MC%numvtx
+           IF ( nVtxMC < 0 .OR. nVtxMC > 30 ) THEN
+              WRITE(*,*) 'ERROR MC - nVtxMC Out of bound : ', nVtxMC
+           END IF
+           IF (nVtxMC > 0 .AND. nVtxMC <= 50) THEN
+              DO iMC=1, nVtxMC
+                 KinMom(iMC) = Evt%MC%kinmom(iMC)
+                 IF ( KinMom(iMC) < 0 .OR. KinMom(iMC) > 100 ) THEN
+                    WRITE(*,*) 'ERROR MC - KinMom Out of bound : ', KinMom(iMC)
+                 END IF
+                 Mother(iMC) = Evt%MC%mother(iMC)
+                 IF ( Mother(iMC) < 0 .OR. Mother(iMC) > 100 ) THEN
+                    WRITE(*,*) 'ERROR MC - Mother Out of bound : ', Mother(iMC)
+                 END IF
+                 xVMC(iMC) = Evt%MC%xv(iMC)
+                 yVMC(iMC) = Evt%MC%yv(iMC)
+                 zVMC(iMC) = Evt%MC%zv(iMC)
+                 TOfVMC(iMC) = Evt%MC%tof(iMC)
+                 nTvTx(iMC) = Evt%MC%trkvtx(iMC)
+              END DO
+           ELSE
+              WRITE(*,*) 'ERROR MC - nVtxMC Index not valid: ', nVtxMC
+           END IF
+        ELSE
+              WRITE(*,*) ERROR_MC_DATA
+        END IF
       END IF
 C-----------------------------------------------------------------------
 C Fill Block tclo
@@ -2771,39 +2769,43 @@ C-----------------------------------------------------------------------
 C Fill Block cspsmc
 C-----------------------------------------------------------------------
       IF (CSPSMCFLAG) THEN
-         nCSMC = 0.
-         DO iCSPSMC=1, 2000
-           CSMCKine(iCSPSMC) = 0.
-           CSMCPoi(iCSPSMC) = 0.
-           CSMCNHit(iCSPSMC) = 0.
-           CSMCx(iCSPSMC) = 0.
-           CSMCy(iCSPSMC) = 0.
-           CSMCz(iCSPSMC) = 0.
-           CSMCt(iCSPSMC) = 0.
-           CSMCe(iCSPSMC) = 0.
-         END DO
-
-         istat = GETCSPSSTRU(0,evt%CSPS,evt%CSPSMC)
-
-         nCSMC = Evt%CSPSMC%Ncel
-         IF ( nCSMC < 0 .OR. nCSMC > 2000 ) THEN
-            WRITE(*,*) 'ERROR CSPSMC - nCSMC Out of bound : ', nCSMC
-         END IF
-
-         IF (nCSMC > 0 .AND. nCSMC <= 2000) THEN
-            DO iCSPSMC=1, nCSMC
-                 CSMCKine(iCSPSMC) = Evt%CSPSMC%Knum(iCSPSMC)
-                 CSMCPoi(iCSPSMC) = Evt%CSPSMC%Ihit(iCSPSMC)
-                 CSMCNHit(iCSPSMC) = Evt%CSPSMC%Nhit(iCSPSMC)
-                 CSMCx(iCSPSMC) = Evt%CSPSMC%X(iCSPSMC)
-                 CSMCy(iCSPSMC) = Evt%CSPSMC%Y(iCSPSMC)
-                 CSMCz(iCSPSMC) = Evt%CSPSMC%Z(iCSPSMC)
-                 CSMCt(iCSPSMC) = Evt%CSPSMC%T(iCSPSMC)
-                 CSMCe(iCSPSMC) = Evt%CSPSMC%E(iCSPSMC)
-           END DO
-         ELSE
-            WRITE(*,*) 'ERROR CSPSMC - nCSMC Index not valid: ', nCSMC
-         END IF
+        IF (MONTECARLOFLAG) THEN
+          nCSMC = 0.
+          DO iCSPSMC=1, 2000
+            CSMCKine(iCSPSMC) = 0.
+            CSMCPoi(iCSPSMC) = 0.
+            CSMCNHit(iCSPSMC) = 0.
+            CSMCx(iCSPSMC) = 0.
+            CSMCy(iCSPSMC) = 0.
+            CSMCz(iCSPSMC) = 0.
+            CSMCt(iCSPSMC) = 0.
+            CSMCe(iCSPSMC) = 0.
+          END DO
+ 
+          istat = GETCSPSSTRU(0,evt%CSPS,evt%CSPSMC)
+ 
+          nCSMC = Evt%CSPSMC%Ncel
+          IF ( nCSMC < 0 .OR. nCSMC > 2000 ) THEN
+             WRITE(*,*) 'ERROR CSPSMC - nCSMC Out of bound : ', nCSMC
+          END IF
+ 
+          IF (nCSMC > 0 .AND. nCSMC <= 2000) THEN
+             DO iCSPSMC=1, nCSMC
+                  CSMCKine(iCSPSMC) = Evt%CSPSMC%Knum(iCSPSMC)
+                  CSMCPoi(iCSPSMC) = Evt%CSPSMC%Ihit(iCSPSMC)
+                  CSMCNHit(iCSPSMC) = Evt%CSPSMC%Nhit(iCSPSMC)
+                  CSMCx(iCSPSMC) = Evt%CSPSMC%X(iCSPSMC)
+                  CSMCy(iCSPSMC) = Evt%CSPSMC%Y(iCSPSMC)
+                  CSMCz(iCSPSMC) = Evt%CSPSMC%Z(iCSPSMC)
+                  CSMCt(iCSPSMC) = Evt%CSPSMC%T(iCSPSMC)
+                  CSMCe(iCSPSMC) = Evt%CSPSMC%E(iCSPSMC)
+            END DO
+          ELSE
+             WRITE(*,*) 'ERROR CSPSMC - nCSMC Index not valid: ', nCSMC
+          END IF
+        ELSE
+              WRITE(*,*) ERROR_MC_DATA
+        END IF
       END IF
 C-----------------------------------------------------------------------
 C Fill Block cluo
@@ -2845,46 +2847,144 @@ C-----------------------------------------------------------------------
 C Fill Block cluomc
 C-----------------------------------------------------------------------
       IF (CLUOMCFLAG) THEN
-         nMCPar = 0.
-         DO iCLUOMC=1, 100
-           CluMCCel(iCLUOMC) = 0.
-           CluMCiCl(iCLUOMC) = 0.
-           CluMCKin(iCLUOMC) = 0.
-           CluMCe(iCLUOMC) = 0.
-           CluMCx(iCLUOMC) = 0.
-           CluMCy(iCLUOMC) = 0.
-           CluMCz(iCLUOMC) = 0.
-           CluMCt(iCLUOMC) = 0.
+        IF (MONTECARLOFLAG) THEN
+          nMCPar = 0.
+          DO iCLUOMC=1, 100
+            CluMCCel(iCLUOMC) = 0.
+            CluMCiCl(iCLUOMC) = 0.
+            CluMCKin(iCLUOMC) = 0.
+            CluMCe(iCLUOMC) = 0.
+            CluMCx(iCLUOMC) = 0.
+            CluMCy(iCLUOMC) = 0.
+            CluMCz(iCLUOMC) = 0.
+            CluMCt(iCLUOMC) = 0.
+          END DO
+ 
+          istat = GETCLUOMCSTRU(Evt%CLUOMC)
+ 
+          nMCPar = Evt%CLUOMC%Npar
+          IF ( nMCPar < 0 .OR. nMCPar > 100 ) THEN
+             WRITE(*,*) 'ERROR CLUOMC - nMCPar Out of bound : ', nMCPar
+          END IF
+ 
+          IF (nMCPar > 0 .AND. nMCPar <= 100) THEN
+             DO iCLUOMC=1, nMCPar
+                  CluMCCel(iCLUOMC) = Evt%CLUOMC%Ncel(iCLUOMC)
+                  CluMCiCl(iCLUOMC) = Evt%CLUOMC%Iclu(iCLUOMC)
+                  CluMCKin(iCLUOMC) = Evt%CLUOMC%Kine(iCLUOMC)
+                  CluMCe(iCLUOMC) = Evt%CLUOMC%E(iCLUOMC)
+                  CluMCx(iCLUOMC) = Evt%CLUOMC%X(iCLUOMC)
+                  CluMCy(iCLUOMC) = Evt%CLUOMC%Y(iCLUOMC)
+                  CluMCz(iCLUOMC) = Evt%CLUOMC%Z(iCLUOMC)
+                  CluMCt(iCLUOMC) = Evt%CLUOMC%T(iCLUOMC)
+            END DO
+          ELSE
+             WRITE(*,*) 'ERROR CLUOMC - nMCPar Index not valid: ', nMCPar
+          END IF
+        ELSE
+              WRITE(*,*) ERROR_MC_DATA
+        END IF
+      END IF
+C-----------------------------------------------------------------------
+C Fill Block qtele
+C-----------------------------------------------------------------------
+      IF (QTELEFLAG) THEN
+         nQCalT = 0.
+         DO iQTELE=1, 1920
+           QLte_Hit(iQTELE) = 0.
+           QLte_Det(iQTELE) = 0.
+           QLte_Mod(iQTELE) = 0.
+           QLte_Pla(iQTELE) = 0.
+           QLte_Til(iQTELE) = 0.
+           QLte_Tim1(iQTELE) = 0.
+           QLte_Tim2(iQTELE) = 0.
+           QLte_Tim3(iQTELE) = 0.
+           QLte_Tim4(iQTELE) = 0.
+           QLte_Tim5(iQTELE) = 0.
          END DO
 
-         istat = GETCLUOMCSTRU(Evt%CLUOMC)
+         istat = GETQCALTSTRU(Evt%QCALT)
 
-         nMCPar = Evt%CLUOMC%Npar
-         IF ( nMCPar < 0 .OR. nMCPar > 100 ) THEN
-            WRITE(*,*) 'ERROR CLUOMC - nMCPar Out of bound : ', nMCPar
+         nQCalT = Evt%QCALT%NEle
+         IF ( nQCalT < 0 .OR. nQCalT > 1920 ) THEN
+            WRITE(*,*) 'ERROR QTELE - nQCalT Out of bound : ', nQCalT
          END IF
 
-         IF (nMCPar > 0 .AND. nMCPar <= 100) THEN
-            DO iCLUOMC=1, nMCPar
-                 CluMCCel(iCLUOMC) = Evt%CLUOMC%Ncel(iCLUOMC)
-                 CluMCiCl(iCLUOMC) = Evt%CLUOMC%Iclu(iCLUOMC)
-                 CluMCKin(iCLUOMC) = Evt%CLUOMC%Kine(iCLUOMC)
-                 CluMCe(iCLUOMC) = Evt%CLUOMC%E(iCLUOMC)
-                 CluMCx(iCLUOMC) = Evt%CLUOMC%X(iCLUOMC)
-                 CluMCy(iCLUOMC) = Evt%CLUOMC%Y(iCLUOMC)
-                 CluMCz(iCLUOMC) = Evt%CLUOMC%Z(iCLUOMC)
-                 CluMCt(iCLUOMC) = Evt%CLUOMC%T(iCLUOMC)
+         IF (nQCalT > 0 .AND. nQCalT <= 1920) THEN
+            DO iQTELE=1, nQCalT
+               QLte_Hit(iQTELE) = Evt%QCALT%Nhit(iQTELE)
+               IF ( QLte_Hit(iQTELE) < 0 .OR. QLte_Hit(iQTELE) > 5 ) THEN
+                  WRITE(*,*) 'ERROR QTELE - QLte_Hit[1] Out of bound : ', QLte_Hit(iQTELE)
+               END IF
+               QLte_Det(iQTELE) = Evt%QCALT%Qdet(iQTELE)
+               IF ( QLte_Det(iQTELE) < 0 .OR. QLte_Det(iQTELE) > 2 ) THEN
+                  WRITE(*,*) 'ERROR QTELE - QLte_Det[2] Out of bound : ', QLte_Det(iQTELE)
+               END IF
+               QLte_Mod(iQTELE) = Evt%QCALT%Qmod(iQTELE)
+               IF ( QLte_Mod(iQTELE) < 0 .OR. QLte_Mod(iQTELE) > 11 ) THEN
+                  WRITE(*,*) 'ERROR QTELE - QLte_Mod[3] Out of bound : ', QLte_Mod(iQTELE)
+               END IF
+               QLte_Pla(iQTELE) = Evt%QCALT%Qpla(iQTELE)
+               IF ( QLte_Pla(iQTELE) < 0 .OR. QLte_Pla(iQTELE) > 4 ) THEN
+                  WRITE(*,*) 'ERROR QTELE - QLte_Pla[4] Out of bound : ', QLte_Pla(iQTELE)
+               END IF
+               QLte_Til(iQTELE) = Evt%QCALT%Qtil(iQTELE)
+               IF ( QLte_Til(iQTELE) < 0 .OR. QLte_Til(iQTELE) > 15 ) THEN
+                  WRITE(*,*) 'ERROR QTELE - QLte_Til[5] Out of bound : ', QLte_Til(iQTELE)
+               END IF
+               QLte_Tim1(iQTELE) = Evt%QCALT%Time(1, iQTELE)
+               QLte_Tim2(iQTELE) = Evt%QCALT%Time(2, iQTELE)
+               QLte_Tim3(iQTELE) = Evt%QCALT%Time(3, iQTELE)
+               QLte_Tim4(iQTELE) = Evt%QCALT%Time(4, iQTELE)
+               QLte_Tim5(iQTELE) = Evt%QCALT%Time(5, iQTELE)
            END DO
          ELSE
-            WRITE(*,*) 'ERROR CLUOMC - nMCPar Index not valid: ', nMCPar
+            WRITE(*,*) 'ERROR QTELE - nQCalT Index not valid: ', nQCalT
          END IF
       END IF
 C-----------------------------------------------------------------------
-C Block QTELE: TODO
+C Fill Block qcth
 C-----------------------------------------------------------------------
-C-----------------------------------------------------------------------
-C Block QCTH:  TODO
-C-----------------------------------------------------------------------
+      IF (QCTHFLAG) THEN
+         nQCTHEle = 0.
+         DO iQCTH=1, 1920
+           nQCTHHit(iQCTH) = 0.
+           QCTHx(iQCTH) = 0.
+           QCTHy(iQCTH) = 0.
+           QCTHz(iQCTH) = 0.
+           Tim1(iQCTH) = 0.
+           Tim2(iQCTH) = 0.
+           Tim3(iQCTH) = 0.
+           Tim4(iQCTH) = 0.
+           Tim5(iQCTH) = 0.
+         END DO
+
+         istat = GETQCTHSTRU(Evt%QCALTHIT)
+
+         nQCTHEle = Evt%QCALTHIT%Nele
+         IF ( nQCTHEle < 0 .OR. nQCTHEle > 1920 ) THEN
+            WRITE(*,*) ERROR_BLOCK//'QCTH - nQCTHEle '//ERROR_DOMAIN, nQCTHEle
+         END IF
+
+         IF (nQCTHEle > 0 .AND. nQCTHEle <= 1920) THEN
+            DO iQCTH=1, nQCTHEle
+               nQCTHHit(iQCTH) = Evt%QCALTHIT%Nhit(iQCTH)
+               IF ( nHit(iQCTH) < 1 .OR. nHit(iQCTH) > 5 ) THEN
+                  WRITE(*,*) 'ERROR QCTH - nHit[1] Out of bound : ', nHit(iQCTH)
+               END IF
+               QCTHx(iQCTH) = Evt%QCALTHIT%X(iQCTH)
+               QCTHy(iQCTH) = Evt%QCALTHIT%Y(iQCTH)
+               QCTHz(iQCTH) = Evt%QCALTHIT%Z(iQCTH)
+               Tim1(iQCTH) = Evt%QCALTHIT%Time(1, iQCTH)
+               Tim2(iQCTH) = Evt%QCALTHIT%Time(2, iQCTH)
+               Tim3(iQCTH) = Evt%QCALTHIT%Time(3, iQCTH)
+               Tim4(iQCTH) = Evt%QCALTHIT%Time(4, iQCTH)
+               Tim5(iQCTH) = Evt%QCALTHIT%Time(5, iQCTH)
+           END DO
+         ELSE
+            WRITE(*,*) 'ERROR QCTH - nQCTHEle Index not valid: ', nQCTHEle
+         END IF
+      END IF
 C-----------------------------------------------------------------------
 C Fill Block ccle
 C-----------------------------------------------------------------------

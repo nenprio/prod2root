@@ -15,4 +15,5 @@ ref/OutputVerifier/out
 ref/sample_bj.kloe
 ref/BlockToRootParser/in
 ref/BlockToRootParser/out
+*trash
 *main

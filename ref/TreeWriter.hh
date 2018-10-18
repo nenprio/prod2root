@@ -61,7 +61,7 @@ class TreeWriter{
          void addBlockCSPSMC();
          void addBlockCluO();
          void addBlockCluOMC();
-         void addBlockQTele();
+         void addBlockQTELE();
          void addBlockQCTH();
          void addBlockCCLE();
          void addBlockLETE();

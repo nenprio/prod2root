@@ -7,7 +7,7 @@ C Follow the declarations of external functions
 C and return variables used in sample.kloe to fill the data.
 C
         REAL    rstat, GETBPOS
-        LOGICAL MCFLAG_1
+        LOGICAL MONTECARLOFLAG
         INTEGER istat, STATUS 
         INTEGER NUMDHIT, MCFLAG_TG
         INTEGER BNKNUM, ICURR, IND1, INDDAT, OldRunNumber
@@ -34,6 +34,15 @@ C
         INTEGER GETCSPSSTRU, GETCLUOMCSTRU
         INTEGER TRKVOLD2STRU, GETOLDTCLOSTRU, DHIT_RESET, DHIT_UPK
         INTEGER DEDX2STRU_GET, DEDX2STRU_RESET
+C
+C MESSAGES DECLARATIONS
+C Follow the declaration of all the messages to print on std out
+C
+        CHARACTER(len=10) :: ERROR_LINE
+        CHARACTER(len=60) :: ERROR_MC_DATA
+        CHARACTER(len=10) :: ERROR_BLOCK
+        CHARACTER(len=25) :: ERROR_INDEX
+        CHARACTER(len=25) :: ERROR_DOMAIN
 C
 C BLOCK STRUCTURE DECLARATIONS
 C Follow the declarations of all the variables filled by data
@@ -561,13 +570,23 @@ C
       common /cluomc/nMCPar,CluMCCel,CluMCiCl,CluMCKin,CluMCe,CluMCx,
      1       CluMCy,CluMCz,CluMCt
 C
-C Block QTELE
-C TODO
+C  Block: qtele
 C
+      integer iQTELE, nQCalT, QLte_Hit(1920), QLte_Det(1920)
+      integer QLte_Mod(1920), QLte_Pla(1920), QLte_Til(1920)
+      real QLte_Tim1(1920), QLte_Tim2(1920), QLte_Tim3(1920)
+      real QLte_Tim4(1920), QLte_Tim5(1920)
+
+      common /qtele/nQCalT,QLte_Hit,QLte_Det,QLte_Mod,QLte_Pla,QLte_Til,
+     1       QLte_Tim1,QLte_Tim2,QLte_Tim3,QLte_Tim4,QLte_Tim5
 C
-C Block QCTH
-C TODO
+C  Block: qcth
 C
+      integer iQCTH, nQCTHEle, nQCTHHit(1920)
+      real QCTHx(1920), QCTHy(1920), QCTHz(1920), Tim1(1920), Tim2(1920)
+      real Tim3(1920), Tim4(1920), Tim5(1920)
+
+      common /qcth/nQCTHEle,nQCTHHit,QCTHx,QCTHy,QCTHz,Tim1,Tim2,Tim3,Tim4,Tim5
 C
 C  Block: ccle
 C

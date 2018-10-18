@@ -1,5 +1,92 @@
-REF_DIR  = ../ref
-DICT_DIR = ../dict
-EXE_DIR  = ..
+# Define working directory starting from current dir "mgr"
+DICT_DIR := ../dict
+EXE_DIR  := ../exe
+MGR_DIR  := ../mgr
+OPT_DIR  := ../opt
+REF_DIR  := ../ref
 
-/sample_bj.kloe: sample_bj.uic     
+# Extract info about OS, OS Version and current User
+OS       := $(shell uname -s)
+UVERSIS  := $(shell uname -v)
+USER     := $(shell echo $$USER)
+
+# Define variable for AIX OS, according to the version 5 or 7
+PATH_VAR      := $(shell echo $$PATH | tr ':' ' ') /etc /usr/sbin .
+EXPAND_CMD    := expaix
+PACKMAN       := /kloe/soft/onl/manage/v3/mgr/packman.csh
+SETUP         := /kloe/soft/off/ups/v3_0/aix/bin/ups_setup
+BUILD_JOB_CMD := /kloe/soft/off/build_job/production/aix/programs/build_job.exe
+
+ifeq ($(UVERSIS), 7)
+	F77_CMD    := "/opt/IBM/xlf/15.1.3/bin/xlf -O3 -qhsflt -qextname -c"
+	F90_CMD    := "/opt/IBM/xlf/15.1.3/bin/xlf -O3 -qhsflt -qextname -c"
+else
+	F77_CMD    := "xlf -qarch=604 -O3 -qhsflt -qextname -c"
+	F90_CMD    := "xlf -qarch=604 -O3 -qhsflt -qextname -c"
+endif
+
+# Define SAMPLE path according to the current user
+ifeq ($(USER), berducci)
+	SAMPLE_PATH := /afs/kloe.infn.it/user/b/berducci/prod2root/ref
+else
+ifeq ($(USER), eperez)
+	SAMPLE_PATH := /afs/kloe.infn.it/user/e/eperez/prod2root/ref
+endif           #eperez
+endif           #berducci
+
+OLDSHELL := SHELL
+SHELL := /usr/bin/tcsh
+
+# Initial target
+all: init_setup $(REF_DIR)/sample_bj.f $(REF_DIR)/sample.f $(REF_DIR)/prod2ntu.f $(REF_DIR)/newt0find.f final_setup
+
+init_setup:
+	set path = $(PATH_VAR)
+	shell $(PACKMAN) calib
+	shell $(PACKMAN) kid
+	shell $(SETUP) -e emc development
+	shell $(SETUP) -e tls development
+	shell $(SETUP) -e ecl development
+	shell $(SETUP) -e trk development
+	shell $(SETUP) -e trg development
+	set ROOTLIBS = $(shell root-config --libs)
+	export SAMPLE=$(SAMPLE_PATH)
+	export MYLIBS="$$ROOTLIBS -lm -lC -Wl,-bloadmap:map.txt"
+	rm -rf $(EXE_DIR)/sample.exe
+
+print_info:
+	echo $(PATH_VAR)
+	echo $(OS)
+	echo $(UVERSIS)
+	echo $(EXPAND_CMD)
+	echo $(F77_CMD)
+	echo $(F90_CMD)
+	echo ""
+
+final_setup:
+	$(MGR_DIR) $(EXE_DIR)/sample.exe $(OPT_DIR)/sample.opt no no
+	ls -alrt sample.exe
+
+$(REF_DIR)/sample.f: $(REF_DIR)/sample.kloe $(REF_DIR)/sample.cin $(REF_DIR)/sample.uid $(REF_DIR)/sample_talk.cin
+	$(EXPAND) $<
+
+$(REF_DIR)/prod2ntu.f: $(REF_DIR)/prod2ntu.kloe
+	$(EXPAND) $<
+
+$(REF_DIR)/newt0find.f: $(REF_DIR)/newt0find.kloe
+	$(EXPAND) $<
+
+$(REF_DIR)/sample_bj.f: $(REF_DIR)/sample_bj.kloe
+	$(EXPAND) $<
+
+$(REF_DIR)/sample_bj.kloe: $(DICT_DIR)/sample_bj.uic
+	cd $(DICT_DIR)
+	$(BUILD_JOB_CMD) sample_bj.uic
+	cd $(MGR_DIR)
+	mv sample_bj.kloe $@
+
+.PHONY: clean
+
+clean:
+	rm -ri $(REF_DIR)/*.f
+	rm -ri $(EXE_DIR)/*.exe
