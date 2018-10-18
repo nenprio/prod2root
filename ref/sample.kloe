@@ -192,11 +192,12 @@ C
 C=============================================================================
 C Start of Code:
 C=============================================================================
-      ERROR_LINE    = "[ERROR]"
-      ERROR_MC_DATA = ERROR_LINE//"MC DATA - Try to access to missing MC data."
-      ERROR_BLOCK   = ERROR_LINE//"Block "
-      ERROR_INDEX   = "Index not valid."
-      ERROR_DOMAIN  = "Out of domain."
+      ERROR_LINE = "[ERROR]"
+      ERROR_MC_DATA = ERROR_LINE//" Try to access to missing MC data."
+      ERROR_MISS_DATA = ERROR_LINE// "Try to access to missing data of block "
+      ERROR_BLOCK = ERROR_LINE//"Block "
+      ERROR_INDEX = "Index not valid."
+      ERROR_DOMAIN = "Out of domain."
       
       IF( EXPTYP.EQ.EXOFSI ) THEN ! Simulation
          MONTECARLOFLAG = .TRUE.
@@ -880,7 +881,7 @@ C-----------------------------------------------------------------------
               WRITE(*,*) 'ERROR EVTCLUMC - NCluMc Index not valid : ', NCluMc
            END IF
         ELSE
-              WRITE(*,*) ERROR_MC_DATA
+              WRITE(*,*) ERROR_MC_DATA//"CLUMC"
         END IF
       END IF
 C-----------------------------------------------------------------------
@@ -1069,7 +1070,7 @@ C-----------------------------------------------------------------------
               WRITE(*,*) 'ERROR CELEMC - NCelMc Index not valid : ', NCelMc
            END IF
         ELSE
-           WRITE(*,*) ERROR_MC_DATA
+           WRITE(*,*) ERROR_MC_DATA//"CELEMC"
         END IF
       END IF
 C-----------------------------------------------------------------------
@@ -1581,7 +1582,7 @@ C-----------------------------------------------------------------------
               WRITE(*,*) 'ERROR TRKMC - nTfMC Index not valid: ', nTfMC
            END IF
         ELSE
-           WRITE(*,*) ERROR_MC_DATA
+           WRITE(*,*) ERROR_MC_DATA//"TRKMC"
         END IF
       END IF
 C-----------------------------------------------------------------------
@@ -1920,7 +1921,7 @@ C-----------------------------------------------------------------------
               WRITE(*,*) 'ERROR TRKMCOLD - nTfMCOld Index not valid: ', nTfMCOld
            END IF
         ELSE
-              WRITE(*,*) ERROR_MC_DATA
+              WRITE(*,*) ERROR_MC_DATA//"TRKMCOLD"
         END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2201,7 +2202,7 @@ C-----------------------------------------------------------------------
               WRITE(*,*) 'ERROR MC - nVtxMC Index not valid: ', nVtxMC
            END IF
         ELSE
-              WRITE(*,*) ERROR_MC_DATA
+              WRITE(*,*) ERROR_MC_DATA//"MC"
         END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2366,49 +2367,53 @@ C-----------------------------------------------------------------------
 C Fill Block qihi
 C-----------------------------------------------------------------------
       IF (QIHIFLAG) THEN
-         nQIHI = 0.
-         DO iQIHI=1, 1000
-           PidQIHI(iQIHI) = 0.
-           AddQIHI(iQIHI) = 0.
-           KinQIHI(iQIHI) = 0.
-           xQIHI(iQIHI) = 0.
-           yQIHI(iQIHI) = 0.
-           zQIHI(iQIHI) = 0.
-           PxQIHI(iQIHI) = 0.
-           PyQIHI(iQIHI) = 0.
-           PzQIHI(iQIHI) = 0.
-           TofQIHI(iQIHI) = 0.
-           EneQIHI(iQIHI) = 0.
-           TLenQIHI(iQIHI) = 0.
-         END DO
-
-C        
-C        TODO: Notice that in prod2ntu, this function was commented. Why?
-C
-         istat = GETQIHISTRU(evt%qhit)
-
-         nQIHI = Evt%QHIT%n
-         IF ( nQIHI < 0 .OR. nQIHI > 1000 ) THEN
-            WRITE(*,*) 'ERROR QIHI - nQIHI Out of bound : ', nQIHI
-         END IF
-
-         IF (nQIHI > 0 .AND. nQIHI <= 1000) THEN
-            DO iQIHI=1, nQIHI
-                 PidQIHI(iQIHI) = Evt%QHIT%pty(iQIHI)
-                 AddQIHI(iQIHI) = Evt%QHIT%add(iQIHI)
-                 KinQIHI(iQIHI) = Evt%QHIT%kine(iQIHI)
-                 xQIHI(iQIHI) = Evt%QHIT%x(iQIHI)
-                 yQIHI(iQIHI) = Evt%QHIT%Y(iQIHI)
-                 zQIHI(iQIHI) = Evt%QHIT%z(iQIHI)
-                 PxQIHI(iQIHI) = Evt%QHIT%px(iQIHI)
-                 PyQIHI(iQIHI) = Evt%QHIT%px(iQIHI)
-                 PzQIHI(iQIHI) = Evt%QHIT%pz(iQIHI)
-                 TofQIHI(iQIHI) = Evt%QHIT%tof(iQIHI)
-                 EneQIHI(iQIHI) = Evt%QHIT%ene(iQIHI)
-                 TLenQIHI(iQIHI) = Evt%QHIT%trl(iQIHI)
-           END DO
+         IF (.NOT.MONTECARLOFLAG) THEN
+            nQIHI = 0.
+            DO iQIHI=1, 1000
+              PidQIHI(iQIHI) = 0.
+              AddQIHI(iQIHI) = 0.
+              KinQIHI(iQIHI) = 0.
+              xQIHI(iQIHI) = 0.
+              yQIHI(iQIHI) = 0.
+              zQIHI(iQIHI) = 0.
+              PxQIHI(iQIHI) = 0.
+              PyQIHI(iQIHI) = 0.
+              PzQIHI(iQIHI) = 0.
+              TofQIHI(iQIHI) = 0.
+              EneQIHI(iQIHI) = 0.
+              TLenQIHI(iQIHI) = 0.
+            END DO
+   
+   C        
+   C        TODO: Notice that in prod2ntu, this function was commented. Why?
+   C
+            istat = GETQIHISTRU(evt%qhit)
+   
+            nQIHI = Evt%QHIT%n
+            IF ( nQIHI < 0 .OR. nQIHI > 1000 ) THEN
+               WRITE(*,*) 'ERROR QIHI - nQIHI Out of bound : ', nQIHI
+            END IF
+   
+            IF (nQIHI > 0 .AND. nQIHI <= 1000) THEN
+               DO iQIHI=1, nQIHI
+                    PidQIHI(iQIHI) = Evt%QHIT%pty(iQIHI)
+                    AddQIHI(iQIHI) = Evt%QHIT%add(iQIHI)
+                    KinQIHI(iQIHI) = Evt%QHIT%kine(iQIHI)
+                    xQIHI(iQIHI) = Evt%QHIT%x(iQIHI)
+                    yQIHI(iQIHI) = Evt%QHIT%Y(iQIHI)
+                    zQIHI(iQIHI) = Evt%QHIT%z(iQIHI)
+                    PxQIHI(iQIHI) = Evt%QHIT%px(iQIHI)
+                    PyQIHI(iQIHI) = Evt%QHIT%px(iQIHI)
+                    PzQIHI(iQIHI) = Evt%QHIT%pz(iQIHI)
+                    TofQIHI(iQIHI) = Evt%QHIT%tof(iQIHI)
+                    EneQIHI(iQIHI) = Evt%QHIT%ene(iQIHI)
+                    TLenQIHI(iQIHI) = Evt%QHIT%trl(iQIHI)
+              END DO
+            ELSE
+               WRITE(*,*) 'ERROR QIHI - nQIHI Index not valid: ', nQIHI
+            END IF
          ELSE
-            WRITE(*,*) 'ERROR QIHI - nQIHI Index not valid: ', nQIHI
+            WRITE(*,*) ERROR_MISS_DATA//"QIHI"
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2455,62 +2460,70 @@ C-----------------------------------------------------------------------
 C Fill Block qele
 C-----------------------------------------------------------------------
       IF (QELEFLAG) THEN
-         nQELE = 0.
-         DO iQELE=1, 32
-           QWed(iQELE) = 0.
-           QDet(iQELE) = 0.
-           QEne(iQELE) = 0.
-           QTim(iQELE) = 0.
-         END DO
-
-         istat = GETQCAESTRU(Evt%Qele)
-
-         nQELE = Evt%QELE%n
-         IF ( nQELE < 0 .OR. nQELE > 32 ) THEN
-            WRITE(*,*) 'ERROR QELE - nQELE Out of bound : ', nQELE
-         END IF
-
-         IF (nQELE > 0 .AND. nQELE <= 32) THEN
-            DO iQELE=1, nQELE
-                 QWed(iQELE) = Evt%QELE%wed(iQELE)
-                 QDet(iQELE) = Evt%QELE%det(iQELE)
-                 QEne(iQELE) = Evt%QELE%e(iQELE)
-                 QTim(iQELE) = Evt%QELE%t(iQELE)
-           END DO
+         IF (.NOT.MONTECARLOFLAG) THEN
+            nQELE = 0.
+            DO iQELE=1, 32
+              QWed(iQELE) = 0.
+              QDet(iQELE) = 0.
+              QEne(iQELE) = 0.
+              QTim(iQELE) = 0.
+            END DO
+   
+            istat = GETQCAESTRU(Evt%Qele)
+   
+            nQELE = Evt%QELE%n
+            IF ( nQELE < 0 .OR. nQELE > 32 ) THEN
+               WRITE(*,*) 'ERROR QELE - nQELE Out of bound : ', nQELE
+            END IF
+   
+            IF (nQELE > 0 .AND. nQELE <= 32) THEN
+               DO iQELE=1, nQELE
+                    QWed(iQELE) = Evt%QELE%wed(iQELE)
+                    QDet(iQELE) = Evt%QELE%det(iQELE)
+                    QEne(iQELE) = Evt%QELE%e(iQELE)
+                    QTim(iQELE) = Evt%QELE%t(iQELE)
+              END DO
+            ELSE
+               WRITE(*,*) 'ERROR QELE - nQELE Index not valid: ', nQELE
+            END IF
          ELSE
-            WRITE(*,*) 'ERROR QELE - nQELE Index not valid: ', nQELE
+            WRITE(*,*) ERROR_MISS_DATA//"QELE"
          END IF
       END IF
 C-----------------------------------------------------------------------
 C Fill Block qcal
 C-----------------------------------------------------------------------
-      IF (QCALFLAG) THEN
-         nQCal = 0.
-         DO iQCAL=1, 32
-           xQCal(iQCAL) = 0.
-           yQCal(iQCAL) = 0.
-           zQCal(iQCAL) = 0.
-           EQCal(iQCAL) = 0.
-           TQCal(iQCAL) = 0.
-         END DO
-
-         istat = GETQCALSTRU(evt%qcal)
-
-         nQCal = Evt%Qcal%n
-         IF ( nQCal < 0 .OR. nQCal > 32 ) THEN
-            WRITE(*,*) 'ERROR QCAL - nQCal Out of bound : ', nQCal
-         END IF
-
-         IF (nQCal > 0 .AND. nQCal <= 32) THEN
-            DO iQCAL=1, nQCal
-                 xQCal(iQCAL) = Evt%Qcal%x(iQCAL)
-                 yQCal(iQCAL) = Evt%Qcal%y(iQCAL)
-                 zQCal(iQCAL) = Evt%Qcal%z(iQCAL)
-                 EQCal(iQCAL) = Evt%Qcal%ene(iQCAL)
-                 TQCal(iQCAL) = Evt%Qcal%t(iQCAL)
-           END DO
+      IF (.NOT.MONTECARLOFLAG) THEN
+         IF (QCALFLAG) THEN
+            nQCal = 0.
+            DO iQCAL=1, 32
+              xQCal(iQCAL) = 0.
+              yQCal(iQCAL) = 0.
+              zQCal(iQCAL) = 0.
+              EQCal(iQCAL) = 0.
+              TQCal(iQCAL) = 0.
+            END DO
+   
+            istat = GETQCALSTRU(evt%qcal)
+   
+            nQCal = Evt%Qcal%n
+            IF ( nQCal < 0 .OR. nQCal > 32 ) THEN
+               WRITE(*,*) 'ERROR QCAL - nQCal Out of bound : ', nQCal
+            END IF
+   
+            IF (nQCal > 0 .AND. nQCal <= 32) THEN
+               DO iQCAL=1, nQCal
+                    xQCal(iQCAL) = Evt%Qcal%x(iQCAL)
+                    yQCal(iQCAL) = Evt%Qcal%y(iQCAL)
+                    zQCal(iQCAL) = Evt%Qcal%z(iQCAL)
+                    EQCal(iQCAL) = Evt%Qcal%ene(iQCAL)
+                    TQCal(iQCAL) = Evt%Qcal%t(iQCAL)
+              END DO
+            ELSE
+               WRITE(*,*) 'ERROR QCAL - nQCal Index not valid: ', nQCal
+            END IF
          ELSE
-            WRITE(*,*) 'ERROR QCAL - nQCal Index not valid: ', nQCal
+            WRITE(*,*) ERROR_MISS_DATA//"QCAL"
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2804,7 +2817,7 @@ C-----------------------------------------------------------------------
              WRITE(*,*) 'ERROR CSPSMC - nCSMC Index not valid: ', nCSMC
           END IF
         ELSE
-              WRITE(*,*) ERROR_MC_DATA
+              WRITE(*,*) ERROR_MC_DATA//"CSPSMC"
         END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2882,264 +2895,289 @@ C-----------------------------------------------------------------------
              WRITE(*,*) 'ERROR CLUOMC - nMCPar Index not valid: ', nMCPar
           END IF
         ELSE
-              WRITE(*,*) ERROR_MC_DATA
+              WRITE(*,*) ERROR_MC_DATA//"CLUOMC"
         END IF
       END IF
 C-----------------------------------------------------------------------
 C Fill Block qtele
 C-----------------------------------------------------------------------
       IF (QTELEFLAG) THEN
-         nQCalT = 0.
-         DO iQTELE=1, 1920
-           QLte_Hit(iQTELE) = 0.
-           QLte_Det(iQTELE) = 0.
-           QLte_Mod(iQTELE) = 0.
-           QLte_Pla(iQTELE) = 0.
-           QLte_Til(iQTELE) = 0.
-           QLte_Tim1(iQTELE) = 0.
-           QLte_Tim2(iQTELE) = 0.
-           QLte_Tim3(iQTELE) = 0.
-           QLte_Tim4(iQTELE) = 0.
-           QLte_Tim5(iQTELE) = 0.
-         END DO
-
-         istat = GETQCALTSTRU(Evt%QCALT)
-
-         nQCalT = Evt%QCALT%NEle
-         IF ( nQCalT < 0 .OR. nQCalT > 1920 ) THEN
-            WRITE(*,*) 'ERROR QTELE - nQCalT Out of bound : ', nQCalT
-         END IF
-
-         IF (nQCalT > 0 .AND. nQCalT <= 1920) THEN
-            DO iQTELE=1, nQCalT
-               QLte_Hit(iQTELE) = Evt%QCALT%Nhit(iQTELE)
-               IF ( QLte_Hit(iQTELE) < 0 .OR. QLte_Hit(iQTELE) > 5 ) THEN
-                  WRITE(*,*) 'ERROR QTELE - QLte_Hit[1] Out of bound : ', QLte_Hit(iQTELE)
-               END IF
-               QLte_Det(iQTELE) = Evt%QCALT%Qdet(iQTELE)
-               IF ( QLte_Det(iQTELE) < 0 .OR. QLte_Det(iQTELE) > 2 ) THEN
-                  WRITE(*,*) 'ERROR QTELE - QLte_Det[2] Out of bound : ', QLte_Det(iQTELE)
-               END IF
-               QLte_Mod(iQTELE) = Evt%QCALT%Qmod(iQTELE)
-               IF ( QLte_Mod(iQTELE) < 0 .OR. QLte_Mod(iQTELE) > 11 ) THEN
-                  WRITE(*,*) 'ERROR QTELE - QLte_Mod[3] Out of bound : ', QLte_Mod(iQTELE)
-               END IF
-               QLte_Pla(iQTELE) = Evt%QCALT%Qpla(iQTELE)
-               IF ( QLte_Pla(iQTELE) < 0 .OR. QLte_Pla(iQTELE) > 4 ) THEN
-                  WRITE(*,*) 'ERROR QTELE - QLte_Pla[4] Out of bound : ', QLte_Pla(iQTELE)
-               END IF
-               QLte_Til(iQTELE) = Evt%QCALT%Qtil(iQTELE)
-               IF ( QLte_Til(iQTELE) < 0 .OR. QLte_Til(iQTELE) > 15 ) THEN
-                  WRITE(*,*) 'ERROR QTELE - QLte_Til[5] Out of bound : ', QLte_Til(iQTELE)
-               END IF
-               QLte_Tim1(iQTELE) = Evt%QCALT%Time(1, iQTELE)
-               QLte_Tim2(iQTELE) = Evt%QCALT%Time(2, iQTELE)
-               QLte_Tim3(iQTELE) = Evt%QCALT%Time(3, iQTELE)
-               QLte_Tim4(iQTELE) = Evt%QCALT%Time(4, iQTELE)
-               QLte_Tim5(iQTELE) = Evt%QCALT%Time(5, iQTELE)
+        IF (.NOT.MONTECARLOFLAG) THEN
+           nQCalT = 0.
+           DO iQTELE=1, 1920
+             QLte_Hit(iQTELE) = 0.
+             QLte_Det(iQTELE) = 0.
+             QLte_Mod(iQTELE) = 0.
+             QLte_Pla(iQTELE) = 0.
+             QLte_Til(iQTELE) = 0.
+             QLte_Tim1(iQTELE) = 0.
+             QLte_Tim2(iQTELE) = 0.
+             QLte_Tim3(iQTELE) = 0.
+             QLte_Tim4(iQTELE) = 0.
+             QLte_Tim5(iQTELE) = 0.
            END DO
-         ELSE
-            WRITE(*,*) 'ERROR QTELE - nQCalT Index not valid: ', nQCalT
-         END IF
+  
+           istat = GETQCALTSTRU(Evt%QCALT)
+  
+           nQCalT = Evt%QCALT%NEle
+           IF ( nQCalT < 0 .OR. nQCalT > 1920 ) THEN
+              WRITE(*,*) 'ERROR QTELE - nQCalT Out of bound : ', nQCalT
+           END IF
+  
+           IF (nQCalT > 0 .AND. nQCalT <= 1920) THEN
+              DO iQTELE=1, nQCalT
+                 QLte_Hit(iQTELE) = Evt%QCALT%Nhit(iQTELE)
+                 IF ( QLte_Hit(iQTELE) < 0 .OR. QLte_Hit(iQTELE) > 5 ) THEN
+                    WRITE(*,*) 'ERROR QTELE - QLte_Hit Out of bound : ', QLte_Hit(iQTELE)
+                 END IF
+                 QLte_Det(iQTELE) = Evt%QCALT%Qdet(iQTELE)
+                 IF ( QLte_Det(iQTELE) < 0 .OR. QLte_Det(iQTELE) > 2 ) THEN
+                    WRITE(*,*) 'ERROR QTELE - QLte_Det Out of bound : ', QLte_Det(iQTELE)
+                 END IF
+                 QLte_Mod(iQTELE) = Evt%QCALT%Qmod(iQTELE)
+                 IF ( QLte_Mod(iQTELE) < 0 .OR. QLte_Mod(iQTELE) > 11 ) THEN
+                    WRITE(*,*) 'ERROR QTELE - QLte_Mod Out of bound : ', QLte_Mod(iQTELE)
+                 END IF
+                 QLte_Pla(iQTELE) = Evt%QCALT%Qpla(iQTELE)
+                 IF ( QLte_Pla(iQTELE) < 0 .OR. QLte_Pla(iQTELE) > 4 ) THEN
+                    WRITE(*,*) 'ERROR QTELE - QLte_Pla Out of bound : ', QLte_Pla(iQTELE)
+                 END IF
+                 QLte_Til(iQTELE) = Evt%QCALT%Qtil(iQTELE)
+                 IF ( QLte_Til(iQTELE) < 0 .OR. QLte_Til(iQTELE) > 15 ) THEN
+                    WRITE(*,*) 'ERROR QTELE - QLte_Til Out of bound : ', QLte_Til(iQTELE)
+                 END IF
+                 QLte_Tim1(iQTELE) = Evt%QCALT%Time(1, iQTELE)
+                 QLte_Tim2(iQTELE) = Evt%QCALT%Time(2, iQTELE)
+                 QLte_Tim3(iQTELE) = Evt%QCALT%Time(3, iQTELE)
+                 QLte_Tim4(iQTELE) = Evt%QCALT%Time(4, iQTELE)
+                 QLte_Tim5(iQTELE) = Evt%QCALT%Time(5, iQTELE)
+             END DO
+           ELSE
+              WRITE(*,*) 'ERROR QTELE - nQCalT Index not valid: ', nQCalT
+           END IF
+        ELSE
+           WRITE(*,*) ERROR_MISS_DATA//"QTELE"
+        END IF
       END IF
 C-----------------------------------------------------------------------
 C Fill Block qcth
 C-----------------------------------------------------------------------
       IF (QCTHFLAG) THEN
-         nQCTHEle = 0.
-         DO iQCTH=1, 1920
-           nQCTHHit(iQCTH) = 0.
-           QCTHx(iQCTH) = 0.
-           QCTHy(iQCTH) = 0.
-           QCTHz(iQCTH) = 0.
-           Tim1(iQCTH) = 0.
-           Tim2(iQCTH) = 0.
-           Tim3(iQCTH) = 0.
-           Tim4(iQCTH) = 0.
-           Tim5(iQCTH) = 0.
-         END DO
-
-         istat = GETQCTHSTRU(Evt%QCALTHIT)
-
-         nQCTHEle = Evt%QCALTHIT%Nele
-         IF ( nQCTHEle < 0 .OR. nQCTHEle > 1920 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'QCTH - nQCTHEle '//ERROR_DOMAIN, nQCTHEle
-         END IF
-
-         IF (nQCTHEle > 0 .AND. nQCTHEle <= 1920) THEN
-            DO iQCTH=1, nQCTHEle
-               nQCTHHit(iQCTH) = Evt%QCALTHIT%Nhit(iQCTH)
-               IF ( nHit(iQCTH) < 1 .OR. nHit(iQCTH) > 5 ) THEN
-                  WRITE(*,*) 'ERROR QCTH - nHit[1] Out of bound : ', nHit(iQCTH)
-               END IF
-               QCTHx(iQCTH) = Evt%QCALTHIT%X(iQCTH)
-               QCTHy(iQCTH) = Evt%QCALTHIT%Y(iQCTH)
-               QCTHz(iQCTH) = Evt%QCALTHIT%Z(iQCTH)
-               Tim1(iQCTH) = Evt%QCALTHIT%Time(1, iQCTH)
-               Tim2(iQCTH) = Evt%QCALTHIT%Time(2, iQCTH)
-               Tim3(iQCTH) = Evt%QCALTHIT%Time(3, iQCTH)
-               Tim4(iQCTH) = Evt%QCALTHIT%Time(4, iQCTH)
-               Tim5(iQCTH) = Evt%QCALTHIT%Time(5, iQCTH)
-           END DO
+         IF (.NOT.MONTECARLOFLAG) THEN
+            nQCTHEle = 0.
+            DO iQCTH=1, 1920
+              nQCTHHit(iQCTH) = 0.
+              QCTHx(iQCTH) = 0.
+              QCTHy(iQCTH) = 0.
+              QCTHz(iQCTH) = 0.
+              Tim1(iQCTH) = 0.
+              Tim2(iQCTH) = 0.
+              Tim3(iQCTH) = 0.
+              Tim4(iQCTH) = 0.
+              Tim5(iQCTH) = 0.
+            END DO
+   
+            istat = GETQCTHSTRU(Evt%QCALTHIT)
+   
+            nQCTHEle = Evt%QCALTHIT%Nele
+            IF ( nQCTHEle < 0 .OR. nQCTHEle > 1920 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'QCTH - nQCTHEle '//ERROR_DOMAIN, nQCTHEle
+            END IF
+   
+            IF (nQCTHEle > 0 .AND. nQCTHEle <= 1920) THEN
+               DO iQCTH=1, nQCTHEle
+                  nQCTHHit(iQCTH) = Evt%QCALTHIT%Nhit(iQCTH)
+                  IF ( nQCTHHit(iQCTH) < 1 .OR. nQCTHHit(iQCTH) > 5 ) THEN
+                     WRITE(*,*) 'ERROR QCTH - nQCTHHit Out of bound : ', nQCTHHit(iQCTH)
+                  END IF
+                  QCTHx(iQCTH) = Evt%QCALTHIT%X(iQCTH)
+                  QCTHy(iQCTH) = Evt%QCALTHIT%Y(iQCTH)
+                  QCTHz(iQCTH) = Evt%QCALTHIT%Z(iQCTH)
+                  Tim1(iQCTH) = Evt%QCALTHIT%Time(1, iQCTH)
+                  Tim2(iQCTH) = Evt%QCALTHIT%Time(2, iQCTH)
+                  Tim3(iQCTH) = Evt%QCALTHIT%Time(3, iQCTH)
+                  Tim4(iQCTH) = Evt%QCALTHIT%Time(4, iQCTH)
+                  Tim5(iQCTH) = Evt%QCALTHIT%Time(5, iQCTH)
+              END DO
+            ELSE
+               WRITE(*,*) 'ERROR QCTH - nQCTHEle Index not valid: ', nQCTHEle
+               nQCTHEle = 0
+            END IF
          ELSE
-            WRITE(*,*) 'ERROR QCTH - nQCTHEle Index not valid: ', nQCTHEle
+            WRITE(*,*) ERROR_MISS_DATA//"QCTH"
          END IF
       END IF
 C-----------------------------------------------------------------------
 C Fill Block ccle
 C-----------------------------------------------------------------------
       IF (CCLEFLAG) THEN
-         nCCle = 0.
-         DO iCCLE=1, 96
-           CCle_Cry(iCCLE) = 0.
-           CCle_Det(iCCLE) = 0.
-           CCle_Col(iCCLE) = 0.
-           CCle_Pla(iCCLE) = 0.
-           CCle_Time(iCCLE) = 0.
-         END DO
-
-         istat = GETCCALTSTRU(Evt%CCLE)
-
-         nCCle = Evt%CCLE%NEle
-         IF ( nCCle < 0 .OR. nCCle > 96 ) THEN
-            WRITE(*,*) 'ERROR CCLE - nCCle Out of bound : ', nCCle
-         END IF
-
-         IF (nCCle > 0 .AND. nCCle <= 96) THEN
-            DO iCCLE=1, nCCle
-               CCle_Cry(iCCLE) = Evt%CCLE%Cry(iCCLE)
-               IF ( CCle_Cry(iCCLE) < 0 .OR. CCle_Cry(iCCLE) > 96 ) THEN
-                  WRITE(*,*) 'ERROR CCLE - CCle_Cry[1] Out of bound : ', CCle_Cry(iCCLE)
-               END IF
-                 CCle_Det(iCCLE) = Evt%CCLE%Det(iCCLE)
-               CCle_Col(iCCLE) = Evt%CCLE%Col(iCCLE)
-               IF ( CCle_Col(iCCLE) < 0 .OR. CCle_Col(iCCLE) > 24 ) THEN
-                  WRITE(*,*) 'ERROR CCLE - CCle_Col[3] Out of bound : ', CCle_Col(iCCLE)
-               END IF
-               CCle_Pla(iCCLE) = Evt%CCLE%Pla(iCCLE)
-               IF ( CCle_Pla(iCCLE) < 0 .OR. CCle_Pla(iCCLE) > 2 ) THEN
-                  WRITE(*,*) 'ERROR CCLE - CCle_Pla[4] Out of bound : ', CCle_Pla(iCCLE)
-               END IF
-                 CCle_Time(iCCLE) = Evt%CCLE%T(iCCLE)
-           END DO
+         IF (.NOT.MONTECARLOFLAG) THEN
+            nCCle = 0.
+            DO iCCLE=1, 96
+              CCle_Cry(iCCLE) = 0.
+              CCle_Det(iCCLE) = 0.
+              CCle_Col(iCCLE) = 0.
+              CCle_Pla(iCCLE) = 0.
+              CCle_Time(iCCLE) = 0.
+            END DO
+   
+            istat = GETCCALTSTRU(Evt%CCLE)
+   
+            nCCle = Evt%CCLE%NEle
+            IF ( nCCle < 0 .OR. nCCle > 96 ) THEN
+               WRITE(*,*) 'ERROR CCLE - nCCle Out of bound : ', nCCle
+            END IF
+   
+            IF (nCCle > 0 .AND. nCCle <= 96) THEN
+               DO iCCLE=1, nCCle
+                  CCle_Cry(iCCLE) = Evt%CCLE%Cry(iCCLE)
+                  IF ( CCle_Cry(iCCLE) < 0 .OR. CCle_Cry(iCCLE) > 96 ) THEN
+                     WRITE(*,*) 'ERROR CCLE - CCle_Cry Out of bound : ', CCle_Cry(iCCLE)
+                  END IF
+                    CCle_Det(iCCLE) = Evt%CCLE%Det(iCCLE)
+                  CCle_Col(iCCLE) = Evt%CCLE%Col(iCCLE)
+                  IF ( CCle_Col(iCCLE) < 0 .OR. CCle_Col(iCCLE) > 24 ) THEN
+                     WRITE(*,*) 'ERROR CCLE - CCle_Col Out of bound : ', CCle_Col(iCCLE)
+                  END IF
+                  CCle_Pla(iCCLE) = Evt%CCLE%Pla(iCCLE)
+                  IF ( CCle_Pla(iCCLE) < 0 .OR. CCle_Pla(iCCLE) > 2 ) THEN
+                     WRITE(*,*) 'ERROR CCLE - CCle_Pla Out of bound : ', CCle_Pla(iCCLE)
+                  END IF
+                    CCle_Time(iCCLE) = Evt%CCLE%T(iCCLE)
+              END DO
+            ELSE
+               WRITE(*,*) 'ERROR CCLE - nCCle Index not valid: ', nCCle
+            END IF
          ELSE
-            WRITE(*,*) 'ERROR CCLE - nCCle Index not valid: ', nCCle
+            WRITE(*,*) ERROR_MISS_DATA//"CCLE"
          END IF
       END IF
 C-----------------------------------------------------------------------
 C Fill Block lete
 C-----------------------------------------------------------------------
       IF (LETEFLAG) THEN
-         LeteCalib = 0.
-         nLete = 0.
-         DO iLETE=1, 40
-           Lete_Cry(iLETE) = 0.
-           Lete_Det(iLETE) = 0.
-           Lete_Col(iLETE) = 0.
-           Lete_Pla(iLETE) = 0.
-           Lete_E(iLETE) = 0.
-           Lete_Time(iLETE) = 0.
-         END DO
-
-         istat = getletestru(evt%lete)
-
-         LeteCalib = Evt%LETE%Calib
-         nLete = Evt%LETE%NEle
-         IF ( nLete < 0 .OR. nLete > 40 ) THEN
-            WRITE(*,*) 'ERROR LETE - nLete Out of bound : ', nLete
-         END IF
-
-         IF (nLete > 0 .AND. nLete <= 40) THEN
-            DO iLETE=1, nLete
-               Lete_Cry(iLETE) = Evt%LETE%Cry(iLETE)
-               IF ( Lete_Cry(iLETE) < 0 .OR. Lete_Cry(iLETE) > 40 ) THEN
-                  WRITE(*,*) 'ERROR LETE - Lete_Cry[2] Out of bound : ', Lete_Cry(iLETE)
-               END IF
-                 Lete_Det(iLETE) = Evt%LETE%Det(iLETE)
-               Lete_Col(iLETE) = Evt%LETE%Col(iLETE)
-               IF ( Lete_Col(iLETE) < 0 .OR. Lete_Col(iLETE) > 4 ) THEN
-                  WRITE(*,*) 'ERROR LETE - Lete_Col[4] Out of bound : ', Lete_Col(iLETE)
-               END IF
-               Lete_Pla(iLETE) = Evt%LETE%Pla(iLETE)
-               IF ( Lete_Pla(iLETE) < 0 .OR. Lete_Pla(iLETE) > 5 ) THEN
-                  WRITE(*,*) 'ERROR LETE - Lete_Pla[5] Out of bound : ', Lete_Pla(iLETE)
-               END IF
-                 Lete_E(iLETE) = Evt%LETE%E(iLETE)
-                 Lete_Time(iLETE) = Evt%LETE%T(iLETE)
-           END DO
+         IF (.NOT.MONTECARLOFLAG) THEN
+            LeteCalib = 0.
+            nLete = 0.
+            DO iLETE=1, 40
+              Lete_Cry(iLETE) = 0.
+              Lete_Det(iLETE) = 0.
+              Lete_Col(iLETE) = 0.
+              Lete_Pla(iLETE) = 0.
+              Lete_E(iLETE) = 0.
+              Lete_Time(iLETE) = 0.
+            END DO
+   
+            istat = getletestru(evt%lete)
+   
+            LeteCalib = Evt%LETE%Calib
+            nLete = Evt%LETE%NEle
+            IF ( nLete < 0 .OR. nLete > 40 ) THEN
+               WRITE(*,*) 'ERROR LETE - nLete Out of bound : ', nLete
+            END IF
+   
+            IF (nLete > 0 .AND. nLete <= 40) THEN
+               DO iLETE=1, nLete
+                  Lete_Cry(iLETE) = Evt%LETE%Cry(iLETE)
+                  IF ( Lete_Cry(iLETE) < 0 .OR. Lete_Cry(iLETE) > 40 ) THEN
+                     WRITE(*,*) 'ERROR LETE - Lete_Cry Out of bound : ', Lete_Cry(iLETE)
+                  END IF
+                    Lete_Det(iLETE) = Evt%LETE%Det(iLETE)
+                  Lete_Col(iLETE) = Evt%LETE%Col(iLETE)
+                  IF ( Lete_Col(iLETE) < 0 .OR. Lete_Col(iLETE) > 4 ) THEN
+                     WRITE(*,*) 'ERROR LETE - Lete_Col Out of bound : ', Lete_Col(iLETE)
+                  END IF
+                  Lete_Pla(iLETE) = Evt%LETE%Pla(iLETE)
+                  IF ( Lete_Pla(iLETE) < 0 .OR. Lete_Pla(iLETE) > 5 ) THEN
+                     WRITE(*,*) 'ERROR LETE - Lete_Pla Out of bound : ', Lete_Pla(iLETE)
+                  END IF
+                    Lete_E(iLETE) = Evt%LETE%E(iLETE)
+                    Lete_Time(iLETE) = Evt%LETE%T(iLETE)
+              END DO
+            ELSE
+               WRITE(*,*) 'ERROR LETE - nLete Index not valid: ', nLete
+            END IF
          ELSE
-            WRITE(*,*) 'ERROR LETE - nLete Index not valid: ', nLete
+            WRITE(*,*) ERROR_MISS_DATA//"LETE"
          END IF
       END IF
 C-----------------------------------------------------------------------
 C Fill Block itce
 C-----------------------------------------------------------------------
       IF (ITCEFLAG) THEN
-         nITCE = 0.
-         DO iITCE=1, 4032
-           Foil(iITCE) = 0.
-           ITLayer(iITCE) = 0.
-           Strip(iITCE) = 0.
-           View(iITCE) = 0.
-           IndItKine(iITCE) = 0.
-         END DO
-
-         istat = ITCE_UPK(evt%itce)
-
-         nITCE = Evt%itce%nitce
-         IF ( nITCE < 0 .OR. nITCE > 4032 ) THEN
-            WRITE(*,*) 'ERROR ITCE - nITCE Out of bound : ', nITCE
-         END IF
-
-         IF (nITCE > 0 .AND. nITCE <= 4032) THEN
-            DO iITCE=1, nITCE
-                 Foil(iITCE) = Evt%itce%foil(iITCE)
-                 ITLayer(iITCE) = Evt%itce%layer(iITCE)
-                 Strip(iITCE) = Evt%itce%strip(iITCE)
-                 View(iITCE) = Evt%itce%view(iITCE)
-                 IndItKine(iITCE) = Evt%itce%inditkine(iITCE)
-           END DO
+         IF (.NOT.MONTECARLOFLAG) THEN
+            nITCE = 0.
+            DO iITCE=1, 4032
+              Foil(iITCE) = 0.
+              ITLayer(iITCE) = 0.
+              Strip(iITCE) = 0.
+              View(iITCE) = 0.
+              IndItKine(iITCE) = 0.
+            END DO
+   
+            istat = ITCE_UPK(evt%itce)
+   
+            nITCE = Evt%itce%nitce
+            IF ( nITCE < 0 .OR. nITCE > 4032 ) THEN
+               WRITE(*,*) 'ERROR ITCE - nITCE Out of bound : ', nITCE
+            END IF
+   
+            IF (nITCE > 0 .AND. nITCE <= 4032) THEN
+               DO iITCE=1, nITCE
+                    Foil(iITCE) = Evt%itce%foil(iITCE)
+                    ITLayer(iITCE) = Evt%itce%layer(iITCE)
+                    Strip(iITCE) = Evt%itce%strip(iITCE)
+                    View(iITCE) = Evt%itce%view(iITCE)
+                    IndItKine(iITCE) = Evt%itce%inditkine(iITCE)
+              END DO
+            ELSE
+               WRITE(*,*) 'ERROR ITCE - nITCE Index not valid: ', nITCE
+            END IF
          ELSE
-            WRITE(*,*) 'ERROR ITCE - nITCE Index not valid: ', nITCE
+            WRITE(*,*) ERROR_MISS_DATA//"ITCE"
          END IF
       END IF
 C-----------------------------------------------------------------------
 C Fill Block hete
 C-----------------------------------------------------------------------
       IF (HETEFLAG) THEN
-         nHetDcs = 0.
-         DO iHETE=1, 1920
-           HDet(iHETE) = 0.
-           HCol(iHETE) = 0.
-           nTurnHet(iHETE) = 0.
-           TimeHet(iHETE) = 0.
-         END DO
-
-         istat = gethetestru(evt%hete)
-
-         nHetDcs = Evt%hete%nhetdcs
-         IF ( nHetDcs < 0 .OR. nHetDcs > 1920 ) THEN
-            WRITE(*,*) 'ERROR HETE - nHetDcs Out of bound : ', nHetDcs
-         END IF
-
-         IF (nHetDcs > 0 .AND. nHetDcs <= 1920) THEN
-            DO iHETE=1, nHetDcs
-               HDet(iHETE) = Evt%hete%hdet(iHETE)
-               IF ( HDet(iHETE) < 1 .OR. HDet(iHETE) > 2 ) THEN
-                  WRITE(*,*) 'ERROR HETE - HDet[1] Out of bound : ', HDet(iHETE)
-               END IF
-               HCol(iHETE) = Evt%hete%hcol(iHETE)
-               IF ( HCol(iHETE) < 1 .OR. HCol(iHETE) > 32 ) THEN
-                  WRITE(*,*) 'ERROR HETE - HCol[2] Out of bound : ', HCol(iHETE)
-               END IF
-               nTurnHet(iHETE) = Evt%hete%nturnhet(iHETE)
-               IF ( nTurnHet(iHETE) < 1 .OR. nTurnHet(iHETE) > 4 ) THEN
-                  WRITE(*,*) 'ERROR HETE - nTurnHet[3] Out of bound : ', nTurnHet(iHETE)
-               END IF
-                 TimeHet(iHETE) = Evt%hete%timehet(iHETE)
-           END DO
+         IF (.NOT.MONTECARLOFLAG) THEN
+            nHetDcs = 0.
+            DO iHETE=1, 1920
+              HDet(iHETE) = 0.
+              HCol(iHETE) = 0.
+              nTurnHet(iHETE) = 0.
+              TimeHet(iHETE) = 0.
+            END DO
+   
+            istat = gethetestru(evt%hete)
+   
+            nHetDcs = Evt%hete%nhetdcs
+            IF ( nHetDcs < 0 .OR. nHetDcs > 1920 ) THEN
+               WRITE(*,*) 'ERROR HETE - nHetDcs Out of bound : ', nHetDcs
+            END IF
+   
+            IF (nHetDcs > 0 .AND. nHetDcs <= 1920) THEN
+               DO iHETE=1, nHetDcs
+                  HDet(iHETE) = Evt%hete%hdet(iHETE)
+                  IF ( HDet(iHETE) < 1 .OR. HDet(iHETE) > 2 ) THEN
+                     WRITE(*,*) 'ERROR HETE - HDet Out of bound : ', HDet(iHETE)
+                  END IF
+                  HCol(iHETE) = Evt%hete%hcol(iHETE)
+                  IF ( HCol(iHETE) < 1 .OR. HCol(iHETE) > 32 ) THEN
+                     WRITE(*,*) 'ERROR HETE - HCol Out of bound : ', HCol(iHETE)
+                  END IF
+                  nTurnHet(iHETE) = Evt%hete%nturnhet(iHETE)
+                  IF ( nTurnHet(iHETE) < 1 .OR. nTurnHet(iHETE) > 4 ) THEN
+                     WRITE(*,*) 'ERROR HETE - nTurnHet Out of bound : ', nTurnHet(iHETE)
+                  END IF
+                    TimeHet(iHETE) = Evt%hete%timehet(iHETE)
+              END DO
+            ELSE
+               WRITE(*,*) 'ERROR HETE - nHetDcs Index not valid: ', nHetDcs
+            END IF
          ELSE
-            WRITE(*,*) 'ERROR HETE - nHetDcs Index not valid: ', nHetDcs
+            WRITE(*,*) ERROR_MISS_DATA//"ITCE"
          END IF
       END IF
 C-----------------------------------------------------------------------

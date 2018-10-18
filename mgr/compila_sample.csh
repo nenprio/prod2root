@@ -50,11 +50,6 @@ set ROOTCONFIG = 'root-config '
 set ROOTLIBS   = `$ROOTCONFIG --libs`
 echo "ROOTLIBS : $ROOTLIBS"
 
-# Set SAMPLE path for sample_talk.cin
-if ( $USER == "berducci" ) then
-    setenv SAMPLE /afs/kloe.infn.it/user/b/berducci/prod2root/ref
-endif
-
 setenv MYLIBS "$ROOTLIBS -lm -lC -Wl,-bloadmap:map.txt"
 echo "MYLIBS : $MYLIBS"
 

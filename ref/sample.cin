@@ -8,6 +8,7 @@ C and return variables used in sample.kloe to fill the data.
 C
         REAL    rstat, GETBPOS
         LOGICAL MONTECARLOFLAG
+        COMMON /SHARED_FLAGS/MONTECARLOFLAG
         INTEGER istat, STATUS 
         INTEGER NUMDHIT, MCFLAG_TG
         INTEGER BNKNUM, ICURR, IND1, INDDAT, OldRunNumber
@@ -40,6 +41,7 @@ C Follow the declaration of all the messages to print on std out
 C
         CHARACTER(len=10) :: ERROR_LINE
         CHARACTER(len=60) :: ERROR_MC_DATA
+        CHARACTER(len=50) :: ERROR_MISS_DATA
         CHARACTER(len=10) :: ERROR_BLOCK
         CHARACTER(len=25) :: ERROR_INDEX
         CHARACTER(len=25) :: ERROR_DOMAIN
