@@ -7,7 +7,7 @@ talk sample info yes bpos yes gdhit yes ecls yes trig yes c2trg yes tellina yes 
 !
 talk sample dtc0 yes dchits yes dhre yes dhsp yes trv yes vtx yes trs yes trmc yes trkvo yes vto yes trkso yes trkmco yes dhit yes dprs yes geanfi yes tclo yes tcold yes cfhi yes qihi yes trkq yes exit
 !
-talk sample qele yes knvo yes vnvo yes vnvb yes invo yes eclo yes ecltwo yes csps yes cspmc yes cluo yes clomc yes qtele yes qcth yes ccle yes lete yes itce yes hete yes show exit
+talk sample qele yes qcal yes knvo yes vnvo yes vnvb yes invo yes eclo yes ecltwo yes csps yes cspmc yes cluo yes clomc yes qtele yes qcth yes ccle yes lete yes itce yes hete yes show exit
 !
 talk sample geanfi yes show exit
 input url "dbdatarec:(run_nr=88220) and (stream_code='rad') and (version=37)"

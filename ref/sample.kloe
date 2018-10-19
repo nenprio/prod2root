@@ -327,6 +327,7 @@ C-----------------------------------------------------------------------
          BrootsErr = 0.
  
          rstat = GETBPOS(Evt%Bpos)
+         write(*,*) "BPOS rstat => ",rstat
  
          BPx = Evt%Bpos%px
          BPy = Evt%Bpos%py
@@ -410,7 +411,9 @@ C-----------------------------------------------------------------------
             END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'ECLS - nEcls '//ERROR_INDEX, nEcls
-         END IF
+            nEcls = 0   !In this way we avoid negative index which could
+         END IF         !create corrupted arrays of negative size 
+                        !in the ROOT Tree
          
          nEcls2 = evt%ecls%n2
          IF ( nEcls2 < 0 .OR. nEcls2 > 8 ) THEN
@@ -428,6 +431,7 @@ C-----------------------------------------------------------------------
             END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'ECLS - nEcls2 '//ERROR_INDEX, nEcls2
+            nEcls2 = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -456,6 +460,7 @@ C-----------------------------------------------------------------------
          END DO
 
          istat = GETSEC2CLUSTRU(evt%s2clu)
+         write(*,*) "C2TRIG istat => ", istat
 
          NSec = Evt%S2CLU%nsect
          NSec_NoClu = Evt%S2CLU%nsect_noclu
@@ -473,6 +478,7 @@ C-----------------------------------------------------------------------
             END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'C2TRIG - NClu2s '//ERROR_INDEX, NClu2s
+            NClu2s = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -510,6 +516,7 @@ C-----------------------------------------------------------------------
            END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'TELLINA - nTel '//ERROR_INDEX, nTel
+            nTel = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -541,6 +548,7 @@ C-----------------------------------------------------------------------
             END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'PIZZETTA - NPiz '//ERROR_INDEX, NPiz
+            NPiz = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -732,6 +740,7 @@ C-----------------------------------------------------------------------
            END DO
          ELSE
            WRITE(*,*) ERROR_BLOCK//'EVTTELE - NTele '//ERROR_INDEX, NTele
+           NTele = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -768,6 +777,7 @@ C-----------------------------------------------------------------------
            END DO
          ELSE
            WRITE(*,*) ERROR_BLOCK//'PIZZA - NPack '//ERROR_INDEX, NPack
+           NPack = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -822,6 +832,7 @@ C-----------------------------------------------------------------------
             END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'EVTCLU - NClu '//ERROR_INDEX, NClu
+            NClu = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -879,6 +890,7 @@ C-----------------------------------------------------------------------
               END DO
            ELSE
               WRITE(*,*) ERROR_BLOCK//'EVTCLUMC - NCluMc '//ERROR_INDEX, NCluMc
+              NCluMc = 0
            END IF
         ELSE
               WRITE(*,*) ERROR_MC_DATA//'CLUMC'
@@ -921,6 +933,7 @@ C-----------------------------------------------------------------------
            END DO
          ELSE
            WRITE(*,*) ERROR_BLOCK//'PRECLU - NPClu '//ERROR_INDEX, NPClu
+           NPClu = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -962,6 +975,7 @@ C-----------------------------------------------------------------------
             END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'CWRK - NCHit '//ERROR_INDEX, NCHit
+            NCHit = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -969,7 +983,6 @@ C Fill Block cele
 C-----------------------------------------------------------------------
       IF (CELEFLAG) THEN
          NCel = 0.
-         NCelMc = 0.
          DO iCELE=1, 2000
             ICl(iCELE) = 0.
             Det(iCELE) = 0.
@@ -991,14 +1004,15 @@ C-----------------------------------------------------------------------
          END DO
    
          istat = GETCELESTRU(Evt%Cele)
+         write(*,*) "CELE istat => ", istat
+
+         ISTAT = BLOCAT(IW,'CELE', 1,IND1,INDDAT )
+         write(*,*) "CELE BLOCAT => ", istat
+
    
          NCel = Evt%Cele%n 
          IF ( NCel < 0 .OR. NCel > 2000 ) THEN
             WRITE(*,*) ERROR_BLOCK//'CELE - NCel '//ERROR_DOMAIN, NCel
-         END IF
-         NCelMc = Evt%Cele%nmc
-         IF ( NCelMc < 0 .OR. NCelMc > 2000 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'CELE - NCelMc '//ERROR_DOMAIN, NCelMc
          END IF
          IF ( NCel > 0 .AND. NCel <= 2000 ) THEN
             DO iCELE=1, NCel
@@ -1014,21 +1028,7 @@ C-----------------------------------------------------------------------
             END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'CELE - NCel '//ERROR_INDEX, NCel
-         END IF
-   
-         IF (NCelMc > 0 .AND. NCelMc <= 2000) THEN
-            DO iCELE=1, NCelMc
-               EMc(iCELE) = Evt%Cele%Etrue(iCELE)
-               TMc(iCELE) = Evt%Cele%Ttrue(iCELE)
-               XMc(iCELE) = Evt%Cele%xtrue(iCELE)
-               YMc(iCELE) = Evt%Cele%ytrue(iCELE)
-               ZMc(iCELE) = Evt%Cele%ztrue(iCELE)
-               PTyp(iCELE) = Evt%Cele%ptyp(iCELE)
-               KNum(iCELE) = Evt%Cele%knum(iCELE)
-               NHit(iCELE) = Evt%Cele%numpar(iCELE)
-            END DO
-         ELSE
-            WRITE(*,*) ERROR_BLOCK//'CELE - NCelMc '//ERROR_INDEX, NCelMc
+            NCel = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -1068,6 +1068,7 @@ C-----------------------------------------------------------------------
               END DO
            ELSE
               WRITE(*,*) ERROR_BLOCK//'CELEMC - NCelMc '//ERROR_INDEX, NCelMc
+              NCelMc = 0
            END IF
         ELSE
            WRITE(*,*) ERROR_MC_DATA//'CELEMC'
@@ -1110,6 +1111,7 @@ C-----------------------------------------------------------------------
             END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'DTCE - nDTCE '//ERROR_INDEX, nDTCE
+            nDTCE = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -1144,6 +1146,7 @@ C        DTCEStru is initialized in raw2dtce.cin
             END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'DTCE0 - nDTCE0 '//ERROR_INDEX, nDTCE0
+            nDTCE0 = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -1204,6 +1207,7 @@ C-----------------------------------------------------------------------
            END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'DHRE - nDHRE '//ERROR_INDEX, nDHRE
+            nDHRE = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -1244,6 +1248,7 @@ C-----------------------------------------------------------------------
            END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'DHSP - nDHSP '//ERROR_INDEX, nDHSP
+            nDHSP = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -1308,6 +1313,7 @@ C-----------------------------------------------------------------------
            END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'TRKV - nTv '//ERROR_INDEX, nTv
+            nTv = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -1359,6 +1365,7 @@ C-----------------------------------------------------------------------
            END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'VTX - nV '//ERROR_INDEX, nV
+            nV = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -1459,6 +1466,7 @@ C-----------------------------------------------------------------------
            END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'TRKS - nT '//ERROR_INDEX, nT
+            nT = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -1580,6 +1588,7 @@ C-----------------------------------------------------------------------
              END DO
            ELSE
               WRITE(*,*) ERROR_BLOCK//'TRKMC - nTfMC '//ERROR_INDEX, nTfMC
+              nTfMc = 0
            END IF
         ELSE
            WRITE(*,*) ERROR_MC_DATA//'TRKMC'
@@ -1647,6 +1656,7 @@ C-----------------------------------------------------------------------
            END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'TRKVOLD - nTVOld '//ERROR_INDEX, nTVOld
+            nTVOld = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -1698,6 +1708,7 @@ C-----------------------------------------------------------------------
            END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'VTXOLD - nVOld '//ERROR_INDEX, nVOld
+            nVOld = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -1798,6 +1809,7 @@ C-----------------------------------------------------------------------
            END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'TRKOLD - nTOld '//ERROR_INDEX, nTOld
+            nTOld = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -1919,6 +1931,7 @@ C-----------------------------------------------------------------------
              END DO
            ELSE
               WRITE(*,*) ERROR_BLOCK//'TRKMCOLD - nTfMCOld '//ERROR_INDEX, nTfMCOld
+              nTfMCOld = 0
            END IF
         ELSE
               WRITE(*,*) ERROR_MC_DATA//'TRKMCOLD'
@@ -1974,6 +1987,7 @@ C-----------------------------------------------------------------------
            END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'DHIT - nDHIT '//ERROR_INDEX, nDHIT
+            nDHIT = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2021,6 +2035,7 @@ C-----------------------------------------------------------------------
            END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'DEDX - nDEDx '//ERROR_INDEX, nDEDx
+            nDEDx = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2079,6 +2094,7 @@ C-----------------------------------------------------------------------
             END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'DPRS - nDPRS '//ERROR_INDEX, nDPRS
+            nDPRS = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2176,6 +2192,7 @@ C-----------------------------------------------------------------------
               END DO
            ELSE
               WRITE(*,*) ERROR_BLOCK//'MC - nTMC '//ERROR_INDEX, nTMC
+              nTMC = 0
            END IF
   
            nVtxMC = Evt%MC%numvtx
@@ -2200,6 +2217,7 @@ C-----------------------------------------------------------------------
               END DO
            ELSE
               WRITE(*,*) ERROR_BLOCK//'MC - nVtxMC '//ERROR_INDEX, nVtxMC
+              nVtxMC = 0
            END IF
         ELSE
               WRITE(*,*) ERROR_MC_DATA//'MC'
@@ -2253,6 +2271,7 @@ C-----------------------------------------------------------------------
            END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'TCLO - nTcl '//ERROR_INDEX, nTcl
+            nTcl = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2303,6 +2322,7 @@ C-----------------------------------------------------------------------
            END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'TCLOLD - nTclOld '//ERROR_INDEX, nTclOld
+            nTclOld = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2326,6 +2346,10 @@ C-----------------------------------------------------------------------
          END DO
 
          istat = GETCFHISTRU(evt%cfhi)
+         write(*,*) "CFHI ISTAT => ", istat
+
+         ISTAT = BLOCAT(IW,'CFHI', 1,IND1,INDDAT )
+         write(*,*) "CFHI BLOCAT => ", istat
 
          nFhi = Evt%CFHI%n
          IF ( nFhi < 0 .OR. nFhi > 300 ) THEN
@@ -2361,6 +2385,7 @@ C-----------------------------------------------------------------------
            END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'CFHI - nFhi '//ERROR_INDEX, nFhi
+            nFhi = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2411,6 +2436,7 @@ C
               END DO
             ELSE
                WRITE(*,*) ERROR_BLOCK//'QIHI - nQIHI '//ERROR_INDEX, nQIHI
+               nQIHI = 0
             END IF
          ELSE
             WRITE(*,*) ERROR_MISS_DATA//'QIHI'
@@ -2454,6 +2480,7 @@ C-----------------------------------------------------------------------
            END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'TRKQ - nTrkQ '//ERROR_INDEX, nTrkQ
+            nTrkQ = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2485,6 +2512,7 @@ C-----------------------------------------------------------------------
               END DO
             ELSE
                WRITE(*,*) ERROR_BLOCK//'QELE - nQELE '//ERROR_INDEX, nQELE
+               nQELE = 0
             END IF
          ELSE
             WRITE(*,*) ERROR_MISS_DATA//'QELE'
@@ -2493,8 +2521,8 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block qcal
 C-----------------------------------------------------------------------
-      IF (.NOT.MONTECARLOFLAG) THEN
-         IF (QCALFLAG) THEN
+      IF (QCALFLAG) THEN
+         IF (.NOT.MONTECARLOFLAG) THEN
             nQCal = 0.
             DO iQCAL=1, 32
               xQCal(iQCAL) = 0.
@@ -2521,6 +2549,7 @@ C-----------------------------------------------------------------------
               END DO
             ELSE
                WRITE(*,*) ERROR_BLOCK//'QCAL - nQCal '//ERROR_INDEX, nQCal
+               nQCal = 0
             END IF
          ELSE
             WRITE(*,*) ERROR_MISS_DATA//'QCAL'
@@ -2560,6 +2589,7 @@ C-----------------------------------------------------------------------
            END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'KNVO - nKNVO '//ERROR_INDEX, nKNVO
+            nKNVO = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2598,6 +2628,7 @@ C-----------------------------------------------------------------------
            END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'VNVO - nVNVO '//ERROR_INDEX, nVNVO
+            nVNVO = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2622,6 +2653,7 @@ C-----------------------------------------------------------------------
            END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'VNVB - nBnksVNVO '//ERROR_INDEX, nBnksVNVO
+            nBnksVNVO = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2658,6 +2690,7 @@ C-----------------------------------------------------------------------
            END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'INVO - nINVO '//ERROR_INDEX, nINVO
+            nINVO = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2692,6 +2725,7 @@ C-----------------------------------------------------------------------
            END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'ECLO - nCli '//ERROR_INDEX, nCli
+            nCli = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2726,6 +2760,7 @@ C-----------------------------------------------------------------------
            END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'ECLO2 - nCli2 '//ERROR_INDEX, nCli2
+            nCli2 = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2776,6 +2811,7 @@ C-----------------------------------------------------------------------
            END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'CSPS - nCS '//ERROR_INDEX, nCS
+            nCS = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2815,6 +2851,7 @@ C-----------------------------------------------------------------------
             END DO
           ELSE
              WRITE(*,*) ERROR_BLOCK//'CSPSMC - nCSMC '//ERROR_INDEX, nCSMC
+             nCSMC = 0
           END IF
         ELSE
               WRITE(*,*) ERROR_MC_DATA//'CSPSMC'
@@ -2854,6 +2891,7 @@ C-----------------------------------------------------------------------
            END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'CLUO - nCluO '//ERROR_INDEX, nCluO
+            nCluO = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2893,6 +2931,7 @@ C-----------------------------------------------------------------------
             END DO
           ELSE
              WRITE(*,*) ERROR_BLOCK//'CLUOMC - nMCPar '//ERROR_INDEX, nMCPar
+             nMCPar = 0
           END IF
         ELSE
               WRITE(*,*) ERROR_MC_DATA//'CLUOMC'
@@ -2954,6 +2993,7 @@ C-----------------------------------------------------------------------
              END DO
            ELSE
               WRITE(*,*) ERROR_BLOCK//'QTELE - nQCalT '//ERROR_INDEX, nQCalT
+              nQCalT = 0
            END IF
         ELSE
            WRITE(*,*) ERROR_MISS_DATA//'QTELE'
@@ -3047,6 +3087,7 @@ C-----------------------------------------------------------------------
               END DO
             ELSE
                WRITE(*,*) ERROR_BLOCK//'CCLE - nCCle '//ERROR_INDEX, nCCle
+               nCCle = 0
             END IF
          ELSE
             WRITE(*,*) ERROR_MISS_DATA//'CCLE'
@@ -3096,6 +3137,7 @@ C-----------------------------------------------------------------------
               END DO
             ELSE
                WRITE(*,*) ERROR_BLOCK//'LETE - nLete '//ERROR_INDEX, nLete
+               nLete = 0
             END IF
          ELSE
             WRITE(*,*) ERROR_MISS_DATA//'LETE'
@@ -3132,6 +3174,7 @@ C-----------------------------------------------------------------------
               END DO
             ELSE
                WRITE(*,*) ERROR_BLOCK//'ITCE - nITCE '//ERROR_INDEX, nITCE
+               nITCE = 0
             END IF
          ELSE
             WRITE(*,*) ERROR_MISS_DATA//'ITCE'
@@ -3151,6 +3194,10 @@ C-----------------------------------------------------------------------
             END DO
    
             istat = gethetestru(evt%hete)
+            write(*,*) "HETE ISTAT => ", istat
+
+            ISTAT = BLOCAT(IW,'HETE', 1,IND1,INDDAT )
+            write(*,*) "HETE BLOCAT => ", istat
    
             nHetDcs = Evt%hete%nhetdcs
             IF ( nHetDcs < 0 .OR. nHetDcs > 1920 ) THEN
@@ -3175,6 +3222,7 @@ C-----------------------------------------------------------------------
               END DO
             ELSE
                WRITE(*,*) ERROR_BLOCK//'HETE - nHetDcs '//ERROR_INDEX, nHetDcs
+               nHetDcs = 0
             END IF
          ELSE
             WRITE(*,*) ERROR_MISS_DATA//'ITCE'
@@ -3267,10 +3315,6 @@ C
       Status = UIUSGP(IGROUP,N$A)
  10   Status = UIACME(MENUF,Verb,N$A) ! Display menu
 C     
-
-C      write(*,*)"[TALKTO_INIT] INFOFLAG: ", INFOFLAG
-C      write(*,*)"[TALKTO_INIT] BPOSFLAG: ", BPOSFLAG
-C      write(*,*)" "
 
       if(verb.eq.'SHOW')then
 	    goto 10
