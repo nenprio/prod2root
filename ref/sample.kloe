@@ -2384,9 +2384,9 @@ C-----------------------------------------------------------------------
               TLenQIHI(iQIHI) = 0.
             END DO
    
-   C        
-   C        TODO: Notice that in prod2ntu, this function was commented. Why?
-   C
+C        
+C        TODO: Notice that in prod2ntu, this function was commented. Why?
+C
             istat = GETQIHISTRU(evt%qhit)
    
             nQIHI = Evt%QHIT%n
