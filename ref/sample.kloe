@@ -249,7 +249,7 @@ C Fill Block Info
 C-----------------------------------------------------------------------
       IF (INFOFLAG) THEN
          IF (MONTECARLOFLAG) THEN
-            istat=blocat(iw,'BRID',1,ind1,inddat)
+            istat = blocat(iw,'BRID',1,ind1,inddat)
             Evt%Info%RunNumber = iw(inddat)
             IF (Evt%Info%RunNumber.ne.OldRunNumber) THEN
                istat = fillbposcommon(Evt%Info%RunNumber)
@@ -325,9 +325,8 @@ C-----------------------------------------------------------------------
          BLumz = 0.
          Broots = 0.
          BrootsErr = 0.
- 
+
          rstat = GETBPOS(Evt%Bpos)
-         write(*,*) "BPOS rstat => ",rstat
  
          BPx = Evt%Bpos%px
          BPy = Evt%Bpos%py
@@ -354,20 +353,35 @@ C-----------------------------------------------------------------------
          DhreHit = 0.
          DprsHit = 0.
          DtfsHit = 0.
-   
-         istat = BIGEST(iw,'DTCE',banknum)
-         istat = BLOCAT(iw,'DTCE',banknum,ind1,inddat)
-         IF (istat.ne.YESUCC) THEN
-            NDtce_copy =0
+
+C        Check existance of banks accordint to the MC flag        
+         IF (MONTECARLOFLAG) THEN
+             STATUS =  BLOCAT(IW, 'MDCN', 1, IND, INDDAT)
+             IF (STATUS.NE.YESUCC) THEN
+                 STATUS = MAKE_MDCN(IND, INDDAT)
          ELSE
-            NDtce_copy = IW(inddat+DTCNRO)
-         ENDIF
-         CALL GETGDCHIT(Evt%GHit)
+             STATUS =  BLOCAT(IW, 'DCNH', 1, IND, INDDAT)
+             IF (STATUS.NE.YESUCC) THEN
+                 STATUS = MAKE_DCNH(IND, INDDAT)
+         END IF
+
+C        If bank doesn't exists, let all fields set to 0
+C        Fill them only if the data are meaningful
+         IF (STATUS.EQ.YESUCC) THEN
+             istat = BIGEST(iw,'DTCE',banknum)
+             istat = BLOCAT(iw,'DTCE',banknum,ind1,inddat)
+             IF (istat.ne.YESUCC) THEN
+                NDtce_copy =0
+             ELSE
+                NDtce_copy = IW(inddat+DTCNRO)
+             ENDIF
+             CALL GETGDCHIT(Evt%GHit)
   
-         DtceHit = NDtce_copy
-         DhreHit = Evt%GHit%nhit
-         DprsHit = Evt%GHit%nhpr
-         DtfsHit = Evt%GHit%nhtf
+             DtceHit = NDtce_copy
+             DhreHit = Evt%GHit%nhit
+             DprsHit = Evt%GHit%nhpr
+             DtfsHit = Evt%GHit%nhtf
+         END IF
       END IF
 C-----------------------------------------------------------------------
 C Fill Block Ecls
@@ -394,6 +408,7 @@ C-----------------------------------------------------------------------
          END DO
 
          istat = GETECLS(evt%ecls)
+         write(*,*) "ISTAT => ", istat
          
          nEcls = evt%ecls%n
          IF ( nEcls < 0 .OR. nEcls > 8 ) THEN
@@ -496,6 +511,7 @@ C-----------------------------------------------------------------------
          END DO
 
          istat = GETTELLINA(Evt%Tellina) 
+         write(*,*) "ISTAT => ", istat
          
          NTel = Evt%Tellina%n
          IF ( NTel < 0 .OR. NTel > 300 ) THEN
@@ -533,6 +549,7 @@ C-----------------------------------------------------------------------
          END DO
 
          istat = GETPIZZETTA(Evt%Pizzetta)
+         write(*,*) "ISTAT => ", istat
 
          NPiz = Evt%Pizzetta%n
          IF ( NPiz < 0 .OR. NPiz > 300 ) THEN
@@ -589,6 +606,7 @@ C-----------------------------------------------------------------------
          END DO
 
          istat = GETTRIGGER(evt%trg)
+         write(*,*) "ISTAT => ", istat
 
          tSpent = evt%trg%tspent
          tDead = evt%trg%tdead
@@ -697,19 +715,20 @@ C-----------------------------------------------------------------------
 C Fill Block Tele
 C-----------------------------------------------------------------------
       IF (TELEFLAG) THEN
-      NTele = 0.
-      DO iEVTTELE=1, 300
-        Det_Trg(iEVTTELE) = 0.
-        BitP(iEVTTELE) = 0.
-        Sector(iEVTTELE) = 0.
-        SerKind(iEVTTELE) = 0.
-        Ea_Trg(iEVTTELE) = 0.
-        Eb_Trg(iEVTTELE) = 0.
-        Ta_Trg(iEVTTELE) = 0.
-        Tb_Trg(iEVTTELE) = 0.
+         NTele = 0.
+         DO iEVTTELE=1, 300
+            Det_Trg(iEVTTELE) = 0.
+            BitP(iEVTTELE) = 0.
+            Sector(iEVTTELE) = 0.
+            SerKind(iEVTTELE) = 0.
+            Ea_Trg(iEVTTELE) = 0.
+            Eb_Trg(iEVTTELE) = 0.
+            Ta_Trg(iEVTTELE) = 0.
+            Tb_Trg(iEVTTELE) = 0.
          END DO
    
          istat = GETTELESTRU(Evt%TELE)
+         write(*,*) "ISTAT => ", istat
    
          NTele = Evt%TELE%ntele
          IF ( NTele < 0 .OR. NTele > 300 ) THEN
@@ -760,6 +779,7 @@ C-----------------------------------------------------------------------
    
          istat = PIZZA_RESET(Evt%PIZZA)
          istat = GETPIZZASTRU(Evt%PIZZA)
+         write(*,*) "ISTAT => ", istat
    
          NPack = Evt%PIZZA%npizza
          IF ( NPack < 0 .OR. NPack > 300 ) THEN
@@ -785,7 +805,9 @@ C Fill Block Time
 C-----------------------------------------------------------------------
       IF (TIMEFLAG) THEN
          istat = T0GLRD(T0Dc0,T0Hit0,T0Clu0,T0Step1,DelayCable,TBunch)
+         write(*,*) "ISTAT => ", istat
          istat = T0MCRD(TPhased_mc)
+         write(*,*) "ISTAT => ", istat
       END IF
 C-----------------------------------------------------------------------
 C Fill Block Clus
@@ -809,6 +831,7 @@ C-----------------------------------------------------------------------
          END DO
    
          istat = GETCLUSTRU(Evt%Clu)
+         write(*,*) "ISTAT => ", istat
    
          NClu = Evt%Clu%n 
          IF ( NClu < 0 .OR. NClu > 100 ) THEN
@@ -852,6 +875,7 @@ C-----------------------------------------------------------------------
            END DO
     
            istat = GETCLUSTRU(Evt%Clu)
+           write(*,*) "ISTAT => ", istat
   
            NCluMc = Evt%Clu%nmc
            IF ( NCluMc < 0 .OR. NCluMc > 100 ) THEN
@@ -914,6 +938,7 @@ C-----------------------------------------------------------------------
          END DO
    
          istat = GETPRECLUSTRU(Evt%PreClu)
+         write(*,*) "ISTAT => ", istat
    
          NPClu = Evt%PreClu%n 
          IF ( NPClu < 0 .OR. NPClu > 100 ) THEN
@@ -955,6 +980,7 @@ C-----------------------------------------------------------------------
          END DO
    
          istat = GETCWRKSTRU(Evt%Cwrk)
+         write(*,*) "ISTAT => ", istat
    
          NCHit = Evt%CWRK%n 
          IF ( NCHit < 0 .OR. NCHit > 2000 ) THEN
@@ -1049,6 +1075,7 @@ C-----------------------------------------------------------------------
            END DO
      
            istat = GETCELESTRU(Evt%Cele)
+           write(*,*) "ISTAT => ", istat
      
            NCelMc = Evt%Cele%nmc
            IF ( NCelMc < 0 .OR. NCelMc > 2000 ) THEN
@@ -1184,7 +1211,17 @@ C-----------------------------------------------------------------------
            eDHRE(iDHRE) = 0.
          END DO
 
-         CALL GETDHRESTRU(Evt%DHRE) 
+         write(*,*) "BEFORE BLOCAT"
+         istat = BLOCAT(IW, 'DHRE', -1, IND, INDDAT1)
+         if (istat.ne.YESUCC) then
+             write(*,*) "NO BANK", IND, INDDAT1
+         else
+             write(*,*) "BANK FOUND", IND, INDDAT1
+         end if
+         write(*,*) "AFTER BLOCAT"
+
+         istat = GETDHRESTRU(Evt%DHRE) 
+         write(*,*) "ISTAT => ", istat
 
          nDHRE = Evt%DHRE%nDHRE
          IF ( nDHRE < 0 .OR. nDHRE > 1500 ) THEN
@@ -1228,6 +1265,7 @@ C-----------------------------------------------------------------------
          END DO
    
          istat =  GETDHSPSTRU(evt%trk%n,evt%dhsp)
+         write(*,*) "ISTAT => ", istat
    
          nDHSP = Evt%DHSP%numDHSP
          IF ( nDHSP < 0 .OR. nDHSP > 500 ) THEN
@@ -1278,6 +1316,7 @@ C-----------------------------------------------------------------------
          END DO
 
          istat = TRKV2STRU(evt%vtx,evt%trkv,evt%trk,evt%trkmc)
+         write(*,*) "ISTAT => ", istat
 
          nTv = Evt%Trkv%n
          IF ( nTv < 0 .OR. nTv > 30 ) THEN
@@ -1338,6 +1377,7 @@ C-----------------------------------------------------------------------
          END DO
 
          istat = TRKV2STRU(evt%vtx,evt%trkv,evt%trk,evt%trkmc)
+         write(*,*) "ISTAT => ", istat
 
          nV = Evt%vtx%n
          IF ( nV < 0 .OR. nV > 10 ) THEN
@@ -1416,6 +1456,7 @@ C-----------------------------------------------------------------------
          END DO
 
          istat = TRKV2STRU(evt%vtx,evt%trkv,evt%trk,evt%trkmc)
+         write(*,*) "ISTAT => ", istat
 
          nT = Evt%Trk%n
          IF ( nT < 0 .OR. nT > 100 ) THEN
@@ -1513,6 +1554,7 @@ C-----------------------------------------------------------------------
            END DO
   
            istat = TRKV2STRU(evt%vtx,evt%trkv,evt%trk,evt%trkmc)
+           write(*,*) "ISTAT => ", istat
   
            nTfMC = Evt%TrkMC%n
            IF ( nTfMC < 0 .OR. nTfMC > 100 ) THEN
@@ -1621,6 +1663,7 @@ C-----------------------------------------------------------------------
          END DO
 
          istat = TRKVOLD2STRU(evt%vtxold, evt%trkvold, evt%trkold, evt%trkmcold)
+         write(*,*) "ISTAT => ", istat
 
          nTVOld = Evt%TrkvOld%n
          IF ( nTVOld < 0 .OR. nTVOld > 30 ) THEN
@@ -1681,6 +1724,7 @@ C-----------------------------------------------------------------------
          END DO
 
          istat = TRKVOLD2STRU(evt%vtxold, evt%trkvold, evt%trkold, evt%trkmcold)
+         write(*,*) "ISTAT => ", istat
 
          nVOld = Evt%vtxold%n
          IF ( nVOld < 0 .OR. nVOld > 10 ) THEN
@@ -1759,6 +1803,7 @@ C-----------------------------------------------------------------------
          END DO
 
          istat = TRKVOLD2STRU(evt%vtxold, evt%trkvold, evt%trkold, evt%trkmcold)
+         write(*,*) "ISTAT => ", istat
 
          nTOld = Evt%Trkold%n
          IF ( nTOld < 0 .OR. nTOld > 100 ) THEN
@@ -1856,6 +1901,7 @@ C-----------------------------------------------------------------------
            END DO
   
            istat = TRKVOLD2STRU(evt%vtxold, evt%trkvold, evt%trkold, evt%trkmcold)
+           write(*,*) "ISTAT => ", istat
   
            nTfMCOld = Evt%Trkmcold%n
            IF ( nTfMCOld < 0 .OR. nTfMCOld > 100 ) THEN
@@ -1961,6 +2007,7 @@ C-----------------------------------------------------------------------
          END DO
          
          istat = DHIT_UPK(evt%dhit)
+         write(*,*) "ISTAT => ", istat
          
          nDHIT = Evt%DHIT%n
          IF ( nDHIT < 0 .OR. nDHIT > 2500 ) THEN
@@ -2012,6 +2059,7 @@ C-----------------------------------------------------------------------
 
          istat = DEDX2STRU_Reset(Evt%DEDX2STRU)
          istat = DEDX2STRU_GET(Evt%DEDX2STRU)
+         write(*,*) "ISTAT => ", istat
 
          nDEDx = Evt%DEDX2STRU%numdedx
          IF ( nDEDx < 0 .OR. nDEDx > 20 ) THEN
@@ -2065,6 +2113,7 @@ C-----------------------------------------------------------------------
          END DO
 
          istat = GET_DPRS_STRUCT(Evt%DPRS%NDPRS)
+         write(*,*) "ISTAT => ", istat
 
          nDPRS =  Evt%DPRS%NDPRS
          IF ( nDPRS < 0 .OR. nDPRS > 200 ) THEN
@@ -2143,6 +2192,7 @@ C-----------------------------------------------------------------------
            END DO
   
            istat = GETMCSTRU(Evt%MC)
+           write(*,*) "ISTAT => ", istat
   
            nTMC = Evt%MC%ntrk
            IF ( nTMC < 0 .OR. nTMC > 50 ) THEN
@@ -2243,6 +2293,7 @@ C-----------------------------------------------------------------------
          END DO
 
          istat =  GETTCLOSTRU(evt%tclo)
+         write(*,*) "ISTAT => ", istat
 
          nTcl = Evt%Tclo%nt
          IF ( nTcl < 0 .OR. nTcl > 40 ) THEN
@@ -2294,6 +2345,7 @@ C-----------------------------------------------------------------------
          END DO
 
          istat =  GETOLDTCLOSTRU(evt%tclold)
+         write(*,*) "ISTAT => ", istat
 
          nTclOld = Evt%Tclold%nt
          IF ( nTclOld < 0 .OR. nTclOld > 40 ) THEN
@@ -2350,6 +2402,7 @@ C-----------------------------------------------------------------------
 
          ISTAT = BLOCAT(IW,'CFHI', 1,IND1,INDDAT )
          write(*,*) "CFHI BLOCAT => ", istat
+         write(*,*) "CFHI IW => ", IW
 
          nFhi = Evt%CFHI%n
          IF ( nFhi < 0 .OR. nFhi > 300 ) THEN
@@ -2413,6 +2466,7 @@ C
 C        TODO: Notice that in prod2ntu, this function was commented. Why?
 C
             istat = GETQIHISTRU(evt%qhit)
+            write(*,*) "ISTAT => ", istat
    
             nQIHI = Evt%QHIT%n
             IF ( nQIHI < 0 .OR. nQIHI > 1000 ) THEN
@@ -2460,6 +2514,7 @@ C-----------------------------------------------------------------------
          END DO
 
          istat = TRKQ2STRU( evt%trk, evt%trkq )
+         write(*,*) "ISTAT => ", istat
 
          nTrkQ = Evt%TRKQ%n
          IF ( nTrkQ < 0 .OR. nTrkQ > 100 ) THEN
@@ -2497,6 +2552,7 @@ C-----------------------------------------------------------------------
             END DO
    
             istat = GETQCAESTRU(Evt%Qele)
+            write(*,*) "ISTAT => ", istat
    
             nQELE = Evt%QELE%n
             IF ( nQELE < 0 .OR. nQELE > 32 ) THEN
@@ -2533,6 +2589,7 @@ C-----------------------------------------------------------------------
             END DO
    
             istat = GETQCALSTRU(evt%qcal)
+            write(*,*) "ISTAT => ", istat
    
             nQCal = Evt%Qcal%n
             IF ( nQCal < 0 .OR. nQCal > 32 ) THEN
@@ -2571,6 +2628,7 @@ C-----------------------------------------------------------------------
          END DO
 
          istat = GETNVO(evt%knvo,evt%vnvo,evt%vnvb,evt%invo)
+         write(*,*) "ISTAT => ", istat
 
          nKNVO = Evt%KNVO%n
          IF ( nKNVO < 0 .OR. nKNVO > 40 ) THEN
@@ -2609,6 +2667,7 @@ C-----------------------------------------------------------------------
          END DO
 
          istat = GETNVO(evt%knvo,evt%vnvo,evt%vnvb,evt%invo)
+         write(*,*) "ISTAT => ", istat
 
          nVNVO = Evt%VNVO%n
          IF ( nVNVO < 0 .OR. nVNVO > 40 ) THEN
@@ -2641,6 +2700,7 @@ C-----------------------------------------------------------------------
          END DO
 
          istat = GETNVO(evt%knvo,evt%vnvo,evt%vnvb,evt%invo)
+         write(*,*) "ISTAT => ", istat
 
          nBnksVNVO = Evt%VNVB%n
          IF ( nBnksVNVO < 0 .OR. nBnksVNVO > 40 ) THEN
@@ -2672,6 +2732,7 @@ C-----------------------------------------------------------------------
          END DO
 
          istat = GETNVO(evt%knvo,evt%vnvo,evt%vnvb,evt%invo)
+         write(*,*) "ISTAT => ", istat
 
          nINVO = Evt%INVO%n
          IF ( nINVO < 0 .OR. nINVO > 40 ) THEN
@@ -2708,6 +2769,7 @@ C-----------------------------------------------------------------------
          END DO
 
          istat = GETECLO(evt%eclo)
+         write(*,*) "ISTAT => ", istat
 
          nCli = Evt%eclo%n
          IF ( nCli < 0 .OR. nCli > 100 ) THEN
@@ -2743,6 +2805,7 @@ C-----------------------------------------------------------------------
          END DO
 
          istat = GETECLO(evt%eclo)
+         write(*,*) "ISTAT => ", istat
 
          nCli2 = Evt%eclo%n2
          IF ( nCli2 < 0 .OR. nCli2 > 100 ) THEN
@@ -2786,6 +2849,7 @@ C-----------------------------------------------------------------------
          END DO
 
          istat = GETCSPSSTRU(0,evt%CSPS,evt%CSPSMC)
+         write(*,*) "ISTAT => ", istat
 
          nCS = Evt%CSPS%Ncel
          IF ( nCS < 0 .OR. nCS > 2000 ) THEN
@@ -2832,6 +2896,7 @@ C-----------------------------------------------------------------------
           END DO
  
           istat = GETCSPSSTRU(0,evt%CSPS,evt%CSPSMC)
+          write(*,*) "ISTAT => ", istat
  
           nCSMC = Evt%CSPSMC%Ncel
           IF ( nCSMC < 0 .OR. nCSMC > 2000 ) THEN
@@ -2873,6 +2938,7 @@ C-----------------------------------------------------------------------
          END DO
 
          istat = GETCLUOSTRU(Evt%CLUO)
+         write(*,*) "ISTAT => ", istat
 
          nCluO = Evt%CLUO%N
          IF ( nCluO < 0 .OR. nCluO > 100 ) THEN
@@ -2912,6 +2978,7 @@ C-----------------------------------------------------------------------
           END DO
  
           istat = GETCLUOMCSTRU(Evt%CLUOMC)
+          write(*,*) "ISTAT => ", istat
  
           nMCPar = Evt%CLUOMC%Npar
           IF ( nMCPar < 0 .OR. nMCPar > 100 ) THEN
@@ -2957,6 +3024,7 @@ C-----------------------------------------------------------------------
            END DO
   
            istat = GETQCALTSTRU(Evt%QCALT)
+           write(*,*) "ISTAT => ", istat
   
            nQCalT = Evt%QCALT%NEle
            IF ( nQCalT < 0 .OR. nQCalT > 1920 ) THEN
@@ -3018,6 +3086,7 @@ C-----------------------------------------------------------------------
             END DO
    
             istat = GETQCTHSTRU(Evt%QCALTHIT)
+            write(*,*) "ISTAT => ", istat
    
             nQCTHEle = Evt%QCALTHIT%Nele
             IF ( nQCTHEle < 0 .OR. nQCTHEle > 1920 ) THEN
@@ -3062,6 +3131,7 @@ C-----------------------------------------------------------------------
             END DO
    
             istat = GETCCALTSTRU(Evt%CCLE)
+            write(*,*) "ISTAT => ", istat
    
             nCCle = Evt%CCLE%NEle
             IF ( nCCle < 0 .OR. nCCle > 96 ) THEN
@@ -3110,6 +3180,7 @@ C-----------------------------------------------------------------------
             END DO
    
             istat = getletestru(evt%lete)
+            write(*,*) "ISTAT => ", istat
    
             LeteCalib = Evt%LETE%Calib
             nLete = Evt%LETE%NEle
@@ -3158,6 +3229,7 @@ C-----------------------------------------------------------------------
             END DO
    
             istat = ITCE_UPK(evt%itce)
+            write(*,*) "ISTAT => ", istat
    
             nITCE = Evt%itce%nitce
             IF ( nITCE < 0 .OR. nITCE > 4032 ) THEN
