@@ -23,7 +23,6 @@ Verb CLUS
 Verb PRECLUS
 Verb CWRK
 Verb CELE
-Verb CELMC
 Verb DTCE
 Verb DTC0
 Verb DCHITS
@@ -32,11 +31,9 @@ Verb DHSP
 Verb TRV
 Verb VTX
 Verb TRS
-Verb TRMC
 Verb TRKVO
 Verb VTO
 Verb TRKSO
-Verb TRKMCO
 Verb DHIT
 Verb DEDX
 Verb DPRS 
@@ -87,46 +84,46 @@ Button 11   /Description="Select TRIG-ELE   block"/Response="TELE"
 Button 12   /Description="Select PIZZA      block"/Response="PIZZA"
 Button 13   /Description="Select TIME       block"/Response="TIME"
 Button 14   /Description="Select CLUSTER    block"/Response="CLUS"
-Button 16   /Description="Select PRECLUS    block"/Response="PRECLUS"
-Button 17   /Description="Select CWRK       block"/Response="CWRK"
-Button 18   /Description="Select CELE       block"/Response="CELE"
-Button 20   /Description="Select DTCE       block"/Response="DTCE"
-Button 21   /Description="Select DTCE0      block"/Response="DTC0"
-Button 22   /Description="Select DC HITS    block"/Response="DCHITS"
-Button 23   /Description="Select DHRE       block"/Response="DHRE"
-Button 24   /Description="Select DHSP       block"/Response="DHSP"
-Button 25   /Description="Select TRACK VTX  block"/Response="TRV"
-Button 26   /Description="Select VERTICES   block"/Response="VTX"
-Button 27   /Description="Select TRACKS     block"/Response="TRS"
-Button 29   /Description="Select TRKVTX OLD block"/Response="TRKVO"
-Button 30   /Description="Select VERTIC OLD block"/Response="VTO"
-Button 31   /Description="Select TRACKS OLD block"/Response="TRKSO"
-Button 33   /Description="Select DHIT       block"/Response="DHIT"
-Button 34   /Description="Select DEDX       block"/Response="DEDX"
-Button 35   /Description="Select DPRS       block"/Response="DPRS"
-Button 36   /Description="Select GEANFI     block"/Response="GEANFI"
-Button 37   /Description="Select TCLO       block"/Response="TCLO"
-Button 38   /Description="Select TCLOLD     block"/Response="TCOLD"
-Button 39   /Description="Select CFHI     block"/Response="CFHI"
-Button 40   /Description="Select QIHI     block"/Response="QIHI"
-Button 41   /Description="Select TRKQ     block"/Response="TRKQ"
-Button 42   /Description="Select QELE     block"/Response="QELE"
-Button 43   /Description="Select QCAL     block"/Response="QCAL"
-Button 44   /Description="Select KNVO     block"/Response="KNVO"
-Button 45   /Description="Select VNVO     block"/Response="VNVO"
-Button 46   /Description="Select VNVB     block"/Response="VNVB"
-Button 47   /Description="Select INVO     block"/Response="INVO"
-Button 48   /Description="Select ECLO     block"/Response="ECLO"
-Button 49   /Description="Select ECLO2    block"/Response="ECLTWO"
-Button 50   /Description="Select CSPS     block"/Response="CSPS"
-Button 52   /Description="Select CLUO     block"/Response="CLUO"
-Button 54   /Description="Select QTELE     block"/Response="QTELE"
-Button 55   /Description="Select QCTH     block"/Response="QCTH"
-Button 56   /Description="Select CCLE     block"/Response="CCLE"
-Button 57   /Description="Select LETE     block"/Response="LETE"
-Button 58   /Description="Select ITCE     block"/Response="ITCE"
-Button 59   /Description="Select HETE     block"/Response="HETE"
+Button 15   /Description="Select PRECLUS    block"/Response="PRECLUS"
+Button 16   /Description="Select CWRK       block"/Response="CWRK"
+Button 17   /Description="Select CELE       block"/Response="CELE"
+Button 18   /Description="Select DTCE       block"/Response="DTCE"
+Button 19   /Description="Select DTCE0      block"/Response="DTC0"
+Button 20   /Description="Select DC HITS    block"/Response="DCHITS"
+Button 21   /Description="Select DHRE       block"/Response="DHRE"
+Button 22   /Description="Select DHSP       block"/Response="DHSP"
+Button 23   /Description="Select TRACK VTX  block"/Response="TRV"
+Button 24   /Description="Select VERTICES   block"/Response="VTX"
+Button 25   /Description="Select TRACKS     block"/Response="TRS"
+Button 26   /Description="Select TRKVTX OLD block"/Response="TRKVO"
+Button 27   /Description="Select VERTIC OLD block"/Response="VTO"
+Button 28   /Description="Select TRACKS OLD block"/Response="TRKSO"
+Button 29   /Description="Select DHIT       block"/Response="DHIT"
+Button 30   /Description="Select DEDX       block"/Response="DEDX"
+Button 31   /Description="Select DPRS       block"/Response="DPRS"
+Button 32   /Description="Select GEANFI     block"/Response="GEANFI"
+Button 33   /Description="Select TCLO       block"/Response="TCLO"
+Button 34   /Description="Select TCLOLD     block"/Response="TCOLD"
+Button 35   /Description="Select CFHI     block"/Response="CFHI"
+Button 36   /Description="Select QIHI     block"/Response="QIHI"
+Button 37   /Description="Select TRKQ     block"/Response="TRKQ"
+Button 38   /Description="Select QELE     block"/Response="QELE"
+Button 39   /Description="Select QCAL     block"/Response="QCAL"
+Button 40   /Description="Select KNVO     block"/Response="KNVO"
+Button 41   /Description="Select VNVO     block"/Response="VNVO"
+Button 42   /Description="Select VNVB     block"/Response="VNVB"
+Button 43   /Description="Select INVO     block"/Response="INVO"
+Button 44   /Description="Select ECLO     block"/Response="ECLO"
+Button 45   /Description="Select ECLO2    block"/Response="ECLTWO"
+Button 46   /Description="Select CSPS     block"/Response="CSPS"
+Button 47   /Description="Select CLUO     block"/Response="CLUO"
+Button 48   /Description="Select QTELE     block"/Response="QTELE"
+Button 49   /Description="Select QCTH     block"/Response="QCTH"
+Button 50   /Description="Select CCLE     block"/Response="CCLE"
+Button 51   /Description="Select LETE     block"/Response="LETE"
+Button 52   /Description="Select ITCE     block"/Response="ITCE"
+Button 53   /Description="Select HETE     block"/Response="HETE"
 
-Button 60   /Description="Show single process selection"/Response="SHOW"
-Button 61   /Description="Go Back to the AC prompt" /Response="EXIT"
+Button 54   /Description="Show single process selection"/Response="SHOW"
+Button 55   /Description="Go Back to the AC prompt" /Response="EXIT"
 !==============================================================================

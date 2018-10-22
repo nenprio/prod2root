@@ -166,7 +166,7 @@ C
       common /pizza/NPack,PakSect,PakDet,PakSerk,
      1              Ea_Pack,Eb_Pack,E_Rec,Z_mod
 C
-C  Block: evtclu
+C  Block: Clus
 C
       integer iEVTCLU,NClu,FlagCl(100)
       real EneCl(100), TCl(100), XCl(100), YCl(100), ZCl(100)
@@ -204,7 +204,7 @@ C
       integer iCELEMC, NCelMc, PTyp(2000), KNum(2000), NHit(2000)
       real EMc(2000), TMc(2000), XMc(2000), YMc(2000), ZMc(2000)
 
-      common /cele/NCel,ICl,Det,Wed,Pla,Col,Ea,Ta,Eb,Tb
+      common /cele/NCel,ICl,Det,Wed,Pla,Col,Ea,Ta,Eb,Tb,
      1       NCelMc,EMc,TMc,XMc,YMc,ZMc,PTyp,KNum,NHit
 C
 C  Block: dtce
@@ -276,15 +276,6 @@ C
       real SCotG(100), SPhi(100), xLast(100), yLast(100), zLast(100)
       real xPca2(100), yPca2(100), zPca2(100), QTrk2(100), CotPca2(100)
       real PhiPca2(100), Chi2Fit(100), Chi2Ms(100)
-
-      common /trks/nT,TrkInd,TrkVer,Cur,Phi,Cot,Pxt,Pyt,Pzt,PMod,Len,
-     1       xFirst,yFirst,zFirst,CurLa,PhiLa,CotLa,PxtLa,PytLa,PztLa,
-     1       PModLa,SPca,SZeta,SCurV,SCotG,SPhi,xLast,yLast,zLast,xPca2,
-     1       yPca2,zPca2,QTrk2,CotPca2,PhiPca2,nPrHit,nFitHit,nMskInk,
-     1       Chi2Fit,Chi2Ms
-C
-C  Block: trkmc
-C
       integer iTRKMC, nTfMC, NConTr(100), TrkIne1(100), TrType1(100)
       integer TrHits1(100), TrkIne2(100), TrType2(100), TrHits2(100)
       integer TrkIn3(100), TrType3(100), TrHits3(100)
@@ -294,7 +285,12 @@ C
       real PxFMC2(100), PyFMC2(100), PzFMC2(100), xLMC2(100), yLMC2(100)
       real zLMC2(100), PxLMC2(100), PyLMC2(100), PzLMC2(100)
 
-      common /trkmc/nTfMC,NConTr,TrkIne1,TrType1,TrHits1,TrkIne2,
+      common /trks/nT,TrkInd,TrkVer,Cur,Phi,Cot,Pxt,Pyt,Pzt,PMod,Len,
+     1       xFirst,yFirst,zFirst,CurLa,PhiLa,CotLa,PxtLa,PytLa,PztLa,
+     1       PModLa,SPca,SZeta,SCurV,SCotG,SPhi,xLast,yLast,zLast,xPca2,
+     1       yPca2,zPca2,QTrk2,CotPca2,PhiPca2,nPrHit,nFitHit,nMskInk,
+     1       Chi2Fit,Chi2Ms,
+     1       nTfMC,NConTr,TrkIne1,TrType1,TrHits1,TrkIne2,
      1       TrType2,TrHits2,TrkIn3,TrType3,TrHits3,xFMC,yFMC,zFMC,
      1       PxFMC,PyFMC,PzFMC,xLMC,yLMC,zLMC,PxLMC,PyLMC,PzLMC,xFMC2,
      1       yFMC2,zFMC2,PxFMC2,PyFMC2,PzFMC2,xLMC2,yLMC2,zLMC2,PxLMC2,
@@ -354,7 +350,7 @@ C
      1       PzTLaOld,PModLaOld,SPcaOld,SZetaOld,SCurVOld,SCotGOld,
      1       SPhiOld,xLastOld,yLastOld,zLastOld,xPca2Old,yPca2Old,
      1       zPca2Old,QTrk2Old,CotPca2Old,PhiPca2Old,nPrhiTOld,
-     1       nFifthITOld,nMskInkOld,Chi2FitOld,Chi2MSOld
+     1       nFifthITOld,nMskInkOld,Chi2FitOld,Chi2MSOld,
      1       nTfMCOld,nContrOld,TrkIne1Old,TrType1Old,
      1       TrHits1Old,TrkIne2Old,TrType2Old,TrHits2Old,TrkIne3Old,
      1       TrType3Old,TrHits3Old,xFMCOld,yFMCOld,zFMCOld,PxFMCOld,

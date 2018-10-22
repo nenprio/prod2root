@@ -57,11 +57,9 @@ extern "C"{
     int pizzaFlag;
     int timeFlag;
     int clusFlag;
-    int cluMCFlag;
     int preclusFlag;
     int cwrkFlag;
     int celeFlag;
-    int celeMCFlag;
     int dtceFlag;
     int dtce0Flag;
     int dchitsFlag;
@@ -70,11 +68,9 @@ extern "C"{
     int trkvFlag;
     int vtxFlag;
     int trksFlag;
-    int trkMCFlag;
     int trkvOldFlag;
     int vtxOldFlag;
     int trksOldFlag;
-    int trkMCOldFlag;
     int dhitFlag;
     int dedxFlag;
     int dprsFlag;
@@ -559,12 +555,6 @@ extern "C" {
     int nMskInk[MaxNumTrk];
     float Chi2Fit[MaxNumTrk];
     float Chi2Ms[MaxNumTrk];
-  }trks_;
-}
-
-// Block:   trkmc
-extern "C" {
-  extern struct {
     int nTfMC;
     int NConTr[MaxNumTrk];
     int TrkIne1[MaxNumTrk];
@@ -600,7 +590,7 @@ extern "C" {
     float PxLMC2[MaxNumTrk];
     float PyLMC2[MaxNumTrk];
     float PzLMC2[MaxNumTrk];
-  }trkmc_;
+  }trks_;
 }
 
 // Block:   trkvold

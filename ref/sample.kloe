@@ -25,7 +25,6 @@ C
 C==============================================================================
 C
 $$IMPLICIT
-
 $$include 'sample.inc'
 $$include 'sample_talk.inc'
 C
@@ -50,7 +49,6 @@ C
       PRECLUSFLAG   = .FALSE.
       CWRKFLAG      = .FALSE.
       CELEFLAG      = .FALSE.
-      CELEMCFLAG    = .FALSE.
       DTCEFLAG      = .FALSE.
       DTCE0FLAG     = .FALSE.
       DCHITSFLAG    = .FALSE.
@@ -59,11 +57,9 @@ C
       TRKVFLAG      = .FALSE.
       VTXFLAG       = .FALSE.
       TRKSFLAG      = .FALSE.
-      TRKMCFLAG     = .FALSE.
       TRKVOLDFLAG   = .FALSE.
       VTXOLDFLAG    = .FALSE.
       TRKSOLDFLAG   = .FALSE.
-      TRKMCOLDFLAG  = .FALSE.
       DHITFLAG      = .FALSE.
       DEDXFLAG      = .FALSE.
       DPRSFLAG      = .FALSE.
@@ -91,6 +87,8 @@ $$IMPLICIT
 C
 $$INCLUDE 'CALIBINC:ANERROR.INC'
 $$include 'k$inc:jobsta.inc'
+$$include 'k$inc:runtyp.inc'
+$$include 'sample.inc'
 C
 C External functions
 C
@@ -98,7 +96,7 @@ C
 C
 C Local declarations
 C
-      INTEGER    status, istat, fillbposcommon
+C      INTEGER    status, istat, fillbposcommon
 C
 C==============================================================================
 C
@@ -107,6 +105,17 @@ C
       Status = ANPIST(ANSUCC)
       istat = fillbposcommon(nrun)
 C
+
+C
+C    Compute the MonteCarlo Flag 
+C
+      IF( EXPTYP.EQ.EXOFSI ) THEN
+         MONTECARLOFLAG = .TRUE.
+      ELSE
+         MONTECARLOFLAG = .FALSE.
+      ENDIF
+
+      write(*,*)"[SAMRI] MCFLAG: ", MONTECARLOFLAG 
       RETURN
       END
 C
@@ -206,6 +215,8 @@ C=============================================================================
          MONTECARLOFLAG = .FALSE.
       ENDIF
 
+      write(*,*)"[SAMEV] MCFLAG: ", MONTECARLOFLAG 
+      
       IF (MONTECARLOFLAG) THEN
          MCFLAG_TG=1
       ELSE
@@ -1026,76 +1037,72 @@ C-----------------------------------------------------------------------
             NHit(iCELE) = 0.
          END DO
    
-         istat = GETCELESTRU(Evt%Cele)
-         write(*,*) "CELE istat => ", istat
-
-         ISTAT = BLOCAT(IW,'CELE', 1,IND1,INDDAT )
-         write(*,*) "CELE BLOCAT => ", istat
-
+         ISTAT = BLOCAT(IW,'CELE', 1, IND1, INDDAT)
+         IF (ISTAT.EQ.YESUCC) THEN
+            istat = GETCELESTRU(Evt%Cele)
    
-         NCel = Evt%Cele%n 
-         IF ( NCel < 0 .OR. NCel > 2000 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'CELE - NCel '//ERROR_DOMAIN, NCel
-         END IF
-         IF ( NCel > 0 .AND. NCel <= 2000 ) THEN
-            DO iCELE=1, NCel
-              ICl(iCELE) = Evt%Cele%icl(iCELE)
-              Det(iCELE) = Evt%Cele%det(iCELE)
-              Wed(iCELE) = Evt%Cele%wed(iCELE)
-              Pla(iCELE) = Evt%Cele%pla(iCELE)
-              Col(iCELE) = Evt%Cele%col(iCELE)
-              Ea(iCELE) = Evt%Cele%Ea(iCELE)
-              Ta(iCELE) = Evt%Cele%ta(iCELE)
-              Eb(iCELE) = Evt%Cele%Eb(iCELE)
-              Tb(iCELE) = Evt%Cele%tb(iCELE)
-            END DO
-         ELSE
-            WRITE(*,*) ERROR_BLOCK//'CELE - NCel '//ERROR_INDEX, NCel
-            NCel = 0
-         END IF
-
-C         
-C        Fill MC data only if they exist, otherwise don't create empty structures         
-C
-         IF (MONTECARLOFLAG) THEN
-           NCel = 0.
-           DO iCELEMC=1, 2000
-              EMc(iCELEMC) = 0.
-              TMc(iCELEMC) = 0.
-              XMc(iCELEMC) = 0.
-              YMc(iCELEMC) = 0.
-              ZMc(iCELEMC) = 0.
-              PTyp(iCELEMC) = 0.
-              KNum(iCELEMC) = 0.
-              NHit(iCELEMC) = 0.
-           END DO
-     
-           NCelMc = Evt%Cele%nmc
-           IF ( NCelMc < 0 .OR. NCelMc > 2000 ) THEN
-              WRITE(*,*) ERROR_BLOCK//'CELEMC - NCelMc '//ERROR_DOMAIN, NCelMc
-           END IF
-     
-           IF (NCelMc > 0 .AND. NCelMc <= 2000) THEN
-              DO iCELEMC=1, NCelMc
-                 EMc(iCELEMC) = Evt%Cele%Etrue(iCELEMC)
-                 TMc(iCELEMC) = Evt%Cele%Ttrue(iCELEMC)
-                 XMc(iCELEMC) = Evt%Cele%xtrue(iCELEMC)
-                 YMc(iCELEMC) = Evt%Cele%ytrue(iCELEMC)
-                 ZMc(iCELEMC) = Evt%Cele%ztrue(iCELEMC)
-                 PTyp(iCELEMC) = Evt%Cele%ptyp(iCELEMC)
-                 KNum(iCELEMC) = Evt%Cele%knum(iCELEMC)
-                 NHit(iCELEMC) = Evt%Cele%numpar(iCELEMC)
+            NCel = Evt%Cele%n 
+            IF ( NCel < 0 .OR. NCel > 2000 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'CELE - NCel '//ERROR_DOMAIN, NCel
+            END IF
+            IF ( NCel > 0 .AND. NCel <= 2000 ) THEN
+               DO iCELE=1, NCel
+                 ICl(iCELE) = Evt%Cele%icl(iCELE)
+                 Det(iCELE) = Evt%Cele%det(iCELE)
+                 Wed(iCELE) = Evt%Cele%wed(iCELE)
+                 Pla(iCELE) = Evt%Cele%pla(iCELE)
+                 Col(iCELE) = Evt%Cele%col(iCELE)
+                 Ea(iCELE) = Evt%Cele%Ea(iCELE)
+                 Ta(iCELE) = Evt%Cele%ta(iCELE)
+                 Eb(iCELE) = Evt%Cele%Eb(iCELE)
+                 Tb(iCELE) = Evt%Cele%tb(iCELE)
+               END DO
+            ELSE
+               WRITE(*,*) ERROR_BLOCK//'CELE - NCel '//ERROR_INDEX, NCel
+               NCel = 0
+            END IF
+   
+   C         
+   C        Fill MC data only if they exist, otherwise don't create empty structures         
+   C
+            IF (MONTECARLOFLAG) THEN
+              NCel = 0.
+              DO iCELEMC=1, 2000
+                 EMc(iCELEMC) = 0.
+                 TMc(iCELEMC) = 0.
+                 XMc(iCELEMC) = 0.
+                 YMc(iCELEMC) = 0.
+                 ZMc(iCELEMC) = 0.
+                 PTyp(iCELEMC) = 0.
+                 KNum(iCELEMC) = 0.
+                 NHit(iCELEMC) = 0.
               END DO
-           ELSE
-              WRITE(*,*) ERROR_BLOCK//'CELEMC - NCelMc '//ERROR_INDEX, NCelMc
-              NCelMc = 0
-           END IF
+        
+              NCelMc = Evt%Cele%nmc
+              IF ( NCelMc < 0 .OR. NCelMc > 2000 ) THEN
+                 WRITE(*,*) ERROR_BLOCK//'CELE - NCelMc '//ERROR_DOMAIN, NCelMc
+              END IF
+        
+              IF (NCelMc > 0 .AND. NCelMc <= 2000) THEN
+                 DO iCELEMC=1, NCelMc
+                    EMc(iCELEMC) = Evt%Cele%Etrue(iCELEMC)
+                    TMc(iCELEMC) = Evt%Cele%Ttrue(iCELEMC)
+                    XMc(iCELEMC) = Evt%Cele%xtrue(iCELEMC)
+                    YMc(iCELEMC) = Evt%Cele%ytrue(iCELEMC)
+                    ZMc(iCELEMC) = Evt%Cele%ztrue(iCELEMC)
+                    PTyp(iCELEMC) = Evt%Cele%ptyp(iCELEMC)
+                    KNum(iCELEMC) = Evt%Cele%knum(iCELEMC)
+                    NHit(iCELEMC) = Evt%Cele%numpar(iCELEMC)
+                 END DO
+              ELSE
+                 WRITE(*,*) ERROR_BLOCK//'CELE - NCelMc '//ERROR_INDEX, NCelMc
+                 NCelMc = 0
+              END IF
+            END IF
+         ELSE
+            WRITE(*,*) ERROR_MISS_DATA//'CELE'
          END IF
       END IF
-C-----------------------------------------------------------------------
-C Fill Block CeleMC
-C-----------------------------------------------------------------------
-        
 C-----------------------------------------------------------------------
 C Fill Block dtce
 C-----------------------------------------------------------------------
@@ -1623,6 +1630,7 @@ C
               WRITE(*,*) ERROR_BLOCK//'TRKS - nTfMC '//ERROR_INDEX, nTfMC
               nTfMc = 0
            END IF
+         END IF
       END IF
 C-----------------------------------------------------------------------
 C Fill Block trkvold
@@ -1962,6 +1970,7 @@ C
               WRITE(*,*) ERROR_BLOCK//'TRKOLD - nTfMCOld '//ERROR_INDEX, nTfMCOld
               nTfMCOld = 0
            END IF
+         END IF
       END IF
 C-----------------------------------------------------------------------
 C Fill Block trkmcold
@@ -3314,6 +3323,8 @@ $$IMPLICIT
 C
 $$INCLUDE 'C$INC:ERLEVL.INC'
 $$INCLUDE 'CALIBINC:ANERROR.INC'
+$$include 'k$inc:jobsta.inc'
+$$include 'k$inc:runtyp.inc'
 $$include 'sample.inc'
 $$include 'sample_talk.cin'
 C
@@ -3329,6 +3340,16 @@ C    Initialization tree for ROOT
       write(*,*) '==========================='
       write(*,*) '[Info] START BOOKING'
       write(*,*) '==========================='
+C
+C    Compute the MonteCarlo Flag 
+C
+      IF( EXPTYP.EQ.EXOFSI ) THEN
+         MONTECARLOFLAG = .TRUE.
+      ELSE
+         MONTECARLOFLAG = .FALSE.
+      ENDIF
+
+      write(*,*)"[SAMHB] MCFLAG: ", MONTECARLOFLAG 
 
       call inittree()
 
@@ -3352,14 +3373,12 @@ $$include 'sample_talk.inc'
 C
 C External functions
 C
- C
       INTEGER   UIDFFI, UIUSGP, UIACME
       INTEGER   UIGTYE, UIGTRE, UIGTIN
-
 C
 C Local declarations
 C
-      INTEGER   Status, MENUF, MENUL, IGROUP
+      INTEGER   STATUS, MENUF, MENUL, IGROUP
       CHARACTER*3 flag
       CHARACTER Verb*40, Prompt*100
 C
@@ -3474,10 +3493,6 @@ C
       	write(Prompt,123)'TRKS'
 	    Status=UIGTYE(Prompt,TRKSFLAG)
     	goto 10
-      else if(verb.eq.'TRMC')then
-      	write(Prompt,123)'TRMC'
-	    Status=UIGTYE(Prompt,TRKMCFLAG)
-    	goto 10
       else if(verb.eq.'TRKVO')then
       	write(Prompt,123)'TRKVO'
 	    Status=UIGTYE(Prompt,TRKVOLDFLAG)
@@ -3489,10 +3504,6 @@ C
       else if(verb.eq.'TRKSO')then
       	write(Prompt,123)'TRKSO'
 	    Status=UIGTYE(Prompt,TRKSOLDFLAG)
-    	goto 10
-      else if(verb.eq.'TRKMCO')then
-      	write(Prompt,123)'TRKMCO'
-	    Status=UIGTYE(Prompt,TRKMCOLDFLAG)
     	goto 10
       else if(verb.eq.'DHIT')then
       	write(Prompt,123)'DHIT'
@@ -3610,7 +3621,6 @@ C
 C      write(*,*)"[TALKTO_END] GEANFIFLAG: ", GEANFIFLAG
 C      write(*,*)"[TALKTO_END] BPOSFLAG: ", BPOSFLAG
 C      write(*,*)" "
-
       RETURN
       END
 C     

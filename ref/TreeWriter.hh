@@ -34,11 +34,9 @@ class TreeWriter{
          void addBlockTrkV();
          void addBlockVtx();
          void addBlockTrkS();
-         void addBlockTrkMC();
          void addBlockTrkVOld();
          void addBlockVtxOld();
          void addBlockTrkSOld();
-         void addBlockTrkMCOld();
          void addBlockDHIT();
          void addBlockDEDx();
          void addBlockDPRS();
