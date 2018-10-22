@@ -395,6 +395,8 @@ C        Fill them only if the data are meaningful
              DhreHit = Evt%GHit%nhit
              DprsHit = Evt%GHit%nhpr
              DtfsHit = Evt%GHit%nhtf
+         ELSE
+            WRITE(*,*) ERROR_MISS_DATA//'GDHIT'
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -421,55 +423,71 @@ C-----------------------------------------------------------------------
             EclEvType2(iecls2) = 0
          END DO
 
-         istat = GETECLS(evt%ecls)
-         write(*,*) "ISTAT => ", istat
-         
-         nEcls = evt%ecls%n
-         IF ( nEcls < 0 .OR. nEcls > 8 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'ECLS - nEcls '//ERROR_DOMAIN, nEcls
-         END IF
-
-         IF (nEcls > 0 .AND. nEcls <= 8) THEN
-            EclTrgw = evt%ecls%trigger
-            EclFilfo = evt%ecls%filfo
-            DO iecls=1,necls
-               EclWord(iecls) = evt%ecls%TotWord(iecls)
-               EclStream(iecls) = evt%ecls%Stream(iecls)
-               EclTagNum(iecls) = evt%ecls%TagNum(iecls)
-               EclEvType(iecls) = evt%ecls%EvnTyp(iecls)
-            END DO
+C
+C        Here I'm checking only for FIRST ECLS BANK
+C        It is ok since the values for Ecls2 are set to 0 in the get function
+C        TODO: Is it possible to have Ecls2 and not Ecls?
+C
+         STATUS = BLOCAT(IW,'ECLS',1,IND,INDDAT)
+         IF (STATUS.EQ.YESUCC) THEN
+            istat = GETECLS(evt%ecls)
+            
+            nEcls = evt%ecls%n
+            IF ( nEcls < 0 .OR. nEcls > 8 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'ECLS - nEcls '//ERROR_DOMAIN, nEcls
+            END IF
+   
+            IF (nEcls > 0 .AND. nEcls <= 8) THEN
+               EclTrgw = evt%ecls%trigger
+               EclFilfo = evt%ecls%filfo
+               DO iecls=1,necls
+                  EclWord(iecls) = evt%ecls%TotWord(iecls)
+                  EclStream(iecls) = evt%ecls%Stream(iecls)
+                  EclTagNum(iecls) = evt%ecls%TagNum(iecls)
+                  EclEvType(iecls) = evt%ecls%EvnTyp(iecls)
+               END DO
+            ELSE
+               WRITE(*,*) ERROR_BLOCK//'ECLS - nEcls '//ERROR_INDEX, nEcls
+               nEcls = 0   !In this way we avoid negative index which could
+            END IF         !create corrupted arrays of negative size 
+                           !in the ROOT Tree
+            
+            nEcls2 = evt%ecls%n2
+            IF ( nEcls2 < 0 .OR. nEcls2 > 8 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'ECLS - nEcls2 '//ERROR_DOMAIN, nEcls2
+            END IF
+   
+            IF (nEcls2 > 0 .AND. nEcls <= 8) THEN
+               EclTrgw2 = evt%ecls%trigger2
+               EclFilfo2 = evt%ecls%filfo2
+               DO iecls2=1,necls2
+                  EclWord2(iecls2) = evt%ecls%TotWord2(iecls2)
+                  EclStream2(iecls2) = evt%ecls%Stream2(iecls2)
+                  EclTagNum2(iecls2) = evt%ecls%TagNum2(iecls2)
+                  EclEvType2(iecls2) = evt%ecls%EvnTyp2(iecls2)
+               END DO
+            ELSE
+               WRITE(*,*) ERROR_BLOCK//'ECLS - nEcls2 '//ERROR_INDEX, nEcls2
+               nEcls2 = 0
+            END IF
          ELSE
-            WRITE(*,*) ERROR_BLOCK//'ECLS - nEcls '//ERROR_INDEX, nEcls
-            nEcls = 0   !In this way we avoid negative index which could
-         END IF         !create corrupted arrays of negative size 
-                        !in the ROOT Tree
-         
-         nEcls2 = evt%ecls%n2
-         IF ( nEcls2 < 0 .OR. nEcls2 > 8 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'ECLS - nEcls2 '//ERROR_DOMAIN, nEcls2
-         END IF
-
-         IF (nEcls2 > 0 .AND. nEcls <= 8) THEN
-            EclTrgw2 = evt%ecls%trigger2
-            EclFilfo2 = evt%ecls%filfo2
-            DO iecls2=1,necls2
-               EclWord2(iecls2) = evt%ecls%TotWord2(iecls2)
-               EclStream2(iecls2) = evt%ecls%Stream2(iecls2)
-               EclTagNum2(iecls2) = evt%ecls%TagNum2(iecls2)
-               EclEvType2(iecls2) = evt%ecls%EvnTyp2(iecls2)
-            END DO
-         ELSE
-            WRITE(*,*) ERROR_BLOCK//'ECLS - nEcls2 '//ERROR_INDEX, nEcls2
-            nEcls2 = 0
+            WRITE(*,*) ERROR_MISS_DATA//'ECLS'
          END IF
       END IF
 C-----------------------------------------------------------------------
 C Fill Block Trig
 C-----------------------------------------------------------------------
       IF (TRIGFLAG) THEN
-         istat = BLOCAT(iw,'EVCL',1,ind1,inddat)
-         Trgw1 = IW( inddat+1 )
-         Trgw2 = IW( inddat+2 )
+         Trgw1 = 0
+         Trgw2 = 0
+
+         STATUS = BLOCAT(IW,'EVCL',1,IND1,INDDAT)
+         IF (STATUS.EQ.YESUCC) THEN
+            Trgw1 = IW( inddat+1 )
+            Trgw2 = IW( inddat+2 )
+         ELSE
+            WRITE(*,*) ERROR_MISS_DATA//'TRIG'
+         END IF
       END IF
 C-----------------------------------------------------------------------
 C Fill Block C2Trig
@@ -488,26 +506,32 @@ C-----------------------------------------------------------------------
             CosmAdd(iC2Trig) = 0.
          END DO
 
-         istat = GETSEC2CLUSTRU(evt%s2clu)
-         write(*,*) "C2TRIG istat => ", istat
-
-         NSec = Evt%S2CLU%nsect
-         NSec_NoClu = Evt%S2CLU%nsect_noclu
-         NSec2Clu = Evt%S2CLU%nsect_clu
-         NClu2s = Evt%S2CLU%Nclus
-
-         IF (NClu2s > 0 .AND. NClu2s <= 100) THEN
-            DO iC2Trig=1,NClu2s
-               NNorm(iC2Trig)   = Evt%S2CLU%Nnorm(iC2Trig)
-               NormAdd(iC2Trig) = Evt%S2CLU%NormAdd(iC2Trig)
-               NOver(iC2Trig)   = Evt%S2CLU%Nover(iC2Trig)
-               OverAdd(iC2Trig) = Evt%S2CLU%OverAdd(iC2Trig)
-               NCosm(iC2Trig)   = Evt%S2CLU%Ncosm(iC2Trig)
-               CosmAdd(iC2Trig) = Evt%S2CLU%CosmAdd(iC2Trig)
-            END DO
+         STATUS = BIGEST(IW,'CTRG', BANKNUM)
+         STATUS = BLOCAT(IW,'CTRG', BANKNUM, IND, INDDAT)
+         IF (STATUS.EQ.YESUCC) THEN
+            istat = GETSEC2CLUSTRU(evt%s2clu)
+            write(*,*) "C2TRIG istat => ", istat
+   
+            NSec = Evt%S2CLU%nsect
+            NSec_NoClu = Evt%S2CLU%nsect_noclu
+            NSec2Clu = Evt%S2CLU%nsect_clu
+            NClu2s = Evt%S2CLU%Nclus
+   
+            IF (NClu2s > 0 .AND. NClu2s <= 100) THEN
+               DO iC2Trig=1,NClu2s
+                  NNorm(iC2Trig)   = Evt%S2CLU%Nnorm(iC2Trig)
+                  NormAdd(iC2Trig) = Evt%S2CLU%NormAdd(iC2Trig)
+                  NOver(iC2Trig)   = Evt%S2CLU%Nover(iC2Trig)
+                  OverAdd(iC2Trig) = Evt%S2CLU%OverAdd(iC2Trig)
+                  NCosm(iC2Trig)   = Evt%S2CLU%Ncosm(iC2Trig)
+                  CosmAdd(iC2Trig) = Evt%S2CLU%CosmAdd(iC2Trig)
+               END DO
+            ELSE
+               WRITE(*,*) ERROR_BLOCK//'C2TRIG - NClu2s '//ERROR_INDEX, NClu2s
+               NClu2s = 0
+            END IF
          ELSE
-            WRITE(*,*) ERROR_BLOCK//'C2TRIG - NClu2s '//ERROR_INDEX, NClu2s
-            NClu2s = 0
+            WRITE(*,*) ERROR_MISS_DATA//'C2TRG'
          END IF
       END IF
 C-----------------------------------------------------------------------
