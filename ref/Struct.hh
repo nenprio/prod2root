@@ -691,12 +691,6 @@ extern "C" {
     int nMskInkOld[MaxNumTrk];
     float Chi2FitOld[MaxNumTrk];
     float Chi2MSOld[MaxNumTrk];
-  }trkold_;
-}
-
-// Block:   trkmcold
-extern "C" {
-  extern struct {
     int nTfMCOld;
     int nContrOld[MaxNumTrk];
     int TrkIne1Old[MaxNumTrk];
@@ -732,7 +726,7 @@ extern "C" {
     float PxLMC2Old[MaxNumTrk];
     float PyLMC2Old[MaxNumTrk];
     float PzLMC2Old[MaxNumTrk];
-  }trkmcold_;
+  }trkold_;
 }
 
 // Block:   dhit
