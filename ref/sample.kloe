@@ -2870,12 +2870,10 @@ C-----------------------------------------------------------------------
             WRITE(*,*) ERROR_BLOCK//'CSPS - nCS '//ERROR_INDEX, nCS
             nCS = 0
          END IF
-      END IF
-C-----------------------------------------------------------------------
-C Fill Block cspsmc
-C-----------------------------------------------------------------------
-      IF (CSPSMCFLAG) THEN
-        IF (MONTECARLOFLAG) THEN
+C         
+C        Fill MC data only if they exist, otherwise don't create empty structures         
+C
+         IF (MONTECARLOFLAG) THEN
           nCSMC = 0.
           DO iCSPSMC=1, 2000
             CSMCKine(iCSPSMC) = 0.
@@ -2888,12 +2886,9 @@ C-----------------------------------------------------------------------
             CSMCe(iCSPSMC) = 0.
           END DO
  
-          istat = GETCSPSSTRU(0,evt%CSPS,evt%CSPSMC)
-          write(*,*) "ISTAT => ", istat
- 
           nCSMC = Evt%CSPSMC%Ncel
           IF ( nCSMC < 0 .OR. nCSMC > 2000 ) THEN
-             WRITE(*,*) ERROR_BLOCK//'CSPSMC - nCSMC '//ERROR_DOMAIN, nCSMC
+             WRITE(*,*) ERROR_BLOCK//'CSPS - nCSMC '//ERROR_DOMAIN, nCSMC
           END IF
  
           IF (nCSMC > 0 .AND. nCSMC <= 2000) THEN
@@ -2908,11 +2903,9 @@ C-----------------------------------------------------------------------
                   CSMCe(iCSPSMC) = Evt%CSPSMC%E(iCSPSMC)
             END DO
           ELSE
-             WRITE(*,*) ERROR_BLOCK//'CSPSMC - nCSMC '//ERROR_INDEX, nCSMC
+             WRITE(*,*) ERROR_BLOCK//'CSPS - nCSMC '//ERROR_INDEX, nCSMC
              nCSMC = 0
           END IF
-        ELSE
-              WRITE(*,*) ERROR_MC_DATA//'CSPSMC'
         END IF
       END IF
 C-----------------------------------------------------------------------
@@ -3576,10 +3569,6 @@ C
       else if(verb.eq.'CSPS')then
       	write(Prompt,123)'CSPS'
 	    Status=UIGTYE(Prompt,CSPSFLAG)
-    	goto 10
-      else if(verb.eq.'CSPMC')then
-      	write(Prompt,123)'CSPMC'
-	    Status=UIGTYE(Prompt,CSPSMCFLAG)
     	goto 10
       else if(verb.eq.'CLUO')then
       	write(Prompt,123)'CLUO'

@@ -89,7 +89,6 @@ extern "C"{
     int ecloFlag;
     int eclo2Flag;
     int cspsFlag;
-    int cspsMCFlag;
     int cluoFlag;
     int cluoMCFlag;
     int qteleFlag;
@@ -1030,12 +1029,6 @@ extern "C" {
     float CSx[MaxNumHitClu];
     float CSy[MaxNumHitClu];
     float CSz[MaxNumHitClu];
-  }csps_;
-}
-
-// Block:   cspsmc
-extern "C" {
-  extern struct {
     int nCSMC;
     int CSMCKine[MaxNumHitClu];
     int CSMCPoi[MaxNumHitClu];
@@ -1045,7 +1038,7 @@ extern "C" {
     float CSMCz[MaxNumHitClu];
     float CSMCt[MaxNumHitClu];
     float CSMCe[MaxNumHitClu];
-  }cspsmc_;
+  }csps_;
 }
 
 // Block:   cluo

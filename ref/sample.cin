@@ -523,18 +523,14 @@ C
       integer CSAdd(2000), CSNhi(2000)
       real CSTa(2000), CSTb(2000), CSEa(2000), CSEb(2000), CST(2000)
       real CSE(2000), CSx(2000), CSy(2000), CSz(2000)
-
-      common /csps/nCS,CSClu,CSCel,CSFla,CSAdd,CSNhi,CSTa,CSTb,CSEa,
-     1       CSEb,CST,CSE,CSx,CSy,CSz
-C
-C  Block: cspsmc
-C
       integer iCSPSMC, nCSMC, CSMCKine(2000), CSMCPoi(2000)
       integer CSMCNHit(2000)
       real CSMCx(2000), CSMCy(2000), CSMCz(2000), CSMCt(2000)
       real CSMCe(2000)
 
-      common /cspsmc/nCSMC,CSMCKine,CSMCPoi,CSMCNHit,CSMCx,CSMCy,CSMCz,
+      common /csps/nCS,CSClu,CSCel,CSFla,CSAdd,CSNhi,CSTa,CSTb,CSEa,
+     1       CSEb,CST,CSE,CSx,CSy,CSz,
+     1       nCSMC,CSMCKine,CSMCPoi,CSMCNHit,CSMCx,CSMCy,CSMCz,
      1       CSMCt,CSMCe
 C
 C  Block: cluo

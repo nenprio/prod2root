@@ -108,8 +108,6 @@ TreeWriter::TreeWriter() {
     if(logicalToBool(sammenu_.eclo2Flag))       addBlockECLO2();
     // Block CSPS 
     if(logicalToBool(sammenu_.cspsFlag))        addBlockCSPS();
-    // Block CSPSMC 
-    if(logicalToBool(sammenu_.cspsMCFlag))      addBlockCSPSMC();
     // Block CLUO 
     if(logicalToBool(sammenu_.cluoFlag))        addBlockCluO();
     // Block CLUOMC 
@@ -199,7 +197,6 @@ void TreeWriter::printHeaderFlags() {
     header += Form("ECLO: %d ",      logicalToBool(sammenu_.ecloFlag));
     header += Form("ECLO2: %d ",     logicalToBool(sammenu_.eclo2Flag));
     header += Form("CSPS: %d",       logicalToBool(sammenu_.cspsFlag));
-    header += Form("CSPSMC: %d\n",   logicalToBool(sammenu_.cspsMCFlag));
     header += Form("CLUO: %d ",      logicalToBool(sammenu_.cluoFlag));
     header += Form("CLUOMC: %d ",    logicalToBool(sammenu_.cluoMCFlag));
     header += Form("QTELE: %d ",     logicalToBool(sammenu_.qteleFlag));
@@ -1192,22 +1189,17 @@ void TreeWriter::addBlockCSPS() {
     fNewTree->Branch("CSx",   &csps_.CSx,   "CSx[nCS]/F");
     fNewTree->Branch("CSy",   &csps_.CSy,   "CSy[nCS]/F");
     fNewTree->Branch("CSz",   &csps_.CSz,   "CSz[nCS]/F");
-}
-
-// Add to the tree all the branches realted to the block CSPSMC.
-//
-// input:	-
-// output: -
-void TreeWriter::addBlockCSPSMC() {
-    fNewTree->Branch("nCSMC",    &cspsmc_.nCSMC,    "nCSMC/I");
-    fNewTree->Branch("CSMCKine", &cspsmc_.CSMCKine, "CSMCKine[nCSMC]/I");
-    fNewTree->Branch("CSMCPoi",  &cspsmc_.CSMCPoi,  "CSMCPoi[nCSMC]/I");
-    fNewTree->Branch("CSMCNHit", &cspsmc_.CSMCNHit, "CSMCNHit[nCSMC]/I");
-    fNewTree->Branch("CSMCx",    &cspsmc_.CSMCx,    "CSMCx[nCSMC]/F");
-    fNewTree->Branch("CSMCy",    &cspsmc_.CSMCy,    "CSMCy[nCSMC]/F");
-    fNewTree->Branch("CSMCz",    &cspsmc_.CSMCz,    "CSMCz[nCSMC]/F");
-    fNewTree->Branch("CSMCt",    &cspsmc_.CSMCt,    "CSMCt[nCSMC]/F");
-    fNewTree->Branch("CSMCe",    &cspsmc_.CSMCe,    "CSMCe[nCSMC]/F");
+    if(logicalToBool(sharedflags_.MonteCarloFlag)) {
+        fNewTree->Branch("nCSMC",    &csps_.nCSMC,    "nCSMC/I");
+        fNewTree->Branch("CSMCKine", &csps_.CSMCKine, "CSMCKine[nCSMC]/I");
+        fNewTree->Branch("CSMCPoi",  &csps_.CSMCPoi,  "CSMCPoi[nCSMC]/I");
+        fNewTree->Branch("CSMCNHit", &csps_.CSMCNHit, "CSMCNHit[nCSMC]/I");
+        fNewTree->Branch("CSMCx",    &csps_.CSMCx,    "CSMCx[nCSMC]/F");
+        fNewTree->Branch("CSMCy",    &csps_.CSMCy,    "CSMCy[nCSMC]/F");
+        fNewTree->Branch("CSMCz",    &csps_.CSMCz,    "CSMCz[nCSMC]/F");
+        fNewTree->Branch("CSMCt",    &csps_.CSMCt,    "CSMCt[nCSMC]/F");
+        fNewTree->Branch("CSMCe",    &csps_.CSMCe,    "CSMCe[nCSMC]/F");
+    }
 }
 
 // Add to the tree all the branches realted to the block CLUO.
