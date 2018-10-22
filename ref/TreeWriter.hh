@@ -25,7 +25,6 @@ class TreeWriter{
          void addBlockPreClu();
          void addBlockCWRK();
          void addBlockCele();
-         void addBlockCeleMC();
          void addBlockDTCE();
          void addBlockDTCE0();
          void addBlockDCHits();
@@ -55,9 +54,7 @@ class TreeWriter{
          void addBlockECLO();
          void addBlockECLO2();
          void addBlockCSPS();
-         void addBlockCSPSMC();
          void addBlockCluO();
-         void addBlockCluOMC();
          void addBlockQTELE();
          void addBlockQCTH();
          void addBlockCCLE();

@@ -110,8 +110,6 @@ TreeWriter::TreeWriter() {
     if(logicalToBool(sammenu_.cspsFlag))        addBlockCSPS();
     // Block CLUO 
     if(logicalToBool(sammenu_.cluoFlag))        addBlockCluO();
-    // Block CLUOMC 
-    if(logicalToBool(sammenu_.cluoMCFlag))      addBlockCluOMC();
     // Block QTELE
     if(logicalToBool(sammenu_.qteleFlag))       addBlockQTELE();
     // Block QCTH 
@@ -198,7 +196,6 @@ void TreeWriter::printHeaderFlags() {
     header += Form("ECLO2: %d ",     logicalToBool(sammenu_.eclo2Flag));
     header += Form("CSPS: %d",       logicalToBool(sammenu_.cspsFlag));
     header += Form("CLUO: %d ",      logicalToBool(sammenu_.cluoFlag));
-    header += Form("CLUOMC: %d ",    logicalToBool(sammenu_.cluoMCFlag));
     header += Form("QTELE: %d ",     logicalToBool(sammenu_.qteleFlag));
     header += Form("QCTH: %d ",      logicalToBool(sammenu_.qcthFlag));
     header += Form("CCLE: %d ",      logicalToBool(sammenu_.ccleFlag));
@@ -1189,6 +1186,7 @@ void TreeWriter::addBlockCSPS() {
     fNewTree->Branch("CSx",   &csps_.CSx,   "CSx[nCS]/F");
     fNewTree->Branch("CSy",   &csps_.CSy,   "CSy[nCS]/F");
     fNewTree->Branch("CSz",   &csps_.CSz,   "CSz[nCS]/F");
+    
     if(logicalToBool(sharedflags_.MonteCarloFlag)) {
         fNewTree->Branch("nCSMC",    &csps_.nCSMC,    "nCSMC/I");
         fNewTree->Branch("CSMCKine", &csps_.CSMCKine, "CSMCKine[nCSMC]/I");
@@ -1215,22 +1213,18 @@ void TreeWriter::addBlockCluO() {
     fNewTree->Branch("CluY",   &cluo_.CluY,   "CluY[nCluO]/F");
     fNewTree->Branch("CluZ",   &cluo_.CluZ,   "CluZ[nCluO]/F");
     fNewTree->Branch("CluT",   &cluo_.CluT,   "CluT[nCluO]/F");
-}
-
-// Add to the tree all the branches realted to the block CLUOMC.
-//
-// input:	-
-// output: -
-void TreeWriter::addBlockCluOMC() {
-    fNewTree->Branch("nMCPar",   &cluomc_.nMCPar,   "nMCPar/I");
-    fNewTree->Branch("CluMCCel", &cluomc_.CluMCCel, "CluMCCel[nMCPar]/I");
-    fNewTree->Branch("CluMCiCl", &cluomc_.CluMCiCl, "CluMCiCl[nMCPar]/I");
-    fNewTree->Branch("CluMCKin", &cluomc_.CluMCKin, "CluMCKin[nMCPar]/I");
-    fNewTree->Branch("CluMCe",   &cluomc_.CluMCe,   "CluMCe[nMCPar]/F");
-    fNewTree->Branch("CluMCx",   &cluomc_.CluMCx,   "CluMCx[nMCPar]/F");
-    fNewTree->Branch("CluMCy",   &cluomc_.CluMCy,   "CluMCy[nMCPar]/F");
-    fNewTree->Branch("CluMCz",   &cluomc_.CluMCz,   "CluMCz[nMCPar]/F");
-    fNewTree->Branch("CluMCt",   &cluomc_.CluMCt,   "CluMCt[nMCPar]/F");
+    
+    if(logicalToBool(sharedflags_.MonteCarloFlag)) { 
+        fNewTree->Branch("nMCPar",   &cluo_.nMCPar,   "nMCPar/I");
+        fNewTree->Branch("CluMCCel", &cluo_.CluMCCel, "CluMCCel[nMCPar]/I");
+        fNewTree->Branch("CluMCiCl", &cluo_.CluMCiCl, "CluMCiCl[nMCPar]/I");
+        fNewTree->Branch("CluMCKin", &cluo_.CluMCKin, "CluMCKin[nMCPar]/I");
+        fNewTree->Branch("CluMCe",   &cluo_.CluMCe,   "CluMCe[nMCPar]/F");
+        fNewTree->Branch("CluMCx",   &cluo_.CluMCx,   "CluMCx[nMCPar]/F");
+        fNewTree->Branch("CluMCy",   &cluo_.CluMCy,   "CluMCy[nMCPar]/F");
+        fNewTree->Branch("CluMCz",   &cluo_.CluMCz,   "CluMCz[nMCPar]/F");
+        fNewTree->Branch("CluMCt",   &cluo_.CluMCt,   "CluMCt[nMCPar]/F");
+    }
 }
 
 // Add to the tree all the branches realted to the block QTELE.

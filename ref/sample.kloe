@@ -2945,50 +2945,43 @@ C-----------------------------------------------------------------------
             WRITE(*,*) ERROR_BLOCK//'CLUO - nCluO '//ERROR_INDEX, nCluO
             nCluO = 0
          END IF
-      END IF
-C-----------------------------------------------------------------------
-C Fill Block cluomc
-C-----------------------------------------------------------------------
-      IF (CLUOMCFLAG) THEN
-        IF (MONTECARLOFLAG) THEN
-          nMCPar = 0.
-          DO iCLUOMC=1, 100
-            CluMCCel(iCLUOMC) = 0.
-            CluMCiCl(iCLUOMC) = 0.
-            CluMCKin(iCLUOMC) = 0.
-            CluMCe(iCLUOMC) = 0.
-            CluMCx(iCLUOMC) = 0.
-            CluMCy(iCLUOMC) = 0.
-            CluMCz(iCLUOMC) = 0.
-            CluMCt(iCLUOMC) = 0.
-          END DO
- 
-          istat = GETCLUOMCSTRU(Evt%CLUOMC)
-          write(*,*) "ISTAT => ", istat
- 
-          nMCPar = Evt%CLUOMC%Npar
-          IF ( nMCPar < 0 .OR. nMCPar > 100 ) THEN
-             WRITE(*,*) ERROR_BLOCK//'CLUOMC - nMCPar '//ERROR_DOMAIN, nMCPar
-          END IF
- 
-          IF (nMCPar > 0 .AND. nMCPar <= 100) THEN
-             DO iCLUOMC=1, nMCPar
-                  CluMCCel(iCLUOMC) = Evt%CLUOMC%Ncel(iCLUOMC)
-                  CluMCiCl(iCLUOMC) = Evt%CLUOMC%Iclu(iCLUOMC)
-                  CluMCKin(iCLUOMC) = Evt%CLUOMC%Kine(iCLUOMC)
-                  CluMCe(iCLUOMC) = Evt%CLUOMC%E(iCLUOMC)
-                  CluMCx(iCLUOMC) = Evt%CLUOMC%X(iCLUOMC)
-                  CluMCy(iCLUOMC) = Evt%CLUOMC%Y(iCLUOMC)
-                  CluMCz(iCLUOMC) = Evt%CLUOMC%Z(iCLUOMC)
-                  CluMCt(iCLUOMC) = Evt%CLUOMC%T(iCLUOMC)
+C         
+C        Fill MC data only if they exist, otherwise don't create empty structures         
+C
+         IF (MONTECARLOFLAG) THEN
+            nMCPar = 0.
+            DO iCLUOMC=1, 100
+              CluMCCel(iCLUOMC) = 0.
+              CluMCiCl(iCLUOMC) = 0.
+              CluMCKin(iCLUOMC) = 0.
+              CluMCe(iCLUOMC) = 0.
+              CluMCx(iCLUOMC) = 0.
+              CluMCy(iCLUOMC) = 0.
+              CluMCz(iCLUOMC) = 0.
+              CluMCt(iCLUOMC) = 0.
             END DO
-          ELSE
-             WRITE(*,*) ERROR_BLOCK//'CLUOMC - nMCPar '//ERROR_INDEX, nMCPar
-             nMCPar = 0
-          END IF
-        ELSE
-              WRITE(*,*) ERROR_MC_DATA//'CLUOMC'
-        END IF
+   
+            nMCPar = Evt%CLUOMC%Npar
+            IF ( nMCPar < 0 .OR. nMCPar > 100 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'CLUO - nMCPar '//ERROR_DOMAIN, nMCPar
+            END IF
+   
+            IF (nMCPar > 0 .AND. nMCPar <= 100) THEN
+               DO iCLUOMC=1, nMCPar
+                    CluMCCel(iCLUOMC) = Evt%CLUOMC%Ncel(iCLUOMC)
+                    CluMCiCl(iCLUOMC) = Evt%CLUOMC%Iclu(iCLUOMC)
+                    CluMCKin(iCLUOMC) = Evt%CLUOMC%Kine(iCLUOMC)
+                    CluMCe(iCLUOMC) = Evt%CLUOMC%E(iCLUOMC)
+                    CluMCx(iCLUOMC) = Evt%CLUOMC%X(iCLUOMC)
+                    CluMCy(iCLUOMC) = Evt%CLUOMC%Y(iCLUOMC)
+                    CluMCz(iCLUOMC) = Evt%CLUOMC%Z(iCLUOMC)
+                    CluMCt(iCLUOMC) = Evt%CLUOMC%T(iCLUOMC)
+              END DO
+            ELSE
+               WRITE(*,*) ERROR_BLOCK//'CLUO - nMCPar '//ERROR_INDEX, nMCPar
+               nMCPar = 0
+            END IF
+         END IF
       END IF
 C-----------------------------------------------------------------------
 C Fill Block qtele
