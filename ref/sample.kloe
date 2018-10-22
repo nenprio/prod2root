@@ -1061,10 +1061,9 @@ C-----------------------------------------------------------------------
                WRITE(*,*) ERROR_BLOCK//'CELE - NCel '//ERROR_INDEX, NCel
                NCel = 0
             END IF
-   
-   C         
-   C        Fill MC data only if they exist, otherwise don't create empty structures         
-   C
+C         
+C        Fill MC data only if they exist, otherwise don't create empty structures         
+C
             IF (MONTECARLOFLAG) THEN
               NCel = 0.
               DO iCELEMC=1, 2000
@@ -3566,10 +3565,6 @@ C
       else if(verb.eq.'CLUO')then
       	write(Prompt,123)'CLUO'
 	    Status=UIGTYE(Prompt,CLUOFLAG)
-    	goto 10
-      else if(verb.eq.'CLOMC')then
-      	write(Prompt,123)'CLOMC'
-	    Status=UIGTYE(Prompt,CLUOMCFLAG)
     	goto 10
       else if(verb.eq.'QTELE')then
       	write(Prompt,123)'QTELE'

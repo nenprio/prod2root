@@ -544,7 +544,7 @@ C
       real CluMCt(100)
 
       common /cluo/nCluO,CluCel,CluFl,CluE,CluX,CluY,CluZ,CluT,
-     1       cluomc/nMCPar,CluMCCel,CluMCiCl,CluMCKin,CluMCe,CluMCx,
+     1       nMCPar,CluMCCel,CluMCiCl,CluMCKin,CluMCe,CluMCx,
      1       CluMCy,CluMCz,CluMCt
 C
 C  Block: qtele
