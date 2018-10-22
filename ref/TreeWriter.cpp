@@ -46,8 +46,6 @@ TreeWriter::TreeWriter() {
     if(logicalToBool(sammenu_.timeFlag))        addBlockTime();
     // Block Clu
     if(logicalToBool(sammenu_.clusFlag))        addBlockClu();
-    // Block CluMC
-    if(logicalToBool(sammenu_.cluMCFlag))      addBlockCluMC();
     // Block PreClu
     if(logicalToBool(sammenu_.preclusFlag))     addBlockPreClu();
     // Block CWRK
@@ -449,21 +447,6 @@ void TreeWriter::addBlockTime() {
     fNewTree->Branch("TBunch",     &evttime_.TBunch,     "TBunch/F");
 }
 
-// Add to the tree all the branches realted to the block CluMC.
-//
-// input:   -
-// output: -
-void TreeWriter::addBlockCluMC() {
-    fNewTree->Branch("nCluMC", &clumc_.NCluMc, "NCluMc/I");
-    fNewTree->Branch("nPar",   &clumc_.NPar,   "NPar[NCluMc]/I");
-    fNewTree->Branch("PNum1",  &clumc_.PNum1,  "PNum1[NCluMc]/I");
-    fNewTree->Branch("Pid1",   &clumc_.Pid1,   "Pid1[NCluMc]/I");
-    fNewTree->Branch("PNum2",  &clumc_.PNum2,  "PNum2[NCluMc]/I");
-    fNewTree->Branch("Pid2",   &clumc_.Pid2,   "Pid2[NCluMc]/I");
-    fNewTree->Branch("PNum3",  &clumc_.PNum3,  "PNum3[NCluMc]/I");
-    fNewTree->Branch("Pid3",   &clumc_.Pid3,   "Pid3[NCluMc]/I");
-}
-
 // Add to the tree all the branches realted to the block Clu.
 //
 // input:   -
@@ -483,6 +466,17 @@ void TreeWriter::addBlockClu() {
     fNewTree->Branch("ZrmsCl", &evtclu_.ZrmsCl, "ZrmsCl[NClu]/F");
     fNewTree->Branch("TrmsCl", &evtclu_.TrmsCl, "TrmsCl[NClu]/F");
     fNewTree->Branch("FlagCl", &evtclu_.FlagCl, "FlagCl[NClu]/I");
+    // Create MC leaves only if they exists
+    if (logicalToBool(sharedflags_.MonteCarloFlag)) {
+        fNewTree->Branch("nCluMC", &clumc_.NCluMc, "NCluMc/I");
+        fNewTree->Branch("nPar",   &clumc_.NPar,   "NPar[NCluMc]/I");
+        fNewTree->Branch("PNum1",  &clumc_.PNum1,  "PNum1[NCluMc]/I");
+        fNewTree->Branch("Pid1",   &clumc_.Pid1,   "Pid1[NCluMc]/I");
+        fNewTree->Branch("PNum2",  &clumc_.PNum2,  "PNum2[NCluMc]/I");
+        fNewTree->Branch("Pid2",   &clumc_.Pid2,   "Pid2[NCluMc]/I");
+        fNewTree->Branch("PNum3",  &clumc_.PNum3,  "PNum3[NCluMc]/I");
+        fNewTree->Branch("Pid3",   &clumc_.Pid3,   "Pid3[NCluMc]/I");
+    }
 }
 
 // Add to the tree all the branches realted to the block PreClu.

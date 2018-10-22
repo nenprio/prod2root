@@ -359,10 +359,12 @@ C        Check existance of banks accordint to the MC flag
              STATUS =  BLOCAT(IW, 'MDCN', 1, IND, INDDAT)
              IF (STATUS.NE.YESUCC) THEN
                  STATUS = MAKE_MDCN(IND, INDDAT)
+             END IF
          ELSE
              STATUS =  BLOCAT(IW, 'DCNH', 1, IND, INDDAT)
              IF (STATUS.NE.YESUCC) THEN
                  STATUS = MAKE_DCNH(IND, INDDAT)
+             END IF
          END IF
 
 C        If bank doesn't exists, let all fields set to 0
@@ -857,11 +859,9 @@ C-----------------------------------------------------------------------
             WRITE(*,*) ERROR_BLOCK//'EVTCLU - NClu '//ERROR_INDEX, NClu
             NClu = 0
          END IF
-      END IF
-C-----------------------------------------------------------------------
-C Fill Block CluMC
-C-----------------------------------------------------------------------
-      IF (CLUMCFLAG) THEN
+C         
+C        Fill MC data only if they exist, otherwise don't create empty structures         
+C
          IF (MONTECARLOFLAG) THEN
            NCluMc = 0.
            DO iEVTCLUMC=1, 100
@@ -874,9 +874,6 @@ C-----------------------------------------------------------------------
               Pid3(iEVTCLUMC) = 0.
            END DO
     
-           istat = GETCLUSTRU(Evt%Clu)
-           write(*,*) "ISTAT => ", istat
-  
            NCluMc = Evt%Clu%nmc
            IF ( NCluMc < 0 .OR. NCluMc > 100 ) THEN
               WRITE(*,*) ERROR_BLOCK//'CLU - NCluMc '//ERROR_DOMAIN, NCluMc
@@ -916,9 +913,7 @@ C-----------------------------------------------------------------------
               WRITE(*,*) ERROR_BLOCK//'EVTCLUMC - NCluMc '//ERROR_INDEX, NCluMc
               NCluMc = 0
            END IF
-        ELSE
-              WRITE(*,*) ERROR_MC_DATA//'CLUMC'
-        END IF
+         END IF
       END IF
 C-----------------------------------------------------------------------
 C Fill Block Pre-Clusters

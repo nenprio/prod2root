@@ -105,6 +105,13 @@ extern "C"{
   }sammenu_;
 }
 
+// Shared flags for control tree filling
+extern "C" {
+    extern struct {
+        int MonteCarloFlag;
+    } sharedflags_;
+}
+
 // Block:   evtinfo
 extern "C"{
   extern struct{

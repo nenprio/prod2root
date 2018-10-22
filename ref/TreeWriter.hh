@@ -22,7 +22,6 @@ class TreeWriter{
          void addBlockTele();
          void addBlockPizza();
          void addBlockClu();
-         void addBlockCluMC();
          void addBlockPreClu();
          void addBlockCWRK();
          void addBlockCele();
