@@ -34,15 +34,14 @@ ifeq ($(USER), eperez)
 endif           #eperez
 endif           #berducci
 
-OLDSHELL := SHELL
+# Change the default shell to csh
 SHELL := /usr/bin/tcsh
 
 # Initial target
 all: init_setup $(REF_DIR)/sample_bj.f $(REF_DIR)/sample.f $(REF_DIR)/prod2ntu.f $(REF_DIR)/newt0find.f final_setup
 
 init_setup:
-	set path = $(PATH_VAR)
-	shell ./init_setup.csh
+	source init_setup.csh
 
 print_info:
 	echo $(PATH_VAR)

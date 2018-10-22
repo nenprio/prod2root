@@ -1,5 +1,6 @@
 #!/usr/bin/tcsh
 
+set path = (  $path /etc /usr/sbin .)
 packman calib
 packman kid
 setup -e emc development
