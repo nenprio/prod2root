@@ -172,16 +172,12 @@ C
       real EneCl(100), TCl(100), XCl(100), YCl(100), ZCl(100)
       real XaCl(100), YaCl(100), ZaCl(100), XRmCl(100)
       real YRmsCl(100), ZrmsCl(100), TrmsCl(100)
-
-      common /evtclu/NClu,EneCl,TCl,XCl,YCl,ZCl,XaCl,YaCl,ZaCl,XRmCl,
-     1       YRmsCl,ZrmsCl,TrmsCl,FlagCl
-C
-C  Block: CluMC
-C
       integer iEVTCLUMC,NCluMc,NPar(100),PNum1(100), Pid1(100)
       integer PNum2(100), Pid2(100), PNum3(100), Pid3(100)
 
-      common /clumc/NCluMc,NPar,PNum1,Pid1,PNum2,Pid2,PNum3,Pid3
+      common /evtclu/NClu,EneCl,TCl,XCl,YCl,ZCl,XaCl,YaCl,ZaCl,XRmCl,
+     1       YRmsCl,ZrmsCl,TrmsCl,FlagCl,
+     1       NCluMc,NPar,PNum1,Pid1,PNum2,Pid2,PNum3,Pid3
 C
 C  Block: preclu
 C
@@ -205,16 +201,11 @@ C
       integer iCELE, NCel, ICl(2000), Det(2000)
       integer Wed(2000), Pla(2000), Col(2000)
       real Ea(2000), Ta(2000), Eb(2000), Tb(2000)
-
-      common /cele/NCel,ICl,Det,Wed,Pla,Col,Ea,Ta,Eb,Tb
-
-C
-C  Block: celeMC
-C
       integer iCELEMC, NCelMc, PTyp(2000), KNum(2000), NHit(2000)
       real EMc(2000), TMc(2000), XMc(2000), YMc(2000), ZMc(2000)
 
-      common /celemc/NCelMc,EMc,TMc,XMc,YMc,ZMc,PTyp,KNum,NHit
+      common /cele/NCel,ICl,Det,Wed,Pla,Col,Ea,Ta,Eb,Tb
+     1       NCelMc,EMc,TMc,XMc,YMc,ZMc,PTyp,KNum,NHit
 C
 C  Block: dtce
 C

@@ -340,12 +340,6 @@ extern "C" {
     float ZrmsCl[MaxNumClu];
     float TrmsCl[MaxNumClu];
     int FlagCl[MaxNumClu];
-  }evtclu_;
-}
-
-// Block:   CluMC
-extern "C" {
-  extern struct {
     int NCluMc;
     int NPar[MaxNumClu];
     int PNum1[MaxNumClu];
@@ -354,7 +348,7 @@ extern "C" {
     int Pid2[MaxNumClu];
     int PNum3[MaxNumClu];
     int Pid3[MaxNumClu];
-  }clumc_;
+  }evtclu_;
 }
 
 // Block:   preclu
@@ -403,12 +397,6 @@ extern "C" {
     float Ta[NeleCluMax];
     float Eb[NeleCluMax];
     float Tb[NeleCluMax];
-  }cele_;
-}
-
-// Block:   celeMC
-extern "C" {
-  extern struct {
     int NCelMc;
     float EMc[NeleCluMax];
     float TMc[NeleCluMax];
@@ -418,7 +406,7 @@ extern "C" {
     int PTyp[NeleCluMax];
     int KNum[NeleCluMax];
     int NHit[NeleCluMax];
-  }celemc_;
+  }cele_;
 }
 
 // Block:   dtce

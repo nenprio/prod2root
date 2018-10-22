@@ -47,7 +47,6 @@ C
       PIZZAFLAG     = .FALSE.
       TIMEFLAG      = .FALSE.
       CLUSFLAG      = .FALSE.
-      CLUMCFLAG     = .FALSE.
       PRECLUSFLAG   = .FALSE.
       CWRKFLAG      = .FALSE.
       CELEFLAG      = .FALSE.
@@ -69,8 +68,10 @@ C
       DEDXFLAG      = .FALSE.
       DPRSFLAG      = .FALSE.
       GEANFIFLAG    = .FALSE.
+      MONTECARLOFLAG= .FALSE.
       
 C      write(*,*)"[SAMIN] INFOFLAG: ", INFOFLAG
+      write(*,*)"[SAMIN] MCFLAG: ", MONTECARLOFLAG 
 C      write(*,*)"[SAMIN] BPOSFLAG: ", BPOSFLAG
 C      write(*,*)" "
 
@@ -199,7 +200,7 @@ C=============================================================================
       ERROR_INDEX = "Index not valid: "
       ERROR_DOMAIN = "Out of domain: "
       
-      IF( EXPTYP.EQ.EXOFSI ) THEN ! Simulation
+      IF( EXPTYP.EQ.EXOFSI ) THEN
          MONTECARLOFLAG = .TRUE.
       ELSE
          MONTECARLOFLAG = .FALSE.
@@ -856,13 +857,14 @@ C-----------------------------------------------------------------------
                FlagCl(iEVTCLU) = Evt%Clu%Flag(iEVTCLU)
             END DO
          ELSE
-            WRITE(*,*) ERROR_BLOCK//'EVTCLU - NClu '//ERROR_INDEX, NClu
+            WRITE(*,*) ERROR_BLOCK//'CLUS - NClu '//ERROR_INDEX, NClu
             NClu = 0
          END IF
 C         
 C        Fill MC data only if they exist, otherwise don't create empty structures         
 C
          IF (MONTECARLOFLAG) THEN
+           write(*,*) "WRITING CLUMC EVENT", MONTECARLOFLAG
            NCluMc = 0.
            DO iEVTCLUMC=1, 100
               NPar(iEVTCLUMC) = 0.
@@ -910,7 +912,7 @@ C
                  END IF
               END DO
            ELSE
-              WRITE(*,*) ERROR_BLOCK//'EVTCLUMC - NCluMc '//ERROR_INDEX, NCluMc
+              WRITE(*,*) ERROR_BLOCK//'CLUS - NCluMc '//ERROR_INDEX, NCluMc
               NCluMc = 0
            END IF
          END IF
@@ -1051,12 +1053,11 @@ C-----------------------------------------------------------------------
             WRITE(*,*) ERROR_BLOCK//'CELE - NCel '//ERROR_INDEX, NCel
             NCel = 0
          END IF
-      END IF
-C-----------------------------------------------------------------------
-C Fill Block CeleMC
-C-----------------------------------------------------------------------
-      IF (CELEMCFLAG) THEN
-        IF (MONTECARLOFLAG) THEN
+
+C         
+C        Fill MC data only if they exist, otherwise don't create empty structures         
+C
+         IF (MONTECARLOFLAG) THEN
            NCel = 0.
            DO iCELEMC=1, 2000
               EMc(iCELEMC) = 0.
@@ -1068,9 +1069,6 @@ C-----------------------------------------------------------------------
               KNum(iCELEMC) = 0.
               NHit(iCELEMC) = 0.
            END DO
-     
-           istat = GETCELESTRU(Evt%Cele)
-           write(*,*) "ISTAT => ", istat
      
            NCelMc = Evt%Cele%nmc
            IF ( NCelMc < 0 .OR. NCelMc > 2000 ) THEN
@@ -1092,10 +1090,12 @@ C-----------------------------------------------------------------------
               WRITE(*,*) ERROR_BLOCK//'CELEMC - NCelMc '//ERROR_INDEX, NCelMc
               NCelMc = 0
            END IF
-        ELSE
-           WRITE(*,*) ERROR_MC_DATA//'CELEMC'
-        END IF
+         END IF
       END IF
+C-----------------------------------------------------------------------
+C Fill Block CeleMC
+C-----------------------------------------------------------------------
+        
 C-----------------------------------------------------------------------
 C Fill Block dtce
 C-----------------------------------------------------------------------
@@ -3441,10 +3441,6 @@ C
       	write(Prompt,123)'CLUS'
 	    Status=UIGTYE(Prompt,CLUSFLAG)
     	goto 10
-      else if(verb.eq.'CLUMC')then
-      	write(Prompt,123)'CLUMC'
-	    Status=UIGTYE(Prompt,CLUMCFLAG)
-    	goto 10
       else if(verb.eq.'PRECLUS')then
       	write(Prompt,123)'PRECLUS'
 	    Status=UIGTYE(Prompt,PRECLUSFLAG)
@@ -3456,10 +3452,6 @@ C
       else if(verb.eq.'CELE')then
       	write(Prompt,123)'CELE'
 	    Status=UIGTYE(Prompt,CELEFLAG)
-    	goto 10
-      else if(verb.eq.'CELMC')then
-      	write(Prompt,123)'CELMC'
-	    Status=UIGTYE(Prompt,CELEMCFLAG)
     	goto 10
       else if(verb.eq.'DTCE')then
       	write(Prompt,123)'DTCE'
