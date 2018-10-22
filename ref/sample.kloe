@@ -468,7 +468,7 @@ C
                END DO
             ELSE
                WRITE(*,*) ERROR_BLOCK//'ECLS - nEcls2 '//ERROR_INDEX, nEcls2
-               nEcls2 = 0
+               nEcls2 = 0.
             END IF
          ELSE
             WRITE(*,*) ERROR_MISS_DATA//'ECLS'
@@ -478,8 +478,8 @@ C-----------------------------------------------------------------------
 C Fill Block Trig
 C-----------------------------------------------------------------------
       IF (TRIGFLAG) THEN
-         Trgw1 = 0
-         Trgw2 = 0
+         Trgw1 = 0.
+         Trgw2 = 0.
 
          STATUS = BLOCAT(IW,'EVCL',1,IND1,INDDAT)
          IF (STATUS.EQ.YESUCC) THEN
@@ -528,7 +528,7 @@ C-----------------------------------------------------------------------
                END DO
             ELSE
                WRITE(*,*) ERROR_BLOCK//'C2TRIG - NClu2s '//ERROR_INDEX, NClu2s
-               NClu2s = 0
+               NClu2s = 0.
             END IF
          ELSE
             WRITE(*,*) ERROR_MISS_DATA//'C2TRG'
@@ -549,7 +549,6 @@ C-----------------------------------------------------------------------
          END DO
 
          istat = GETTELLINA(Evt%Tellina) 
-         write(*,*) "ISTAT => ", istat
          
          NTel = Evt%Tellina%n
          IF ( NTel < 0 .OR. NTel > 300 ) THEN
@@ -570,7 +569,7 @@ C-----------------------------------------------------------------------
            END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'TELLINA - nTel '//ERROR_INDEX, nTel
-            nTel = 0
+            nTel = 0.
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -587,7 +586,6 @@ C-----------------------------------------------------------------------
          END DO
 
          istat = GETPIZZETTA(Evt%Pizzetta)
-         write(*,*) "ISTAT => ", istat
 
          NPiz = Evt%Pizzetta%n
          IF ( NPiz < 0 .OR. NPiz > 300 ) THEN
@@ -603,7 +601,7 @@ C-----------------------------------------------------------------------
             END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'PIZZETTA - NPiz '//ERROR_INDEX, NPiz
-            NPiz = 0
+            NPiz = 0.
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -644,7 +642,6 @@ C-----------------------------------------------------------------------
          END DO
 
          istat = GETTRIGGER(evt%trg)
-         write(*,*) "ISTAT => ", istat
 
          tSpent = evt%trg%tspent
          tDead = evt%trg%tdead
@@ -766,7 +763,6 @@ C-----------------------------------------------------------------------
          END DO
    
          istat = GETTELESTRU(Evt%TELE)
-         write(*,*) "ISTAT => ", istat
    
          NTele = Evt%TELE%ntele
          IF ( NTele < 0 .OR. NTele > 300 ) THEN
@@ -797,7 +793,7 @@ C-----------------------------------------------------------------------
            END DO
          ELSE
            WRITE(*,*) ERROR_BLOCK//'EVTTELE - NTele '//ERROR_INDEX, NTele
-           NTele = 0
+           NTele = 0.
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -817,7 +813,6 @@ C-----------------------------------------------------------------------
    
          istat = PIZZA_RESET(Evt%PIZZA)
          istat = GETPIZZASTRU(Evt%PIZZA)
-         write(*,*) "ISTAT => ", istat
    
          NPack = Evt%PIZZA%npizza
          IF ( NPack < 0 .OR. NPack > 300 ) THEN
@@ -835,17 +830,22 @@ C-----------------------------------------------------------------------
            END DO
          ELSE
            WRITE(*,*) ERROR_BLOCK//'PIZZA - NPack '//ERROR_INDEX, NPack
-           NPack = 0
+           NPack = 0.
          END IF
       END IF
 C-----------------------------------------------------------------------
 C Fill Block Time
 C-----------------------------------------------------------------------
       IF (TIMEFLAG) THEN
+         T0Dc0 = 0.
+         T0Hit0 = 0.
+         T0Clu0 = 0.
+         T0Step1 = 0.
+         DelayCable = 0.
+         TBunch = 0.
+
          istat = T0GLRD(T0Dc0,T0Hit0,T0Clu0,T0Step1,DelayCable,TBunch)
-         write(*,*) "ISTAT => ", istat
          istat = T0MCRD(TPhased_mc)
-         write(*,*) "ISTAT => ", istat
       END IF
 C-----------------------------------------------------------------------
 C Fill Block Clus
@@ -893,7 +893,7 @@ C-----------------------------------------------------------------------
             END DO
          ELSE
             WRITE(*,*) ERROR_BLOCK//'CLUS - NClu '//ERROR_INDEX, NClu
-            NClu = 0
+            NClu = 0.
          END IF
 C         
 C        Fill MC data only if they exist, otherwise don't create empty structures         
@@ -948,7 +948,7 @@ C
               END DO
            ELSE
               WRITE(*,*) ERROR_BLOCK//'CLUS - NCluMc '//ERROR_INDEX, NCluMc
-              NCluMc = 0
+              NCluMc = 0.
            END IF
          END IF
       END IF
