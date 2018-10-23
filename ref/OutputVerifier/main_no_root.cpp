@@ -6,8 +6,6 @@
 #include "src/MyFunctions.hh"
 
 int main(int argc, char *argv[]) {
-    bool printInfo = true;
-
     // Check input args 
     if (argc!=3){
         printf("[Error] Number of arguments not valid.\n\n");
@@ -28,12 +26,13 @@ int verifyFiles(const char *rF, const char *hbF) {
     const char *ErrorLeafDiff     = "\t[Error]\tDifference on leaf";
     const char *ErrorLeafNotFound = "\t[Error]\tNot found correspondance for leaf";
     int errorCounter = 0;
+    bool printInfo = true;
 
     // Define control strings
     std::string rootFile = rF;
     std::string hbFile = hbF;
-    std::string error;
-    std::string printout;
+    char *error;
+    char *printout;
 
     // Define file streams
     std::ifstream streamRoot;
@@ -42,8 +41,8 @@ int verifyFiles(const char *rF, const char *hbF) {
     std::string hbLine;
 
     // Open file streams
-    streamRoot.open(streamRoot.c_str());
-    streamHB.open(streamHB.c_str());
+    streamRoot.open(rootFile.c_str());
+    streamHB.open(hbFile.c_str());
 
     // Check open file
      if(!streamRoot.is_open()){
@@ -54,7 +53,7 @@ int verifyFiles(const char *rF, const char *hbF) {
          return(EXIT_FAILURE);
      }
      if(!streamHB.is_open()){
-         sprintf(error, "%s %s", ErrorFileOpen, hbEventFile.c_str());
+         sprintf(error, "%s %s", ErrorFileOpen, hbFile.c_str());
          if (printInfo) {
              printf("%s\n", error);
          }
@@ -73,12 +72,12 @@ int verifyFiles(const char *rF, const char *hbF) {
      // Loop on lines
      while( getline(streamRoot, rootLine) ) {
         fieldFound = false;
-        nameRoot = cut(rootLine, ":", 1);
-        valueRoot = cut(rootLine, ":", 2);
+        nameRoot = cut(rootLine.c_str(), ":", 1);
+        valueRoot = cut(rootLine.c_str(), ":", 2);
         
-        while( getline(streamRoot, rootLine) ) {
-            nameHB = cut(hbLine, ":", 1);
-            valueHB = cut(hbLine, ":", 2);
+        while( getline(streamHB, hbLine) ) {
+            nameHB = cut(hbLine.c_str(), ":", 1);
+            valueHB = cut(hbLine.c_str(), ":", 2);
 
             if (myStricmp(nameRoot.c_str(), nameHB.c_str())==0) {
 
@@ -89,7 +88,7 @@ int verifyFiles(const char *rF, const char *hbF) {
         if (fieldFound==false) {
             if (printInfo) {
                 sprintf(error, "%s %s", ErrorLeafNotFound, nameRoot.c_str());
-                printf(error.c_str());
+                printf("%s\n", error);
             }
             errorCounter++;
         }
