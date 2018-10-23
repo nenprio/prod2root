@@ -16,7 +16,7 @@ foreach d (${TESTING_DIR}/*_block)
 
     echo -n "Converting ${INPUT_FILE} to ${OUTPUT_FILE}..."
 
-    ${CMD} ${INPUT_FILE} ${OUT_SUBDIR}
+    ${CMD} ${INPUT_FILE} ${OUTPUT_FILE} >/dev/null
 
     echo "DONE"
 end

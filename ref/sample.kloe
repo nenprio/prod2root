@@ -67,7 +67,6 @@ C
       MONTECARLOFLAG= .FALSE.
       
 C      write(*,*)"[SAMIN] INFOFLAG: ", INFOFLAG
-      write(*,*)"[SAMIN] MCFLAG: ", MONTECARLOFLAG 
 C      write(*,*)"[SAMIN] BPOSFLAG: ", BPOSFLAG
 C      write(*,*)" "
 
@@ -115,7 +114,6 @@ C
          MONTECARLOFLAG = .FALSE.
       ENDIF
 
-      write(*,*)"[SAMRI] MCFLAG: ", MONTECARLOFLAG 
       RETURN
       END
 C
@@ -215,8 +213,6 @@ C=============================================================================
          MONTECARLOFLAG = .FALSE.
       ENDIF
 
-      write(*,*)"[SAMEV] MCFLAG: ", MONTECARLOFLAG 
-      
       IF (MONTECARLOFLAG) THEN
          MCFLAG_TG=1
       ELSE
@@ -547,7 +543,9 @@ C-----------------------------------------------------------------------
             Ta_Tel(iTELLINA) = 0.
             Tb_Tel(iTELLINA) = 0.
          END DO
-
+C
+C        TODO: BLOCAT some data?
+C
          istat = GETTELLINA(Evt%Tellina) 
          
          NTel = Evt%Tellina%n
@@ -584,7 +582,9 @@ C-----------------------------------------------------------------------
             E_Piz(iPIZZETTA)   = 0.
             Z_Piz(iPIZZETTA)   = 0.
          END DO
-
+C
+C        TODO: BLOCAT some data?
+C
          istat = GETPIZZETTA(Evt%Pizzetta)
 
          NPiz = Evt%Pizzetta%n
@@ -640,7 +640,9 @@ C-----------------------------------------------------------------------
          DO iTORTA=1, 10
            Moka_T2Dsl(iTORTA) = 0.
          END DO
-
+C
+C        TODO: BLOCAT some data?
+C
          istat = GETTRIGGER(evt%trg)
 
          tSpent = evt%trg%tspent
@@ -761,7 +763,9 @@ C-----------------------------------------------------------------------
             Ta_Trg(iEVTTELE) = 0.
             Tb_Trg(iEVTTELE) = 0.
          END DO
-   
+C
+C        TODO: BLOCAT some data?
+C
          istat = GETTELESTRU(Evt%TELE)
    
          NTele = Evt%TELE%ntele
@@ -810,7 +814,9 @@ C-----------------------------------------------------------------------
            E_Rec(iPIZZA) = 0.
            Z_mod(iPIZZA) = 0.
          END DO
-   
+C
+C        TODO: BLOCAT some data?
+C
          istat = PIZZA_RESET(Evt%PIZZA)
          istat = GETPIZZASTRU(Evt%PIZZA)
    
@@ -843,7 +849,9 @@ C-----------------------------------------------------------------------
          T0Step1 = 0.
          DelayCable = 0.
          TBunch = 0.
-
+C
+C        TODO: BLOCAT some data?
+C
          istat = T0GLRD(T0Dc0,T0Hit0,T0Clu0,T0Step1,DelayCable,TBunch)
          istat = T0MCRD(TPhased_mc)
       END IF
@@ -1137,33 +1145,38 @@ C-----------------------------------------------------------------------
             iWireDTCE(iDTCE) = 0.
             tDTCE(iDTCE) = 0.
          END DO
-   
-         CALL GETDTCESTRU(Evt%DTCE)
-   
-         nDTCE = Evt%DTCE%nDTCE
-         IF ( nDTCE < 0 .OR. nDTCE > 1500 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'DTCE - nDTCE '//ERROR_DOMAIN, nDTCE
-         END IF
-         nSmall = Evt%DTCE%nSmall
-         IF ( nSmall < 0 .OR. nSmall > 1500 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'DTCE - nSmall '//ERROR_DOMAIN, nSmall
-         END IF
-   
-         IF (nDTCE > 0 .AND. nDTCE <= 1500) THEN
-            DO iDTCE=1, nDTCE
-               iLayerDTCE(iDTCE) = Evt%DTCE%iLayerDTCE(iDTCE)
-               IF ( iLayerDTCE(iDTCE) < 1 .OR. iLayerDTCE(iDTCE) > 58 ) THEN
-                  WRITE(*,*) ERROR_BLOCK//'DTCE - iLayerDTCE '//ERROR_DOMAIN, iLayerDTCE(iDTCE)
-               END IF
-               iWireDTCE(iDTCE) = Evt%DTCE%iWireDTCE(iDTCE)
-               IF ( iWireDTCE(iDTCE) < 1 .OR. iWireDTCE(iDTCE) > 378 ) THEN
-                 WRITE(*,*) ERROR_BLOCK//'DTCE - iWireDTCE '//ERROR_DOMAIN, iWireDTCE(iDTCE)
-               END IF
-               tDTCE(iDTCE) = Evt%DTCE%tDTCE(iDTCE)
-            END DO
+
+         status = BLOCAT(IW, 'DTCE', 1, IND, INDDAT)
+         IF (STATUS.EQ.YESUCC) THEN
+            CALL GETDTCESTRU(Evt%DTCE)
+      
+            nDTCE = Evt%DTCE%nDTCE
+            IF ( nDTCE < 0 .OR. nDTCE > 1500 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'DTCE - nDTCE '//ERROR_DOMAIN, nDTCE
+            END IF
+            nSmall = Evt%DTCE%nSmall
+            IF ( nSmall < 0 .OR. nSmall > 1500 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'DTCE - nSmall '//ERROR_DOMAIN, nSmall
+            END IF
+      
+            IF (nDTCE > 0 .AND. nDTCE <= 1500) THEN
+               DO iDTCE=1, nDTCE
+                  iLayerDTCE(iDTCE) = Evt%DTCE%iLayerDTCE(iDTCE)
+                  IF ( iLayerDTCE(iDTCE) < 1 .OR. iLayerDTCE(iDTCE) > 58 ) THEN
+                     WRITE(*,*) ERROR_BLOCK//'DTCE - iLayerDTCE '//ERROR_DOMAIN, iLayerDTCE(iDTCE)
+                  END IF
+                  iWireDTCE(iDTCE) = Evt%DTCE%iWireDTCE(iDTCE)
+                  IF ( iWireDTCE(iDTCE) < 1 .OR. iWireDTCE(iDTCE) > 378 ) THEN
+                    WRITE(*,*) ERROR_BLOCK//'DTCE - iWireDTCE '//ERROR_DOMAIN, iWireDTCE(iDTCE)
+                  END IF
+                  tDTCE(iDTCE) = Evt%DTCE%tDTCE(iDTCE)
+               END DO
+            ELSE
+               WRITE(*,*) ERROR_BLOCK//'DTCE - nDTCE '//ERROR_INDEX, nDTCE
+               nDTCE = 0
+            END IF
          ELSE
-            WRITE(*,*) ERROR_BLOCK//'DTCE - nDTCE '//ERROR_INDEX, nDTCE
-            nDTCE = 0
+            WRITE(*,*) ERROR_MISS_DATA//'DTCE'
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -1176,9 +1189,10 @@ C-----------------------------------------------------------------------
             iWireDTCE0(iDTCE0) = 0.
             tDTCE0(iDTCE0) = 0.
          END DO
-   
+C  
 C        DTCEStru is initialized in raw2dtce.cin
-   
+C        TODO: BLOCAT some data?
+C   
          nDTCE0 = DTCEStru%NEle
          IF ( nDTCE0 < 0 .OR. nDTCE0 > 1500 ) THEN
             WRITE(*,*) ERROR_BLOCK//'DTCE0 - nDTCE0 '//ERROR_DOMAIN, nDTCE0
@@ -3357,8 +3371,6 @@ C
       ELSE
          MONTECARLOFLAG = .FALSE.
       ENDIF
-
-      write(*,*)"[SAMHB] MCFLAG: ", MONTECARLOFLAG 
 
       call inittree()
 
