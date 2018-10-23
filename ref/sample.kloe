@@ -849,11 +849,20 @@ C-----------------------------------------------------------------------
          T0Step1 = 0.
          DelayCable = 0.
          TBunch = 0.
-C
-C        TODO: BLOCAT some data?
-C
-         istat = T0GLRD(T0Dc0,T0Hit0,T0Clu0,T0Step1,DelayCable,TBunch)
-         istat = T0MCRD(TPhased_mc)
+         
+         STATUS = BLOCAT(IW, "T0GL", 1, IND, INDDAT)
+         IF (STATUS.EQ.YESUCC) THEN
+            istat = T0GLRD(T0Dc0,T0Hit0,T0Clu0,T0Step1,DelayCable,TBunch)
+         ELSE
+            WRITE(*,*) ERROR_MISS_DATA//'T0GL'
+         END IF
+         
+         STATUS = BLOCAT(IW, "T0MC", 1, IND, INDDAT)
+         IF (STATUS.EQ.YESUCC) THEN
+            istat = T0MCRD(TPhased_mc)
+         ELSE
+            WRITE(*,*) ERROR_MISS_DATA//'T0MC'
+         END IF
       END IF
 C-----------------------------------------------------------------------
 C Fill Block Clus
@@ -875,9 +884,10 @@ C-----------------------------------------------------------------------
             TrmsCl(iEVTCLU) = 0.
             FlagCl(iEVTCLU) = 0.
          END DO
-   
+C
+C        TODO: BLOCAT some data?
+C
          istat = GETCLUSTRU(Evt%Clu)
-         write(*,*) "ISTAT => ", istat
    
          NClu = Evt%Clu%n 
          IF ( NClu < 0 .OR. NClu > 100 ) THEN
@@ -976,9 +986,10 @@ C-----------------------------------------------------------------------
            TARPre(iPRECLU) = 0.
            TBRPre(iPRECLU) = 0.
          END DO
-   
+C   
+C        TODO: BLOCAT some data?
+C
          istat = GETPRECLUSTRU(Evt%PreClu)
-         write(*,*) "ISTAT => ", istat
    
          NPClu = Evt%PreClu%n 
          IF ( NPClu < 0 .OR. NPClu > 100 ) THEN
@@ -1018,30 +1029,34 @@ C-----------------------------------------------------------------------
             Y(iCWRK) = 0.
             Z(iCWRK) = 0.
          END DO
-   
-         istat = GETCWRKSTRU(Evt%Cwrk)
-         write(*,*) "ISTAT => ", istat
-   
-         NCHit = Evt%CWRK%n 
-         IF ( NCHit < 0 .OR. NCHit > 2000 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'CLU - NCHit '//ERROR_DOMAIN, NCHit
-         END IF
-         IF (NCHit > 0 .AND. NCHit <= 2000) THEN
-            DO iCWRK=1, NCHit
-               IClu(iCWRK) = Evt%CWRK%icl(iCWRK)
-               ICel(iCWRK) = Evt%CWRK%cele(iCWRK)
-               CAdd(iCWRK) = Evt%CWRK%add(iCWRK)
-               CmcHit(iCWRK) = Evt%CWRK%nhit(iCWRK)
-               Ckine(iCWRK) = Evt%CWRK%kine(iCWRK)
-               Ene(iCWRK) = Evt%CWRK%E(iCWRK)
-               T(iCWRK) = Evt%CWRK%T(iCWRK)
-               X(iCWRK) = Evt%CWRK%X(iCWRK)
-               Y(iCWRK) = Evt%CWRK%Y(iCWRK)
-               Z(iCWRK) = Evt%CWRK%Z(iCWRK)
-            END DO
+  
+         STATUS = BLOCAT(IW, 'CWRK', 1, IND, INDDAT)
+         IF (STATUS.EQ.YESUCC) THEN
+            istat = GETCWRKSTRU(Evt%Cwrk)
+      
+            NCHit = Evt%CWRK%n 
+            IF ( NCHit < 0 .OR. NCHit > 2000 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'CLU - NCHit '//ERROR_DOMAIN, NCHit
+            END IF
+            IF (NCHit > 0 .AND. NCHit <= 2000) THEN
+               DO iCWRK=1, NCHit
+                  IClu(iCWRK) = Evt%CWRK%icl(iCWRK)
+                  ICel(iCWRK) = Evt%CWRK%cele(iCWRK)
+                  CAdd(iCWRK) = Evt%CWRK%add(iCWRK)
+                  CmcHit(iCWRK) = Evt%CWRK%nhit(iCWRK)
+                  Ckine(iCWRK) = Evt%CWRK%kine(iCWRK)
+                  Ene(iCWRK) = Evt%CWRK%E(iCWRK)
+                  T(iCWRK) = Evt%CWRK%T(iCWRK)
+                  X(iCWRK) = Evt%CWRK%X(iCWRK)
+                  Y(iCWRK) = Evt%CWRK%Y(iCWRK)
+                  Z(iCWRK) = Evt%CWRK%Z(iCWRK)
+               END DO
+            ELSE
+               WRITE(*,*) ERROR_BLOCK//'CWRK - NCHit '//ERROR_INDEX, NCHit
+               NCHit = 0
+            END IF
          ELSE
-            WRITE(*,*) ERROR_BLOCK//'CWRK - NCHit '//ERROR_INDEX, NCHit
-            NCHit = 0
+            WRITE(*,*) ERROR_MISS_DATA//'CWRK'
          END IF
       END IF
 C-----------------------------------------------------------------------

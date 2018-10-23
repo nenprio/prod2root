@@ -13,8 +13,8 @@ foreach d (${TESTING_DIR}/*_block)
     
     echo -n "Exporting ${INPUT_FILE}..."
 
-    mkdir -p ${d}/${OUT_DIR}
-    touch ${d}/${OUT_DIR}/${LOG_FILE}
+    mkdir -p ${OUT_SUBDIR}
+    touch ${LOG_FILE}
 
     ./${EXPORT_EXE} ${INPUT_FILE} ${OUT_SUBDIR} >> ${LOG_FILE}
     
