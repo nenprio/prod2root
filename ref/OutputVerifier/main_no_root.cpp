@@ -1,9 +1,13 @@
+#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <iostream.h>
+#include <string>
+#include <iostream>
+#include <fstream>
 #include "src/MyFunctions.hh"
 
 int main(int argc, char *argv[]) {
+    bool printInfo = true;
+
     // Check input args 
     if (argc!=3){
         printf("[Error] Number of arguments not valid.\n\n");
@@ -23,6 +27,7 @@ int verifyFiles(const char *rF, const char *hbF) {
     const char *ErrorFileOpen     = "\t[Error]\tCannot open file";
     const char *ErrorLeafDiff     = "\t[Error]\tDifference on leaf";
     const char *ErrorLeafNotFound = "\t[Error]\tNot found correspondance for leaf";
+    int errorCounter = 0;
 
     // Define control strings
     std::string rootFile = rF;
