@@ -11,17 +11,18 @@ int main(int argc, char *argv[]) {
     }
 
     // Input/Output definition
-    const char *rFile   = argv[1];
+    /* const char *rFile   = argv[1]; */
+    const char *hbFile = argv[1];
     /* const char *hbFile  = "root/hbConv.root"; */
     const char *outDir  = argv[2];
    
-    OutputVerifier *verifier = new OutputVerifier(rFile, "", outDir);
+    OutputVerifier *verifier = new OutputVerifier("", hbFile, outDir);
     /* OutputVerifier *verifier = new OutputVerifier(rFile, hbFile, outDir); */
     
     /* verifier->printInfo(); */
     
-    verifier->exportRootTree();
-    /* verifier->exportHBConvTree(); */
+    /* verifier->exportRootTree(); */
+    verifier->exportHBConvTree();
    
     /* bool debug = true; */
     /* verifier->verifyEvent(52, debug); */ 

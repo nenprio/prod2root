@@ -448,9 +448,9 @@ C
                END DO
             ELSE
                WRITE(*,*) ERROR_BLOCK//'ECLS - nEcls '//ERROR_INDEX, nEcls
-               nEcls = 0   !In this way we avoid negative index which could
-            END IF         !create corrupted arrays of negative size 
-                           !in the ROOT Tree
+               nEcls = 0   !In this way we avoid negative index which 
+            END IF         !could create corrupted arrays of 
+                           !negative size in the ROOT Tree
             
             nEcls2 = evt%ecls%n2
             IF ( nEcls2 < 0 .OR. nEcls2 > 8 ) THEN

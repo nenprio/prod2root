@@ -31,14 +31,14 @@ OutputVerifier::OutputVerifier(const char *rFile, const char *hbFile, const char
     outputDir    = outDir;
   
     // Check existance of input root file
-    if(rootFile && checkIfFileExists(rootFile)==false) {
-        println(errorInputFile);
-    }
+    /* if(rootFile && checkIfFileExists(rootFile)==false) { */
+        /* println(errorInputFile); */
+    /* } */
     
     // Check existance of input hb file
-    /* if(hbConvFile && (checkIfFileExists(hbConvFile)==false)) { */
-    /*     println(errorInputFile); */
-    /* } */
+    if(hbConvFile && (checkIfFileExists(hbConvFile)==false)) {
+        println(errorInputFile);
+    }
 
     // Create output dir if it doesn't exist
     if(createDirRecursively(outputDir)==false) {
@@ -47,34 +47,34 @@ OutputVerifier::OutputVerifier(const char *rFile, const char *hbFile, const char
     }
 
     // Test if you can open the file
-    TFile *fRoot = new TFile(rootFile, "READ");
-    /* TFile *fHB   = new TFile(hbConvFile, "READ"); */
+    /* TFile *fRoot = new TFile(rootFile, "READ"); */
+    TFile *fHB   = new TFile(hbConvFile, "READ");
 
     /* if(fRoot->IsOpen() && fHB->IsOpen()){ */
-    if(!fRoot->IsOpen()){
+    if(!fHB->IsOpen()){
         println(errorOpenFile);
     }
    
     // Test if you can open the tree
-    TTree *tRoot = (TTree*) fRoot->Get("sample");
-    /* TTree *tHB   = (TTree*) fHB->Get("PROD2NTU/h1"); */
+    /* TTree *tRoot = (TTree*) fRoot->Get("sample"); */
+    TTree *tHB   = (TTree*) fHB->Get("PROD2NTU/h1");
     
     /* if((tRoot!=0) & (tHB!=0)){ */
-    if(tRoot==0){
+    if(tHB==0){
         println(errorOpenTree);
     } 
     
     // Close the files
-    fRoot->Close();
-    /* fHB->Close(); */
-    if (fRoot) {
-        delete fRoot;
-        fRoot = NULL;
-    }
-    /* if (fHB) { */
-    /*     delete fHB; */
-    /*     fHB = NULL; */
+    /* fRoot->Close(); */
+    fHB->Close();
+    /* if (fRoot) { */
+    /*     delete fRoot; */
+    /*     fRoot = NULL; */
     /* } */
+    if (fHB) {
+        delete fHB;
+        fHB = NULL;
+    }
 }
 
 // Destruct the OutputVerifier object.
