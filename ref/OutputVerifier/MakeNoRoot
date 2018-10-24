@@ -8,7 +8,7 @@ else
 endif
 CFLAGS = -I. `root-config --cflags --libs`
 
-cmp_events: main_no_root.cpp src/MyFunctions.cpp 
+cmp_files: main_no_root.cpp src/MyFunctions.cpp 
 	$(CC) -g -o $@ $< src/MyFunctions.cpp $(CFLAGS)
 
 .PHONY: clean
