@@ -550,31 +550,34 @@ C-----------------------------------------------------------------------
             Ta_Tel(iTELLINA) = 0.
             Tb_Tel(iTELLINA) = 0.
          END DO
-C
-C        TODO: BLOCAT some data?
-C
-         istat = GETTELLINA(Evt%Tellina) 
          
-         NTel = Evt%Tellina%n
-         IF ( NTel < 0 .OR. NTel > 300 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'TELLINA - NTel '//ERROR_DOMAIN, NTel
-         END IF
-
-         IF (nTel > 0 .AND. nTel <= 300) THEN
-            DO iTELLINA=1, nTel
-                 Add_Tel(iTELLINA) = Evt%Tellina%add(iTELLINA)
-               Bitp_Tel(iTELLINA) = Evt%Tellina%Bitp(iTELLINA)
-               IF ( Bitp_Tel(iTELLINA) < 0 .OR. Bitp_Tel(iTELLINA) > 1100 ) THEN
-                  WRITE(*,*) ERROR_BLOCK//'TELLINA - Bitp_Tel '//ERROR_DOMAIN, Bitp_Tel
-               END IF
-                 Ea_Tel(iTELLINA) = Evt%Tellina%Ea(iTELLINA)
-                 Eb_Tel(iTELLINA) = Evt%Tellina%Eb(iTELLINA)
-                 Ta_Tel(iTELLINA) = Evt%Tellina%Ta(iTELLINA)
-                 Tb_Tel(iTELLINA) = Evt%Tellina%Tb(iTELLINA)
-           END DO
+         STATUS = BLOCAT(IW, 'TELE', 1, IND, INDDAT)
+         IF (STATUS.EQ.YESUCC) THEN
+            ISTAT = GETTELLINA(Evt%Tellina) 
+            
+            NTel = Evt%Tellina%n
+            IF ( NTel < 0 .OR. NTel > 300 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'TELLINA - NTel '//ERROR_DOMAIN, NTel
+            END IF
+   
+            IF (nTel > 0 .AND. nTel <= 300) THEN
+               DO iTELLINA=1, nTel
+                    Add_Tel(iTELLINA) = Evt%Tellina%add(iTELLINA)
+                  Bitp_Tel(iTELLINA) = Evt%Tellina%Bitp(iTELLINA)
+                  IF ( Bitp_Tel(iTELLINA) < 0 .OR. Bitp_Tel(iTELLINA) > 1100 ) THEN
+                     WRITE(*,*) ERROR_BLOCK//'TELLINA - Bitp_Tel '//ERROR_DOMAIN, Bitp_Tel
+                  END IF
+                    Ea_Tel(iTELLINA) = Evt%Tellina%Ea(iTELLINA)
+                    Eb_Tel(iTELLINA) = Evt%Tellina%Eb(iTELLINA)
+                    Ta_Tel(iTELLINA) = Evt%Tellina%Ta(iTELLINA)
+                    Tb_Tel(iTELLINA) = Evt%Tellina%Tb(iTELLINA)
+              END DO
+            ELSE
+               WRITE(*,*) ERROR_BLOCK//'TELLINA - nTel '//ERROR_INDEX, nTel
+               nTel = 0.
+            END IF
          ELSE
-            WRITE(*,*) ERROR_BLOCK//'TELLINA - nTel '//ERROR_INDEX, nTel
-            nTel = 0.
+            WRITE(*,*) ERROR_MISS_DATA//'TELLINA'
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -589,26 +592,29 @@ C-----------------------------------------------------------------------
             E_Piz(iPIZZETTA)   = 0.
             Z_Piz(iPIZZETTA)   = 0.
          END DO
-C
-C        TODO: BLOCAT some data?
-C
-         istat = GETPIZZETTA(Evt%Pizzetta)
-
-         NPiz = Evt%Pizzetta%n
-         IF ( NPiz < 0 .OR. NPiz > 300 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'PIZZETTA - NPiz '//ERROR_DOMAIN, NPiz
-         END IF
-         IF (NPiz > 0 .AND. NPiz <= 300) THEN
-            DO iPIZZETTA=1, NPiz
-               Add_Piz(iPIZZETTA) = Evt%Pizzetta%Add(iPIZZETTA)
-               Ea_Piz(iPIZZETTA)  = Evt%Pizzetta%Ea(iPIZZETTA)
-               Eb_Piz(iPIZZETTA)  = Evt%Pizzetta%Eb(iPIZZETTA)
-               E_Piz(iPIZZETTA)   = Evt%Pizzetta%E_Rec(iPIZZETTA)
-               Z_Piz(iPIZZETTA)   = Evt%Pizzetta%Z_Mod(iPIZZETTA)
-            END DO
+         
+         STATUS = BLOCAT(IW, 'PZZA', 1, IND, INDDAT)
+         IF (STATUS.EQ.YESUCC) THEN
+            ISTAT = GETPIZZETTA(Evt%Pizzetta)
+   
+            NPiz = Evt%Pizzetta%n
+            IF ( NPiz < 0 .OR. NPiz > 300 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'PIZZETTA - NPiz '//ERROR_DOMAIN, NPiz
+            END IF
+            IF (NPiz > 0 .AND. NPiz <= 300) THEN
+               DO iPIZZETTA=1, NPiz
+                  Add_Piz(iPIZZETTA) = Evt%Pizzetta%Add(iPIZZETTA)
+                  Ea_Piz(iPIZZETTA)  = Evt%Pizzetta%Ea(iPIZZETTA)
+                  Eb_Piz(iPIZZETTA)  = Evt%Pizzetta%Eb(iPIZZETTA)
+                  E_Piz(iPIZZETTA)   = Evt%Pizzetta%E_Rec(iPIZZETTA)
+                  Z_Piz(iPIZZETTA)   = Evt%Pizzetta%Z_Mod(iPIZZETTA)
+               END DO
+            ELSE
+               WRITE(*,*) ERROR_BLOCK//'PIZZETTA - NPiz '//ERROR_INDEX, NPiz
+               NPiz = 0.
+            END IF
          ELSE
-            WRITE(*,*) ERROR_BLOCK//'PIZZETTA - NPiz '//ERROR_INDEX, NPiz
-            NPiz = 0.
+            WRITE(*,*) ERROR_MISS_DATA//'PIZZETTA'
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -821,29 +827,32 @@ C-----------------------------------------------------------------------
            E_Rec(iPIZZA) = 0.
            Z_mod(iPIZZA) = 0.
          END DO
-C
-C        TODO: BLOCAT some data?
-C
-         istat = PIZZA_RESET(Evt%PIZZA)
-         istat = GETPIZZASTRU(Evt%PIZZA)
-   
-         NPack = Evt%PIZZA%npizza
-         IF ( NPack < 0 .OR. NPack > 300 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'CLU - NPack '//ERROR_DOMAIN, NPack
-         END IF
-         IF (NPack > 0 .AND. NPack <= 300) THEN
-           DO iPIZZA=1, NPack
-             PakSect(iPIZZA) = Evt%PIZZA%sector(iPIZZA)
-             PakDet(iPIZZA) = Evt%PIZZA%det(iPIZZA)
-             PakSerk(iPIZZA) = Evt%PIZZA%serkind(iPIZZA)
-             Ea_Pack(iPIZZA) = Evt%PIZZA%Ea(iPIZZA)
-             Eb_Pack(iPIZZA) = Evt%PIZZA%Eb(iPIZZA)
-             E_Rec(iPIZZA) = Evt%PIZZA%E_rec(iPIZZA)
-             Z_mod(iPIZZA) = Evt%PIZZA%Z_mod(iPIZZA)
-           END DO
+         
+         STATUS = BLOCAT(IW, 'PZZA', 1, IND, INDDAT)
+         IF (STATUS.EQ.YESUCC) THEN
+            istat = PIZZA_RESET(Evt%PIZZA)
+            istat = GETPIZZASTRU(Evt%PIZZA)
+      
+            NPack = Evt%PIZZA%npizza
+            IF ( NPack < 0 .OR. NPack > 300 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'CLU - NPack '//ERROR_DOMAIN, NPack
+            END IF
+            IF (NPack > 0 .AND. NPack <= 300) THEN
+              DO iPIZZA=1, NPack
+                PakSect(iPIZZA) = Evt%PIZZA%sector(iPIZZA)
+                PakDet(iPIZZA) = Evt%PIZZA%det(iPIZZA)
+                PakSerk(iPIZZA) = Evt%PIZZA%serkind(iPIZZA)
+                Ea_Pack(iPIZZA) = Evt%PIZZA%Ea(iPIZZA)
+                Eb_Pack(iPIZZA) = Evt%PIZZA%Eb(iPIZZA)
+                E_Rec(iPIZZA) = Evt%PIZZA%E_rec(iPIZZA)
+                Z_mod(iPIZZA) = Evt%PIZZA%Z_mod(iPIZZA)
+              END DO
+            ELSE
+              WRITE(*,*) ERROR_BLOCK//'PIZZA - NPack '//ERROR_INDEX, NPack
+              NPack = 0.
+            END IF
          ELSE
-           WRITE(*,*) ERROR_BLOCK//'PIZZA - NPack '//ERROR_INDEX, NPack
-           NPack = 0.
+            WRITE(*,*) ERROR_MISS_DATA//'PIZZA'
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -897,90 +906,93 @@ C-----------------------------------------------------------------------
             TrmsCl(iEVTCLU) = 0.
             FlagCl(iEVTCLU) = 0.
          END DO
-C
-C        TODO: BLOCAT some data?
-C
-         istat = GETCLUSTRU(Evt%Clu)
-   
-         NClu = Evt%Clu%n 
-         IF ( NClu < 0 .OR. NClu > 100 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'CLU - NClu '//ERROR_DOMAIN, NClu
-         END IF
-         IF (NClu > 0 .AND. NClu <= 100) THEN
-            DO iEVTCLU=1, NClu
-               EneCl(iEVTCLU) = Evt%Clu%E (iEVTCLU)
-               TCl(iEVTCLU) = Evt%Clu%T (iEVTCLU)
-               XCl(iEVTCLU) = Evt%Clu%X (iEVTCLU)
-               YCl(iEVTCLU) = Evt%Clu%Y (iEVTCLU)
-               ZCl(iEVTCLU) = Evt%Clu%Z (iEVTCLU)
-               XaCl(iEVTCLU) = Evt%Clu%Xa(iEVTCLU)
-               YaCl(iEVTCLU) = Evt%Clu%Ya(iEVTCLU)
-               ZaCl(iEVTCLU) = Evt%Clu%Za(iEVTCLU)
-               XRmCl(iEVTCLU) = Evt%Clu%Xrms(iEVTCLU)
-               YRmsCl(iEVTCLU) = Evt%Clu%Yrms(iEVTCLU)
-               ZrmsCl(iEVTCLU) = Evt%Clu%Zrms(iEVTCLU)
-               TrmsCl(iEVTCLU) = Evt%Clu%Trms(iEVTCLU)
-               FlagCl(iEVTCLU) = Evt%Clu%Flag(iEVTCLU)
-            END DO
-         ELSE
-            WRITE(*,*) ERROR_BLOCK//'CLUS - NClu '//ERROR_INDEX, NClu
-            NClu = 0.
-         END IF
-C         
-C        Fill MC data only if they exist, otherwise don't create empty structures         
-C
-         IF (MONTECARLOFLAG) THEN
-           write(*,*) "WRITING CLUMC EVENT", MONTECARLOFLAG
-           NCluMc = 0.
-           DO iEVTCLUMC=1, 100
-              NPar(iEVTCLUMC) = 0.
-              PNum1(iEVTCLUMC) = 0.
-              Pid1(iEVTCLUMC) = 0.
-              PNum2(iEVTCLUMC) = 0.
-              Pid2(iEVTCLUMC) = 0.
-              PNum3(iEVTCLUMC) = 0.
-              Pid3(iEVTCLUMC) = 0.
-           END DO
-    
-           NCluMc = Evt%Clu%nmc
-           IF ( NCluMc < 0 .OR. NCluMc > 100 ) THEN
-              WRITE(*,*) ERROR_BLOCK//'CLU - NCluMc '//ERROR_DOMAIN, NCluMc
-           END IF
-           IF (NCluMc > 0 .AND. NCluMc <= 100) THEN
-              DO iEVTCLUMC=1, NCluMc
-                 NPar(iEVTCLUMC) = Evt%Clu%Npart(iEVTCLUMC)
-                 IF ( NPar(iEVTCLUMC) < 0 .OR. NPar(iEVTCLUMC) > 10 ) THEN
-                    WRITE(*,*) ERROR_BLOCK//'EVTCLUMC - NPar '//ERROR_DOMAIN, NPar(iEVTCLUMC)
-                 END IF
-                 PNum1(iEVTCLUMC) = Evt%Clu%part1(iEVTCLUMC)
-                 IF ( PNum1(iEVTCLUMC) < 0 .OR. PNum1(iEVTCLUMC) > 100 ) THEN
-                    WRITE(*,*) ERROR_BLOCK//'EVTCLUMC - PNum1 '//ERROR_DOMAIN, PNum1(iEVTCLUMC)
-                 END IF
-                 Pid1(iEVTCLUMC) = Evt%Clu%pid1(iEVTCLUMC)
-                 IF ( Pid1(iEVTCLUMC) < 0 .OR. Pid1(iEVTCLUMC) > 100 ) THEN
-                    WRITE(*,*) ERROR_BLOCK//'EVTCLUMC - Pid1 '//ERROR_DOMAIN, Pid1(iEVTCLUMC)
-                 END IF
-                 PNum2(iEVTCLUMC) = Evt%Clu%part2(iEVTCLUMC)
-                 IF ( PNum2(iEVTCLUMC) < 0 .OR. PNum2(iEVTCLUMC) > 100 ) THEN
-                    WRITE(*,*) ERROR_BLOCK//'EVTCLUMC - PNum2 '//ERROR_DOMAIN, PNum2(iEVTCLUMC)
-                 END IF
-                 Pid2(iEVTCLUMC) = Evt%Clu%pid2(iEVTCLUMC)
-                 IF ( Pid2(iEVTCLUMC) < 0 .OR. Pid2(iEVTCLUMC) > 100 ) THEN
-                    WRITE(*,*) ERROR_BLOCK//'EVTCLUMC - Pid2 '//ERROR_DOMAIN, Pid2(iEVTCLUMC)
-                 END IF
-                 PNum3(iEVTCLUMC) = Evt%Clu%part3(iEVTCLUMC)
-                 IF ( PNum3(iEVTCLUMC) < 0 .OR. PNum3(iEVTCLUMC) > 100 ) THEN
-                    WRITE(*,*) ERROR_BLOCK//'EVTCLUMC - PNum3 '//ERROR_DOMAIN, PNum3(iEVTCLUMC)
-                 END IF
-                 Pid3(iEVTCLUMC) = Evt%Clu%pid3(iEVTCLUMC)
-                 IF ( Pid3(iEVTCLUMC) < 0 .OR. Pid3(iEVTCLUMC) > 100 ) THEN
-                    WRITE(*,*) ERROR_BLOCK//'EVTCLUMC - Pid3 '//ERROR_DOMAIN, Pid3(iEVTCLUMC)
-                 END IF
-              END DO
-           ELSE
-              WRITE(*,*) ERROR_BLOCK//'CLUS - NCluMc '//ERROR_INDEX, NCluMc
+         
+         STATUS = BLOCAT(IW, 'CLPS', 1, IND, INDDAT)
+         IF (STATUS.EQ.YESUCC) THEN
+            istat = GETCLUSTRU(Evt%Clu)
+      
+            NClu = Evt%Clu%n 
+            IF ( NClu < 0 .OR. NClu > 100 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'CLU - NClu '//ERROR_DOMAIN, NClu
+            END IF
+            IF (NClu > 0 .AND. NClu <= 100) THEN
+               DO iEVTCLU=1, NClu
+                  EneCl(iEVTCLU) = Evt%Clu%E (iEVTCLU)
+                  TCl(iEVTCLU) = Evt%Clu%T (iEVTCLU)
+                  XCl(iEVTCLU) = Evt%Clu%X (iEVTCLU)
+                  YCl(iEVTCLU) = Evt%Clu%Y (iEVTCLU)
+                  ZCl(iEVTCLU) = Evt%Clu%Z (iEVTCLU)
+                  XaCl(iEVTCLU) = Evt%Clu%Xa(iEVTCLU)
+                  YaCl(iEVTCLU) = Evt%Clu%Ya(iEVTCLU)
+                  ZaCl(iEVTCLU) = Evt%Clu%Za(iEVTCLU)
+                  XRmCl(iEVTCLU) = Evt%Clu%Xrms(iEVTCLU)
+                  YRmsCl(iEVTCLU) = Evt%Clu%Yrms(iEVTCLU)
+                  ZrmsCl(iEVTCLU) = Evt%Clu%Zrms(iEVTCLU)
+                  TrmsCl(iEVTCLU) = Evt%Clu%Trms(iEVTCLU)
+                  FlagCl(iEVTCLU) = Evt%Clu%Flag(iEVTCLU)
+               END DO
+            ELSE
+               WRITE(*,*) ERROR_BLOCK//'CLUS - NClu '//ERROR_INDEX, NClu
+               NClu = 0.
+            END IF
+   C         
+   C        Fill MC data only if they exist, otherwise don't create empty structures         
+   C
+            IF (MONTECARLOFLAG) THEN
+              write(*,*) "WRITING CLUMC EVENT", MONTECARLOFLAG
               NCluMc = 0.
-           END IF
+              DO iEVTCLUMC=1, 100
+                 NPar(iEVTCLUMC) = 0.
+                 PNum1(iEVTCLUMC) = 0.
+                 Pid1(iEVTCLUMC) = 0.
+                 PNum2(iEVTCLUMC) = 0.
+                 Pid2(iEVTCLUMC) = 0.
+                 PNum3(iEVTCLUMC) = 0.
+                 Pid3(iEVTCLUMC) = 0.
+              END DO
+       
+              NCluMc = Evt%Clu%nmc
+              IF ( NCluMc < 0 .OR. NCluMc > 100 ) THEN
+                 WRITE(*,*) ERROR_BLOCK//'CLU - NCluMc '//ERROR_DOMAIN, NCluMc
+              END IF
+              IF (NCluMc > 0 .AND. NCluMc <= 100) THEN
+                 DO iEVTCLUMC=1, NCluMc
+                    NPar(iEVTCLUMC) = Evt%Clu%Npart(iEVTCLUMC)
+                    IF ( NPar(iEVTCLUMC) < 0 .OR. NPar(iEVTCLUMC) > 10 ) THEN
+                       WRITE(*,*) ERROR_BLOCK//'EVTCLUMC - NPar '//ERROR_DOMAIN, NPar(iEVTCLUMC)
+                    END IF
+                    PNum1(iEVTCLUMC) = Evt%Clu%part1(iEVTCLUMC)
+                    IF ( PNum1(iEVTCLUMC) < 0 .OR. PNum1(iEVTCLUMC) > 100 ) THEN
+                       WRITE(*,*) ERROR_BLOCK//'EVTCLUMC - PNum1 '//ERROR_DOMAIN, PNum1(iEVTCLUMC)
+                    END IF
+                    Pid1(iEVTCLUMC) = Evt%Clu%pid1(iEVTCLUMC)
+                    IF ( Pid1(iEVTCLUMC) < 0 .OR. Pid1(iEVTCLUMC) > 100 ) THEN
+                       WRITE(*,*) ERROR_BLOCK//'EVTCLUMC - Pid1 '//ERROR_DOMAIN, Pid1(iEVTCLUMC)
+                    END IF
+                    PNum2(iEVTCLUMC) = Evt%Clu%part2(iEVTCLUMC)
+                    IF ( PNum2(iEVTCLUMC) < 0 .OR. PNum2(iEVTCLUMC) > 100 ) THEN
+                       WRITE(*,*) ERROR_BLOCK//'EVTCLUMC - PNum2 '//ERROR_DOMAIN, PNum2(iEVTCLUMC)
+                    END IF
+                    Pid2(iEVTCLUMC) = Evt%Clu%pid2(iEVTCLUMC)
+                    IF ( Pid2(iEVTCLUMC) < 0 .OR. Pid2(iEVTCLUMC) > 100 ) THEN
+                       WRITE(*,*) ERROR_BLOCK//'EVTCLUMC - Pid2 '//ERROR_DOMAIN, Pid2(iEVTCLUMC)
+                    END IF
+                    PNum3(iEVTCLUMC) = Evt%Clu%part3(iEVTCLUMC)
+                    IF ( PNum3(iEVTCLUMC) < 0 .OR. PNum3(iEVTCLUMC) > 100 ) THEN
+                       WRITE(*,*) ERROR_BLOCK//'EVTCLUMC - PNum3 '//ERROR_DOMAIN, PNum3(iEVTCLUMC)
+                    END IF
+                    Pid3(iEVTCLUMC) = Evt%Clu%pid3(iEVTCLUMC)
+                    IF ( Pid3(iEVTCLUMC) < 0 .OR. Pid3(iEVTCLUMC) > 100 ) THEN
+                       WRITE(*,*) ERROR_BLOCK//'EVTCLUMC - Pid3 '//ERROR_DOMAIN, Pid3(iEVTCLUMC)
+                    END IF
+                 END DO
+              ELSE
+                 WRITE(*,*) ERROR_BLOCK//'CLUS - NCluMc '//ERROR_INDEX, NCluMc
+                 NCluMc = 0.
+              END IF
+            END IF
+         ELSE
+            WRITE(*,*) ERROR_MISS_DATA//'CLUS'
          END IF
       END IF
 C-----------------------------------------------------------------------
