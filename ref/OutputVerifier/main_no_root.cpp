@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
     const char *rFile   = argv[1];
     const char *hbFile  = argv[2];
     int num_err = verifyFiles(rFile, hbFile, true);
-    printf("[Info] Execution ends with %d errors.\n", num_err);
+    printf("[Info] File: %s - Execution ends with %d errors.\n", rFile, num_err);
 
     return(EXIT_SUCCESS);
 }
