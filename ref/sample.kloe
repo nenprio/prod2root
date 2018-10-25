@@ -103,16 +103,6 @@ C Put A_C Error Code to SUCCESS at Run_Init
 C
       Status = ANPIST(ANSUCC)
       istat = fillbposcommon(nrun)
-C
-
-C
-C    Compute the MonteCarlo Flag 
-C
-      IF( EXPTYP.EQ.EXOFSI ) THEN
-         MONTECARLOFLAG = .TRUE.
-      ELSE
-         MONTECARLOFLAG = .FALSE.
-      ENDIF
 
       RETURN
       END
@@ -206,8 +196,13 @@ C=============================================================================
       ERROR_BLOCK = ERROR_LINE//"Block "
       ERROR_INDEX = "Index not valid: "
       ERROR_DOMAIN = "Out of domain: "
-      
-      IF( EXPTYP.EQ.EXOFSI ) THEN
+C      
+C     Check if MC blocks are required and if they exist
+C     Otherwise print error message to alert that 
+C     MC blocks exist and they aren't required
+C     or they are required but they don't exist
+C
+      IF( MCFLAG .AND. EXPTYP.EQ.EXOFSI ) THEN
          MONTECARLOFLAG = .TRUE.
       ELSE
          MONTECARLOFLAG = .FALSE.
@@ -2194,6 +2189,8 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block mc
 C-----------------------------------------------------------------------
+C     TODO: How manage GEANFI with respect to MC flag? It is a pure MC block?
+C     If MCFLAG=False, it has to be skipped?
       IF (GEANFIFLAG) THEN
         IF (MONTECARLOFLAG) THEN
            nTMC = 0.
@@ -3641,6 +3638,11 @@ C
       	write(Prompt,123)'HETE'
 	    Status=UIGTYE(Prompt,HETEFLAG)
     	goto 10
+      else if(verb.eq.'MCFLAG')then
+      	write(Prompt,123)'MCFLAG'
+	    Status=UIGTYE(Prompt,MCFLAG)
+    	goto 10
+      end if
       end if
 C
 123   FORMAT(1x,'Select ',a4,' Ntuple-block?')

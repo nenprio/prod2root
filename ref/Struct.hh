@@ -96,6 +96,7 @@ extern "C"{
     int leteFlag;
     int itceFlag;
     int heteFlag;
+    int mcFlag;
   }sammenu_;
 }
 

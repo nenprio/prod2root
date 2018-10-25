@@ -79,6 +79,7 @@ TreeWriter::TreeWriter() {
     // Block DPRS
     if(logicalToBool(sammenu_.dprsFlag))        addBlockDPRS();
     // Block MC
+    // TODO: Change name MC to GEANFI to avoid trubles with montecarloflag
     if(logicalToBool(sammenu_.geanfiFlag))      addBlockMC();
     // Block TCLO
     if(logicalToBool(sammenu_.tcloFlag))        addBlockTCLO();
