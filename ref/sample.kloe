@@ -2914,71 +2914,75 @@ C-----------------------------------------------------------------------
            CSz(iCSPS) = 0.
          END DO
 
-         istat = GETCSPSSTRU(0,evt%CSPS,evt%CSPSMC)
-         write(*,*) "ISTAT => ", istat
-
-         nCS = Evt%CSPS%Ncel
-         IF ( nCS < 0 .OR. nCS > 2000 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'CSPS - nCS '//ERROR_DOMAIN, nCS
-         END IF
-
-         IF (nCS > 0 .AND. nCS <= 2000) THEN
-            DO iCSPS=1, nCS
-                 CSClu(iCSPS) = Evt%Csps%Iclu(iCSPS)
-                 CSCel(iCSPS) = Evt%Csps%Icel(iCSPS)
-                 CSFla(iCSPS) = Evt%Csps%Flag(iCSPS)
-                 CSAdd(iCSPS) = Evt%Csps%Add(iCSPS)
-                 CSNhi(iCSPS) = Evt%Csps%Nhit(iCSPS)
-                 CSTa(iCSPS) = Evt%Csps%Ta(iCSPS)
-                 CSTb(iCSPS) = Evt%Csps%Tb(iCSPS)
-                 CSEa(iCSPS) = Evt%Csps%Ea(iCSPS)
-                 CSEb(iCSPS) = Evt%Csps%Eb(iCSPS)
-                 CST(iCSPS) = Evt%Csps%T(iCSPS)
-                 CSE(iCSPS) = Evt%Csps%E(iCSPS)
-                 CSx(iCSPS) = Evt%Csps%X(iCSPS)
-                 CSy(iCSPS) = Evt%Csps%Y(iCSPS)
-                 CSz(iCSPS) = Evt%Csps%Z(iCSPS)
-           END DO
-         ELSE
-            WRITE(*,*) ERROR_BLOCK//'CSPS - nCS '//ERROR_INDEX, nCS
-            nCS = 0
-         END IF
-C         
-C        Fill MC data only if they exist, otherwise don't create empty structures         
-C
-         IF (MONTECARLOFLAG) THEN
-          WRITE(*,*) "MC TRUE"
-          nCSMC = 0.
-          DO iCSPSMC=1, 2000
-            CSMCKine(iCSPSMC) = 0.
-            CSMCPoi(iCSPSMC) = 0.
-            CSMCNHit(iCSPSMC) = 0.
-            CSMCx(iCSPSMC) = 0.
-            CSMCy(iCSPSMC) = 0.
-            CSMCz(iCSPSMC) = 0.
-            CSMCt(iCSPSMC) = 0.
-            CSMCe(iCSPSMC) = 0.
-          END DO
- 
-          nCSMC = Evt%CSPSMC%Ncel
-          IF ( nCSMC < 0 .OR. nCSMC > 2000 ) THEN
-             WRITE(*,*) ERROR_BLOCK//'CSPS - nCSMC '//ERROR_DOMAIN, nCSMC
-          END IF
- 
-          IF (nCSMC > 0 .AND. nCSMC <= 2000) THEN
-             DO iCSPSMC=1, nCSMC
-                  CSMCKine(iCSPSMC) = Evt%CSPSMC%Knum(iCSPSMC)
-                  CSMCPoi(iCSPSMC) = Evt%CSPSMC%Ihit(iCSPSMC)
-                  CSMCNHit(iCSPSMC) = Evt%CSPSMC%Nhit(iCSPSMC)
-                  CSMCx(iCSPSMC) = Evt%CSPSMC%X(iCSPSMC)
-                  CSMCy(iCSPSMC) = Evt%CSPSMC%Y(iCSPSMC)
-                  CSMCz(iCSPSMC) = Evt%CSPSMC%Z(iCSPSMC)
-                  CSMCt(iCSPSMC) = Evt%CSPSMC%T(iCSPSMC)
-                  CSMCe(iCSPSMC) = Evt%CSPSMC%E(iCSPSMC)
-            END DO
-          ELSE
-             WRITE(*,*) ERROR_BLOCK//'CSPS - nCSMC '//ERROR_INDEX, nCSMC
-             nCSMC = 0
+         STATUS = BLOCAT(IW, 'CSPS', 1, IND, INDDAT)
+         IF (STATUS.EQ.YESUCC) THEN
+            ISTAT = GETCSPSSTRU(0,EVT%CSPS,EVT%CSPSMC)
+   
+            nCS = Evt%CSPS%Ncel
+            IF ( nCS < 0 .OR. nCS > 2000 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'CSPS - nCS '//ERROR_DOMAIN, nCS
+            END IF
+   
+            IF (nCS > 0 .AND. nCS <= 2000) THEN
+               DO iCSPS=1, nCS
+                    CSClu(iCSPS) = Evt%Csps%Iclu(iCSPS)
+                    CSCel(iCSPS) = Evt%Csps%Icel(iCSPS)
+                    CSFla(iCSPS) = Evt%Csps%Flag(iCSPS)
+                    CSAdd(iCSPS) = Evt%Csps%Add(iCSPS)
+                    CSNhi(iCSPS) = Evt%Csps%Nhit(iCSPS)
+                    CSTa(iCSPS) = Evt%Csps%Ta(iCSPS)
+                    CSTb(iCSPS) = Evt%Csps%Tb(iCSPS)
+                    CSEa(iCSPS) = Evt%Csps%Ea(iCSPS)
+                    CSEb(iCSPS) = Evt%Csps%Eb(iCSPS)
+                    CST(iCSPS) = Evt%Csps%T(iCSPS)
+                    CSE(iCSPS) = Evt%Csps%E(iCSPS)
+                    CSx(iCSPS) = Evt%Csps%X(iCSPS)
+                    CSy(iCSPS) = Evt%Csps%Y(iCSPS)
+                    CSz(iCSPS) = Evt%Csps%Z(iCSPS)
+              END DO
+            ELSE
+               WRITE(*,*) ERROR_BLOCK//'CSPS - nCS '//ERROR_INDEX, nCS
+               nCS = 0
+            END IF
+   C         
+   C        Fill MC data only if they exist, otherwise don't create empty structures         
+   C
+            IF (MONTECARLOFLAG) THEN
+             WRITE(*,*) "MC TRUE"
+             nCSMC = 0.
+             DO iCSPSMC=1, 2000
+               CSMCKine(iCSPSMC) = 0.
+               CSMCPoi(iCSPSMC) = 0.
+               CSMCNHit(iCSPSMC) = 0.
+               CSMCx(iCSPSMC) = 0.
+               CSMCy(iCSPSMC) = 0.
+               CSMCz(iCSPSMC) = 0.
+               CSMCt(iCSPSMC) = 0.
+               CSMCe(iCSPSMC) = 0.
+             END DO
+    
+             nCSMC = Evt%CSPSMC%Ncel
+             IF ( nCSMC < 0 .OR. nCSMC > 2000 ) THEN
+                WRITE(*,*) ERROR_BLOCK//'CSPS - nCSMC '//ERROR_DOMAIN, nCSMC
+             END IF
+    
+             IF (nCSMC > 0 .AND. nCSMC <= 2000) THEN
+                DO iCSPSMC=1, nCSMC
+                     CSMCKine(iCSPSMC) = Evt%CSPSMC%Knum(iCSPSMC)
+                     CSMCPoi(iCSPSMC) = Evt%CSPSMC%Ihit(iCSPSMC)
+                     CSMCNHit(iCSPSMC) = Evt%CSPSMC%Nhit(iCSPSMC)
+                     CSMCx(iCSPSMC) = Evt%CSPSMC%X(iCSPSMC)
+                     CSMCy(iCSPSMC) = Evt%CSPSMC%Y(iCSPSMC)
+                     CSMCz(iCSPSMC) = Evt%CSPSMC%Z(iCSPSMC)
+                     CSMCt(iCSPSMC) = Evt%CSPSMC%T(iCSPSMC)
+                     CSMCe(iCSPSMC) = Evt%CSPSMC%E(iCSPSMC)
+               END DO
+             ELSE
+                WRITE(*,*) ERROR_BLOCK//'CSPS - nCSMC '//ERROR_INDEX, nCSMC
+                nCSMC = 0
+             END IF
+          ELSE 
+             WRITE(*,*) ERROR_MISS_DATA//'CSPS'
           END IF
         END IF
       END IF
@@ -3137,36 +3141,41 @@ C-----------------------------------------------------------------------
               Tim4(iQCTH) = 0.
               Tim5(iQCTH) = 0.
             END DO
-   
-            istat = GETQCTHSTRU(Evt%QCALTHIT)
-            write(*,*) "ISTAT => ", istat
-   
-            nQCTHEle = Evt%QCALTHIT%Nele
-            IF ( nQCTHEle < 0 .OR. nQCTHEle > 1920 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'QCTH - nQCTHEle '//ERROR_DOMAIN, nQCTHEle
-            END IF
-   
-            IF (nQCTHEle > 0 .AND. nQCTHEle <= 1920) THEN
-               DO iQCTH=1, nQCTHEle
-                  nQCTHHit(iQCTH) = Evt%QCALTHIT%Nhit(iQCTH)
-                  IF ( nQCTHHit(iQCTH) < 1 .OR. nQCTHHit(iQCTH) > 5 ) THEN
-                     WRITE(*,*) ERROR_BLOCK//'QCTH - nQCTHHit '//ERROR_DOMAIN, nQCTHHit(iQCTH)
-                  END IF
-                  QCTHx(iQCTH) = Evt%QCALTHIT%X(iQCTH)
-                  QCTHy(iQCTH) = Evt%QCALTHIT%Y(iQCTH)
-                  QCTHz(iQCTH) = Evt%QCALTHIT%Z(iQCTH)
-                  Tim1(iQCTH) = Evt%QCALTHIT%Time(1, iQCTH)
-                  Tim2(iQCTH) = Evt%QCALTHIT%Time(2, iQCTH)
-                  Tim3(iQCTH) = Evt%QCALTHIT%Time(3, iQCTH)
-                  Tim4(iQCTH) = Evt%QCALTHIT%Time(4, iQCTH)
-                  Tim5(iQCTH) = Evt%QCALTHIT%Time(5, iQCTH)
-              END DO
+  
+            STATUS = BLOCAT(IW, 'QCTH', 1, IND, INDDAT)
+            IF (STATUS.EQ.YESUCC) THEN
+               ISTAT = GETQCTHSTRU(Evt%QCALTHIT)
+               write(*,*) "ISTAT => ", istat
+      
+               nQCTHEle = Evt%QCALTHIT%Nele
+               IF ( nQCTHEle < 0 .OR. nQCTHEle > 1920 ) THEN
+                  WRITE(*,*) ERROR_BLOCK//'QCTH - nQCTHEle '//ERROR_DOMAIN, nQCTHEle
+               END IF
+      
+               IF (nQCTHEle > 0 .AND. nQCTHEle <= 1920) THEN
+                  DO iQCTH=1, nQCTHEle
+                     nQCTHHit(iQCTH) = Evt%QCALTHIT%Nhit(iQCTH)
+                     IF ( nQCTHHit(iQCTH) < 1 .OR. nQCTHHit(iQCTH) > 5 ) THEN
+                        WRITE(*,*) ERROR_BLOCK//'QCTH - nQCTHHit '//ERROR_DOMAIN, nQCTHHit(iQCTH)
+                     END IF
+                     QCTHx(iQCTH) = Evt%QCALTHIT%X(iQCTH)
+                     QCTHy(iQCTH) = Evt%QCALTHIT%Y(iQCTH)
+                     QCTHz(iQCTH) = Evt%QCALTHIT%Z(iQCTH)
+                     Tim1(iQCTH) = Evt%QCALTHIT%Time(1, iQCTH)
+                     Tim2(iQCTH) = Evt%QCALTHIT%Time(2, iQCTH)
+                     Tim3(iQCTH) = Evt%QCALTHIT%Time(3, iQCTH)
+                     Tim4(iQCTH) = Evt%QCALTHIT%Time(4, iQCTH)
+                     Tim5(iQCTH) = Evt%QCALTHIT%Time(5, iQCTH)
+                 END DO
+               ELSE
+                  WRITE(*,*) ERROR_BLOCK//'QCTH - nQCTHEle '//ERROR_INDEX, nQCTHEle
+                  nQCTHEle = 0
+               END IF
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'QCTH - nQCTHEle '//ERROR_INDEX, nQCTHEle
-               nQCTHEle = 0
+               WRITE(*,*) ERROR_MISS_DATA//'QCTH'
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'QCTH'
+            WRITE(*,*) ERROR_MISS_DATA//'QCTH' !TODO: Should I remove this control?
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -3182,38 +3191,42 @@ C-----------------------------------------------------------------------
               CCle_Pla(iCCLE) = 0.
               CCle_Time(iCCLE) = 0.
             END DO
-   
-            istat = GETCCALTSTRU(Evt%CCLE)
-            write(*,*) "ISTAT => ", istat
-   
-            nCCle = Evt%CCLE%NEle
-            IF ( nCCle < 0 .OR. nCCle > 96 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'CCLE - nCCle '//ERROR_DOMAIN, nCCle
-            END IF
-   
-            IF (nCCle > 0 .AND. nCCle <= 96) THEN
-               DO iCCLE=1, nCCle
-                  CCle_Cry(iCCLE) = Evt%CCLE%Cry(iCCLE)
-                  IF ( CCle_Cry(iCCLE) < 0 .OR. CCle_Cry(iCCLE) > 96 ) THEN
-                     WRITE(*,*) ERROR_BLOCK//'CCLE - CCle_Cry '//ERROR_DOMAIN, CCle_Cry(iCCLE)
-                  END IF
-                    CCle_Det(iCCLE) = Evt%CCLE%Det(iCCLE)
-                  CCle_Col(iCCLE) = Evt%CCLE%Col(iCCLE)
-                  IF ( CCle_Col(iCCLE) < 0 .OR. CCle_Col(iCCLE) > 24 ) THEN
-                     WRITE(*,*) ERROR_BLOCK//'CCLE - CCle_Col '//ERROR_DOMAIN, CCle_Col(iCCLE)
-                  END IF
-                  CCle_Pla(iCCLE) = Evt%CCLE%Pla(iCCLE)
-                  IF ( CCle_Pla(iCCLE) < 0 .OR. CCle_Pla(iCCLE) > 2 ) THEN
-                     WRITE(*,*) ERROR_BLOCK//'CCLE - CCle_Pla '//ERROR_DOMAIN, CCle_Pla(iCCLE)
-                  END IF
-                    CCle_Time(iCCLE) = Evt%CCLE%T(iCCLE)
-              END DO
+            
+            STATUS = BLOCAT(IW, 'CCLE', 1, IND, INDDAT)
+            IF (STATUS.EQ.YESUCC) THEN
+               ISTAT = GETCCALTSTRU(EVT%CCLE)
+      
+               nCCle = Evt%CCLE%NEle
+               IF ( nCCle < 0 .OR. nCCle > 96 ) THEN
+                  WRITE(*,*) ERROR_BLOCK//'CCLE - nCCle '//ERROR_DOMAIN, nCCle
+               END IF
+      
+               IF (nCCle > 0 .AND. nCCle <= 96) THEN
+                  DO iCCLE=1, nCCle
+                     CCle_Cry(iCCLE) = Evt%CCLE%Cry(iCCLE)
+                     IF ( CCle_Cry(iCCLE) < 0 .OR. CCle_Cry(iCCLE) > 96 ) THEN
+                        WRITE(*,*) ERROR_BLOCK//'CCLE - CCle_Cry '//ERROR_DOMAIN, CCle_Cry(iCCLE)
+                     END IF
+                       CCle_Det(iCCLE) = Evt%CCLE%Det(iCCLE)
+                     CCle_Col(iCCLE) = Evt%CCLE%Col(iCCLE)
+                     IF ( CCle_Col(iCCLE) < 0 .OR. CCle_Col(iCCLE) > 24 ) THEN
+                        WRITE(*,*) ERROR_BLOCK//'CCLE - CCle_Col '//ERROR_DOMAIN, CCle_Col(iCCLE)
+                     END IF
+                     CCle_Pla(iCCLE) = Evt%CCLE%Pla(iCCLE)
+                     IF ( CCle_Pla(iCCLE) < 0 .OR. CCle_Pla(iCCLE) > 2 ) THEN
+                        WRITE(*,*) ERROR_BLOCK//'CCLE - CCle_Pla '//ERROR_DOMAIN, CCle_Pla(iCCLE)
+                     END IF
+                       CCle_Time(iCCLE) = Evt%CCLE%T(iCCLE)
+                 END DO
+               ELSE
+                  WRITE(*,*) ERROR_BLOCK//'CCLE - nCCle '//ERROR_INDEX, nCCle
+                  nCCle = 0
+               END IF
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'CCLE - nCCle '//ERROR_INDEX, nCCle
-               nCCle = 0
+               WRITE(*,*) ERROR_MISS_DATA//'CCLE'
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'CCLE'
+            WRITE(*,*) ERROR_MISS_DATA//'CCLE' !TODO: Should I remove this control?
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -3231,40 +3244,44 @@ C-----------------------------------------------------------------------
               Lete_E(iLETE) = 0.
               Lete_Time(iLETE) = 0.
             END DO
-   
-            istat = getletestru(evt%lete)
-            write(*,*) "ISTAT => ", istat
-   
-            LeteCalib = Evt%LETE%Calib
-            nLete = Evt%LETE%NEle
-            IF ( nLete < 0 .OR. nLete > 40 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'LETE - nLete '//ERROR_DOMAIN, nLete
-            END IF
-   
-            IF (nLete > 0 .AND. nLete <= 40) THEN
-               DO iLETE=1, nLete
-                  Lete_Cry(iLETE) = Evt%LETE%Cry(iLETE)
-                  IF ( Lete_Cry(iLETE) < 0 .OR. Lete_Cry(iLETE) > 40 ) THEN
-                     WRITE(*,*) ERROR_BLOCK//'LETE - Lete_Cry '//ERROR_DOMAIN, Lete_Cry(iLETE)
-                  END IF
-                    Lete_Det(iLETE) = Evt%LETE%Det(iLETE)
-                  Lete_Col(iLETE) = Evt%LETE%Col(iLETE)
-                  IF ( Lete_Col(iLETE) < 0 .OR. Lete_Col(iLETE) > 4 ) THEN
-                     WRITE(*,*) ERROR_BLOCK//'LETE - Lete_Col '//ERROR_DOMAIN, Lete_Col(iLETE)
-                  END IF
-                  Lete_Pla(iLETE) = Evt%LETE%Pla(iLETE)
-                  IF ( Lete_Pla(iLETE) < 0 .OR. Lete_Pla(iLETE) > 5 ) THEN
-                     WRITE(*,*) ERROR_BLOCK//'LETE - Lete_Pla '//ERROR_DOMAIN, Lete_Pla(iLETE)
-                  END IF
-                    Lete_E(iLETE) = Evt%LETE%E(iLETE)
-                    Lete_Time(iLETE) = Evt%LETE%T(iLETE)
-              END DO
+            
+            STATUS = BLOCAT(IW, "LETE", 1, IND, INDDAT)
+            IF (STATUS.EQ.YESUCC) THEN
+               ISTAT = GETLETESTRU(EVT%LETE)
+      
+               LeteCalib = Evt%LETE%Calib
+               nLete = Evt%LETE%NEle
+               IF ( nLete < 0 .OR. nLete > 40 ) THEN
+                  WRITE(*,*) ERROR_BLOCK//'LETE - nLete '//ERROR_DOMAIN, nLete
+               END IF
+      
+               IF (nLete > 0 .AND. nLete <= 40) THEN
+                  DO iLETE=1, nLete
+                     Lete_Cry(iLETE) = Evt%LETE%Cry(iLETE)
+                     IF ( Lete_Cry(iLETE) < 0 .OR. Lete_Cry(iLETE) > 40 ) THEN
+                        WRITE(*,*) ERROR_BLOCK//'LETE - Lete_Cry '//ERROR_DOMAIN, Lete_Cry(iLETE)
+                     END IF
+                       Lete_Det(iLETE) = Evt%LETE%Det(iLETE)
+                     Lete_Col(iLETE) = Evt%LETE%Col(iLETE)
+                     IF ( Lete_Col(iLETE) < 0 .OR. Lete_Col(iLETE) > 4 ) THEN
+                        WRITE(*,*) ERROR_BLOCK//'LETE - Lete_Col '//ERROR_DOMAIN, Lete_Col(iLETE)
+                     END IF
+                     Lete_Pla(iLETE) = Evt%LETE%Pla(iLETE)
+                     IF ( Lete_Pla(iLETE) < 0 .OR. Lete_Pla(iLETE) > 5 ) THEN
+                        WRITE(*,*) ERROR_BLOCK//'LETE - Lete_Pla '//ERROR_DOMAIN, Lete_Pla(iLETE)
+                     END IF
+                       Lete_E(iLETE) = Evt%LETE%E(iLETE)
+                       Lete_Time(iLETE) = Evt%LETE%T(iLETE)
+                  END DO
+               ELSE
+                  WRITE(*,*) ERROR_BLOCK//'LETE - nLete '//ERROR_INDEX, nLete
+                  nLete = 0
+               END IF
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'LETE - nLete '//ERROR_INDEX, nLete
-               nLete = 0
+               WRITE(*,*) ERROR_MISS_DATA//'LETE'
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'LETE'
+            WRITE(*,*) ERROR_MISS_DATA//'LETE'  ! TODO: Should I remove this control?
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -3281,28 +3298,32 @@ C-----------------------------------------------------------------------
               IndItKine(iITCE) = 0.
             END DO
    
-            istat = ITCE_UPK(evt%itce)
-            write(*,*) "ISTAT => ", istat
-   
-            nITCE = Evt%itce%nitce
-            IF ( nITCE < 0 .OR. nITCE > 4032 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'ITCE - nITCE '//ERROR_DOMAIN, nITCE
-            END IF
-   
-            IF (nITCE > 0 .AND. nITCE <= 4032) THEN
-               DO iITCE=1, nITCE
-                    Foil(iITCE) = Evt%itce%foil(iITCE)
-                    ITLayer(iITCE) = Evt%itce%layer(iITCE)
-                    Strip(iITCE) = Evt%itce%strip(iITCE)
-                    View(iITCE) = Evt%itce%view(iITCE)
-                    IndItKine(iITCE) = Evt%itce%inditkine(iITCE)
-              END DO
+            STATUS = BLOCAT(IW, 'ITCE', 1, IND, INDDAT)
+            IF (STATUS.EQ.YESUCC) THEN
+               ISTAT = ITCE_UPK(EVT%ITCE)
+      
+               nITCE = Evt%itce%nitce
+               IF ( nITCE < 0 .OR. nITCE > 4032 ) THEN
+                  WRITE(*,*) ERROR_BLOCK//'ITCE - nITCE '//ERROR_DOMAIN, nITCE
+               END IF
+      
+               IF (nITCE > 0 .AND. nITCE <= 4032) THEN
+                  DO iITCE=1, nITCE
+                       Foil(iITCE) = Evt%itce%foil(iITCE)
+                       ITLayer(iITCE) = Evt%itce%layer(iITCE)
+                       Strip(iITCE) = Evt%itce%strip(iITCE)
+                       View(iITCE) = Evt%itce%view(iITCE)
+                       IndItKine(iITCE) = Evt%itce%inditkine(iITCE)
+                 END DO
+               ELSE
+                  WRITE(*,*) ERROR_BLOCK//'ITCE - nITCE '//ERROR_INDEX, nITCE
+                  nITCE = 0
+               END IF
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'ITCE - nITCE '//ERROR_INDEX, nITCE
-               nITCE = 0
+               WRITE(*,*) ERROR_MISS_DATA//'ITCE'
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'ITCE'
+            WRITE(*,*) ERROR_MISS_DATA//'ITCE' !TODO: Should I remove this control?
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -3350,7 +3371,7 @@ C-----------------------------------------------------------------------
                nHetDcs = 0
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'ITCE'
+            WRITE(*,*) ERROR_MISS_DATA//'HETE'
          END IF
       END IF
 C-----------------------------------------------------------------------
