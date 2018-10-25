@@ -1,0 +1,17 @@
+!
+use prod2ntu sample
+!
+talk prod2ntu cluo yes show exit
+!
+talk sample cluo yes mcflg yes show exit
+input url "dbmcdst:(run_nr=88220) and (dtr_stream_code='mrn') and (dtr_version=37)"
+!
+hist open/file="./test.hbook"/max_nrec=60000
+hist on/mod=sample
+hist on/mod=prod2ntu
+beg/nev=1000/rep=500000
+hist write
+hist close
+hist del
+show all
+exit

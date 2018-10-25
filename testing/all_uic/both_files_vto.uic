@@ -1,0 +1,17 @@
+!
+use prod2ntu sample
+!
+talk prod2ntu clus yes vnvo yes eclo yes ecls yes gdhi yes bene yes bpos yes t0gl yes prec yes cele yes trig yes tele yes c2trg yes trks yes trkv yes dprs yes dhsp yes dtce yes nsdtce yes dchits yes dhre yes gean yes tclo yes cfhi yes qcal yes cwrk yes csps yes mccsps yes cluo yes otrk yes otrv yes otcl yes dedx yes dhit yes qlte yes qcth yes ccle yes lete yes itce yes hete yes show exit
+!
+talk sample vto yes show exit
+input url "dbmcdst:(run_nr=88220) and (dtr_stream_code='mrn') and (dtr_version=37)"
+!
+hist open/file="./test.hbook"/max_nrec=60000
+hist on/mod=sample
+hist on/mod=prod2ntu
+beg/nev=1000/rep=500000
+hist write
+hist close
+hist del
+show all
+exit
