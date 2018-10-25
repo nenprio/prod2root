@@ -147,9 +147,9 @@ TreeWriter::~TreeWriter() {
 }
 
 void TreeWriter::printHeaderFlags() {
-    TString header = "\n==========================================================================\n";
-    header = "\n                                   FLAGS\n";
-    header = "\n==========================================================================\n";
+    TString header = "\n\n==========================================================================\n";
+    header +=        "\n                             PROD2ROOT FLAGS\n";
+    header +=        "\n==========================================================================\n";
     
     header += Form("INFO: %d ",      logicalToBool(sammenu_.infoFlag)); 
     header += Form("DATA: %d ",      logicalToBool(sammenu_.dataFlag));
@@ -200,8 +200,8 @@ void TreeWriter::printHeaderFlags() {
     header += Form("QTELE: %d ",     logicalToBool(sammenu_.qteleFlag));
     header += Form("QCTH: %d ",      logicalToBool(sammenu_.qcthFlag));
     header += Form("CCLE: %d ",     logicalToBool(sammenu_.ccleFlag));
-    header += Form("LETE: %d ",      logicalToBool(sammenu_.leteFlag));
-    header += Form("ITCE: %d\n",      logicalToBool(sammenu_.itceFlag));
+    header += Form("LETE: %d\n",      logicalToBool(sammenu_.leteFlag));
+    header += Form("ITCE: %d ",      logicalToBool(sammenu_.itceFlag));
     header += Form("HETE: %d ",      logicalToBool(sammenu_.heteFlag));
     header += Form("MCFLG: %d ",     logicalToBool(sammenu_.mcFlg));
     header += "\n==========================================================================\n";
