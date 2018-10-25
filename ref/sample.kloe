@@ -2846,26 +2846,30 @@ C-----------------------------------------------------------------------
            Algo(iECLO) = 0.
          END DO
 
-         istat = GETECLO(evt%eclo)
-         write(*,*) "ISTAT => ", istat
-
-         nCli = Evt%eclo%n
-         IF ( nCli < 0 .OR. nCli > 100 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'ECLO - nCli '//ERROR_DOMAIN, nCli
-         END IF
-
-         IF (nCli > 0 .AND. nCli <= 100) THEN
-            DO iECLO=1, nCli
-                 ECLOWord(iECLO) = Evt%eclo%totword(iECLO)
-                 IdPart(iECLO) = Evt%eclo%idpart(iECLO)
-                 DtClpo(iECLO) = Evt%eclo%dtclpo(iECLO)
-                 DvVnpo(iECLO) = Evt%eclo%dvvnpo(iECLO)
-                 Stre(iECLO) = Evt%eclo%stre(iECLO)
-                 Algo(iECLO) = Evt%eclo%algo(iECLO)
-           END DO
-         ELSE
-            WRITE(*,*) ERROR_BLOCK//'ECLO - nCli '//ERROR_INDEX, nCli
-            nCli = 0
+         STATUS = BLOCAT(IW, 'ECLO', 1, IND, INDDAT)
+         IF (STATUS.EQ.YESUCC) THEN
+            ISTAT = GETECLO(evt%eclo)
+   
+            nCli = Evt%eclo%n
+            IF ( nCli < 0 .OR. nCli > 100 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'ECLO - nCli '//ERROR_DOMAIN, nCli
+            END IF
+   
+            IF (nCli > 0 .AND. nCli <= 100) THEN
+               DO iECLO=1, nCli
+                    ECLOWord(iECLO) = Evt%eclo%totword(iECLO)
+                    IdPart(iECLO) = Evt%eclo%idpart(iECLO)
+                    DtClpo(iECLO) = Evt%eclo%dtclpo(iECLO)
+                    DvVnpo(iECLO) = Evt%eclo%dvvnpo(iECLO)
+                    Stre(iECLO) = Evt%eclo%stre(iECLO)
+                    Algo(iECLO) = Evt%eclo%algo(iECLO)
+              END DO
+            ELSE
+               WRITE(*,*) ERROR_BLOCK//'ECLO - nCli '//ERROR_INDEX, nCli
+               nCli = 0
+            END IF
+         ELSE 
+            WRITE(*,*) ERROR_MISS_DATA//'ECLO'
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2882,26 +2886,30 @@ C-----------------------------------------------------------------------
            Algo2(iECLO2) = 0.
          END DO
 
-         istat = GETECLO(evt%eclo)
-         write(*,*) "ISTAT => ", istat
-
-         nCli2 = Evt%eclo%n2
-         IF ( nCli2 < 0 .OR. nCli2 > 100 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'ECLO2 - nCli2 '//ERROR_DOMAIN, nCli2
-         END IF
-
-         IF (nCli2 > 0 .AND. nCli2 <= 100) THEN
-            DO iECLO2=1, nCli2
-                 ECLOWord2(iECLO2) = Evt%eclo%totword2(iECLO2)
-                 IdPart2(iECLO2) = Evt%eclo%idpart2(iECLO2)
-                 DtClpo2(iECLO2) = Evt%eclo%dtclpo2(iECLO2)
-                 DvVnpo2(iECLO2) = Evt%eclo%dvvnpo2(iECLO2)
-                 Stre2(iECLO2) = Evt%eclo%stre2(iECLO2)
-                 Algo2(iECLO2) = Evt%eclo%algo2(iECLO2)
-           END DO
-         ELSE
-            WRITE(*,*) ERROR_BLOCK//'ECLO2 - nCli2 '//ERROR_INDEX, nCli2
-            nCli2 = 0
+         STATUS = BLOCAT(IW, 'ECLO', 2, IND, INDDAT)
+         IF (STATUS.EQ.YESUCC) THEN
+            ISTAT = GETECLO(evt%eclo)
+   
+            nCli2 = Evt%eclo%n2
+            IF ( nCli2 < 0 .OR. nCli2 > 100 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'ECLO2 - nCli2 '//ERROR_DOMAIN, nCli2
+            END IF
+   
+            IF (nCli2 > 0 .AND. nCli2 <= 100) THEN
+               DO iECLO2=1, nCli2
+                    ECLOWord2(iECLO2) = Evt%eclo%totword2(iECLO2)
+                    IdPart2(iECLO2) = Evt%eclo%idpart2(iECLO2)
+                    DtClpo2(iECLO2) = Evt%eclo%dtclpo2(iECLO2)
+                    DvVnpo2(iECLO2) = Evt%eclo%dvvnpo2(iECLO2)
+                    Stre2(iECLO2) = Evt%eclo%stre2(iECLO2)
+                    Algo2(iECLO2) = Evt%eclo%algo2(iECLO2)
+              END DO
+            ELSE
+               WRITE(*,*) ERROR_BLOCK//'ECLO2 - nCli2 '//ERROR_INDEX, nCli2
+               nCli2 = 0
+            END IF
+         ELSE 
+            WRITE(*,*) ERROR_MISS_DATA//'ECLO2'
          END IF
       END IF
 C-----------------------------------------------------------------------
