@@ -199,10 +199,11 @@ void TreeWriter::printHeaderFlags() {
     header += Form("CLUO: %d ",      logicalToBool(sammenu_.cluoFlag));
     header += Form("QTELE: %d ",     logicalToBool(sammenu_.qteleFlag));
     header += Form("QCTH: %d ",      logicalToBool(sammenu_.qcthFlag));
-    header += Form("CCLE: %d\n",      logicalToBool(sammenu_.ccleFlag));
+    header += Form("CCLE: %d\n",     logicalToBool(sammenu_.ccleFlag));
     header += Form("LETE: %d ",      logicalToBool(sammenu_.leteFlag));
     header += Form("ITCE: %d ",      logicalToBool(sammenu_.itceFlag));
     header += Form("HETE: %d ",      logicalToBool(sammenu_.heteFlag));
+    header += Form("MCFLG: %d ",     logicalToBool(sammenu_.mcFlg));
     header += "\n==========================================================================\n";
     
     // Print to std output
@@ -452,8 +453,7 @@ void TreeWriter::addBlockClu() {
     fNewTree->Branch("TrmsCl", &evtclu_.TrmsCl, "TrmsCl[NClu]/F");
     fNewTree->Branch("FlagCl", &evtclu_.FlagCl, "FlagCl[NClu]/I");
     // Create MC leaves only if they exists
-    printf("C++ Write MC Block? %d %d", sharedflags_.MonteCarloFlag, logicalToBool(sharedflags_.MonteCarloFlag));
-    if (logicalToBool(sharedflags_.MonteCarloFlag)) {
+    if (logicalToBool(sammenu_.mcFlg)) {
         fNewTree->Branch("nCluMC", &evtclu_.NCluMc, "NCluMc/I");
         fNewTree->Branch("nPar",   &evtclu_.NPar,   "NPar[NCluMc]/I");
         fNewTree->Branch("PNum1",  &evtclu_.PNum1,  "PNum1[NCluMc]/I");
@@ -516,7 +516,7 @@ void TreeWriter::addBlockCele() {
     fNewTree->Branch("Eb",      &cele_.Eb,      "Eb[NCel]/F");
     fNewTree->Branch("Tb",      &cele_.Tb,      "Tb[NCel]/F");
 
-    if(logicalToBool(sharedflags_.MonteCarloFlag)) {
+    if(logicalToBool(sammenu_.mcFlg)) {
         fNewTree->Branch("nCelMc",  &cele_.NCelMc,  "NCelMc/I");
         fNewTree->Branch("EMc",     &cele_.EMc,     "EMc[NCelMc]/F");
         fNewTree->Branch("TMc",     &cele_.TMc,     "TMc[NCelMc]/F");
@@ -818,7 +818,7 @@ void TreeWriter::addBlockTrkSOld() {
     fNewTree->Branch("nMskInkOld",  &trkold_.nMskInkOld,  "nMskInkOld[nTOld]/I");
     fNewTree->Branch("Chi2FitOld",  &trkold_.Chi2FitOld,  "Chi2FitOld[nTOld]/F");
     fNewTree->Branch("Chi2MSOld",   &trkold_.Chi2MSOld,   "Chi2MSOld[nTOld]/F");
-    if (logicalToBool(sharedflags_.MonteCarloFlag)) {
+    if (logicalToBool(sammenu_.mcFlg)) {
         fNewTree->Branch("nTfMCOld",   &trkold_.nTfMCOld,   "nTfMCOld/I");
         fNewTree->Branch("nContrOld",  &trkold_.nContrOld,  "nContrOld[nTfMCOld]/I");
         fNewTree->Branch("TrkIne1Old", &trkold_.TrkIne1Old, "TrkIne1Old[nTfMCOld]/I");
@@ -1187,8 +1187,7 @@ void TreeWriter::addBlockCSPS() {
     fNewTree->Branch("CSx",   &csps_.CSx,   "CSx[nCS]/F");
     fNewTree->Branch("CSy",   &csps_.CSy,   "CSy[nCS]/F");
     fNewTree->Branch("CSz",   &csps_.CSz,   "CSz[nCS]/F");
-    
-    if(logicalToBool(sharedflags_.MonteCarloFlag)) {
+    if(logicalToBool(sammenu_.mcFlg)) {
         fNewTree->Branch("nCSMC",    &csps_.nCSMC,    "nCSMC/I");
         fNewTree->Branch("CSMCKine", &csps_.CSMCKine, "CSMCKine[nCSMC]/I");
         fNewTree->Branch("CSMCPoi",  &csps_.CSMCPoi,  "CSMCPoi[nCSMC]/I");
@@ -1215,7 +1214,7 @@ void TreeWriter::addBlockCluO() {
     fNewTree->Branch("CluZ",   &cluo_.CluZ,   "CluZ[nCluO]/F");
     fNewTree->Branch("CluT",   &cluo_.CluT,   "CluT[nCluO]/F");
     
-    if(logicalToBool(sharedflags_.MonteCarloFlag)) { 
+    if(logicalToBool(sammenu_.mcFlg)) { 
         fNewTree->Branch("nMCPar",   &cluo_.nMCPar,   "nMCPar/I");
         fNewTree->Branch("CluMCCel", &cluo_.CluMCCel, "CluMCCel[nMCPar]/I");
         fNewTree->Branch("CluMCiCl", &cluo_.CluMCiCl, "CluMCiCl[nMCPar]/I");

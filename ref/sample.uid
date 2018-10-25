@@ -59,7 +59,7 @@ Verb CCLE
 Verb LETE
 Verb ITCE
 Verb HETE
-Verb MCFLAG
+Verb MCFLG
 !
 Verb SHOW
 Verb EXIT
@@ -122,7 +122,7 @@ Button 50   /Description="Select CCLE       block"/Response="CCLE"
 Button 51   /Description="Select LETE       block"/Response="LETE"
 Button 52   /Description="Select ITCE       block"/Response="ITCE"
 Button 53   /Description="Select HETE       block"/Response="HETE"
-Button 54   /Description="Select MONTECARLO block"/Response="MCFLAG"
+Button 54   /Description="Select MONTECARLO block"/Response="MCFLG"
 
 Button 55   /Description="Show single process selection"/Response="SHOW"
 Button 56   /Description="Go Back to the AC prompt" /Response="EXIT"

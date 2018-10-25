@@ -64,6 +64,7 @@ C
       DEDXFLAG      = .FALSE.
       DPRSFLAG      = .FALSE.
       GEANFIFLAG    = .FALSE.
+      MCFLG         = .FALSE.
       MONTECARLOFLAG= .FALSE.
       
 C      write(*,*)"[SAMIN] INFOFLAG: ", INFOFLAG
@@ -202,7 +203,7 @@ C     Otherwise print error message to alert that
 C     MC blocks exist and they aren't required
 C     or they are required but they don't exist
 C
-      IF( MCFLAG .AND. EXPTYP.EQ.EXOFSI ) THEN
+      IF( MCFLG .AND. EXPTYP.EQ.EXOFSI ) THEN
          MONTECARLOFLAG = .TRUE.
       ELSE
          MONTECARLOFLAG = .FALSE.
@@ -1309,15 +1310,15 @@ C-----------------------------------------------------------------------
             ZDh(iDHSP) = 0.
          END DO
 
-         STATUS=.TRUE.
+         STATUS=YESUCC
          DO iDHSP = 1, nT 
             ISTAT = BLOCAT(IW, 'DTFS', iDHSP, IND, INDDAT)
             IF (ISTAT.NE.YESUCC) THEN
-               STATUS=.FALSE.
-            ENDIF
+               STATUS=YENOBK
+            END IF
          END DO
 
-         IF (STATUS) THEN
+         IF (STATUS.EQ.YESUCC) THEN
             istat =  GETDHSPSTRU(evt%trk%n,evt%dhsp)
       
             nDHSP = Evt%DHSP%numDHSP
@@ -2196,8 +2197,6 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C Fill Block mc
 C-----------------------------------------------------------------------
-C     TODO: How manage GEANFI with respect to MC flag? It is a pure MC block?
-C     If MCFLAG=False, it has to be skipped?
       IF (GEANFIFLAG) THEN
         IF (MONTECARLOFLAG) THEN
            nTMC = 0.
@@ -2930,6 +2929,7 @@ C
 C        Fill MC data only if they exist, otherwise don't create empty structures         
 C
          IF (MONTECARLOFLAG) THEN
+          WRITE(*,*) "MC TRUE"
           nCSMC = 0.
           DO iCSPSMC=1, 2000
             CSMCKine(iCSPSMC) = 0.
@@ -3382,14 +3382,6 @@ C    Initialization tree for ROOT
       write(*,*) '==========================='
       write(*,*) '[Info] START BOOKING'
       write(*,*) '==========================='
-C
-C    Compute the MonteCarlo Flag 
-C
-      IF( EXPTYP.EQ.EXOFSI ) THEN
-         MONTECARLOFLAG = .TRUE.
-      ELSE
-         MONTECARLOFLAG = .FALSE.
-      ENDIF
 
       call inittree()
 
@@ -3645,11 +3637,10 @@ C
       	write(Prompt,123)'HETE'
 	    Status=UIGTYE(Prompt,HETEFLAG)
     	goto 10
-      else if(verb.eq.'MCFLAG')then
-      	write(Prompt,123)'MCFLAG'
-	    Status=UIGTYE(Prompt,MCFLAG)
+      else if(verb.eq.'MCFLG')then
+      	write(Prompt,123)'MCFLG'
+	    Status=UIGTYE(Prompt,MCFLG)
     	goto 10
-      end if
       end if
 C
 123   FORMAT(1x,'Select ',a4,' Ntuple-block?')
