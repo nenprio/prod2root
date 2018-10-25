@@ -329,7 +329,9 @@ C-----------------------------------------------------------------------
          BLumz = 0.
          Broots = 0.
          BrootsErr = 0.
-
+C
+C        TODO: BLOCAT some data?
+C
          rstat = GETBPOS(Evt%Bpos)
  
          BPx = Evt%Bpos%px
@@ -414,13 +416,22 @@ C-----------------------------------------------------------------------
             EclTagNum2(iecls2) = 0
             EclEvType2(iecls2) = 0
          END DO
+C
+C        ECLS has 2 banks, if at least 1 of them exists, then
+C        go ahed and call the get function. We don't split the
+C        filling of data because the get function
+C        is only one for both banks.
+C
+         STATUS = YENOBK
+         ISTAT = BLOCAT(IW, 'ECLS', 1, IND, INDDAT)
+         IF (ISTAT.EQ.YESUCC) THEN
+            STATUS = YESUCC
+         END IF
+         ISTAT = BLOCAT(IW, 'ECLS', 2, IND, INDDAT)
+         IF (ISTAT.EQ.YESUCC) THEN
+            STATUS = YESUCC
+         END IF
 
-C
-C        Here I'm checking only for FIRST ECLS BANK
-C        It is ok since the values for Ecls2 are set to 0 in the get function
-C        TODO: Is it possible to have Ecls2 and not Ecls?
-C
-         STATUS = BLOCAT(IW,'ECLS',1,IND,INDDAT)
          IF (STATUS.EQ.YESUCC) THEN
             istat = GETECLS(evt%ecls)
             
@@ -432,7 +443,7 @@ C
             IF (nEcls > 0 .AND. nEcls <= 8) THEN
                EclTrgw = evt%ecls%trigger
                EclFilfo = evt%ecls%filfo
-               DO iecls=1,necls
+               DO iecls = 1,necls
                   EclWord(iecls) = evt%ecls%TotWord(iecls)
                   EclStream(iecls) = evt%ecls%Stream(iecls)
                   EclTagNum(iecls) = evt%ecls%TagNum(iecls)
@@ -845,19 +856,25 @@ C-----------------------------------------------------------------------
          T0Step1 = 0.
          DelayCable = 0.
          TBunch = 0.
-         
-         STATUS = BLOCAT(IW, "T0GL", 1, IND, INDDAT)
-         IF (STATUS.EQ.YESUCC) THEN
+C
+C        Time Block has 2 distinct banks and 2 get functions.
+C        Then we call them only if the respective bank exists,
+C
+         STATUS = YENOBK
+         ISTAT = BLOCAT(IW, "T0GL", 1, IND, INDDAT)
+         IF (ISTAT.EQ.YESUCC) THEN
+            STATUS = YESUCC
             istat = T0GLRD(T0Dc0,T0Hit0,T0Clu0,T0Step1,DelayCable,TBunch)
-         ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'T0GL'
          END IF
          
-         STATUS = BLOCAT(IW, "T0MC", 1, IND, INDDAT)
-         IF (STATUS.EQ.YESUCC) THEN
+         ISTAT = BLOCAT(IW, "T0MC", 1, IND, INDDAT)
+         IF (ISTAT.EQ.YESUCC) THEN
             istat = T0MCRD(TPhased_mc)
-         ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'T0MC'
+            STATUS = YESUCC
+         END IF
+
+         IF (STATUS.NE.YESUCC) THEN
+            WRITE(*,*) ERROR_MISS_DATA//'TIME-T0'
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -1237,9 +1254,10 @@ C-----------------------------------------------------------------------
          nBigDCp = 0.
          nCellDC = 0.
          nSmallDC = 0.
-   
+C   
 C        DTCEStru is initialized in raw2dtce.cin
-   
+C        TODO: BLOCAT some data?
+C
          nDCHR = DTCEStru%nDCHR
          nSmallDCm = DTCEStru%nSmallDCm
          nSmallDCp = DTCEStru%nSmallDCp
