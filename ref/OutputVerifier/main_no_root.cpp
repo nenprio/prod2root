@@ -103,7 +103,6 @@ int verifyFiles(const char *rF, const char *hbF, bool printInfo) {
             printf("[Error] Leaf %s not found.\n", nameRoot.c_str());
             /* printf("%s\t=>\t???\t\t\t\t\tX\n", nameRoot.c_str()); */
             errorCounter++;
-            break;
         } 
         
         // Reset hb file to the beginning
