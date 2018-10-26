@@ -2968,42 +2968,53 @@ C
 C           Fill MC data only if they exist, otherwise don't create empty structures         
 C
             IF (MONTECARLOFLAG) THEN
-             nCSMC = 0.
-             DO iCSPSMC=1, 2000
-               CSMCKine(iCSPSMC) = 0.
-               CSMCPoi(iCSPSMC) = 0.
-               CSMCNHit(iCSPSMC) = 0.
-               CSMCx(iCSPSMC) = 0.
-               CSMCy(iCSPSMC) = 0.
-               CSMCz(iCSPSMC) = 0.
-               CSMCt(iCSPSMC) = 0.
-               CSMCe(iCSPSMC) = 0.
-             END DO
-    
-             nCSMC = Evt%CSPSMC%Ncel
-             IF ( nCSMC < 0 .OR. nCSMC > 2000 ) THEN
-                WRITE(*,*) ERROR_BLOCK//'CSPS - nCSMC '//ERROR_DOMAIN, nCSMC
-             END IF
-    
-             IF (nCSMC > 0 .AND. nCSMC <= 2000) THEN
-                DO iCSPSMC=1, nCSMC
-                     CSMCKine(iCSPSMC) = Evt%CSPSMC%Knum(iCSPSMC)
-                     CSMCPoi(iCSPSMC) = Evt%CSPSMC%Ihit(iCSPSMC)
-                     CSMCNHit(iCSPSMC) = Evt%CSPSMC%Nhit(iCSPSMC)
-                     CSMCx(iCSPSMC) = Evt%CSPSMC%X(iCSPSMC)
-                     CSMCy(iCSPSMC) = Evt%CSPSMC%Y(iCSPSMC)
-                     CSMCz(iCSPSMC) = Evt%CSPSMC%Z(iCSPSMC)
-                     CSMCt(iCSPSMC) = Evt%CSPSMC%T(iCSPSMC)
-                     CSMCe(iCSPSMC) = Evt%CSPSMC%E(iCSPSMC)
+               nCSMC = 0.
+               DO iCSPSMC=1, 2000
+                 CSMCKine(iCSPSMC) = 0.
+                 CSMCPoi(iCSPSMC) = 0.
+                 CSMCNHit(iCSPSMC) = 0.
+                 CSMCx(iCSPSMC) = 0.
+                 CSMCy(iCSPSMC) = 0.
+                 CSMCz(iCSPSMC) = 0.
+                 CSMCt(iCSPSMC) = 0.
+                 CSMCe(iCSPSMC) = 0.
                END DO
-             ELSE
-                WRITE(*,*) ERROR_BLOCK//'CSPS - nCSMC '//ERROR_INDEX, nCSMC
-                nCSMC = 0
-             END IF
-          ELSE 
-             WRITE(*,*) ERROR_MISS_DATA//'CSPS'
-          END IF
-        END IF
+
+C      
+C              In the get function are also accessed CHIT, CEKA, CEKE
+C              only for MC data. If they miss, could be returned dirty 
+C              data in CSPSMC structure. To avoid this behavior, we
+C              check for CHIT block.
+C
+               STATUS = BLOCAT(IW, 'CHIT', 1, IND, INDDAT)
+               IF (STATUS.EQ.YESUCC) THEN
+                  nCSMC = Evt%CSPSMC%Ncel
+                  IF ( nCSMC < 0 .OR. nCSMC > 2000 ) THEN
+                     WRITE(*,*) ERROR_BLOCK//'CSPS - nCSMC '//ERROR_DOMAIN, nCSMC
+                  END IF
+         
+                  IF (nCSMC > 0 .AND. nCSMC <= 2000) THEN
+                     DO iCSPSMC=1, nCSMC
+                          CSMCKine(iCSPSMC) = Evt%CSPSMC%Knum(iCSPSMC)
+                          CSMCPoi(iCSPSMC) = Evt%CSPSMC%Ihit(iCSPSMC)
+                          CSMCNHit(iCSPSMC) = Evt%CSPSMC%Nhit(iCSPSMC)
+                          CSMCx(iCSPSMC) = Evt%CSPSMC%X(iCSPSMC)
+                          CSMCy(iCSPSMC) = Evt%CSPSMC%Y(iCSPSMC)
+                          CSMCz(iCSPSMC) = Evt%CSPSMC%Z(iCSPSMC)
+                          CSMCt(iCSPSMC) = Evt%CSPSMC%T(iCSPSMC)
+                          CSMCe(iCSPSMC) = Evt%CSPSMC%E(iCSPSMC)
+                    END DO
+                  ELSE
+                     WRITE(*,*) ERROR_BLOCK//'CSPS - nCSMC '//ERROR_INDEX, nCSMC
+                     nCSMC = 0
+                  END IF
+               ELSE 
+                  WRITE(*,*) ERROR_MISS_DATA//'CSPSMC (CHIT)'
+               END IF
+            END IF
+         ELSE 
+            WRITE(*,*) ERROR_MISS_DATA//'CSPS'
+         END IF
       END IF
 C-----------------------------------------------------------------------
 C Fill Block cluo

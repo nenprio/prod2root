@@ -1,6 +1,8 @@
 !
 use prod2ntu sample
 !
+talk prod2ntu clus no vnvo no eclo no ecls no gdhi no bene no bpos no t0gl no prec no cele no trig no tele no c2trg no trks no trkv no dprs no dhsp no dtce no nsdtce no dchits no dhre no gean no tclo no cfhi no qcal no cwrk no csps no mccsps no cluo no otrk no otrv no otcl no dedx no dhit no qlte no qcth no ccle no lete no itce no hete no exit
+!
 talk prod2ntu csps yes show exit
 !
 talk sample csps yes mcflg yes show exit

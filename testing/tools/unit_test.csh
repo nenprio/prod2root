@@ -1,11 +1,11 @@
 #!/usr/bin/tcsh
 
-set INPUT_FILE=$1
+set TESTING_DIR=$1
+set INPUT_FILE=$2
 set UIC_TEST_DIR=../uic_test
 set EXE_DIR=../exe
 set EXE_SCRIPT=${EXE_DIR}/sample.exe
 set REM_SCRIPT=remove_files.csh
-set TESTING_DIR=testing_mc
 
 set block_name=`basename $INPUT_FILE | cut -d '.' -f 1 | cut -d '_' -f 3`
 set output_dir=${TESTING_DIR}/${block_name}_block

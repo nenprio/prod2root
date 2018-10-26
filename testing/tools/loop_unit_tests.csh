@@ -8,6 +8,6 @@ set UNIT_TEST_SCRIPT=${TOOLS}/unit_test.csh
 
 foreach f (${TESTING_DIR}/*.uic)
     echo -n "Running Unit Test on ${f}..."
-    source ${UNIT_TEST_SCRIPT} $f
+    source ${UNIT_TEST_SCRIPT} ${TESTING_DIR} ${f}
     echo "DONE"
 end

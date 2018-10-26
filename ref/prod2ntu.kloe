@@ -2623,6 +2623,7 @@ ckpm
 
         ELSE IF( Verb.EQ.'DEFA' )THEN
            write(6,*)' Setting Default Conditions !'
+           write(6,*)' Setting ALL FALSE Conditions !'
            PRECLUSFLAG= .false.
            CLUSFLAG   = .false.
            CELEFLAG   = .false.
