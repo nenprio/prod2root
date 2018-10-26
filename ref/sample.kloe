@@ -3009,7 +3009,7 @@ C
                      nCSMC = 0
                   END IF
                ELSE 
-                  WRITE(*,*) ERROR_MISS_DATA//'CSPSMC (CHIT)'
+                  WRITE(*,*) ERROR_MISS_DATA//'CSPS (CHIT)'
                END IF
             END IF
          ELSE 
