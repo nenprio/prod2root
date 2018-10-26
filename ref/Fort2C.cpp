@@ -12,7 +12,7 @@ TreeWriter *writer;
 //
 // input:   -
 // output:  -
-void initTree_(){
+void inittree_(){
   writer = new TreeWriter();
 }
 
@@ -20,7 +20,7 @@ void initTree_(){
 //
 // input:   -
 // output:  -
-void fillNtu_(){
+void fillntu_(){
   writer->fillTTree();
 }
 
@@ -28,7 +28,7 @@ void fillNtu_(){
 //
 // input:   -
 // output:  -
-void closeTree_(){
+void closetree_(){
   delete writer;
   writer = NULL;
 }
@@ -37,7 +37,7 @@ void closeTree_(){
 //
 // input:   -
 // output:  -
-void showHeader_(){
+void showheader_(){
     writer->printHeaderFlags();
 }
 
