@@ -180,9 +180,10 @@ void TreeWriter::printHeaderFlags() {
     header += Form("VTXOLD: %d ",    logicalToBool(sammenu_.vtxOldFlag));
     header += Form("TRKSOLD: %d ",   logicalToBool(sammenu_.trksOldFlag));
     header += Form("DHIT: %d ",      logicalToBool(sammenu_.dhitFlag));
+    header += Form("DEDX: %d ",      logicalToBool(sammenu_.dedxFlag));
     header += Form("DPRS: %d ",      logicalToBool(sammenu_.dprsFlag));
-    header += Form("GEANFI: %d ",    logicalToBool(sammenu_.geanfiFlag));
-    header += Form("TCLO: %d\n",      logicalToBool(sammenu_.tcloFlag));
+    header += Form("GEANFI: %d\n",    logicalToBool(sammenu_.geanfiFlag));
+    header += Form("TCLO: %d ",      logicalToBool(sammenu_.tcloFlag));
     header += Form("TCOLD: %d ",     logicalToBool(sammenu_.tcloldFlag));
     header += Form("CFHI: %d ",      logicalToBool(sammenu_.cfhiFlag));
     header += Form("QIHI: %d ",      logicalToBool(sammenu_.qihiFlag));
@@ -190,8 +191,8 @@ void TreeWriter::printHeaderFlags() {
     header += Form("QELE: %d ",     logicalToBool(sammenu_.qeleFlag));
     header += Form("QCAL: %d ",      logicalToBool(sammenu_.qcalFlag));
     header += Form("KNVO: %d ",      logicalToBool(sammenu_.knvoFlag));
-    header += Form("VNVO: %d ",      logicalToBool(sammenu_.vnvoFlag));
-    header += Form("VNVB: %d\n",      logicalToBool(sammenu_.vnvbFlag));
+    header += Form("VNVO: %d\n",      logicalToBool(sammenu_.vnvoFlag));
+    header += Form("VNVB: %d ",      logicalToBool(sammenu_.vnvbFlag));
     header += Form("INVO: %d ",      logicalToBool(sammenu_.invoFlag));
     header += Form("ECLO: %d ",      logicalToBool(sammenu_.ecloFlag));
     header += Form("ECLO2: %d ",     logicalToBool(sammenu_.eclo2Flag));
@@ -199,8 +200,8 @@ void TreeWriter::printHeaderFlags() {
     header += Form("CLUO: %d ",      logicalToBool(sammenu_.cluoFlag));
     header += Form("QTELE: %d ",     logicalToBool(sammenu_.qteleFlag));
     header += Form("QCTH: %d ",      logicalToBool(sammenu_.qcthFlag));
-    header += Form("CCLE: %d ",     logicalToBool(sammenu_.ccleFlag));
-    header += Form("LETE: %d\n",      logicalToBool(sammenu_.leteFlag));
+    header += Form("CCLE: %d\n",     logicalToBool(sammenu_.ccleFlag));
+    header += Form("LETE: %d ",      logicalToBool(sammenu_.leteFlag));
     header += Form("ITCE: %d ",      logicalToBool(sammenu_.itceFlag));
     header += Form("HETE: %d ",      logicalToBool(sammenu_.heteFlag));
     header += Form("MCFLG: %d ",     logicalToBool(sammenu_.mcFlg));
