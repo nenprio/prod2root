@@ -207,6 +207,11 @@ C
          MONTECARLOFLAG = .TRUE.
       ELSE
          MONTECARLOFLAG = .FALSE.
+C
+C        TODO: Print error to comunicate that the user is trying to acquire
+C        MC data and they don't exist or that the user is not requiring
+C        MC data and they are present.
+C
       ENDIF
 
       IF (MONTECARLOFLAG) THEN
@@ -939,7 +944,6 @@ C
 C           Fill MC data only if they exist, otherwise don't create empty structures         
 C
             IF (MONTECARLOFLAG) THEN
-              write(*,*) "WRITING CLUMC EVENT", MONTECARLOFLAG
               NCluMc = 0.
               DO iEVTCLUMC=1, 100
                  NPar(iEVTCLUMC) = 0.
@@ -2190,38 +2194,43 @@ C-----------------------------------------------------------------------
            PrKHit(iiDPRS) = 0.
          END DO
 
-         istat = GET_DPRS_STRUCT(Evt%DPRS%NDPRS)
-         write(*,*) "ISTAT => ", istat
-
-         nDPRS =  Evt%DPRS%NDPRS
-         IF ( nDPRS < 0 .OR. nDPRS > 200 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'DPRS - nDPRS '//ERROR_DOMAIN, nDPRS
-         END IF
-
-         IF (nDPRS > 0 .AND. nDPRS <= 200) THEN
-            DO iiDPRS=1, nDPRS
-               nView(iiDPRS) =  Evt%DPRS%NVIEW(iiDPRS)
-               iDPRS(iiDPRS) =  Evt%DPRS%IDPRS(iiDPRS)
-               DPRSVer(iiDPRS) =  Evt%DPRS%VERS(iiDPRS)
-               nPos(iiDPRS) =  Evt%DPRS%NPOS(iiDPRS)
-               nNeg(iiDPRS) =  Evt%DPRS%NNEG(iiDPRS)
-               xPCA(iiDPRS) =  Evt%DPRS%XPCA(iiDPRS)
-               yPCA(iiDPRS) =  Evt%DPRS%YPCA(iiDPRS)
-               zPCA(iiDPRS) =  Evt%DPRS%ZPCA(iiDPRS)
-               xLst(iiDPRS) =  Evt%DPRS%XLST(iiDPRS)
-               yLst(iiDPRS) =  Evt%DPRS%YLST(iiDPRS)
-               zLst(iiDPRS) =  Evt%DPRS%ZLST(iiDPRS)
-               CurP(iiDPRS) =  Evt%DPRS%CURP(iiDPRS)
-               PhiP(iiDPRS) =  Evt%DPRS%PHIP(iiDPRS)
-               CotP(iiDPRS) =  Evt%DPRS%COTP(iiDPRS)
-               Qual(iiDPRS) =  Evt%DPRS%QUAL(iiDPRS)
-               iPFl(iiDPRS) =  Evt%DPRS%IPFL(iiDPRS)
-               PrKine(iiDPRS) =  Evt%DPRS%KINE(iiDPRS)
-               PrKHit(iiDPRS) =  Evt%DPRS%NHKINE(iiDPRS)
-            END DO
+         STATUS = BLOCAT(IW, 'DPRS', -1, IND, INDDAT)
+         IF (STATUS.EQ.YESUCC) THEN
+C            ISTAT = GET_DPRS_STRUCT(Evt%DPRS%NDPRS)
+            ISTAT = GET_DPRS_STRUCT(Evt%DPRS)
+   
+            nDPRS =  Evt%DPRS%NDPRS
+            IF ( nDPRS < 0 .OR. nDPRS > 200 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'DPRS - nDPRS '//ERROR_DOMAIN, nDPRS
+            END IF
+   
+            IF (nDPRS > 0 .AND. nDPRS <= 200) THEN
+               DO iiDPRS=1, nDPRS
+                  nView(iiDPRS) =  Evt%DPRS%NVIEW(iiDPRS)
+                  iDPRS(iiDPRS) =  Evt%DPRS%IDPRS(iiDPRS)
+                  DPRSVer(iiDPRS) =  Evt%DPRS%VERS(iiDPRS)
+                  nPos(iiDPRS) =  Evt%DPRS%NPOS(iiDPRS)
+                  nNeg(iiDPRS) =  Evt%DPRS%NNEG(iiDPRS)
+                  xPCA(iiDPRS) =  Evt%DPRS%XPCA(iiDPRS)
+                  yPCA(iiDPRS) =  Evt%DPRS%YPCA(iiDPRS)
+                  zPCA(iiDPRS) =  Evt%DPRS%ZPCA(iiDPRS)
+                  xLst(iiDPRS) =  Evt%DPRS%XLST(iiDPRS)
+                  yLst(iiDPRS) =  Evt%DPRS%YLST(iiDPRS)
+                  zLst(iiDPRS) =  Evt%DPRS%ZLST(iiDPRS)
+                  CurP(iiDPRS) =  Evt%DPRS%CURP(iiDPRS)
+                  PhiP(iiDPRS) =  Evt%DPRS%PHIP(iiDPRS)
+                  CotP(iiDPRS) =  Evt%DPRS%COTP(iiDPRS)
+                  Qual(iiDPRS) =  Evt%DPRS%QUAL(iiDPRS)
+                  iPFl(iiDPRS) =  Evt%DPRS%IPFL(iiDPRS)
+                  PrKine(iiDPRS) =  Evt%DPRS%KINE(iiDPRS)
+                  PrKHit(iiDPRS) =  Evt%DPRS%NHKINE(iiDPRS)
+               END DO
+            ELSE
+               WRITE(*,*) ERROR_BLOCK//'DPRS - nDPRS '//ERROR_INDEX, nDPRS
+               nDPRS = 0
+            END IF
          ELSE
-            WRITE(*,*) ERROR_BLOCK//'DPRS - nDPRS '//ERROR_INDEX, nDPRS
-            nDPRS = 0
+            WRITE(*,*) ERROR_MISS_DATA//'DPRS'
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2982,9 +2991,9 @@ C
 
 C      
 C              In the get function are also accessed CHIT, CEKA, CEKE
-C              only for MC data. If they miss, could be returned dirty 
-C              data in CSPSMC structure. To avoid this behavior, we
-C              check for CHIT block.
+C              only for MC data. CEKA, CEKE are ignored by prod2ntu.
+C              For this reason, we check only CSPS and CHIT. CHIT only if
+C              MC is required.
 C
                STATUS = BLOCAT(IW, 'CHIT', 1, IND, INDDAT)
                IF (STATUS.EQ.YESUCC) THEN
@@ -3031,64 +3040,75 @@ C-----------------------------------------------------------------------
            CluT(iCLUO) = 0.
          END DO
 
-         istat = GETCLUOSTRU(Evt%CLUO)
-         write(*,*) "ISTAT => ", istat
-
-         nCluO = Evt%CLUO%N
-         IF ( nCluO < 0 .OR. nCluO > 100 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'CLUO - nCluO '//ERROR_DOMAIN, nCluO
-         END IF
-
-         IF (nCluO > 0 .AND. nCluO <= 100) THEN
-            DO iCLUO=1, nCluO
-                 CluCel(iCLUO) = Evt%CLUO%Ncel(iCLUO)
-                 CluFl(iCLUO) = Evt%CLUO%Flag(iCLUO)
-                 CluE(iCLUO) = Evt%CLUO%E(iCLUO)
-                 CluX(iCLUO) = Evt%CLUO%X(iCLUO)
-                 CluY(iCLUO) = Evt%CLUO%Y(iCLUO)
-                 CluZ(iCLUO) = Evt%CLUO%Z(iCLUO)
-                 CluT(iCLUO) = Evt%CLUO%T(iCLUO)
-           END DO
-         ELSE
-            WRITE(*,*) ERROR_BLOCK//'CLUO - nCluO '//ERROR_INDEX, nCluO
-            nCluO = 0
-         END IF
-C         
-C        Fill MC data only if they exist, otherwise don't create empty structures         
-C
-         IF (MONTECARLOFLAG) THEN
-            nMCPar = 0.
-            DO iCLUOMC=1, 100
-              CluMCCel(iCLUOMC) = 0.
-              CluMCiCl(iCLUOMC) = 0.
-              CluMCKin(iCLUOMC) = 0.
-              CluMCe(iCLUOMC) = 0.
-              CluMCx(iCLUOMC) = 0.
-              CluMCy(iCLUOMC) = 0.
-              CluMCz(iCLUOMC) = 0.
-              CluMCt(iCLUOMC) = 0.
-            END DO
+         STATUS = BLOCAT(IW, 'CLUO', 1, IND, INDDAT)
+         IF (STATUS.EQ.YESUCC) THEN
+            ISTAT = GETCLUOSTRU(Evt%CLUO)
    
-            nMCPar = Evt%CLUOMC%Npar
-            IF ( nMCPar < 0 .OR. nMCPar > 100 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'CLUO - nMCPar '//ERROR_DOMAIN, nMCPar
+            nCluO = Evt%CLUO%N
+            IF ( nCluO < 0 .OR. nCluO > 100 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'CLUO - nCluO '//ERROR_DOMAIN, nCluO
             END IF
    
-            IF (nMCPar > 0 .AND. nMCPar <= 100) THEN
-               DO iCLUOMC=1, nMCPar
-                    CluMCCel(iCLUOMC) = Evt%CLUOMC%Ncel(iCLUOMC)
-                    CluMCiCl(iCLUOMC) = Evt%CLUOMC%Iclu(iCLUOMC)
-                    CluMCKin(iCLUOMC) = Evt%CLUOMC%Kine(iCLUOMC)
-                    CluMCe(iCLUOMC) = Evt%CLUOMC%E(iCLUOMC)
-                    CluMCx(iCLUOMC) = Evt%CLUOMC%X(iCLUOMC)
-                    CluMCy(iCLUOMC) = Evt%CLUOMC%Y(iCLUOMC)
-                    CluMCz(iCLUOMC) = Evt%CLUOMC%Z(iCLUOMC)
-                    CluMCt(iCLUOMC) = Evt%CLUOMC%T(iCLUOMC)
+            IF (nCluO > 0 .AND. nCluO <= 100) THEN
+               DO iCLUO=1, nCluO
+                    CluCel(iCLUO) = Evt%CLUO%Ncel(iCLUO)
+                    CluFl(iCLUO) = Evt%CLUO%Flag(iCLUO)
+                    CluE(iCLUO) = Evt%CLUO%E(iCLUO)
+                    CluX(iCLUO) = Evt%CLUO%X(iCLUO)
+                    CluY(iCLUO) = Evt%CLUO%Y(iCLUO)
+                    CluZ(iCLUO) = Evt%CLUO%Z(iCLUO)
+                    CluT(iCLUO) = Evt%CLUO%T(iCLUO)
               END DO
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'CLUO - nMCPar '//ERROR_INDEX, nMCPar
-               nMCPar = 0
+               WRITE(*,*) ERROR_BLOCK//'CLUO - nCluO '//ERROR_INDEX, nCluO
+               nCluO = 0
             END IF
+   C         
+   C        Fill MC data only if they exist, otherwise don't create empty structures         
+   C
+            IF (MONTECARLOFLAG) THEN
+               nMCPar = 0.
+               DO iCLUOMC=1, 100
+                 CluMCCel(iCLUOMC) = 0.
+                 CluMCiCl(iCLUOMC) = 0.
+                 CluMCKin(iCLUOMC) = 0.
+                 CluMCe(iCLUOMC) = 0.
+                 CluMCx(iCLUOMC) = 0.
+                 CluMCy(iCLUOMC) = 0.
+                 CluMCz(iCLUOMC) = 0.
+                 CluMCt(iCLUOMC) = 0.
+               END DO
+         
+               STATUS = BLOCAT(IW, 'CLMO', 1, IND, INDDAT)
+               IF (STATUS.EQ.YESUCC) THEN
+                  ISTAT = GETCLUOMCSTRU(Evt%CLUO)
+         
+                  nMCPar = Evt%CLUOMC%Npar
+                  IF ( nMCPar < 0 .OR. nMCPar > 100 ) THEN
+                     WRITE(*,*) ERROR_BLOCK//'CLUO - nMCPar '//ERROR_DOMAIN, nMCPar
+                  END IF
+         
+                  IF (nMCPar > 0 .AND. nMCPar <= 100) THEN
+                     DO iCLUOMC=1, nMCPar
+                          CluMCCel(iCLUOMC) = Evt%CLUOMC%Ncel(iCLUOMC)
+                          CluMCiCl(iCLUOMC) = Evt%CLUOMC%Iclu(iCLUOMC)
+                          CluMCKin(iCLUOMC) = Evt%CLUOMC%Kine(iCLUOMC)
+                          CluMCe(iCLUOMC) = Evt%CLUOMC%E(iCLUOMC)
+                          CluMCx(iCLUOMC) = Evt%CLUOMC%X(iCLUOMC)
+                          CluMCy(iCLUOMC) = Evt%CLUOMC%Y(iCLUOMC)
+                          CluMCz(iCLUOMC) = Evt%CLUOMC%Z(iCLUOMC)
+                          CluMCt(iCLUOMC) = Evt%CLUOMC%T(iCLUOMC)
+                    END DO
+                  ELSE
+                     WRITE(*,*) ERROR_BLOCK//'CLUO - nMCPar '//ERROR_INDEX, nMCPar
+                     nMCPar = 0
+                  END IF
+               ELSE 
+                  WRITE(*,*) ERROR_MISS_DATA//'CLUO (CLMO)'
+               END IF
+            END IF
+         ELSE 
+            WRITE(*,*) ERROR_MISS_DATA//'CLUO'
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -3110,45 +3130,52 @@ C-----------------------------------------------------------------------
              QLte_Tim5(iQTELE) = 0.
            END DO
   
-           istat = GETQCALTSTRU(Evt%QCALT)
-           write(*,*) "ISTAT => ", istat
-  
-           nQCalT = Evt%QCALT%NEle
-           IF ( nQCalT < 0 .OR. nQCalT > 1920 ) THEN
-              WRITE(*,*) ERROR_BLOCK//'QTELE - nQCalT '//ERROR_DOMAIN, nQCalT
+           STATUS = BIGEST(IW, 'QCTE', BNKNUM) !Returns Largest Bank Number
+           IF( STATUS.EQ.YESUCC ) THEN
+              STATUS = BLOCAT(IW, 'QCTE', BNKNUM, IND, INDDAT)
            END IF
-  
-           IF (nQCalT > 0 .AND. nQCalT <= 1920) THEN
-              DO iQTELE=1, nQCalT
-                 QLte_Hit(iQTELE) = Evt%QCALT%Nhit(iQTELE)
-                 IF ( QLte_Hit(iQTELE) < 0 .OR. QLte_Hit(iQTELE) > 5 ) THEN
-                    WRITE(*,*) ERROR_BLOCK//'QTELE - QLte_Hit '//ERROR_DOMAIN, QLte_Hit(iQTELE)
-                 END IF
-                 QLte_Det(iQTELE) = Evt%QCALT%Qdet(iQTELE)
-                 IF ( QLte_Det(iQTELE) < 0 .OR. QLte_Det(iQTELE) > 2 ) THEN
-                    WRITE(*,*) ERROR_BLOCK//'QTELE - QLte_Det '//ERROR_DOMAIN, QLte_Det(iQTELE)
-                 END IF
-                 QLte_Mod(iQTELE) = Evt%QCALT%Qmod(iQTELE)
-                 IF ( QLte_Mod(iQTELE) < 0 .OR. QLte_Mod(iQTELE) > 11 ) THEN
-                    WRITE(*,*) ERROR_BLOCK//'QTELE - QLte_Mod '//ERROR_DOMAIN, QLte_Mod(iQTELE)
-                 END IF
-                 QLte_Pla(iQTELE) = Evt%QCALT%Qpla(iQTELE)
-                 IF ( QLte_Pla(iQTELE) < 0 .OR. QLte_Pla(iQTELE) > 4 ) THEN
-                    WRITE(*,*) ERROR_BLOCK//'QTELE - QLte_Pla '//ERROR_DOMAIN, QLte_Pla(iQTELE)
-                 END IF
-                 QLte_Til(iQTELE) = Evt%QCALT%Qtil(iQTELE)
-                 IF ( QLte_Til(iQTELE) < 0 .OR. QLte_Til(iQTELE) > 15 ) THEN
-                    WRITE(*,*) ERROR_BLOCK//'QTELE - QLte_Til '//ERROR_DOMAIN, QLte_Til(iQTELE)
-                 END IF
-                 QLte_Tim1(iQTELE) = Evt%QCALT%Time(1, iQTELE)
-                 QLte_Tim2(iQTELE) = Evt%QCALT%Time(2, iQTELE)
-                 QLte_Tim3(iQTELE) = Evt%QCALT%Time(3, iQTELE)
-                 QLte_Tim4(iQTELE) = Evt%QCALT%Time(4, iQTELE)
-                 QLte_Tim5(iQTELE) = Evt%QCALT%Time(5, iQTELE)
-             END DO
-           ELSE
-              WRITE(*,*) ERROR_BLOCK//'QTELE - nQCalT '//ERROR_INDEX, nQCalT
-              nQCalT = 0
+           IF( STATUS.EQ.YESUCC ) THEN
+              ISTAT = GETQCALTSTRU(Evt%QCALT)
+     
+              nQCalT = Evt%QCALT%NEle
+              IF ( nQCalT < 0 .OR. nQCalT > 1920 ) THEN
+                 WRITE(*,*) ERROR_BLOCK//'QTELE - nQCalT '//ERROR_DOMAIN, nQCalT
+              END IF
+     
+              IF (nQCalT > 0 .AND. nQCalT <= 1920) THEN
+                 DO iQTELE=1, nQCalT
+                    QLte_Hit(iQTELE) = Evt%QCALT%Nhit(iQTELE)
+                    IF ( QLte_Hit(iQTELE) < 0 .OR. QLte_Hit(iQTELE) > 5 ) THEN
+                       WRITE(*,*) ERROR_BLOCK//'QTELE - QLte_Hit '//ERROR_DOMAIN, QLte_Hit(iQTELE)
+                    END IF
+                    QLte_Det(iQTELE) = Evt%QCALT%Qdet(iQTELE)
+                    IF ( QLte_Det(iQTELE) < 0 .OR. QLte_Det(iQTELE) > 2 ) THEN
+                       WRITE(*,*) ERROR_BLOCK//'QTELE - QLte_Det '//ERROR_DOMAIN, QLte_Det(iQTELE)
+                    END IF
+                    QLte_Mod(iQTELE) = Evt%QCALT%Qmod(iQTELE)
+                    IF ( QLte_Mod(iQTELE) < 0 .OR. QLte_Mod(iQTELE) > 11 ) THEN
+                       WRITE(*,*) ERROR_BLOCK//'QTELE - QLte_Mod '//ERROR_DOMAIN, QLte_Mod(iQTELE)
+                    END IF
+                    QLte_Pla(iQTELE) = Evt%QCALT%Qpla(iQTELE)
+                    IF ( QLte_Pla(iQTELE) < 0 .OR. QLte_Pla(iQTELE) > 4 ) THEN
+                       WRITE(*,*) ERROR_BLOCK//'QTELE - QLte_Pla '//ERROR_DOMAIN, QLte_Pla(iQTELE)
+                    END IF
+                    QLte_Til(iQTELE) = Evt%QCALT%Qtil(iQTELE)
+                    IF ( QLte_Til(iQTELE) < 0 .OR. QLte_Til(iQTELE) > 15 ) THEN
+                       WRITE(*,*) ERROR_BLOCK//'QTELE - QLte_Til '//ERROR_DOMAIN, QLte_Til(iQTELE)
+                    END IF
+                    QLte_Tim1(iQTELE) = Evt%QCALT%Time(1, iQTELE)
+                    QLte_Tim2(iQTELE) = Evt%QCALT%Time(2, iQTELE)
+                    QLte_Tim3(iQTELE) = Evt%QCALT%Time(3, iQTELE)
+                    QLte_Tim4(iQTELE) = Evt%QCALT%Time(4, iQTELE)
+                    QLte_Tim5(iQTELE) = Evt%QCALT%Time(5, iQTELE)
+                END DO
+              ELSE
+                 WRITE(*,*) ERROR_BLOCK//'QTELE - nQCalT '//ERROR_INDEX, nQCalT
+                 nQCalT = 0
+              END IF
+           ELSE 
+              WRITE(*,*) ERROR_MISS_DATA//'QTELE'
            END IF
         ELSE
            WRITE(*,*) ERROR_MISS_DATA//'QTELE'
@@ -3413,7 +3440,7 @@ C           TODO: Should I remove this control?
 C-----------------------------------------------------------------------
 C Fill Root
 C-----------------------------------------------------------------------
-      call fillntu() 	
+      call fillNtu() 	
 C==============================================================================
 CC End of code
 C==============================================================================
@@ -3458,7 +3485,7 @@ C    Initialization tree for ROOT
       write(*,*) '[Info] START BOOKING'
       write(*,*) '==========================='
 
-      call inittree()
+      call initTree()
 
       RETURN 
       END
@@ -3499,6 +3526,7 @@ C
 C     
 
       if(verb.eq.'SHOW')then
+        showHeader()
 	    goto 10
       else if(verb.eq.'INFO')then
       	write(Prompt,123)'INFO'
@@ -3732,7 +3760,7 @@ C=============================================================================
       SUBROUTINE SAMFI
 C===========================================================================
 	  write(*,*)'Run End routine'
-      call closetree() 
+      call closeTree() 
 
       RETURN
       END
