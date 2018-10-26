@@ -12,7 +12,7 @@ TreeWriter *writer;
 //
 // input:   -
 // output:  -
-void inittree_(){
+void initTree_(){
   writer = new TreeWriter();
 }
 
@@ -20,7 +20,7 @@ void inittree_(){
 //
 // input:   -
 // output:  -
-void fillntu_(){
+void fillNtu_(){
   writer->fillTTree();
 }
 
@@ -28,9 +28,17 @@ void fillntu_(){
 //
 // input:   -
 // output:  -
-void closetree_(){
+void closeTree_(){
   delete writer;
   writer = NULL;
+}
+
+// Print on std output the current configuration of flags.
+//
+// input:   -
+// output:  -
+void showHeader_(){
+    writer->printHeaderFlags();
 }
 
 #endif

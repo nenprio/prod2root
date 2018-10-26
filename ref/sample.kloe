@@ -207,6 +207,11 @@ C
          MONTECARLOFLAG = .TRUE.
       ELSE
          MONTECARLOFLAG = .FALSE.
+C
+C        TODO: Print error to comunicate that the user is trying to acquire
+C        MC data and they don't exist or that the user is not requiring
+C        MC data and they are present.
+C
       ENDIF
 
       IF (MONTECARLOFLAG) THEN
@@ -939,7 +944,6 @@ C
 C           Fill MC data only if they exist, otherwise don't create empty structures         
 C
             IF (MONTECARLOFLAG) THEN
-              write(*,*) "WRITING CLUMC EVENT", MONTECARLOFLAG
               NCluMc = 0.
               DO iEVTCLUMC=1, 100
                  NPar(iEVTCLUMC) = 0.
@@ -2982,9 +2986,9 @@ C
 
 C      
 C              In the get function are also accessed CHIT, CEKA, CEKE
-C              only for MC data. If they miss, could be returned dirty 
-C              data in CSPSMC structure. To avoid this behavior, we
-C              check for CHIT block.
+C              only for MC data. CEKA, CEKE are ignored by prod2ntu.
+C              For this reason, we check only CSPS and CHIT. CHIT only if
+C              MC is required.
 C
                STATUS = BLOCAT(IW, 'CHIT', 1, IND, INDDAT)
                IF (STATUS.EQ.YESUCC) THEN
@@ -3413,7 +3417,7 @@ C           TODO: Should I remove this control?
 C-----------------------------------------------------------------------
 C Fill Root
 C-----------------------------------------------------------------------
-      call fillntu() 	
+      call fillNtu() 	
 C==============================================================================
 CC End of code
 C==============================================================================
@@ -3458,7 +3462,7 @@ C    Initialization tree for ROOT
       write(*,*) '[Info] START BOOKING'
       write(*,*) '==========================='
 
-      call inittree()
+      call initTree()
 
       RETURN 
       END
@@ -3499,6 +3503,7 @@ C
 C     
 
       if(verb.eq.'SHOW')then
+        showHeader()
 	    goto 10
       else if(verb.eq.'INFO')then
       	write(Prompt,123)'INFO'
@@ -3732,7 +3737,7 @@ C=============================================================================
       SUBROUTINE SAMFI
 C===========================================================================
 	  write(*,*)'Run End routine'
-      call closetree() 
+      call closeTree() 
 
       RETURN
       END

@@ -2,9 +2,10 @@
 #define FORT2C_HH
 #include <iostream>
 
-extern "C" void fillntu_();
-extern "C" void inittree_();
-extern "C" void closetree_();
+extern "C" void fillNtu_();
+extern "C" void initTree_();
+extern "C" void closeTree_();
+extern "C" void showHeader_();
 
 #endif
 
