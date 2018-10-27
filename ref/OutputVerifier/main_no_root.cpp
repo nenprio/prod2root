@@ -88,9 +88,7 @@ int verifyFiles(const char *rF, const char *hbF, bool printInfo) {
                 fieldFound = true;
                 /* printf("%s\t=>\t%s == %s\t\tOK\n", nameRoot.c_str(), valueRoot.c_str(), valueHB.c_str()); */
                 if (myStricmp(valueRoot.c_str(), valueHB.c_str())!=0) {
-                    sprintf(error, "[Error] Leaf %s: %s != %s", nameRoot.c_str(), valueRoot.c_str(), valueHB.c_str());
-                    /* printf("%s\t=>\t%s != %s\t\tX\n", nameRoot.c_str(), valueRoot.c_str(), valueHB.c_str()); */
-                    printf("%s\n", error);
+                    printf("[Error] Value %s: %s != %s \n", nameRoot.c_str(), valueRoot.c_str(), valueHB.c_str());
                     errorCounter++;
                 } 
                 break;
