@@ -1622,9 +1622,9 @@ C-----------------------------------------------------------------------
                nT = 0
             END IF
    
-   C         
-   C        Fill MC data only if they exist, otherwise don't create empty structures         
-   C
+C         
+C           Fill MC data only if they exist, otherwise don't create empty structures         
+C
             IF (MONTECARLOFLAG) THEN
               nTfMC = 0.
               DO iTRKMC=1, 100
@@ -2111,36 +2111,44 @@ C-----------------------------------------------------------------------
            DHDFromW(iDHIT) = 0.
            DHFlag(iDHIT) = 0.
          END DO
-         
-         istat = DHIT_UPK(evt%dhit)
-         write(*,*) "ISTAT => ", istat
-         
-         nDHIT = Evt%DHIT%n
-         IF ( nDHIT < 0 .OR. nDHIT > 2500 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'DHIT - nDHIT '//ERROR_DOMAIN, nDHIT
+        
+         STATUS = BIGEST(IW, 'DHIT', BNKNUM)
+         IF (STATUS.EQ.YESUCC) THEN
+            STATUS = BLOCAT(IW, 'DHIT', BNKNUM, IND, INDDAT)
          END IF
 
-         IF (nDHIT > 0 .AND. nDHIT <= 2500) THEN
-            DO iDHIT=1, nDHIT
-                 DHPid(iDHIT) = Evt%DHIT%pid(iDHIT)
-                 DHKin(iDHIT) = Evt%DHIT%kinum(iDHIT)
-                 DHAdd(iDHIT) = Evt%DHIT%celadr(iDHIT)
-                 DHx(iDHIT) = Evt%DHIT%x(iDHIT)
-                 DHy(iDHIT) = Evt%DHIT%y(iDHIT)
-                 DHz(iDHIT) = Evt%DHIT%z(iDHIT)
-                 DHPx(iDHIT) = Evt%DHIT%px(iDHIT)
-                 DHPy(iDHIT) = Evt%DHIT%py(iDHIT)
-                 DHPz(iDHIT) = Evt%DHIT%pz(iDHIT)
-                 DHt(iDHIT) = Evt%DHIT%time(iDHIT)
-                 DHDedx(iDHIT) = Evt%DHIT%dedx(iDHIT)
-                 DHTLen(iDHIT) = Evt%DHIT%tlen(iDHIT)
-                 DHDTime(iDHIT) = Evt%DHIT%dtime(iDHIT)
-                 DHDFromW(iDHIT) = Evt%DHIT%dfromw(iDHIT)
-                 DHFlag(iDHIT) = Evt%DHIT%flag(iDHIT)
-           END DO
+         IF (STATUS.EQ.YESUCC) THEN
+            ISTAT = DHIT_UPK(evt%dhit)
+            
+            nDHIT = Evt%DHIT%n
+            IF ( nDHIT < 0 .OR. nDHIT > 2500 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'DHIT - nDHIT '//ERROR_DOMAIN, nDHIT
+            END IF
+   
+            IF (nDHIT > 0 .AND. nDHIT <= 2500) THEN
+               DO iDHIT=1, nDHIT
+                    DHPid(iDHIT) = Evt%DHIT%pid(iDHIT)
+                    DHKin(iDHIT) = Evt%DHIT%kinum(iDHIT)
+                    DHAdd(iDHIT) = Evt%DHIT%celadr(iDHIT)
+                    DHx(iDHIT) = Evt%DHIT%x(iDHIT)
+                    DHy(iDHIT) = Evt%DHIT%y(iDHIT)
+                    DHz(iDHIT) = Evt%DHIT%z(iDHIT)
+                    DHPx(iDHIT) = Evt%DHIT%px(iDHIT)
+                    DHPy(iDHIT) = Evt%DHIT%py(iDHIT)
+                    DHPz(iDHIT) = Evt%DHIT%pz(iDHIT)
+                    DHt(iDHIT) = Evt%DHIT%time(iDHIT)
+                    DHDedx(iDHIT) = Evt%DHIT%dedx(iDHIT)
+                    DHTLen(iDHIT) = Evt%DHIT%tlen(iDHIT)
+                    DHDTime(iDHIT) = Evt%DHIT%dtime(iDHIT)
+                    DHDFromW(iDHIT) = Evt%DHIT%dfromw(iDHIT)
+                    DHFlag(iDHIT) = Evt%DHIT%flag(iDHIT)
+              END DO
+            ELSE
+               WRITE(*,*) ERROR_BLOCK//'DHIT - nDHIT '//ERROR_INDEX, nDHIT
+               nDHIT = 0
+            END IF
          ELSE
-            WRITE(*,*) ERROR_BLOCK//'DHIT - nDHIT '//ERROR_INDEX, nDHIT
-            nDHIT = 0
+            WRITE(*,*) ERROR_MISS_DATA//'DHIT'
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2163,33 +2171,37 @@ C-----------------------------------------------------------------------
             END DO
          END DO
 
-         istat = DEDX2STRU_Reset(Evt%DEDX2STRU)
-         istat = DEDX2STRU_GET(Evt%DEDX2STRU)
-         write(*,*) "ISTAT => ", istat
-
-         nDEDx = Evt%DEDX2STRU%numdedx
-         IF ( nDEDx < 0 .OR. nDEDx > 20 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'DEDX - nDEDx '//ERROR_DOMAIN, nDEDx
-         END IF
-
-         IF (nDEDx > 0 .AND. nDEDx <= 20) THEN
-           DO iiDEDX=1, nDEDx
-              nADC(iiDEDX) = Evt%DEDX2STRU%numeroadc(iiDEDX)
-              IDEDx(iiDEDX) = Evt%DEDX2STRU%indicededx(iiDEDX)
-              DO jjDEDX=1, 100
-                 ADCLayer(jjDEDX,iiDEDX) = Evt%DEDX2STRU%lay(jjDEDX,iiDEDX)
-                 ADCWi1(jjDEDX,iiDEDX) = Evt%DEDX2STRU%wir1(jjDEDX,iiDEDX)
-                 ADCWi2(jjDEDX,iiDEDX) = Evt%DEDX2STRU%wir2(jjDEDX,iiDEDX)
-                 ADCLen(jjDEDX,iiDEDX) = Evt%DEDX2STRU%step(jjDEDX,iiDEDX)
-                 ADCLeff(jjDEDX,iiDEDX) = Evt%DEDX2STRU%effs(jjDEDX,iiDEDX)
-                 ADCTim1(jjDEDX,iiDEDX) = Evt%DEDX2STRU%tim1(jjDEDX,iiDEDX)
-                 ADCTim2(jjDEDX,iiDEDX) = Evt%DEDX2STRU%tim2(jjDEDX,iiDEDX)
-                 ADCCharge(jjDEDX,iiDEDX) = Evt%DEDX2STRU%carica(jjDEDX,iiDEDX)
+         STATUS = BIGEST(IW, 'DEDX', BNKNUM)
+         IF (STATUS.EQ.YESUCC) THEN
+            istat = DEDX2STRU_Reset(Evt%DEDX2STRU)
+            istat = DEDX2STRU_GET(Evt%DEDX2STRU)
+   
+            nDEDx = Evt%DEDX2STRU%numdedx
+            IF ( nDEDx < 0 .OR. nDEDx > 20 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'DEDX - nDEDx '//ERROR_DOMAIN, nDEDx
+            END IF
+   
+            IF (nDEDx > 0 .AND. nDEDx <= 20) THEN
+              DO iiDEDX=1, nDEDx
+                 nADC(iiDEDX) = Evt%DEDX2STRU%numeroadc(iiDEDX)
+                 IDEDx(iiDEDX) = Evt%DEDX2STRU%indicededx(iiDEDX)
+                 DO jjDEDX=1, 100
+                    ADCLayer(jjDEDX,iiDEDX) = Evt%DEDX2STRU%lay(jjDEDX,iiDEDX)
+                    ADCWi1(jjDEDX,iiDEDX) = Evt%DEDX2STRU%wir1(jjDEDX,iiDEDX)
+                    ADCWi2(jjDEDX,iiDEDX) = Evt%DEDX2STRU%wir2(jjDEDX,iiDEDX)
+                    ADCLen(jjDEDX,iiDEDX) = Evt%DEDX2STRU%step(jjDEDX,iiDEDX)
+                    ADCLeff(jjDEDX,iiDEDX) = Evt%DEDX2STRU%effs(jjDEDX,iiDEDX)
+                    ADCTim1(jjDEDX,iiDEDX) = Evt%DEDX2STRU%tim1(jjDEDX,iiDEDX)
+                    ADCTim2(jjDEDX,iiDEDX) = Evt%DEDX2STRU%tim2(jjDEDX,iiDEDX)
+                    ADCCharge(jjDEDX,iiDEDX) = Evt%DEDX2STRU%carica(jjDEDX,iiDEDX)
+                 END DO
               END DO
-           END DO
+            ELSE
+               WRITE(*,*) ERROR_BLOCK//'DEDX - nDEDx '//ERROR_INDEX, nDEDx
+               nDEDx = 0
+            END IF
          ELSE
-            WRITE(*,*) ERROR_BLOCK//'DEDX - nDEDx '//ERROR_INDEX, nDEDx
-            nDEDx = 0
+            WRITE(*,*) ERROR_MISS_DATA//'DEDX'
          END IF
       END IF
 C-----------------------------------------------------------------------
