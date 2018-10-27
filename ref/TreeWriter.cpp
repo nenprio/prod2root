@@ -56,6 +56,8 @@ TreeWriter::TreeWriter() {
     if(logicalToBool(sammenu_.dtceFlag))        addBlockDTCE();
     // Block DTCE0
     if(logicalToBool(sammenu_.dtce0Flag))       addBlockDTCE0();
+    // Block DCHITS
+    if(logicalToBool(sammenu_.dchitsFlag))      addBlockDCHits();
     // Block DHRE
     if(logicalToBool(sammenu_.dhreFlag))        addBlockDHRE();
     // Block DHSP
@@ -105,8 +107,6 @@ TreeWriter::TreeWriter() {
     if(logicalToBool(sammenu_.invoFlag))        addBlockINVO();
     // Block ECLO 
     if(logicalToBool(sammenu_.ecloFlag))        addBlockECLO();
-    // Block ECLO2 
-    if(logicalToBool(sammenu_.eclo2Flag))       addBlockECLO2();
     // Block CSPS 
     if(logicalToBool(sammenu_.cspsFlag))        addBlockCSPS();
     // Block CLUO 
@@ -195,7 +195,6 @@ void TreeWriter::printHeaderFlags() {
     header += Form("VNVB: %d ",      logicalToBool(sammenu_.vnvbFlag));
     header += Form("INVO: %d ",      logicalToBool(sammenu_.invoFlag));
     header += Form("ECLO: %d ",      logicalToBool(sammenu_.ecloFlag));
-    header += Form("ECLO2: %d ",     logicalToBool(sammenu_.eclo2Flag));
     header += Form("CSPS: %d ",       logicalToBool(sammenu_.cspsFlag));
     header += Form("CLUO: %d ",      logicalToBool(sammenu_.cluoFlag));
     header += Form("QTELE: %d ",     logicalToBool(sammenu_.qteleFlag));
@@ -1145,27 +1144,20 @@ void TreeWriter::addBlockINVO() {
 // input:	-
 // output: -
 void TreeWriter::addBlockECLO() {
-    fNewTree->Branch("nCli",     &eclo_.nCli,     "nCli/I");
-    fNewTree->Branch("ECLOWord", &eclo_.ECLOWord, "ECLOWord[nCli]/I");
-    fNewTree->Branch("IdPart",   &eclo_.IdPart,   "IdPart[nCli]/I");
-    fNewTree->Branch("DtClpo",   &eclo_.DtClpo,   "DtClpo[nCli]/I");
-    fNewTree->Branch("DvVnpo",   &eclo_.DvVnpo,   "DvVnpo[nCli]/I");
-    fNewTree->Branch("Stre",     &eclo_.Stre,     "Stre[nCli]/I");
-    fNewTree->Branch("Algo",     &eclo_.Algo,     "Algo[nCli]/I");
-}
-
-// Add to the tree all the branches realted to the block ECLO2.
-//
-// input:	-
-// output: -
-void TreeWriter::addBlockECLO2() {
-    fNewTree->Branch("nCli2",     &eclo2_.nCli2,     "nCli2/I");
-    fNewTree->Branch("ECLOWord2", &eclo2_.ECLOWord2, "ECLOWord2[nCli2]/I");
-    fNewTree->Branch("IdPart2",   &eclo2_.IdPart2,   "IdPart2[nCli2]/I");
-    fNewTree->Branch("DtClpo2",   &eclo2_.DtClpo2,   "DtClpo2[nCli2]/I");
-    fNewTree->Branch("DvVnpo2",    &eclo2_.DvVnpo2,  "DvVnpo2[nCli2]/I");
-    fNewTree->Branch("Stre2",     &eclo2_.Stre2,     "Stre2[nCli2]/I");
-    fNewTree->Branch("Algo2",     &eclo2_.Algo2,     "Algo2[nCli2]/I");
+    fNewTree->Branch("nCli",      &eclo_.nCli,     "nCli/I");
+    fNewTree->Branch("ECLOWord",  &eclo_.ECLOWord, "ECLOWord[nCli]/I");
+    fNewTree->Branch("IdPart",    &eclo_.IdPart,   "IdPart[nCli]/I");
+    fNewTree->Branch("DtClpo",    &eclo_.DtClpo,   "DtClpo[nCli]/I");
+    fNewTree->Branch("DvVnpo",    &eclo_.DvVnpo,   "DvVnpo[nCli]/I");
+    fNewTree->Branch("Stre",      &eclo_.Stre,     "Stre[nCli]/I");
+    fNewTree->Branch("Algo",      &eclo_.Algo,     "Algo[nCli]/I");
+    fNewTree->Branch("nCli2",     &eclo_.nCli2,     "nCli2/I");
+    fNewTree->Branch("ECLOWord2", &eclo_.ECLOWord2, "ECLOWord2[nCli2]/I");
+    fNewTree->Branch("IdPart2",   &eclo_.IdPart2,   "IdPart2[nCli2]/I");
+    fNewTree->Branch("DtClpo2",   &eclo_.DtClpo2,   "DtClpo2[nCli2]/I");
+    fNewTree->Branch("DvVnpo2",   &eclo_.DvVnpo2,  "DvVnpo2[nCli2]/I");
+    fNewTree->Branch("Stre2",     &eclo_.Stre2,     "Stre2[nCli2]/I");
+    fNewTree->Branch("Algo2",     &eclo_.Algo2,     "Algo2[nCli2]/I");
 }
 
 // Add to the tree all the branches realted to the block CSPS.

@@ -507,15 +507,11 @@ C  Block: eclo
 C
       integer iECLO, nCli, ECLOWord(100), IdPart(100), DtClpo(100) 
       integer DvVnpo(100), Stre(100), Algo(100)
-
-      common /eclo/nCli,ECLOWord,IdPart,DtClpo,DvVnpo,Stre,Algo
-C
-C  Block: eclo2
-C
       integer iECLO2, nCli2, ECLOWord2(100), IdPart2(100), DtClpo2(100)
       integer DvVnpo2(100), Stre2(100), Algo2(100)
 
-      common /eclo2/nCli2,ECLOWord2,IdPart2,DtClpo2,DvVnpo2,Stre2,Algo2
+      common /eclo/nCli,ECLOWord,IdPart,DtClpo,DvVnpo,Stre,Algo,
+     1       nCli2,ECLOWord2,IdPart2,DtClpo2,DvVnpo2,Stre2,Algo2
 C
 C  Block: csps
 C

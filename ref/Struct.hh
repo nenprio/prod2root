@@ -18,6 +18,7 @@ const int MaxNumTrk      = 100;
 const int MaxNumDHIT     = 2500;
 const int MaxRowsDEDx    = 20;
 const int MaxColsDEDx    = 100;
+const int FixNmDPRSNView = 3;
 const int MaxNumDPRS     = 200;
 const int MaxNTrkGen     = 50;
 const int MaxNVtxGen     = 30;
@@ -87,7 +88,6 @@ extern "C"{
     int vnvbFlag;
     int invoFlag;
     int ecloFlag;
-    int eclo2Flag;
     int cspsFlag;
     int cluoFlag;
     int qteleFlag;
@@ -761,7 +761,7 @@ extern "C" {
 extern "C" {
   extern struct {
     unsigned int nDPRS;
-    unsigned int nView[MaxNumDPRS];
+    unsigned int nView[FixNmDPRSNView];
     unsigned int iDPRS[MaxNumDPRS];
     unsigned int DPRSVer[MaxNumDPRS];
     unsigned int nPos[MaxNumDPRS];
@@ -995,12 +995,6 @@ extern "C" {
     int DvVnpo[MaxNumCLINF];
     int Stre[MaxNumCLINF];
     int Algo[MaxNumCLINF];
-  }eclo_;
-}
-
-// Block:   eclo2
-extern "C" {
-  extern struct {
     int nCli2;
     int ECLOWord2[MaxNumCLINF];
     int IdPart2[MaxNumCLINF];
@@ -1008,7 +1002,7 @@ extern "C" {
     int DvVnpo2[MaxNumCLINF];
     int Stre2[MaxNumCLINF];
     int Algo2[MaxNumCLINF];
-  }eclo2_;
+  }eclo_;
 }
 
 // Block:   csps

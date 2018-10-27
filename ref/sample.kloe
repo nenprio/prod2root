@@ -2205,8 +2205,10 @@ C            ISTAT = GET_DPRS_STRUCT(Evt%DPRS%NDPRS)
             END IF
    
             IF (nDPRS > 0 .AND. nDPRS <= 200) THEN
-               DO iiDPRS=1, nDPRS
+               DO iiDPRS=1, 3
                   nView(iiDPRS) =  Evt%DPRS%NVIEW(iiDPRS)
+               END DO
+               DO iiDPRS=1, nDPRS
                   iDPRS(iiDPRS) =  Evt%DPRS%IDPRS(iiDPRS)
                   DPRSVer(iiDPRS) =  Evt%DPRS%VERS(iiDPRS)
                   nPos(iiDPRS) =  Evt%DPRS%NPOS(iiDPRS)
@@ -2484,48 +2486,48 @@ C-----------------------------------------------------------------------
            TLenFhi(iCFHI) = 0.
          END DO
 
-         istat = GETCFHISTRU(evt%cfhi)
-         write(*,*) "CFHI ISTAT => ", istat
-
-         ISTAT = BLOCAT(IW,'CFHI', 1,IND1,INDDAT )
-         write(*,*) "CFHI BLOCAT => ", istat
-         write(*,*) "CFHI IW => ", IW
-
-         nFhi = Evt%CFHI%n
-         IF ( nFhi < 0 .OR. nFhi > 300 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'CFHI - nFhi '//ERROR_DOMAIN, nFhi
-         END IF
-
-         IF (nFhi > 0 .AND. nFhi <= 300) THEN
-            DO iCFHI=1, nFhi
-               PidFhi(iCFHI) = Evt%CFHI%pid(iCFHI)
-               IF ( PidFhi(iCFHI) < 0 .OR. PidFhi(iCFHI) > 100 ) THEN
-                  WRITE(*,*) ERROR_BLOCK//'CFHI - PidFhi '//ERROR_DOMAIN, PidFhi(iCFHI)
-               END IF
-               KinFhi(iCFHI) = Evt%CFHI%kinum(iCFHI)
-               IF ( KinFhi(iCFHI) < 0 .OR. KinFhi(iCFHI) > 100 ) THEN
-                  WRITE(*,*) ERROR_BLOCK//'CFHI - KinFhi '//ERROR_DOMAIN, KinFhi(iCFHI)
-               END IF
-               CelFhi(iCFHI) = Evt%CFHI%celadr(iCFHI)
-               IF ( CelFhi(iCFHI) < 0 .OR. CelFhi(iCFHI) > 4880 ) THEN
-                  WRITE(*,*) ERROR_BLOCK//'CFHI - CelFhi '//ERROR_DOMAIN, CelFhi(iCFHI)
-               END IF
-               FlgFhi(iCFHI) = Evt%CFHI%convfl(iCFHI)
-               IF ( FlgFhi(iCFHI) < 0 .OR. FlgFhi(iCFHI) > 1 ) THEN
-                  WRITE(*,*) ERROR_BLOCK//'CFHI - FlgFhi '//ERROR_DOMAIN, FlgFhi(iCFHI)
-               END IF
-                 xFhi(iCFHI) = Evt%CFHI%x(iCFHI)
-                 yFhi(iCFHI) = Evt%CFHI%y(iCFHI)
-                 zFhi(iCFHI) = Evt%CFHI%z(iCFHI)
-                 PxFhi(iCFHI) = Evt%CFHI%px(iCFHI)
-                 PyFhi(iCFHI) = Evt%CFHI%py(iCFHI)
-                 PzFhi(iCFHI) = Evt%CFHI%pz(iCFHI)
-                 TofFhi(iCFHI) = Evt%CFHI%tof(iCFHI)
-                 TLenFhi(iCFHI) = Evt%CFHI%tlen(iCFHI)
-           END DO
+         STATUS = BLOCAT(IW,'CFHI', 1,IND1,INDDAT )
+         IF (STATUS.EQ.YESUCC) THEN
+            ISTAT = GETCFHISTRU(evt%cfhi)
+   
+            nFhi = Evt%CFHI%n
+            IF ( nFhi < 0 .OR. nFhi > 300 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'CFHI - nFhi '//ERROR_DOMAIN, nFhi
+            END IF
+   
+            IF (nFhi > 0 .AND. nFhi <= 300) THEN
+               DO iCFHI=1, nFhi
+                  PidFhi(iCFHI) = Evt%CFHI%pid(iCFHI)
+                  IF ( PidFhi(iCFHI) < 0 .OR. PidFhi(iCFHI) > 100 ) THEN
+                     WRITE(*,*) ERROR_BLOCK//'CFHI - PidFhi '//ERROR_DOMAIN, PidFhi(iCFHI)
+                  END IF
+                  KinFhi(iCFHI) = Evt%CFHI%kinum(iCFHI)
+                  IF ( KinFhi(iCFHI) < 0 .OR. KinFhi(iCFHI) > 100 ) THEN
+                     WRITE(*,*) ERROR_BLOCK//'CFHI - KinFhi '//ERROR_DOMAIN, KinFhi(iCFHI)
+                  END IF
+                  CelFhi(iCFHI) = Evt%CFHI%celadr(iCFHI)
+                  IF ( CelFhi(iCFHI) < 0 .OR. CelFhi(iCFHI) > 4880 ) THEN
+                     WRITE(*,*) ERROR_BLOCK//'CFHI - CelFhi '//ERROR_DOMAIN, CelFhi(iCFHI)
+                  END IF
+                  FlgFhi(iCFHI) = Evt%CFHI%convfl(iCFHI)
+                  IF ( FlgFhi(iCFHI) < 0 .OR. FlgFhi(iCFHI) > 1 ) THEN
+                     WRITE(*,*) ERROR_BLOCK//'CFHI - FlgFhi '//ERROR_DOMAIN, FlgFhi(iCFHI)
+                  END IF
+                    xFhi(iCFHI) = Evt%CFHI%x(iCFHI)
+                    yFhi(iCFHI) = Evt%CFHI%y(iCFHI)
+                    zFhi(iCFHI) = Evt%CFHI%z(iCFHI)
+                    PxFhi(iCFHI) = Evt%CFHI%px(iCFHI)
+                    PyFhi(iCFHI) = Evt%CFHI%py(iCFHI)
+                    PzFhi(iCFHI) = Evt%CFHI%pz(iCFHI)
+                    TofFhi(iCFHI) = Evt%CFHI%tof(iCFHI)
+                    TLenFhi(iCFHI) = Evt%CFHI%tlen(iCFHI)
+              END DO
+            ELSE
+               WRITE(*,*) ERROR_BLOCK//'CFHI - nFhi '//ERROR_INDEX, nFhi
+               nFhi = 0
+            END IF
          ELSE
-            WRITE(*,*) ERROR_BLOCK//'CFHI - nFhi '//ERROR_INDEX, nFhi
-            nFhi = 0
+            WRITE(*,*) ERROR_MISS_DATA//'CFHI'
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2552,32 +2554,40 @@ C-----------------------------------------------------------------------
 C        
 C        TODO: Notice that in prod2ntu, this function was commented. Why?
 C
-            istat = GETQIHISTRU(evt%qhit)
-            write(*,*) "ISTAT => ", istat
-   
-            nQIHI = Evt%QHIT%n
-            IF ( nQIHI < 0 .OR. nQIHI > 1000 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'QIHI - nQIHI '//ERROR_DOMAIN, nQIHI
+            STATUS = BIGEST(IW, 'QIHI', BNKNUM)
+            IF( STATUS.EQ.YESUCC ) THEN
+               STATUS = BLOCAT(IW, 'QIHI', BNKNUM, IND, INDDAT)
             END IF
-   
-            IF (nQIHI > 0 .AND. nQIHI <= 1000) THEN
-               DO iQIHI=1, nQIHI
-                    PidQIHI(iQIHI) = Evt%QHIT%pty(iQIHI)
-                    AddQIHI(iQIHI) = Evt%QHIT%add(iQIHI)
-                    KinQIHI(iQIHI) = Evt%QHIT%kine(iQIHI)
-                    xQIHI(iQIHI) = Evt%QHIT%x(iQIHI)
-                    yQIHI(iQIHI) = Evt%QHIT%Y(iQIHI)
-                    zQIHI(iQIHI) = Evt%QHIT%z(iQIHI)
-                    PxQIHI(iQIHI) = Evt%QHIT%px(iQIHI)
-                    PyQIHI(iQIHI) = Evt%QHIT%px(iQIHI)
-                    PzQIHI(iQIHI) = Evt%QHIT%pz(iQIHI)
-                    TofQIHI(iQIHI) = Evt%QHIT%tof(iQIHI)
-                    EneQIHI(iQIHI) = Evt%QHIT%ene(iQIHI)
-                    TLenQIHI(iQIHI) = Evt%QHIT%trl(iQIHI)
-              END DO
+
+            IF (STATUS.EQ.YESUCC) THEN
+               ISTAT = GETQIHISTRU(evt%qhit)
+      
+               nQIHI = Evt%QHIT%n
+               IF ( nQIHI < 0 .OR. nQIHI > 1000 ) THEN
+                  WRITE(*,*) ERROR_BLOCK//'QIHI - nQIHI '//ERROR_DOMAIN, nQIHI
+               END IF
+      
+               IF (nQIHI > 0 .AND. nQIHI <= 1000) THEN
+                  DO iQIHI=1, nQIHI
+                       PidQIHI(iQIHI) = Evt%QHIT%pty(iQIHI)
+                       AddQIHI(iQIHI) = Evt%QHIT%add(iQIHI)
+                       KinQIHI(iQIHI) = Evt%QHIT%kine(iQIHI)
+                       xQIHI(iQIHI) = Evt%QHIT%x(iQIHI)
+                       yQIHI(iQIHI) = Evt%QHIT%Y(iQIHI)
+                       zQIHI(iQIHI) = Evt%QHIT%z(iQIHI)
+                       PxQIHI(iQIHI) = Evt%QHIT%px(iQIHI)
+                       PyQIHI(iQIHI) = Evt%QHIT%px(iQIHI)
+                       PzQIHI(iQIHI) = Evt%QHIT%pz(iQIHI)
+                       TofQIHI(iQIHI) = Evt%QHIT%tof(iQIHI)
+                       EneQIHI(iQIHI) = Evt%QHIT%ene(iQIHI)
+                       TLenQIHI(iQIHI) = Evt%QHIT%trl(iQIHI)
+                 END DO
+               ELSE
+                  WRITE(*,*) ERROR_BLOCK//'QIHI - nQIHI '//ERROR_INDEX, nQIHI
+                  nQIHI = 0
+               END IF
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'QIHI - nQIHI '//ERROR_INDEX, nQIHI
-               nQIHI = 0
+               WRITE(*,*) ERROR_MISS_DATA//'QIHI'
             END IF
          ELSE
             WRITE(*,*) ERROR_MISS_DATA//'QIHI'
@@ -2714,27 +2724,31 @@ C-----------------------------------------------------------------------
            nVnvKNVO(iiKNVO) = 0.
          END DO
 
-         istat = GETNVO(evt%knvo,evt%vnvo,evt%vnvb,evt%invo)
-         write(*,*) "ISTAT => ", istat
-
-         nKNVO = Evt%KNVO%n
-         IF ( nKNVO < 0 .OR. nKNVO > 40 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'KNVO - nKNVO '//ERROR_DOMAIN, nKNVO
-         END IF
-
-         IF (nKNVO > 0 .AND. nKNVO <= 40) THEN
-            DO iiKNVO=1, nKNVO
-                 iKNVO(iiKNVO) = Evt%KNVO%iknvo(iiKNVO)
-                 PxKNVO(iiKNVO) = Evt%KNVO%px(iiKNVO)
-                 PyKNVO(iiKNVO) = Evt%KNVO%py(iiKNVO)
-                 PzKNVO(iiKNVO) = Evt%KNVO%pz(iiKNVO)
-                 PidKNVO(iiKNVO) = Evt%KNVO%pid(iiKNVO)
-                 BankKNVO(iiKNVO) = Evt%KNVO%bank(iiKNVO)
-                 nVnvKNVO(iiKNVO) = Evt%KNVO%vlinked(iiKNVO)
-           END DO
+         STATUS = BLOCAT(IW, 'KNVO', -1, IND, INDDAT)
+         IF (STATUS.EQ.YESUCC) THEN
+            ISTAT = GETNVO(evt%knvo,evt%vnvo,evt%vnvb,evt%invo)
+   
+            nKNVO = Evt%KNVO%n
+            IF ( nKNVO < 0 .OR. nKNVO > 40 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'KNVO - nKNVO '//ERROR_DOMAIN, nKNVO
+            END IF
+   
+            IF (nKNVO > 0 .AND. nKNVO <= 40) THEN
+               DO iiKNVO=1, nKNVO
+                    iKNVO(iiKNVO) = Evt%KNVO%iknvo(iiKNVO)
+                    PxKNVO(iiKNVO) = Evt%KNVO%px(iiKNVO)
+                    PyKNVO(iiKNVO) = Evt%KNVO%py(iiKNVO)
+                    PzKNVO(iiKNVO) = Evt%KNVO%pz(iiKNVO)
+                    PidKNVO(iiKNVO) = Evt%KNVO%pid(iiKNVO)
+                    BankKNVO(iiKNVO) = Evt%KNVO%bank(iiKNVO)
+                    nVnvKNVO(iiKNVO) = Evt%KNVO%vlinked(iiKNVO)
+              END DO
+            ELSE
+               WRITE(*,*) ERROR_BLOCK//'KNVO - nKNVO '//ERROR_INDEX, nKNVO
+               nKNVO = 0
+            END IF
          ELSE
-            WRITE(*,*) ERROR_BLOCK//'KNVO - nKNVO '//ERROR_INDEX, nKNVO
-            nKNVO = 0
+            WRITE(*,*) ERROR_MISS_DATA//'KNVO'
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2753,28 +2767,32 @@ C-----------------------------------------------------------------------
            fBnkVNVO(iiVNVO) = 0.
          END DO
 
-         istat = GETNVO(evt%knvo,evt%vnvo,evt%vnvb,evt%invo)
-         write(*,*) "ISTAT => ", istat
-
-         nVNVO = Evt%VNVO%n
-         IF ( nVNVO < 0 .OR. nVNVO > 40 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'VNVO - nVNVO '//ERROR_DOMAIN, nVNVO
-         END IF
-
-         IF (nVNVO > 0 .AND. nVNVO <= 40) THEN
-            DO iiVNVO=1, nVNVO
-                 iVNVO(iiVNVO) = Evt%VNVO%ivnvo(iiVNVO)
-                 VxVNVO(iiVNVO) = Evt%VNVO%vx(iiVNVO)
-                 VyVNVO(iiVNVO) = Evt%VNVO%vy(iiVNVO)
-                 VzVNVO(iiVNVO) = Evt%VNVO%vz(iiVNVO)
-                 KorIVNVO(iiVNVO) = Evt%VNVO%kori(iiVNVO)
-                 DvfsVNVO(iiVNVO) = Evt%VNVO%idvfs(iiVNVO)
-                 nBnkVNVO(iiVNVO) = Evt%VNVO%nknv(iiVNVO)
-                 fBnkVNVO(iiVNVO) = Evt%VNVO%fknv(iiVNVO)
-           END DO
+         STATUS = BLOCAT(IW, 'VNVO', -1, IND, INDDAT)
+         IF (STATUS.EQ.YESUCC) THEN
+            ISTAT = GETNVO(evt%knvo,evt%vnvo,evt%vnvb,evt%invo)
+   
+            nVNVO = Evt%VNVO%n
+            IF ( nVNVO < 0 .OR. nVNVO > 40 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'VNVO - nVNVO '//ERROR_DOMAIN, nVNVO
+            END IF
+   
+            IF (nVNVO > 0 .AND. nVNVO <= 40) THEN
+               DO iiVNVO=1, nVNVO
+                    iVNVO(iiVNVO) = Evt%VNVO%ivnvo(iiVNVO)
+                    VxVNVO(iiVNVO) = Evt%VNVO%vx(iiVNVO)
+                    VyVNVO(iiVNVO) = Evt%VNVO%vy(iiVNVO)
+                    VzVNVO(iiVNVO) = Evt%VNVO%vz(iiVNVO)
+                    KorIVNVO(iiVNVO) = Evt%VNVO%kori(iiVNVO)
+                    DvfsVNVO(iiVNVO) = Evt%VNVO%idvfs(iiVNVO)
+                    nBnkVNVO(iiVNVO) = Evt%VNVO%nknv(iiVNVO)
+                    fBnkVNVO(iiVNVO) = Evt%VNVO%fknv(iiVNVO)
+              END DO
+            ELSE
+               WRITE(*,*) ERROR_BLOCK//'VNVO - nVNVO '//ERROR_INDEX, nVNVO
+               nVNVO = 0
+            END IF
          ELSE
-            WRITE(*,*) ERROR_BLOCK//'VNVO - nVNVO '//ERROR_INDEX, nVNVO
-            nVNVO = 0
+            WRITE(*,*) ERROR_MISS_DATA//'VNVO'
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2786,21 +2804,25 @@ C-----------------------------------------------------------------------
            iBank(iVNVB) = 0.
          END DO
 
-         istat = GETNVO(evt%knvo,evt%vnvo,evt%vnvb,evt%invo)
-         write(*,*) "ISTAT => ", istat
-
-         nBnksVNVO = Evt%VNVB%n
-         IF ( nBnksVNVO < 0 .OR. nBnksVNVO > 40 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'VNVB - nBnksVNVO '//ERROR_DOMAIN, nBnksVNVO
-         END IF
-
-         IF (nBnksVNVO > 0 .AND. nBnksVNVO <= 40) THEN
-            DO iVNVB=1, nBnksVNVO
-                 iBank(iVNVB) = Evt%VNVB%ibank(iVNVB)
-           END DO
+         STATUS = BLOCAT(IW, 'VNVO', -1, IND, INDDAT)
+         IF (STATUS.EQ.YESUCC) THEN
+            istat = GETNVO(evt%knvo,evt%vnvo,evt%vnvb,evt%invo)
+   
+            nBnksVNVO = Evt%VNVB%n
+            IF ( nBnksVNVO < 0 .OR. nBnksVNVO > 40 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'VNVB - nBnksVNVO '//ERROR_DOMAIN, nBnksVNVO
+            END IF
+   
+            IF (nBnksVNVO > 0 .AND. nBnksVNVO <= 40) THEN
+               DO iVNVB=1, nBnksVNVO
+                    iBank(iVNVB) = Evt%VNVB%ibank(iVNVB)
+              END DO
+            ELSE
+               WRITE(*,*) ERROR_BLOCK//'VNVB - nBnksVNVO '//ERROR_INDEX, nBnksVNVO
+               nBnksVNVO = 0
+            END IF
          ELSE
-            WRITE(*,*) ERROR_BLOCK//'VNVB - nBnksVNVO '//ERROR_INDEX, nBnksVNVO
-            nBnksVNVO = 0
+            WRITE(*,*) ERROR_MISS_DATA//'VNVB'
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2818,27 +2840,31 @@ C-----------------------------------------------------------------------
            SigmaLk(iINVO) = 0.
          END DO
 
-         istat = GETNVO(evt%knvo,evt%vnvo,evt%vnvb,evt%invo)
-         write(*,*) "ISTAT => ", istat
-
-         nINVO = Evt%INVO%n
-         IF ( nINVO < 0 .OR. nINVO > 40 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'INVO - nINVO '//ERROR_DOMAIN, nINVO
-         END IF
-
-         IF (nINVO > 0 .AND. nINVO <= 40) THEN
-            DO iINVO=1, nINVO
-                 iClps(iINVO) = Evt%INVO%iclps(iINVO)
-                 xINVO(iINVO) = Evt%INVO%xi(iINVO)
-                 yINVO(iINVO) = Evt%INVO%yi(iINVO)
-                 zINVO(iINVO) = Evt%INVO%zi(iINVO)
-                 tINVO(iINVO) = Evt%INVO%ti(iINVO)
-                 Lk(iINVO) = Evt%INVO%lk(iINVO)
-                 SigmaLk(iINVO) = Evt%INVO%sigmalk(iINVO)
-           END DO
+         STATUS = BLOCAT(IW, 'INVO', -1, IND, INDDAT)
+         IF (STATUS.EQ.YESUCC) THEN
+            ISTAT = GETNVO(evt%knvo,evt%vnvo,evt%vnvb,evt%invo)
+   
+            nINVO = Evt%INVO%n
+            IF ( nINVO < 0 .OR. nINVO > 40 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'INVO - nINVO '//ERROR_DOMAIN, nINVO
+            END IF
+   
+            IF (nINVO > 0 .AND. nINVO <= 40) THEN
+               DO iINVO=1, nINVO
+                    iClps(iINVO) = Evt%INVO%iclps(iINVO)
+                    xINVO(iINVO) = Evt%INVO%xi(iINVO)
+                    yINVO(iINVO) = Evt%INVO%yi(iINVO)
+                    zINVO(iINVO) = Evt%INVO%zi(iINVO)
+                    tINVO(iINVO) = Evt%INVO%ti(iINVO)
+                    Lk(iINVO) = Evt%INVO%lk(iINVO)
+                    SigmaLk(iINVO) = Evt%INVO%sigmalk(iINVO)
+              END DO
+            ELSE
+               WRITE(*,*) ERROR_BLOCK//'INVO - nINVO '//ERROR_INDEX, nINVO
+               nINVO = 0
+            END IF
          ELSE
-            WRITE(*,*) ERROR_BLOCK//'INVO - nINVO '//ERROR_INDEX, nINVO
-            nINVO = 0
+            WRITE(*,*) ERROR_MISS_DATA//'INVO'
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2853,6 +2879,16 @@ C-----------------------------------------------------------------------
            DvVnpo(iECLO) = 0.
            Stre(iECLO) = 0.
            Algo(iECLO) = 0.
+         END DO
+        
+         nCli2 = 0.
+         DO iECLO2=1, 100
+           ECLOWord2(iECLO2) = 0.
+           IdPart2(iECLO2) = 0.
+           DtClpo2(iECLO2) = 0.
+           DvVnpo2(iECLO2) = 0.
+           Stre2(iECLO2) = 0.
+           Algo2(iECLO2) = 0.
          END DO
 
          STATUS = BLOCAT(IW, 'ECLO', 1, IND, INDDAT)
@@ -2877,48 +2913,32 @@ C-----------------------------------------------------------------------
                WRITE(*,*) ERROR_BLOCK//'ECLO - nCli '//ERROR_INDEX, nCli
                nCli = 0
             END IF
+
+            STATUS = BLOCAT(IW, 'ECLO', 2, IND, INDDAT)
+            IF (STATUS.EQ.YESUCC) THEN
+               nCli2 = Evt%eclo%n2
+               IF ( nCli2 < 0 .OR. nCli2 > 100 ) THEN
+                  WRITE(*,*) ERROR_BLOCK//'ECLO - nCli2 '//ERROR_DOMAIN, nCli2
+               END IF
+      
+               IF (nCli2 > 0 .AND. nCli2 <= 100) THEN
+                  DO iECLO2=1, nCli2
+                       ECLOWord2(iECLO2) = Evt%eclo%totword2(iECLO2)
+                       IdPart2(iECLO2) = Evt%eclo%idpart2(iECLO2)
+                       DtClpo2(iECLO2) = Evt%eclo%dtclpo2(iECLO2)
+                       DvVnpo2(iECLO2) = Evt%eclo%dvvnpo2(iECLO2)
+                       Stre2(iECLO2) = Evt%eclo%stre2(iECLO2)
+                       Algo2(iECLO2) = Evt%eclo%algo2(iECLO2)
+                 END DO
+               ELSE
+                  WRITE(*,*) ERROR_BLOCK//'ECLO - nCli2 '//ERROR_INDEX, nCli2
+                  nCli2 = 0
+               END IF
+            ELSE 
+               WRITE(*,*) ERROR_MISS_DATA//'ECLO (ECLO2)'
+            END IF
          ELSE 
             WRITE(*,*) ERROR_MISS_DATA//'ECLO'
-         END IF
-      END IF
-C-----------------------------------------------------------------------
-C Fill Block eclo2
-C-----------------------------------------------------------------------
-      IF (ECLO2FLAG) THEN
-         nCli2 = 0.
-         DO iECLO2=1, 100
-           ECLOWord2(iECLO2) = 0.
-           IdPart2(iECLO2) = 0.
-           DtClpo2(iECLO2) = 0.
-           DvVnpo2(iECLO2) = 0.
-           Stre2(iECLO2) = 0.
-           Algo2(iECLO2) = 0.
-         END DO
-
-         STATUS = BLOCAT(IW, 'ECLO', 2, IND, INDDAT)
-         IF (STATUS.EQ.YESUCC) THEN
-            ISTAT = GETECLO(evt%eclo)
-   
-            nCli2 = Evt%eclo%n2
-            IF ( nCli2 < 0 .OR. nCli2 > 100 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'ECLO2 - nCli2 '//ERROR_DOMAIN, nCli2
-            END IF
-   
-            IF (nCli2 > 0 .AND. nCli2 <= 100) THEN
-               DO iECLO2=1, nCli2
-                    ECLOWord2(iECLO2) = Evt%eclo%totword2(iECLO2)
-                    IdPart2(iECLO2) = Evt%eclo%idpart2(iECLO2)
-                    DtClpo2(iECLO2) = Evt%eclo%dtclpo2(iECLO2)
-                    DvVnpo2(iECLO2) = Evt%eclo%dvvnpo2(iECLO2)
-                    Stre2(iECLO2) = Evt%eclo%stre2(iECLO2)
-                    Algo2(iECLO2) = Evt%eclo%algo2(iECLO2)
-              END DO
-            ELSE
-               WRITE(*,*) ERROR_BLOCK//'ECLO2 - nCli2 '//ERROR_INDEX, nCli2
-               nCli2 = 0
-            END IF
-         ELSE 
-            WRITE(*,*) ERROR_MISS_DATA//'ECLO2'
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -3164,11 +3184,11 @@ C-----------------------------------------------------------------------
                     IF ( QLte_Til(iQTELE) < 0 .OR. QLte_Til(iQTELE) > 15 ) THEN
                        WRITE(*,*) ERROR_BLOCK//'QTELE - QLte_Til '//ERROR_DOMAIN, QLte_Til(iQTELE)
                     END IF
-                    QLte_Tim1(iQTELE) = Evt%QCALT%Time(1, iQTELE)
-                    QLte_Tim2(iQTELE) = Evt%QCALT%Time(2, iQTELE)
-                    QLte_Tim3(iQTELE) = Evt%QCALT%Time(3, iQTELE)
-                    QLte_Tim4(iQTELE) = Evt%QCALT%Time(4, iQTELE)
-                    QLte_Tim5(iQTELE) = Evt%QCALT%Time(5, iQTELE)
+                    QLte_Tim1(iQTELE) = Evt%QCALT%Time(iQTELE, 1)
+                    QLte_Tim2(iQTELE) = Evt%QCALT%Time(iQTELE, 2)
+                    QLte_Tim3(iQTELE) = Evt%QCALT%Time(iQTELE, 3)
+                    QLte_Tim4(iQTELE) = Evt%QCALT%Time(iQTELE, 4)
+                    QLte_Tim5(iQTELE) = Evt%QCALT%Time(iQTELE, 5)
                 END DO
               ELSE
                  WRITE(*,*) ERROR_BLOCK//'QTELE - nQCalT '//ERROR_INDEX, nQCalT
@@ -3202,7 +3222,6 @@ C-----------------------------------------------------------------------
             STATUS = BLOCAT(IW, 'QCTH', 1, IND, INDDAT)
             IF (STATUS.EQ.YESUCC) THEN
                ISTAT = GETQCTHSTRU(Evt%QCALTHIT)
-               write(*,*) "ISTAT => ", istat
       
                nQCTHEle = Evt%QCALTHIT%Nele
                IF ( nQCTHEle < 0 .OR. nQCTHEle > 1920 ) THEN
@@ -3218,11 +3237,11 @@ C-----------------------------------------------------------------------
                      QCTHx(iQCTH) = Evt%QCALTHIT%X(iQCTH)
                      QCTHy(iQCTH) = Evt%QCALTHIT%Y(iQCTH)
                      QCTHz(iQCTH) = Evt%QCALTHIT%Z(iQCTH)
-                     Tim1(iQCTH) = Evt%QCALTHIT%Time(1, iQCTH)
-                     Tim2(iQCTH) = Evt%QCALTHIT%Time(2, iQCTH)
-                     Tim3(iQCTH) = Evt%QCALTHIT%Time(3, iQCTH)
-                     Tim4(iQCTH) = Evt%QCALTHIT%Time(4, iQCTH)
-                     Tim5(iQCTH) = Evt%QCALTHIT%Time(5, iQCTH)
+                     Tim1(iQCTH) = Evt%QCALTHIT%Time(iQCTH, 1)
+                     Tim2(iQCTH) = Evt%QCALTHIT%Time(iQCTH, 2)
+                     Tim3(iQCTH) = Evt%QCALTHIT%Time(iQCTH, 3)
+                     Tim4(iQCTH) = Evt%QCALTHIT%Time(iQCTH, 4)
+                     Tim5(iQCTH) = Evt%QCALTHIT%Time(iQCTH, 5)
                  END DO
                ELSE
                   WRITE(*,*) ERROR_BLOCK//'QCTH - nQCTHEle '//ERROR_INDEX, nQCTHEle
@@ -3703,10 +3722,6 @@ C
       else if(verb.eq.'ECLO')then
       	write(Prompt,123)'ECLO'
 	    Status=UIGTYE(Prompt,ECLOFLAG)
-    	goto 10
-      else if(verb.eq.'ECLTWO')then
-      	write(Prompt,123)'ECLO2'
-	    Status=UIGTYE(Prompt,ECLO2FLAG)
     	goto 10
       else if(verb.eq.'CSPS')then
       	write(Prompt,123)'CSPS'

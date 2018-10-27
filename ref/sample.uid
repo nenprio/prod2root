@@ -50,7 +50,6 @@ Verb VNVO
 Verb VNVB 
 Verb INVO 
 Verb ECLO 
-Verb ECLTWO
 Verb CSPS
 Verb CLUO
 Verb QTELE
@@ -113,7 +112,6 @@ Button 41   /Description="Select VNVO       block"/Response="VNVO"
 Button 42   /Description="Select VNVB       block"/Response="VNVB"
 Button 43   /Description="Select INVO       block"/Response="INVO"
 Button 44   /Description="Select ECLO       block"/Response="ECLO"
-Button 45   /Description="Select ECLO2      block"/Response="ECLTWO"
 Button 46   /Description="Select CSPS       block"/Response="CSPS"
 Button 47   /Description="Select CLUO       block"/Response="CLUO"
 Button 48   /Description="Select QTELE      block"/Response="QTELE"

@@ -52,7 +52,6 @@ class TreeWriter{
          void addBlockVNVB();
          void addBlockINVO();
          void addBlockECLO();
-         void addBlockECLO2();
          void addBlockCSPS();
          void addBlockCluO();
          void addBlockQTELE();
