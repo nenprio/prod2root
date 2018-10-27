@@ -1881,7 +1881,7 @@ C-----------------------------------------------------------------------
            CotPca2Old(iTRKOLD) = 0.
            PhiPca2Old(iTRKOLD) = 0.
            nPrhiTOld(iTRKOLD) = 0.
-           nFifthITOld(iTRKOLD) = 0.
+           nFithITOld(iTRKOLD) = 0.
            nMskInkOld(iTRKOLD) = 0.
            Chi2FitOld(iTRKOLD) = 0.
            Chi2MSOld(iTRKOLD) = 0.
@@ -1932,7 +1932,7 @@ C-----------------------------------------------------------------------
                  CotPca2Old(iTRKOLD) = Evt%Trkold%cotpca(iTRKOLD)
                  PhiPca2Old(iTRKOLD) = Evt%Trkold%phipca(iTRKOLD)
                  nPrhiTOld(iTRKOLD) = Evt%Trkold%NumPRhit(iTRKOLD)
-                 nFifthITOld(iTRKOLD) = Evt%Trkold%NumFitHit(iTRKOLD)
+                 nFithITOld(iTRKOLD) = Evt%Trkold%NumFitHit(iTRKOLD)
                  nMskInkOld(iTRKOLD) = Evt%Trkold%nmskink(iTRKOLD)
                  Chi2FitOld(iTRKOLD) = Evt%Trkold%chi2fit(iTRKOLD)
                  Chi2MSOld(iTRKOLD) = Evt%Trkold%chi2ms(iTRKOLD)

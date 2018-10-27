@@ -676,7 +676,7 @@ extern "C" {
     float CotPca2Old[MaxNumTrk];
     float PhiPca2Old[MaxNumTrk];
     int nPrhiTOld[MaxNumTrk];
-    int nFifthITOld[MaxNumTrk];
+    int nFitHitOld[MaxNumTrk];
     int nMskInkOld[MaxNumTrk];
     float Chi2FitOld[MaxNumTrk];
     float Chi2MSOld[MaxNumTrk];

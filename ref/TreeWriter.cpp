@@ -814,7 +814,7 @@ void TreeWriter::addBlockTrkSOld() {
     fNewTree->Branch("CotPca2Old",  &trkold_.CotPca2Old,  "CotPca2Old[nTOld]/F");
     fNewTree->Branch("PhiPca2Old",  &trkold_.PhiPca2Old,  "PhiPca2Old[nTOld]/F");
     fNewTree->Branch("nPrhiTOld",   &trkold_.nPrhiTOld,   "nPrhiTOld[nTOld]/I");
-    fNewTree->Branch("nFifthITOld", &trkold_.nFifthITOld, "nFifthITOld[nTOld]/I");
+    fNewTree->Branch("nFitHitOld", &trkold_.nFitHitOld, "nFitHitOld[nTOld]/I");
     fNewTree->Branch("nMskInkOld",  &trkold_.nMskInkOld,  "nMskInkOld[nTOld]/I");
     fNewTree->Branch("Chi2FitOld",  &trkold_.Chi2FitOld,  "Chi2FitOld[nTOld]/F");
     fNewTree->Branch("Chi2MSOld",   &trkold_.Chi2MSOld,   "Chi2MSOld[nTOld]/F");

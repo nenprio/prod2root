@@ -323,7 +323,7 @@ C
 C  Block: trkold
 C
       integer iTRKOLD, nTOld, TrkIndOld(100), TrkVerOld(100)
-      integer nPrhiTOld(100), nFifthITOld(100), nMskInkOld(100)
+      integer nPrhiTOld(100), nFitHitOld(100), nMskInkOld(100)
       real CurOld(100), PhiOld(100), CotOld(100), PxTOld(100)
       real PyTOld(100), PzTOld(100), PModOld(100), LenOld(100)
       real xFirstOld(100), yFirstOld(100), zFirstOld(100), CurLaOld(100)
@@ -350,7 +350,7 @@ C
      1       PzTLaOld,PModLaOld,SPcaOld,SZetaOld,SCurVOld,SCotGOld,
      1       SPhiOld,xLastOld,yLastOld,zLastOld,xPca2Old,yPca2Old,
      1       zPca2Old,QTrk2Old,CotPca2Old,PhiPca2Old,nPrhiTOld,
-     1       nFifthITOld,nMskInkOld,Chi2FitOld,Chi2MSOld,
+     1       nFitHitOld,nMskInkOld,Chi2FitOld,Chi2MSOld,
      1       nTfMCOld,nContrOld,TrkIne1Old,TrType1Old,
      1       TrHits1Old,TrkIne2Old,TrType2Old,TrHits2Old,TrkIne3Old,
      1       TrType3Old,TrHits3Old,xFMCOld,yFMCOld,zFMCOld,PxFMCOld,
