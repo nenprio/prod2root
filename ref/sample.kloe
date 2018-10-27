@@ -3083,9 +3083,9 @@ C-----------------------------------------------------------------------
                WRITE(*,*) ERROR_BLOCK//'CLUO - nCluO '//ERROR_INDEX, nCluO
                nCluO = 0
             END IF
-   C         
-   C        Fill MC data only if they exist, otherwise don't create empty structures         
-   C
+C         
+C           Fill MC data only if they exist, otherwise don't create empty structures         
+C
             IF (MONTECARLOFLAG) THEN
                nMCPar = 0.
                DO iCLUOMC=1, 100
@@ -3149,8 +3149,9 @@ C-----------------------------------------------------------------------
              QLte_Tim4(iQTELE) = 0.
              QLte_Tim5(iQTELE) = 0.
            END DO
-  
-           STATUS = BIGEST(IW, 'QCTE', BNKNUM) !Returns Largest Bank Number
+
+C          Returns Largest Bank Number  
+           STATUS = BIGEST(IW, 'QCTE', BNKNUM)
            IF( STATUS.EQ.YESUCC ) THEN
               STATUS = BLOCAT(IW, 'QCTE', BNKNUM, IND, INDDAT)
            END IF
@@ -3545,7 +3546,7 @@ C
 C     
 
       if(verb.eq.'SHOW')then
-        showHeader()
+        call showHeader()
 	    goto 10
       else if(verb.eq.'INFO')then
       	write(Prompt,123)'INFO'
