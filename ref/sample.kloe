@@ -1343,15 +1343,29 @@ C-----------------------------------------------------------------------
             YDh(iDHSP) = 0.
             ZDh(iDHSP) = 0.
          END DO
-
-         STATUS=YESUCC
+C
+C        DHSP get function requires DTCE2, DHRE1, DHRE2 and
+C        for each track that has DTFS, it also have DHSP.
+C        Then, initially check the existance of the blocks.
+C
+         STATUS = BLOCAT(IW, 'DTCE', 2, IND, INDDAT)
+         IF (STATUS.EQ.YESUCC) THEN
+            STATUS = BLOCAT(IW, 'DHRE', 1, IND, INDDAT)
+         END IF
+         IF (STATUS.EQ.YESUCC) THEN
+            STATUS = BLOCAT(IW, 'DHRE', 2, IND, INDDAT)
+         END IF
+C        
+C        Here, STATUS is true only if DTCE2, DHRE1, DHRE2 exist.
+C        Then, loop over the tracks and check DTFS and DHSP.
+C
          DO iDHSP = 1, nT 
             ISTAT = BLOCAT(IW, 'DTFS', iDHSP, IND, INDDAT)
-            IF (ISTAT.NE.YESUCC) THEN
-               STATUS=YENOBK
+            IF (ISTAT.EQ.YESUCC .AND. STATUS.EQ.YESUCC) THEN
+               STATUS = BLOCAT(IW,'DHSP', iDHSP, IND, INDDAT)
             END IF
          END DO
-
+         
          IF (STATUS.EQ.YESUCC) THEN
             istat =  GETDHSPSTRU(evt%trk%n,evt%dhsp)
       
