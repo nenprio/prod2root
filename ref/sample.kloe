@@ -1771,44 +1771,52 @@ C-----------------------------------------------------------------------
            Cov33TVOld(iTRKVOLD) = 0.
          END DO
 
-         istat = TRKVOLD2STRU(evt%vtxold, evt%trkvold, evt%trkold, evt%trkmcold)
-         write(*,*) "ISTAT => ", istat
-
-         nTVOld = Evt%TrkvOld%n
-         IF ( nTVOld < 0 .OR. nTVOld > 30 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'TRKVOLD - nTVOld '//ERROR_DOMAIN, nTVOld
+         STATUS = BIGEST(IW, 'DVF1', BNKNUM)
+         IF (STATUS.EQ.YESUCC) THEN
+            STATUS = BLOCAT(IW, 'DVF1', BNKNUM, IND, INDDAT)
          END IF
 
-         IF (nTVOld > 0 .AND. nTVOld <= 30) THEN
-            DO iTRKVOLD=1, nTVOld
-               iVOld(iTRKVOLD) = Evt%TrkvOld%iv(iTRKVOLD)
-               IF ( iVOld(iTRKVOLD) < 0 .OR. iVOld(iTRKVOLD) > 30 ) THEN
-                  WRITE(*,*) ERROR_BLOCK//'TRKVOLD - iVOld '//ERROR_DOMAIN, iVOld(iTRKVOLD)
-               END IF
-               TrkNumVOld(iTRKVOLD) = Evt%Trkvold%trkpoi(iTRKVOLD)
-               IF ( TrkNumVOld(iTRKVOLD) < 0 .OR. TrkNumVOld(iTRKVOLD) > 999 ) THEN
-                  WRITE(*,*) ERROR_BLOCK//'TRKVOLD - TrkNumVOld '//ERROR_DOMAIN, TrkNumVOld(iTRKVOLD)
-               END IF
-                 CurVOld(iTRKVOLD) = Evt%Trkvold%cur(iTRKVOLD)
-                 PhiVOld(iTRKVOLD) = Evt%Trkvold%phi(iTRKVOLD)
-                 CotVOld(iTRKVOLD) = Evt%Trkvold%cot(iTRKVOLD)
-                 PxTVOld(iTRKVOLD) = Evt%Trkvold%px(iTRKVOLD)
-                 PyTVOld(iTRKVOLD) = Evt%Trkvold%py(iTRKVOLD)
-                 PzTVOld(iTRKVOLD) = Evt%Trkvold%pz(iTRKVOLD)
-                 PModVOld(iTRKVOLD) = Evt%Trkvold%pmod(iTRKVOLD)
-                 LenVOld(iTRKVOLD) = Evt%Trkvold%Length(iTRKVOLD)
-                 ChiVOld(iTRKVOLD) = Evt%Trkvold%Chi2(iTRKVOLD)
-                 PidTVOld(iTRKVOLD) = Evt%Trkvold%ipid(iTRKVOLD)
-                 Cov11TVOld(iTRKVOLD) = Evt%Trkvold%cov11(iTRKVOLD)
-                 Cov12TVOld(iTRKVOLD) = Evt%Trkvold%cov12(iTRKVOLD)
-                 Cov13TVOld(iTRKVOLD) = Evt%Trkvold%cov13(iTRKVOLD)
-                 Cov22TVOld(iTRKVOLD) = Evt%Trkvold%cov22(iTRKVOLD)
-                 Cov23TVOld(iTRKVOLD) = Evt%Trkvold%cov23(iTRKVOLD)
-                 Cov33TVOld(iTRKVOLD) = Evt%Trkvold%cov33(iTRKVOLD)
-           END DO
+         IF (STATUS.EQ.YESUCC) THEN
+            ISTAT = TRKVOLD2STRU(evt%vtxold, evt%trkvold, evt%trkold, evt%trkmcold)
+   
+            nTVOld = Evt%TrkvOld%n
+            IF ( nTVOld < 0 .OR. nTVOld > 30 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'TRKVOLD - nTVOld '//ERROR_DOMAIN, nTVOld
+            END IF
+   
+            IF (nTVOld > 0 .AND. nTVOld <= 30) THEN
+               DO iTRKVOLD=1, nTVOld
+                  iVOld(iTRKVOLD) = Evt%TrkvOld%iv(iTRKVOLD)
+                  IF ( iVOld(iTRKVOLD) < 0 .OR. iVOld(iTRKVOLD) > 30 ) THEN
+                     WRITE(*,*) ERROR_BLOCK//'TRKVOLD - iVOld '//ERROR_DOMAIN, iVOld(iTRKVOLD)
+                  END IF
+                  TrkNumVOld(iTRKVOLD) = Evt%Trkvold%trkpoi(iTRKVOLD)
+                  IF ( TrkNumVOld(iTRKVOLD) < 0 .OR. TrkNumVOld(iTRKVOLD) > 999 ) THEN
+                     WRITE(*,*) ERROR_BLOCK//'TRKVOLD - TrkNumVOld '//ERROR_DOMAIN, TrkNumVOld(iTRKVOLD)
+                  END IF
+                    CurVOld(iTRKVOLD) = Evt%Trkvold%cur(iTRKVOLD)
+                    PhiVOld(iTRKVOLD) = Evt%Trkvold%phi(iTRKVOLD)
+                    CotVOld(iTRKVOLD) = Evt%Trkvold%cot(iTRKVOLD)
+                    PxTVOld(iTRKVOLD) = Evt%Trkvold%px(iTRKVOLD)
+                    PyTVOld(iTRKVOLD) = Evt%Trkvold%py(iTRKVOLD)
+                    PzTVOld(iTRKVOLD) = Evt%Trkvold%pz(iTRKVOLD)
+                    PModVOld(iTRKVOLD) = Evt%Trkvold%pmod(iTRKVOLD)
+                    LenVOld(iTRKVOLD) = Evt%Trkvold%Length(iTRKVOLD)
+                    ChiVOld(iTRKVOLD) = Evt%Trkvold%Chi2(iTRKVOLD)
+                    PidTVOld(iTRKVOLD) = Evt%Trkvold%ipid(iTRKVOLD)
+                    Cov11TVOld(iTRKVOLD) = Evt%Trkvold%cov11(iTRKVOLD)
+                    Cov12TVOld(iTRKVOLD) = Evt%Trkvold%cov12(iTRKVOLD)
+                    Cov13TVOld(iTRKVOLD) = Evt%Trkvold%cov13(iTRKVOLD)
+                    Cov22TVOld(iTRKVOLD) = Evt%Trkvold%cov22(iTRKVOLD)
+                    Cov23TVOld(iTRKVOLD) = Evt%Trkvold%cov23(iTRKVOLD)
+                    Cov33TVOld(iTRKVOLD) = Evt%Trkvold%cov33(iTRKVOLD)
+              END DO
+            ELSE
+               WRITE(*,*) ERROR_BLOCK//'TRKVOLD - nTVOld '//ERROR_INDEX, nTVOld
+               nTVOld = 0
+            END IF
          ELSE
-            WRITE(*,*) ERROR_BLOCK//'TRKVOLD - nTVOld '//ERROR_INDEX, nTVOld
-            nTVOld = 0
+            WRITE(*,*) ERROR_MISS_DATA//'TRKVOLD'
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -1911,184 +1919,198 @@ C-----------------------------------------------------------------------
            Chi2MSOld(iTRKOLD) = 0.
          END DO
 
-         istat = TRKVOLD2STRU(evt%vtxold, evt%trkvold, evt%trkold, evt%trkmcold)
-         write(*,*) "ISTAT => ", istat
-
-         nTOld = Evt%Trkold%n
-         IF ( nTOld < 0 .OR. nTOld > 100 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'TRKOLD - nTOld '//ERROR_DOMAIN, nTOld
+C
+C        Trks and TrksMC require DVF1 and DTF1 banks,
+C        then here we check for both of them.
+C
+         STATUS = BIGEST(IW, 'DVF1', BNKNUM)
+         IF (STATUS.EQ.YESUCC) THEN
+            STATUS = BLOCAT(IW, 'DVF1', BNKNUM, IND, INDDAT)
+         END IF
+         IF (STATUS.EQ.YESUCC) THEN
+            STATUS = BIGEST(IW, 'DTF1', BNKNUM)
+         END IF
+         IF (STATUS.EQ.YESUCC) THEN
+            STATUS = BLOCAT(IW, 'DTF1', BNKNUM, IND, INDDAT)
          END IF
 
-         IF (nTOld > 0 .AND. nTOld <= 100) THEN
-            DO iTRKOLD=1, nTOld
-                 TrkIndOld(iTRKOLD) = Evt%Trkold%trkind(iTRKOLD)
-                 TrkVerOld(iTRKOLD) = Evt%Trkold%version(iTRKOLD)
-                 CurOld(iTRKOLD) = Evt%Trkold%cur(iTRKOLD)
-                 PhiOld(iTRKOLD) = Evt%Trkold%phi(iTRKOLD)
-                 CotOld(iTRKOLD) = Evt%Trkold%cot(iTRKOLD)
-                 PxTOld(iTRKOLD) = Evt%Trkold%px(iTRKOLD)
-                 PyTOld(iTRKOLD) = Evt%Trkold%py(iTRKOLD)
-                 PzTOld(iTRKOLD) = Evt%Trkold%pz(iTRKOLD)
-                 PModOld(iTRKOLD) = Evt%Trkold%pmod(iTRKOLD)
-                 LenOld(iTRKOLD) = Evt%Trkold%length(iTRKOLD)
-                 xFirstOld(iTRKOLD) = Evt%Trkold%x(iTRKOLD)
-                 yFirstOld(iTRKOLD) = Evt%Trkold%y(iTRKOLD)
-                 zFirstOld(iTRKOLD) = Evt%Trkold%z(iTRKOLD)
-                 CurLaOld(iTRKOLD) = Evt%Trkold%curlast(iTRKOLD)
-                 PhiLaOld(iTRKOLD) = Evt%Trkold%philast(iTRKOLD)
-                 CotLaOld(iTRKOLD) = Evt%Trkold%cotlast(iTRKOLD)
-                 PxTLaOld(iTRKOLD) = Evt%Trkold%pxlast(iTRKOLD)
-                 PyTLaOld(iTRKOLD) = Evt%Trkold%pylast(iTRKOLD)
-                 PzTLaOld(iTRKOLD) = Evt%Trkold%pzlast(iTRKOLD)
-                 PModLaOld(iTRKOLD) = Evt%Trkold%pmodlast(iTRKOLD)
-                 SPcaOld(iTRKOLD) = Evt%Trkold%SigPCA(iTRKOLD)
-                 SZetaOld(iTRKOLD) = Evt%Trkold%SigZeta(iTRKOLD)
-                 SCurVOld(iTRKOLD) = Evt%Trkold%SigCurv(iTRKOLD)
-                 SCotGOld(iTRKOLD) = Evt%Trkold%SigCot(iTRKOLD)
-                 SPhiOld(iTRKOLD) = Evt%Trkold%SigPhi(iTRKOLD)
-                 xLastOld(iTRKOLD) = Evt%Trkold%xlast(iTRKOLD)
-                 yLastOld(iTRKOLD) = Evt%Trkold%ylast(iTRKOLD)
-                 zLastOld(iTRKOLD) = Evt%Trkold%zlast(iTRKOLD)
-                 xPca2Old(iTRKOLD) = Evt%Trkold%xpca(iTRKOLD)
-                 yPca2Old(iTRKOLD) = Evt%Trkold%ypca(iTRKOLD)
-                 zPca2Old(iTRKOLD) = Evt%Trkold%zpca(iTRKOLD)
-                 QTrk2Old(iTRKOLD) = Evt%Trkold%qtrk(iTRKOLD)
-                 CotPca2Old(iTRKOLD) = Evt%Trkold%cotpca(iTRKOLD)
-                 PhiPca2Old(iTRKOLD) = Evt%Trkold%phipca(iTRKOLD)
-                 nPrhiTOld(iTRKOLD) = Evt%Trkold%NumPRhit(iTRKOLD)
-                 nFithITOld(iTRKOLD) = Evt%Trkold%NumFitHit(iTRKOLD)
-                 nMskInkOld(iTRKOLD) = Evt%Trkold%nmskink(iTRKOLD)
-                 Chi2FitOld(iTRKOLD) = Evt%Trkold%chi2fit(iTRKOLD)
-                 Chi2MSOld(iTRKOLD) = Evt%Trkold%chi2ms(iTRKOLD)
-           END DO
+         IF (STATUS.EQ.YESUCC) THEN
+            ISTAT = TRKVOLD2STRU(evt%vtxold, evt%trkvold, evt%trkold, evt%trkmcold)
+   
+            nTOld = Evt%Trkold%n
+            IF ( nTOld < 0 .OR. nTOld > 100 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'TRKOLD - nTOld '//ERROR_DOMAIN, nTOld
+            END IF
+   
+            IF (nTOld > 0 .AND. nTOld <= 100) THEN
+               DO iTRKOLD=1, nTOld
+                    TrkIndOld(iTRKOLD) = Evt%Trkold%trkind(iTRKOLD)
+                    TrkVerOld(iTRKOLD) = Evt%Trkold%version(iTRKOLD)
+                    CurOld(iTRKOLD) = Evt%Trkold%cur(iTRKOLD)
+                    PhiOld(iTRKOLD) = Evt%Trkold%phi(iTRKOLD)
+                    CotOld(iTRKOLD) = Evt%Trkold%cot(iTRKOLD)
+                    PxTOld(iTRKOLD) = Evt%Trkold%px(iTRKOLD)
+                    PyTOld(iTRKOLD) = Evt%Trkold%py(iTRKOLD)
+                    PzTOld(iTRKOLD) = Evt%Trkold%pz(iTRKOLD)
+                    PModOld(iTRKOLD) = Evt%Trkold%pmod(iTRKOLD)
+                    LenOld(iTRKOLD) = Evt%Trkold%length(iTRKOLD)
+                    xFirstOld(iTRKOLD) = Evt%Trkold%x(iTRKOLD)
+                    yFirstOld(iTRKOLD) = Evt%Trkold%y(iTRKOLD)
+                    zFirstOld(iTRKOLD) = Evt%Trkold%z(iTRKOLD)
+                    CurLaOld(iTRKOLD) = Evt%Trkold%curlast(iTRKOLD)
+                    PhiLaOld(iTRKOLD) = Evt%Trkold%philast(iTRKOLD)
+                    CotLaOld(iTRKOLD) = Evt%Trkold%cotlast(iTRKOLD)
+                    PxTLaOld(iTRKOLD) = Evt%Trkold%pxlast(iTRKOLD)
+                    PyTLaOld(iTRKOLD) = Evt%Trkold%pylast(iTRKOLD)
+                    PzTLaOld(iTRKOLD) = Evt%Trkold%pzlast(iTRKOLD)
+                    PModLaOld(iTRKOLD) = Evt%Trkold%pmodlast(iTRKOLD)
+                    SPcaOld(iTRKOLD) = Evt%Trkold%SigPCA(iTRKOLD)
+                    SZetaOld(iTRKOLD) = Evt%Trkold%SigZeta(iTRKOLD)
+                    SCurVOld(iTRKOLD) = Evt%Trkold%SigCurv(iTRKOLD)
+                    SCotGOld(iTRKOLD) = Evt%Trkold%SigCot(iTRKOLD)
+                    SPhiOld(iTRKOLD) = Evt%Trkold%SigPhi(iTRKOLD)
+                    xLastOld(iTRKOLD) = Evt%Trkold%xlast(iTRKOLD)
+                    yLastOld(iTRKOLD) = Evt%Trkold%ylast(iTRKOLD)
+                    zLastOld(iTRKOLD) = Evt%Trkold%zlast(iTRKOLD)
+                    xPca2Old(iTRKOLD) = Evt%Trkold%xpca(iTRKOLD)
+                    yPca2Old(iTRKOLD) = Evt%Trkold%ypca(iTRKOLD)
+                    zPca2Old(iTRKOLD) = Evt%Trkold%zpca(iTRKOLD)
+                    QTrk2Old(iTRKOLD) = Evt%Trkold%qtrk(iTRKOLD)
+                    CotPca2Old(iTRKOLD) = Evt%Trkold%cotpca(iTRKOLD)
+                    PhiPca2Old(iTRKOLD) = Evt%Trkold%phipca(iTRKOLD)
+                    nPrhiTOld(iTRKOLD) = Evt%Trkold%NumPRhit(iTRKOLD)
+                    nFithITOld(iTRKOLD) = Evt%Trkold%NumFitHit(iTRKOLD)
+                    nMskInkOld(iTRKOLD) = Evt%Trkold%nmskink(iTRKOLD)
+                    Chi2FitOld(iTRKOLD) = Evt%Trkold%chi2fit(iTRKOLD)
+                    Chi2MSOld(iTRKOLD) = Evt%Trkold%chi2ms(iTRKOLD)
+              END DO
+            ELSE
+               WRITE(*,*) ERROR_BLOCK//'TRKOLD - nTOld '//ERROR_INDEX, nTOld
+               nTOld = 0
+            END IF
+   C
+   C        Fill MC data only if they exist, otherwise don't create empty structures         
+   C
+            IF (MONTECARLOFLAG) THEN
+              nTfMCOld = 0.
+              DO iTRKMCOLD=1, 100
+                nContrOld(iTRKMCOLD) = 0.
+                TrkIne1Old(iTRKMCOLD) = 0.
+                TrType1Old(iTRKMCOLD) = 0.
+                TrHits1Old(iTRKMCOLD) = 0.
+                TrkIne2Old(iTRKMCOLD) = 0.
+                TrType2Old(iTRKMCOLD) = 0.
+                TrHits2Old(iTRKMCOLD) = 0.
+                TrkIne3Old(iTRKMCOLD) = 0.
+                TrType3Old(iTRKMCOLD) = 0.
+                TrHits3Old(iTRKMCOLD) = 0.
+                xFMCOld(iTRKMCOLD) = 0.
+                yFMCOld(iTRKMCOLD) = 0.
+                zFMCOld(iTRKMCOLD) = 0.
+                PxFMCOld(iTRKMCOLD) = 0.
+                PyFMCOld(iTRKMCOLD) = 0.
+                PzFMCOld(iTRKMCOLD) = 0.
+                xLMCOld(iTRKMCOLD) = 0.
+                yLMCOld(iTRKMCOLD) = 0.
+                zLMCOld(iTRKMCOLD) = 0.
+                PxLMCOld(iTRKMCOLD) = 0.
+                PyLMCOld(iTRKMCOLD) = 0.
+                PzLMCOld(iTRKMCOLD) = 0.
+                xFMC2Old(iTRKMCOLD) = 0.
+                yFMC2Old(iTRKMCOLD) = 0.
+                zFMC2Old(iTRKMCOLD) = 0.
+                PxFMC2Old(iTRKMCOLD) = 0.
+                PyFMC2Old(iTRKMCOLD) = 0.
+                PzFMC2Old(iTRKMCOLD) = 0.
+                xLMC2Old(iTRKMCOLD) = 0.
+                yLMC2Old(iTRKMCOLD) = 0.
+                zLMC2Old(iTRKMCOLD) = 0.
+                PxLMC2Old(iTRKMCOLD) = 0.
+                PyLMC2Old(iTRKMCOLD) = 0.
+                PzLMC2Old(iTRKMCOLD) = 0.
+              END DO
+     
+              nTfMCOld = Evt%Trkmcold%n
+              IF ( nTfMCOld < 0 .OR. nTfMCOld > 100 ) THEN
+                 WRITE(*,*) ERROR_BLOCK//'TRKOLD - nTfMCOld '//ERROR_DOMAIN, nTfMCOld
+              END IF
+     
+              IF (nTfMCOld > 0 .AND. nTfMCOld <= 100) THEN
+                 DO iTRKMCOLD=1, nTfMCOld
+                    nContrOld(iTRKMCOLD) = Evt%Trkmcold%ncontr(iTRKMCOLD)
+                    IF ( nContrOld(iTRKMCOLD) < 0 .OR. nContrOld(iTRKMCOLD) > 10 ) THEN
+                       WRITE(*,*) ERROR_BLOCK//'TRKOLD - nContrOld '//ERROR_DOMAIN, nContrOld(iTRKMCOLD)
+                    END IF
+                    TrkIne1Old(iTRKMCOLD) = Evt%Trkmcold%kine1(iTRKMCOLD)
+                    IF ( TrkIne1Old(iTRKMCOLD) < 0 .OR. TrkIne1Old(iTRKMCOLD) > 100 ) THEN
+                       WRITE(*,*) ERROR_BLOCK//'TRKOLD - TrkIne1Old '//ERROR_DOMAIN, TrkIne1Old(iTRKMCOLD)
+                    END IF
+                    TrType1Old(iTRKMCOLD) = Evt%Trkmcold%type1(iTRKMCOLD)
+                    IF ( TrType1Old(iTRKMCOLD) < 0 .OR. TrType1Old(iTRKMCOLD) > 100 ) THEN
+                       WRITE(*,*) ERROR_BLOCK//'TRKOLD - TrType1Old '//ERROR_DOMAIN, TrType1Old(iTRKMCOLD)
+                    END IF
+                    TrHits1Old(iTRKMCOLD) = Evt%Trkmcold%hits1(iTRKMCOLD)
+                    IF ( TrHits1Old(iTRKMCOLD) < 0 .OR. TrHits1Old(iTRKMCOLD) > 1000 ) THEN
+                       WRITE(*,*) ERROR_BLOCK//'TRKOLD - TrHits1Old '//ERROR_DOMAIN, TrHits1Old(iTRKMCOLD)
+                    END IF
+                    TrkIne2Old(iTRKMCOLD) = Evt%Trkmcold%kine2(iTRKMCOLD)
+                    IF ( TrkIne2Old(iTRKMCOLD) < 0 .OR. TrkIne2Old(iTRKMCOLD) > 100 ) THEN
+                       WRITE(*,*) ERROR_BLOCK//'TRKOLD - TrkIne2Old '//ERROR_DOMAIN, TrkIne2Old(iTRKMCOLD)
+                    END IF
+                    TrType2Old(iTRKMCOLD) = Evt%Trkmcold%type2(iTRKMCOLD)
+                    IF ( TrType2Old(iTRKMCOLD) < 0 .OR. TrType2Old(iTRKMCOLD) > 100 ) THEN
+                       WRITE(*,*) ERROR_BLOCK//'TRKOLD - TrType2Old '//ERROR_DOMAIN, TrType2Old(iTRKMCOLD)
+                    END IF
+                    TrHits2Old(iTRKMCOLD) = Evt%Trkmcold%hits2(iTRKMCOLD)
+                    IF ( TrHits2Old(iTRKMCOLD) < 0 .OR. TrHits2Old(iTRKMCOLD) > 1000 ) THEN
+                       WRITE(*,*) ERROR_BLOCK//'TRKOLD - TrHits2Old '//ERROR_DOMAIN, TrHits2Old(iTRKMCOLD)
+                    END IF
+                    TrkIne3Old(iTRKMCOLD) = Evt%Trkmcold%kine3(iTRKMCOLD)
+                    IF ( TrkIne3Old(iTRKMCOLD) < 0 .OR. TrkIne3Old(iTRKMCOLD) > 100 ) THEN
+                       WRITE(*,*) ERROR_BLOCK//'TRKOLD - TrkIne3Old '//ERROR_DOMAIN, TrkIne3Old(iTRKMCOLD)
+                    END IF
+                    TrType3Old(iTRKMCOLD) = Evt%Trkmcold%type3(iTRKMCOLD)
+                    IF ( TrType3Old(iTRKMCOLD) < 0 .OR. TrType3Old(iTRKMCOLD) > 100 ) THEN
+                       WRITE(*,*) ERROR_BLOCK//'TRKOLD - TrType3Old '//ERROR_DOMAIN, TrType3Old(iTRKMCOLD)
+                    END IF
+                    TrHits3Old(iTRKMCOLD) = Evt%Trkmcold%hits3(iTRKMCOLD)
+                    IF ( TrHits3Old(iTRKMCOLD) < 0 .OR. TrHits3Old(iTRKMCOLD) > 1000 ) THEN
+                       WRITE(*,*) ERROR_BLOCK//'TRKOLD - TrHits3Old '//ERROR_DOMAIN, TrHits3Old(iTRKMCOLD)
+                    END IF
+                      xFMCOld(iTRKMCOLD) = Evt%Trkmcold%xfirst(iTRKMCOLD)
+                      yFMCOld(iTRKMCOLD) = Evt%Trkmcold%yfirst(iTRKMCOLD)
+                      zFMCOld(iTRKMCOLD) = Evt%Trkmcold%zfirst(iTRKMCOLD)
+                      PxFMCOld(iTRKMCOLD) = Evt%Trkmcold%pxfirst(iTRKMCOLD)
+                      PyFMCOld(iTRKMCOLD) = Evt%Trkmcold%pyfirst(iTRKMCOLD)
+                      PzFMCOld(iTRKMCOLD) = Evt%Trkmcold%pzfirst(iTRKMCOLD)
+                      xLMCOld(iTRKMCOLD) = Evt%Trkmcold%xlast(iTRKMCOLD)
+                      yLMCOld(iTRKMCOLD) = Evt%Trkmcold%ylast(iTRKMCOLD)
+                      zLMCOld(iTRKMCOLD) = Evt%Trkmcold%zlast(iTRKMCOLD)
+                      PxLMCOld(iTRKMCOLD) = Evt%Trkmcold%pxlast(iTRKMCOLD)
+                      PyLMCOld(iTRKMCOLD) = Evt%Trkmcold%pylast(iTRKMCOLD)
+                      PzLMCOld(iTRKMCOLD) = Evt%Trkmcold%pzlast(iTRKMCOLD)
+                      xFMC2Old(iTRKMCOLD) = Evt%Trkmcold%xmcfirst(iTRKMCOLD)
+                      yFMC2Old(iTRKMCOLD) = Evt%Trkmcold%ymcfirst(iTRKMCOLD)
+                      zFMC2Old(iTRKMCOLD) = Evt%Trkmcold%zmcfirst(iTRKMCOLD)
+                      PxFMC2Old(iTRKMCOLD) = Evt%Trkmcold%pxmcfirst(iTRKMCOLD)
+                      PyFMC2Old(iTRKMCOLD) = Evt%Trkmcold%pymcfirst(iTRKMCOLD)
+                      PzFMC2Old(iTRKMCOLD) = Evt%Trkmcold%pzmcfirst(iTRKMCOLD)
+                      xLMC2Old(iTRKMCOLD) = Evt%Trkmcold%xmclast(iTRKMCOLD)
+                      yLMC2Old(iTRKMCOLD) = Evt%Trkmcold%ymclast(iTRKMCOLD)
+                      zLMC2Old(iTRKMCOLD) = Evt%Trkmcold%zmclast(iTRKMCOLD)
+                      PxLMC2Old(iTRKMCOLD) = Evt%Trkmcold%pxmclast(iTRKMCOLD)
+                      PyLMC2Old(iTRKMCOLD) = Evt%Trkmcold%pymclast(iTRKMCOLD)
+                      PzLMC2Old(iTRKMCOLD) = Evt%Trkmcold%pzmclast(iTRKMCOLD)
+                END DO
+              ELSE
+                 WRITE(*,*) ERROR_BLOCK//'TRKOLD - nTfMCOld '//ERROR_INDEX, nTfMCOld
+                 nTfMCOld = 0
+              END IF
+            END IF
          ELSE
-            WRITE(*,*) ERROR_BLOCK//'TRKOLD - nTOld '//ERROR_INDEX, nTOld
-            nTOld = 0
-         END IF
-C
-C        Fill MC data only if they exist, otherwise don't create empty structures         
-C
-         IF (MONTECARLOFLAG) THEN
-           nTfMCOld = 0.
-           DO iTRKMCOLD=1, 100
-             nContrOld(iTRKMCOLD) = 0.
-             TrkIne1Old(iTRKMCOLD) = 0.
-             TrType1Old(iTRKMCOLD) = 0.
-             TrHits1Old(iTRKMCOLD) = 0.
-             TrkIne2Old(iTRKMCOLD) = 0.
-             TrType2Old(iTRKMCOLD) = 0.
-             TrHits2Old(iTRKMCOLD) = 0.
-             TrkIne3Old(iTRKMCOLD) = 0.
-             TrType3Old(iTRKMCOLD) = 0.
-             TrHits3Old(iTRKMCOLD) = 0.
-             xFMCOld(iTRKMCOLD) = 0.
-             yFMCOld(iTRKMCOLD) = 0.
-             zFMCOld(iTRKMCOLD) = 0.
-             PxFMCOld(iTRKMCOLD) = 0.
-             PyFMCOld(iTRKMCOLD) = 0.
-             PzFMCOld(iTRKMCOLD) = 0.
-             xLMCOld(iTRKMCOLD) = 0.
-             yLMCOld(iTRKMCOLD) = 0.
-             zLMCOld(iTRKMCOLD) = 0.
-             PxLMCOld(iTRKMCOLD) = 0.
-             PyLMCOld(iTRKMCOLD) = 0.
-             PzLMCOld(iTRKMCOLD) = 0.
-             xFMC2Old(iTRKMCOLD) = 0.
-             yFMC2Old(iTRKMCOLD) = 0.
-             zFMC2Old(iTRKMCOLD) = 0.
-             PxFMC2Old(iTRKMCOLD) = 0.
-             PyFMC2Old(iTRKMCOLD) = 0.
-             PzFMC2Old(iTRKMCOLD) = 0.
-             xLMC2Old(iTRKMCOLD) = 0.
-             yLMC2Old(iTRKMCOLD) = 0.
-             zLMC2Old(iTRKMCOLD) = 0.
-             PxLMC2Old(iTRKMCOLD) = 0.
-             PyLMC2Old(iTRKMCOLD) = 0.
-             PzLMC2Old(iTRKMCOLD) = 0.
-           END DO
-  
-           nTfMCOld = Evt%Trkmcold%n
-           IF ( nTfMCOld < 0 .OR. nTfMCOld > 100 ) THEN
-              WRITE(*,*) ERROR_BLOCK//'TRKOLD - nTfMCOld '//ERROR_DOMAIN, nTfMCOld
-           END IF
-  
-           IF (nTfMCOld > 0 .AND. nTfMCOld <= 100) THEN
-              DO iTRKMCOLD=1, nTfMCOld
-                 nContrOld(iTRKMCOLD) = Evt%Trkmcold%ncontr(iTRKMCOLD)
-                 IF ( nContrOld(iTRKMCOLD) < 0 .OR. nContrOld(iTRKMCOLD) > 10 ) THEN
-                    WRITE(*,*) ERROR_BLOCK//'TRKOLD - nContrOld '//ERROR_DOMAIN, nContrOld(iTRKMCOLD)
-                 END IF
-                 TrkIne1Old(iTRKMCOLD) = Evt%Trkmcold%kine1(iTRKMCOLD)
-                 IF ( TrkIne1Old(iTRKMCOLD) < 0 .OR. TrkIne1Old(iTRKMCOLD) > 100 ) THEN
-                    WRITE(*,*) ERROR_BLOCK//'TRKOLD - TrkIne1Old '//ERROR_DOMAIN, TrkIne1Old(iTRKMCOLD)
-                 END IF
-                 TrType1Old(iTRKMCOLD) = Evt%Trkmcold%type1(iTRKMCOLD)
-                 IF ( TrType1Old(iTRKMCOLD) < 0 .OR. TrType1Old(iTRKMCOLD) > 100 ) THEN
-                    WRITE(*,*) ERROR_BLOCK//'TRKOLD - TrType1Old '//ERROR_DOMAIN, TrType1Old(iTRKMCOLD)
-                 END IF
-                 TrHits1Old(iTRKMCOLD) = Evt%Trkmcold%hits1(iTRKMCOLD)
-                 IF ( TrHits1Old(iTRKMCOLD) < 0 .OR. TrHits1Old(iTRKMCOLD) > 1000 ) THEN
-                    WRITE(*,*) ERROR_BLOCK//'TRKOLD - TrHits1Old '//ERROR_DOMAIN, TrHits1Old(iTRKMCOLD)
-                 END IF
-                 TrkIne2Old(iTRKMCOLD) = Evt%Trkmcold%kine2(iTRKMCOLD)
-                 IF ( TrkIne2Old(iTRKMCOLD) < 0 .OR. TrkIne2Old(iTRKMCOLD) > 100 ) THEN
-                    WRITE(*,*) ERROR_BLOCK//'TRKOLD - TrkIne2Old '//ERROR_DOMAIN, TrkIne2Old(iTRKMCOLD)
-                 END IF
-                 TrType2Old(iTRKMCOLD) = Evt%Trkmcold%type2(iTRKMCOLD)
-                 IF ( TrType2Old(iTRKMCOLD) < 0 .OR. TrType2Old(iTRKMCOLD) > 100 ) THEN
-                    WRITE(*,*) ERROR_BLOCK//'TRKOLD - TrType2Old '//ERROR_DOMAIN, TrType2Old(iTRKMCOLD)
-                 END IF
-                 TrHits2Old(iTRKMCOLD) = Evt%Trkmcold%hits2(iTRKMCOLD)
-                 IF ( TrHits2Old(iTRKMCOLD) < 0 .OR. TrHits2Old(iTRKMCOLD) > 1000 ) THEN
-                    WRITE(*,*) ERROR_BLOCK//'TRKOLD - TrHits2Old '//ERROR_DOMAIN, TrHits2Old(iTRKMCOLD)
-                 END IF
-                 TrkIne3Old(iTRKMCOLD) = Evt%Trkmcold%kine3(iTRKMCOLD)
-                 IF ( TrkIne3Old(iTRKMCOLD) < 0 .OR. TrkIne3Old(iTRKMCOLD) > 100 ) THEN
-                    WRITE(*,*) ERROR_BLOCK//'TRKOLD - TrkIne3Old '//ERROR_DOMAIN, TrkIne3Old(iTRKMCOLD)
-                 END IF
-                 TrType3Old(iTRKMCOLD) = Evt%Trkmcold%type3(iTRKMCOLD)
-                 IF ( TrType3Old(iTRKMCOLD) < 0 .OR. TrType3Old(iTRKMCOLD) > 100 ) THEN
-                    WRITE(*,*) ERROR_BLOCK//'TRKOLD - TrType3Old '//ERROR_DOMAIN, TrType3Old(iTRKMCOLD)
-                 END IF
-                 TrHits3Old(iTRKMCOLD) = Evt%Trkmcold%hits3(iTRKMCOLD)
-                 IF ( TrHits3Old(iTRKMCOLD) < 0 .OR. TrHits3Old(iTRKMCOLD) > 1000 ) THEN
-                    WRITE(*,*) ERROR_BLOCK//'TRKOLD - TrHits3Old '//ERROR_DOMAIN, TrHits3Old(iTRKMCOLD)
-                 END IF
-                   xFMCOld(iTRKMCOLD) = Evt%Trkmcold%xfirst(iTRKMCOLD)
-                   yFMCOld(iTRKMCOLD) = Evt%Trkmcold%yfirst(iTRKMCOLD)
-                   zFMCOld(iTRKMCOLD) = Evt%Trkmcold%zfirst(iTRKMCOLD)
-                   PxFMCOld(iTRKMCOLD) = Evt%Trkmcold%pxfirst(iTRKMCOLD)
-                   PyFMCOld(iTRKMCOLD) = Evt%Trkmcold%pyfirst(iTRKMCOLD)
-                   PzFMCOld(iTRKMCOLD) = Evt%Trkmcold%pzfirst(iTRKMCOLD)
-                   xLMCOld(iTRKMCOLD) = Evt%Trkmcold%xlast(iTRKMCOLD)
-                   yLMCOld(iTRKMCOLD) = Evt%Trkmcold%ylast(iTRKMCOLD)
-                   zLMCOld(iTRKMCOLD) = Evt%Trkmcold%zlast(iTRKMCOLD)
-                   PxLMCOld(iTRKMCOLD) = Evt%Trkmcold%pxlast(iTRKMCOLD)
-                   PyLMCOld(iTRKMCOLD) = Evt%Trkmcold%pylast(iTRKMCOLD)
-                   PzLMCOld(iTRKMCOLD) = Evt%Trkmcold%pzlast(iTRKMCOLD)
-                   xFMC2Old(iTRKMCOLD) = Evt%Trkmcold%xmcfirst(iTRKMCOLD)
-                   yFMC2Old(iTRKMCOLD) = Evt%Trkmcold%ymcfirst(iTRKMCOLD)
-                   zFMC2Old(iTRKMCOLD) = Evt%Trkmcold%zmcfirst(iTRKMCOLD)
-                   PxFMC2Old(iTRKMCOLD) = Evt%Trkmcold%pxmcfirst(iTRKMCOLD)
-                   PyFMC2Old(iTRKMCOLD) = Evt%Trkmcold%pymcfirst(iTRKMCOLD)
-                   PzFMC2Old(iTRKMCOLD) = Evt%Trkmcold%pzmcfirst(iTRKMCOLD)
-                   xLMC2Old(iTRKMCOLD) = Evt%Trkmcold%xmclast(iTRKMCOLD)
-                   yLMC2Old(iTRKMCOLD) = Evt%Trkmcold%ymclast(iTRKMCOLD)
-                   zLMC2Old(iTRKMCOLD) = Evt%Trkmcold%zmclast(iTRKMCOLD)
-                   PxLMC2Old(iTRKMCOLD) = Evt%Trkmcold%pxmclast(iTRKMCOLD)
-                   PyLMC2Old(iTRKMCOLD) = Evt%Trkmcold%pymclast(iTRKMCOLD)
-                   PzLMC2Old(iTRKMCOLD) = Evt%Trkmcold%pzmclast(iTRKMCOLD)
-             END DO
-           ELSE
-              WRITE(*,*) ERROR_BLOCK//'TRKOLD - nTfMCOld '//ERROR_INDEX, nTfMCOld
-              nTfMCOld = 0
-           END IF
+            WRITE(*,*) ERROR_MISS_DATA//'TRKOLD'
          END IF
       END IF
-C-----------------------------------------------------------------------
-C Fill Block trkmcold
-C-----------------------------------------------------------------------
-        
 C-----------------------------------------------------------------------
 C Fill Block dhit
 C-----------------------------------------------------------------------
