@@ -1562,7 +1562,13 @@ C-----------------------------------------------------------------------
            Chi2Ms(iTRKS) = 0.
          END DO
 
-         STATUS = BIGEST(IW, 'DTFS', BNKNUM)
+         STATUS = BIGEST(IW, 'DVFS', BNKNUM)
+         IF (STATUS.EQ.YESUCC) THEN
+            STATUS = BLOCAT(IW, 'DVFS', BNKNUM, IND, INDDAT)
+         END IF
+         IF (STATUS.EQ.YESUCC) THEN
+            STATUS = BIGEST(IW, 'DTFS', BNKNUM)
+         END IF
          IF (STATUS.EQ.YESUCC) THEN
             STATUS = BLOCAT(IW, 'DTFS', BNKNUM, IND, INDDAT)
          END IF
