@@ -2002,9 +2002,9 @@ C
                WRITE(*,*) ERROR_BLOCK//'TRKOLD - nTOld '//ERROR_INDEX, nTOld
                nTOld = 0
             END IF
-   C
-   C        Fill MC data only if they exist, otherwise don't create empty structures         
-   C
+C
+C           Fill MC data only if they exist, otherwise don't create empty structures         
+C
             IF (MONTECARLOFLAG) THEN
               nTfMCOld = 0.
               DO iTRKMCOLD=1, 100
