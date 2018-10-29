@@ -1846,36 +1846,44 @@ C-----------------------------------------------------------------------
            VtxCov6Old(iVTXOLD) = 0.
          END DO
 
-         istat = TRKVOLD2STRU(evt%vtxold, evt%trkvold, evt%trkold, evt%trkmcold)
-         write(*,*) "ISTAT => ", istat
-
-         nVOld = Evt%vtxold%n
-         IF ( nVOld < 0 .OR. nVOld > 10 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'VTXOLD - nVOld '//ERROR_DOMAIN, nVOld
+         STATUS = BIGEST(IW, 'DVF1', BNKNUM)
+         IF (STATUS.EQ.YESUCC) THEN
+            STATUS = BLOCAT(IW, 'DVF1', BNKNUM, IND, INDDAT)
          END IF
 
-         IF (nVOld > 0 .AND. nVOld <= 10) THEN
-            DO iVTXOLD=1, nVOld
-               VtxOld(iVTXOLD) = Evt%Vtxold%Ntrk(iVTXOLD)
-               IF ( VtxOld(iVTXOLD) < 0 .OR. VtxOld(iVTXOLD) > 10 ) THEN
-                  WRITE(*,*) ERROR_BLOCK//'VTXOLD - VtxOld '//ERROR_DOMAIN, VtxOld(iVTXOLD)
-               END IF
-                 xVOld(iVTXOLD) = Evt%Vtxold%X(iVTXOLD)
-                 yVOld(iVTXOLD) = Evt%Vtxold%Y(iVTXOLD)
-                 ZVOld(iVTXOLD) = Evt%Vtxold%Z(iVTXOLD)
-                 ChiVTxOld(iVTXOLD) = Evt%Vtxold%Chi2(iVTXOLD)
-                 QuaLVOld(iVTXOLD) = Evt%Vtxold%Qual(iVTXOLD)
-                 FitIdVOld(iVTXOLD) = Evt%Vtxold%Fitid(iVTXOLD)
-                 VtxCov1Old(iVTXOLD) = Evt%Vtxold%Cov1(iVTXOLD)
-                 VtxCov2Old(iVTXOLD) = Evt%Vtxold%Cov2(iVTXOLD)
-                 VtxCov3Old(iVTXOLD) = Evt%Vtxold%Cov3(iVTXOLD)
-                 VtxCov4Old(iVTXOLD) = Evt%Vtxold%Cov4(iVTXOLD)
-                 VtxCov5Old(iVTXOLD) = Evt%Vtxold%Cov5(iVTXOLD)
-                 VtxCov6Old(iVTXOLD) = Evt%Vtxold%Cov6(iVTXOLD)
-           END DO
+         IF (STATUS.EQ.YESUCC) THEN
+            ISTAT = TRKVOLD2STRU(evt%vtxold, evt%trkvold, evt%trkold, evt%trkmcold)
+   
+            nVOld = Evt%vtxold%n
+            IF ( nVOld < 0 .OR. nVOld > 10 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'VTXOLD - nVOld '//ERROR_DOMAIN, nVOld
+            END IF
+   
+            IF (nVOld > 0 .AND. nVOld <= 10) THEN
+               DO iVTXOLD=1, nVOld
+                  VtxOld(iVTXOLD) = Evt%Vtxold%Ntrk(iVTXOLD)
+                  IF ( VtxOld(iVTXOLD) < 0 .OR. VtxOld(iVTXOLD) > 10 ) THEN
+                     WRITE(*,*) ERROR_BLOCK//'VTXOLD - VtxOld '//ERROR_DOMAIN, VtxOld(iVTXOLD)
+                  END IF
+                    xVOld(iVTXOLD) = Evt%Vtxold%X(iVTXOLD)
+                    yVOld(iVTXOLD) = Evt%Vtxold%Y(iVTXOLD)
+                    ZVOld(iVTXOLD) = Evt%Vtxold%Z(iVTXOLD)
+                    ChiVTxOld(iVTXOLD) = Evt%Vtxold%Chi2(iVTXOLD)
+                    QuaLVOld(iVTXOLD) = Evt%Vtxold%Qual(iVTXOLD)
+                    FitIdVOld(iVTXOLD) = Evt%Vtxold%Fitid(iVTXOLD)
+                    VtxCov1Old(iVTXOLD) = Evt%Vtxold%Cov1(iVTXOLD)
+                    VtxCov2Old(iVTXOLD) = Evt%Vtxold%Cov2(iVTXOLD)
+                    VtxCov3Old(iVTXOLD) = Evt%Vtxold%Cov3(iVTXOLD)
+                    VtxCov4Old(iVTXOLD) = Evt%Vtxold%Cov4(iVTXOLD)
+                    VtxCov5Old(iVTXOLD) = Evt%Vtxold%Cov5(iVTXOLD)
+                    VtxCov6Old(iVTXOLD) = Evt%Vtxold%Cov6(iVTXOLD)
+              END DO
+            ELSE
+               WRITE(*,*) ERROR_BLOCK//'VTXOLD - nVOld '//ERROR_INDEX, nVOld
+               nVOld = 0
+            END IF
          ELSE
-            WRITE(*,*) ERROR_BLOCK//'VTXOLD - nVOld '//ERROR_INDEX, nVOld
-            nVOld = 0
+            WRITE(*,*) ERROR_MISS_DATA//'VTXOLD'
          END IF
       END IF
 C-----------------------------------------------------------------------
