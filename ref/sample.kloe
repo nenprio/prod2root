@@ -2417,37 +2417,45 @@ C-----------------------------------------------------------------------
            ExtPz(iTCLO) = 0.
          END DO
 
-         istat =  GETTCLOSTRU(evt%tclo)
-         write(*,*) "ISTAT => ", istat
-
-         nTcl = Evt%Tclo%nt
-         IF ( nTcl < 0 .OR. nTcl > 40 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'TCLO - nTcl '//ERROR_DOMAIN, nTcl
+         STATUS = BIGEST(IW, 'TCLO', BNKNUM)
+         IF (STATUS.EQ.YESUCC) THEN
+            STATUS = BLOCAT(IW, 'TCLO', BNKNUM, IND, INDDAT)
          END IF
-
-         IF (nTcl > 0 .AND. nTcl <= 40) THEN
-            DO iTCLO=1, nTcl
-               AssTr(iTCLO) = Evt%Tclo%trknum(iTCLO)
-               IF ( AssTr(iTCLO) < 0 .OR. AssTr(iTCLO) > 999 ) THEN
-                  WRITE(*,*) ERROR_BLOCK//'TCLO - AssTr '//ERROR_DOMAIN, AssTr(iTCLO)
-               END IF
-               AssCl(iTCLO) = Evt%Tclo%clunum(iTCLO)
-               IF ( AssCl(iTCLO) < 0 .OR. AssCl(iTCLO) > 100 ) THEN
-                  WRITE(*,*) ERROR_BLOCK//'TCLO - AssCl '//ERROR_DOMAIN, AssCl(iTCLO)
-               END IF
-                 VerVer(iTCLO) = Evt%Tclo%verver(iTCLO)
-                 xExt(iTCLO) = Evt%Tclo%xext(iTCLO)
-                 yExt(iTCLO) = Evt%Tclo%yext(iTCLO)
-                 zExt(iTCLO) = Evt%Tclo%zext(iTCLO)
-                 AssLenG(iTCLO) = Evt%Tclo%leng(iTCLO)
-                 AssChi(iTCLO) = Evt%Tclo%chi(iTCLO)
-                 ExtPx(iTCLO) = Evt%Tclo%px(iTCLO)
-                 ExtPy(iTCLO) = Evt%Tclo%py(iTCLO)
-                 ExtPz(iTCLO) = Evt%Tclo%pz(iTCLO)
-           END DO
+         
+         IF (STATUS.EQ.YESUCC) THEN
+            ISTAT =  GETTCLOSTRU(evt%tclo)
+   
+            nTcl = Evt%Tclo%nt
+            IF ( nTcl < 0 .OR. nTcl > 40 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'TCLO - nTcl '//ERROR_DOMAIN, nTcl
+            END IF
+   
+            IF (nTcl > 0 .AND. nTcl <= 40) THEN
+               DO iTCLO=1, nTcl
+                  AssTr(iTCLO) = Evt%Tclo%trknum(iTCLO)
+                  IF ( AssTr(iTCLO) < 0 .OR. AssTr(iTCLO) > 999 ) THEN
+                     WRITE(*,*) ERROR_BLOCK//'TCLO - AssTr '//ERROR_DOMAIN, AssTr(iTCLO)
+                  END IF
+                  AssCl(iTCLO) = Evt%Tclo%clunum(iTCLO)
+                  IF ( AssCl(iTCLO) < 0 .OR. AssCl(iTCLO) > 100 ) THEN
+                     WRITE(*,*) ERROR_BLOCK//'TCLO - AssCl '//ERROR_DOMAIN, AssCl(iTCLO)
+                  END IF
+                    VerVer(iTCLO) = Evt%Tclo%verver(iTCLO)
+                    xExt(iTCLO) = Evt%Tclo%xext(iTCLO)
+                    yExt(iTCLO) = Evt%Tclo%yext(iTCLO)
+                    zExt(iTCLO) = Evt%Tclo%zext(iTCLO)
+                    AssLenG(iTCLO) = Evt%Tclo%leng(iTCLO)
+                    AssChi(iTCLO) = Evt%Tclo%chi(iTCLO)
+                    ExtPx(iTCLO) = Evt%Tclo%px(iTCLO)
+                    ExtPy(iTCLO) = Evt%Tclo%py(iTCLO)
+                    ExtPz(iTCLO) = Evt%Tclo%pz(iTCLO)
+              END DO
+            ELSE
+               WRITE(*,*) ERROR_BLOCK//'TCLO - nTcl '//ERROR_INDEX, nTcl
+               nTcl = 0
+            END IF
          ELSE
-            WRITE(*,*) ERROR_BLOCK//'TCLO - nTcl '//ERROR_INDEX, nTcl
-            nTcl = 0
+            WRITE(*,*) ERROR_MISS_DATA//'TCLO'
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2469,37 +2477,45 @@ C-----------------------------------------------------------------------
            ExtPzOld(iTCLOLD) = 0.
          END DO
 
-         istat =  GETOLDTCLOSTRU(evt%tclold)
-         write(*,*) "ISTAT => ", istat
-
-         nTclOld = Evt%Tclold%nt
-         IF ( nTclOld < 0 .OR. nTclOld > 40 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'TCLOLD - nTclOld '//ERROR_DOMAIN, nTclOld
+         STATUS = BIGEST(IW, 'TCL1', BNKNUM)
+         IF (STATUS.EQ.YESUCC) THEN
+            STATUS = BLOCAT(IW, 'TCL1', BNKNUM, IND, INDDAT)
          END IF
-
-         IF (nTclOld > 0 .AND. nTclOld <= 40) THEN
-            DO iTCLOLD=1, nTclOld
-               AssTrOld(iTCLOLD) = Evt%Tclold%trknum(iTCLOLD)
-               IF ( AssTrOld(iTCLOLD) < 0 .OR. AssTrOld(iTCLOLD) > 999 ) THEN
-                  WRITE(*,*) ERROR_BLOCK//'TCLOLD - AssTrOld '//ERROR_DOMAIN, AssTrOld(iTCLOLD)
-               END IF
-               AssClOld(iTCLOLD) = Evt%Tclold%clunum(iTCLOLD)
-               IF ( AssClOld(iTCLOLD) < 0 .OR. AssClOld(iTCLOLD) > 100 ) THEN
-                  WRITE(*,*) ERROR_BLOCK//'TCLOLD - AssClOld '//ERROR_DOMAIN, AssClOld(iTCLOLD)
-               END IF
-                 VerVerOld(iTCLOLD) = Evt%Tclold%verver(iTCLOLD)
-                 xExtOld(iTCLOLD) = Evt%Tclold%xext(iTCLOLD)
-                 yExtOld(iTCLOLD) = Evt%Tclold%yext(iTCLOLD)
-                 zExtOld(iTCLOLD) = Evt%Tclold%zext(iTCLOLD)
-                 AssLenGOld(iTCLOLD) = Evt%Tclold%leng(iTCLOLD)
-                 AssChiOld(iTCLOLD) = Evt%Tclold%chi(iTCLOLD)
-                 ExtPxOld(iTCLOLD) = Evt%Tclold%px(iTCLOLD)
-                 ExtPyOld(iTCLOLD) = Evt%Tclold%py(iTCLOLD)
-                 ExtPzOld(iTCLOLD) = Evt%Tclold%pz(iTCLOLD)
-           END DO
+         
+         IF (STATUS.EQ.YESUCC) THEN
+            istat =  GETOLDTCLOSTRU(evt%tclold)
+   
+            nTclOld = Evt%Tclold%nt
+            IF ( nTclOld < 0 .OR. nTclOld > 40 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'TCLOLD - nTclOld '//ERROR_DOMAIN, nTclOld
+            END IF
+   
+            IF (nTclOld > 0 .AND. nTclOld <= 40) THEN
+               DO iTCLOLD=1, nTclOld
+                  AssTrOld(iTCLOLD) = Evt%Tclold%trknum(iTCLOLD)
+                  IF ( AssTrOld(iTCLOLD) < 0 .OR. AssTrOld(iTCLOLD) > 999 ) THEN
+                     WRITE(*,*) ERROR_BLOCK//'TCLOLD - AssTrOld '//ERROR_DOMAIN, AssTrOld(iTCLOLD)
+                  END IF
+                  AssClOld(iTCLOLD) = Evt%Tclold%clunum(iTCLOLD)
+                  IF ( AssClOld(iTCLOLD) < 0 .OR. AssClOld(iTCLOLD) > 100 ) THEN
+                     WRITE(*,*) ERROR_BLOCK//'TCLOLD - AssClOld '//ERROR_DOMAIN, AssClOld(iTCLOLD)
+                  END IF
+                    VerVerOld(iTCLOLD) = Evt%Tclold%verver(iTCLOLD)
+                    xExtOld(iTCLOLD) = Evt%Tclold%xext(iTCLOLD)
+                    yExtOld(iTCLOLD) = Evt%Tclold%yext(iTCLOLD)
+                    zExtOld(iTCLOLD) = Evt%Tclold%zext(iTCLOLD)
+                    AssLenGOld(iTCLOLD) = Evt%Tclold%leng(iTCLOLD)
+                    AssChiOld(iTCLOLD) = Evt%Tclold%chi(iTCLOLD)
+                    ExtPxOld(iTCLOLD) = Evt%Tclold%px(iTCLOLD)
+                    ExtPyOld(iTCLOLD) = Evt%Tclold%py(iTCLOLD)
+                    ExtPzOld(iTCLOLD) = Evt%Tclold%pz(iTCLOLD)
+              END DO
+            ELSE
+               WRITE(*,*) ERROR_BLOCK//'TCLOLD - nTclOld '//ERROR_INDEX, nTclOld
+               nTclOld = 0
+            END IF
          ELSE
-            WRITE(*,*) ERROR_BLOCK//'TCLOLD - nTclOld '//ERROR_INDEX, nTclOld
-            nTclOld = 0
+            WRITE(*,*) ERROR_MISS_DATA//'TCLOLD'
          END IF
       END IF
 C-----------------------------------------------------------------------
