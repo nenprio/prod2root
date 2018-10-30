@@ -790,41 +790,48 @@ C-----------------------------------------------------------------------
             Ta_Trg(iEVTTELE) = 0.
             Tb_Trg(iEVTTELE) = 0.
          END DO
-C
-C        TODO: BLOCAT some data?
-C
-         istat = GETTELESTRU(Evt%TELE)
-   
-         NTele = Evt%TELE%ntele
-         IF ( NTele < 0 .OR. NTele > 300 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'TELE - NTele '//ERROR_DOMAIN, NTele
+         
+         STATUS = BIGEST(IW, 'TELE', BNKNUM)
+         IF (STATUS.EQ.YESUCC) THEN
+            STATUS = BLOCAT(IW, 'TELE', BNKNUM, IND, INDDAT)
          END IF
-         IF (NTele > 0 .AND. NTele <= 300) THEN
-           DO iEVTTELE=1, NTele
-              Det_Trg(iEVTTELE) = Evt%TELE%Det(iEVTTELE)
-              IF ( Det_Trg(iEVTTELE) < 0 .OR. Det_Trg(iEVTTELE) > 3 ) THEN
-                 WRITE(*,*) ERROR_BLOCK//'TELE - Det_Trg '//ERROR_DOMAIN, Det_Trg(iEVTTELE)
-              END IF
-              BitP(iEVTTELE) = Evt%TELE%Bitp(iEVTTELE)
-              IF ( BitP(iEVTTELE) < 0 .OR. BitP(iEVTTELE) > 1100 ) THEN
-                 WRITE(*,*) ERROR_BLOCK//'TELE - BitP '//ERROR_DOMAIN, BitP(iEVTTELE)
-              END IF
-              Sector(iEVTTELE) = Evt%TELE%Sector(iEVTTELE)
-              IF ( Sector(iEVTTELE) < 0 .OR. Sector(iEVTTELE) > 50 ) THEN
-                 WRITE(*,*) ERROR_BLOCK//'TELE - Sector '//ERROR_DOMAIN, Sector(iEVTTELE)
-              END IF
-              SerKind(iEVTTELE) = Evt%TELE%Serkind(iEVTTELE)
-              IF ( SerKind(iEVTTELE) < 0 .OR. SerKind(iEVTTELE) > 3 ) THEN
-                 WRITE(*,*) ERROR_BLOCK//'TELE - SerKind '//ERROR_DOMAIN, SerKind(iEVTTELE)
-              END IF
-              Ea_Trg(iEVTTELE) = Evt%TELE%Ea(iEVTTELE)
-              Eb_Trg(iEVTTELE) = Evt%TELE%Eb(iEVTTELE)
-              Ta_Trg(iEVTTELE) = Evt%TELE%Ta(iEVTTELE)
-              Tb_Trg(iEVTTELE) = Evt%TELE%Tb(iEVTTELE)
-           END DO
+        
+         IF (STATUS.EQ.YESUCC) THEN
+            ISTAT = GETTELESTRU(Evt%TELE)
+      
+            NTele = Evt%TELE%ntele
+            IF ( NTele < 0 .OR. NTele > 300 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'TELE - NTele '//ERROR_DOMAIN, NTele
+            END IF
+            IF (NTele > 0 .AND. NTele <= 300) THEN
+              DO iEVTTELE=1, NTele
+                 Det_Trg(iEVTTELE) = Evt%TELE%Det(iEVTTELE)
+                 IF ( Det_Trg(iEVTTELE) < 0 .OR. Det_Trg(iEVTTELE) > 3 ) THEN
+                    WRITE(*,*) ERROR_BLOCK//'TELE - Det_Trg '//ERROR_DOMAIN, Det_Trg(iEVTTELE)
+                 END IF
+                 BitP(iEVTTELE) = Evt%TELE%Bitp(iEVTTELE)
+                 IF ( BitP(iEVTTELE) < 0 .OR. BitP(iEVTTELE) > 1100 ) THEN
+                    WRITE(*,*) ERROR_BLOCK//'TELE - BitP '//ERROR_DOMAIN, BitP(iEVTTELE)
+                 END IF
+                 Sector(iEVTTELE) = Evt%TELE%Sector(iEVTTELE)
+                 IF ( Sector(iEVTTELE) < 0 .OR. Sector(iEVTTELE) > 50 ) THEN
+                    WRITE(*,*) ERROR_BLOCK//'TELE - Sector '//ERROR_DOMAIN, Sector(iEVTTELE)
+                 END IF
+                 SerKind(iEVTTELE) = Evt%TELE%Serkind(iEVTTELE)
+                 IF ( SerKind(iEVTTELE) < 0 .OR. SerKind(iEVTTELE) > 3 ) THEN
+                    WRITE(*,*) ERROR_BLOCK//'TELE - SerKind '//ERROR_DOMAIN, SerKind(iEVTTELE)
+                 END IF
+                 Ea_Trg(iEVTTELE) = Evt%TELE%Ea(iEVTTELE)
+                 Eb_Trg(iEVTTELE) = Evt%TELE%Eb(iEVTTELE)
+                 Ta_Trg(iEVTTELE) = Evt%TELE%Ta(iEVTTELE)
+                 Tb_Trg(iEVTTELE) = Evt%TELE%Tb(iEVTTELE)
+              END DO
+            ELSE
+              WRITE(*,*) ERROR_BLOCK//'TELE - NTele '//ERROR_INDEX, NTele
+              NTele = 0.
+            END IF
          ELSE
-           WRITE(*,*) ERROR_BLOCK//'EVTTELE - NTele '//ERROR_INDEX, NTele
-           NTele = 0.
+            WRITE(*,*) ERROR_MISS_DATA//'TELE'
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -1024,16 +1031,16 @@ C-----------------------------------------------------------------------
            TARPre(iPRECLU) = 0.
            TBRPre(iPRECLU) = 0.
          END DO
+C   
+C        It reads CPLS and CPPS 
 C
-C        It reads CPPS, CPLS banks to produce Preclus.
-C
-         STATUS = BLOCAT(IW, 'CPPS', 1, IND, INDDAT)
+         STATUS = BLOCAT(IW, 'CPLS', 1, IND, INDDAT)
          IF (STATUS.EQ.YESUCC) THEN
-            STATUS = BLOCAT(IW, 'CPLS', 1, IND, INDDAT)
+            STATUS = BLOCAT(IW, 'CPPS', 1, IND, INDDAT)
          END IF
 
          IF (STATUS.EQ.YESUCC) THEN
-            istat = GETPRECLUSTRU(Evt%PreClu)
+            ISTAT = GETPRECLUSTRU(Evt%PreClu)
       
             NPClu = Evt%PreClu%n 
             IF ( NPClu < 0 .OR. NPClu > 100 ) THEN
@@ -1056,7 +1063,7 @@ C
               NPClu = 0
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'CWRK'
+            WRITE(*,*) ERROR_MISS_DATA//'PRECLUS'
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -1156,7 +1163,7 @@ C-----------------------------------------------------------------------
                NCel = 0
             END IF
 C         
-C        Fill MC data only if they exist, otherwise don't create empty structures         
+C           Fill MC data only if they exist, otherwise don't create empty structures         
 C
             IF (MONTECARLOFLAG) THEN
               NCel = 0.
