@@ -2833,25 +2833,36 @@ C-----------------------------------------------------------------------
               EQCal(iQCAL) = 0.
               TQCal(iQCAL) = 0.
             END DO
-   
-            istat = GETQCALSTRU(evt%qcal)
-   
-            nQCal = Evt%Qcal%n
-            IF ( nQCal < 0 .OR. nQCal > 32 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'QCAL - nQCal '//ERROR_DOMAIN, nQCal
+  C
+  C         It reads QCAL Work Bank.
+  C
+            STATUS = BIGEST(IW, 'QWRK', BNKNUM)
+            IF (STATUS.EQ.YESUCC) THEN
+               STATUS = BLOCAT(IW, 'QWRK', BNKNUM, IND, INDDAT)
             END IF
-   
-            IF (nQCal > 0 .AND. nQCal <= 32) THEN
-               DO iQCAL=1, nQCal
-                    xQCal(iQCAL) = Evt%Qcal%x(iQCAL)
-                    yQCal(iQCAL) = Evt%Qcal%y(iQCAL)
-                    zQCal(iQCAL) = Evt%Qcal%z(iQCAL)
-                    EQCal(iQCAL) = Evt%Qcal%ene(iQCAL)
-                    TQCal(iQCAL) = Evt%Qcal%t(iQCAL)
-              END DO
+
+            IF (STATUS.EQ.YESUCC) THEN
+               ISTAT = GETQCALSTRU(evt%qcal)
+      
+               nQCal = Evt%Qcal%n
+               IF ( nQCal < 0 .OR. nQCal > 32 ) THEN
+                  WRITE(*,*) ERROR_BLOCK//'QCAL - nQCal '//ERROR_DOMAIN, nQCal
+               END IF
+      
+               IF (nQCal > 0 .AND. nQCal <= 32) THEN
+                  DO iQCAL=1, nQCal
+                       xQCal(iQCAL) = Evt%Qcal%x(iQCAL)
+                       yQCal(iQCAL) = Evt%Qcal%y(iQCAL)
+                       zQCal(iQCAL) = Evt%Qcal%z(iQCAL)
+                       EQCal(iQCAL) = Evt%Qcal%ene(iQCAL)
+                       TQCal(iQCAL) = Evt%Qcal%t(iQCAL)
+                 END DO
+               ELSE
+                  WRITE(*,*) ERROR_BLOCK//'QCAL - nQCal '//ERROR_INDEX, nQCal
+                  nQCal = 0
+               END IF
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'QCAL - nQCal '//ERROR_INDEX, nQCal
-               nQCal = 0
+               WRITE(*,*) ERROR_MISS_DATA//'QCAL'
             END IF
          ELSE
             WRITE(*,*) ERROR_MISS_DATA//'QCAL'
