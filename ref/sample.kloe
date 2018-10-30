@@ -2711,9 +2711,12 @@ C-----------------------------------------------------------------------
            END DO
            ItrQt(iTRKQ) = 0.
          END DO
-
+C
+C        In the get function TRKQ2STRU there is no BLOCAT calling.
+C        Then to check if the data are missing, we control that
+C        the nTrkQ is equal to 0.
+C
          istat = TRKQ2STRU( evt%trk, evt%trkq )
-         write(*,*) "ISTAT => ", istat
 
          nTrkQ = Evt%TRKQ%n
          IF ( nTrkQ < 0 .OR. nTrkQ > 100 ) THEN
@@ -2733,8 +2736,16 @@ C-----------------------------------------------------------------------
              ItrQt(iTRKQ) = Evt%TRKQ%itrk(iTRKQ)
            END DO
          ELSE
-            WRITE(*,*) ERROR_BLOCK//'TRKQ - nTrkQ '//ERROR_INDEX, nTrkQ
-            nTrkQ = 0
+C         
+C           Here we print IndexNotValid or MissingData error, according
+C           to the value of nTrkQ
+C
+            IF (nTrkQ == 0) THEN
+               WRITE(*,*) ERROR_MISS_DATA//'TRKQ'
+            ELSE
+               WRITE(*,*) ERROR_BLOCK//'TRKQ - nTrkQ '//ERROR_INDEX, nTrkQ
+               nTrkQ = 0
+            END IF
          END IF
       END IF
 C-----------------------------------------------------------------------
