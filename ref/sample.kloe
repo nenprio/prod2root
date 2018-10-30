@@ -1235,28 +1235,30 @@ C-----------------------------------------------------------------------
          END DO
 C  
 C        DTCEStru is initialized in raw2dtce.cin
-C        TODO: BLOCAT some data?
 C   
-         nDTCE0 = DTCEStru%NEle
-         IF ( nDTCE0 < 0 .OR. nDTCE0 > 1500 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'DTCE0 - nDTCE0 '//ERROR_DOMAIN, nDTCE0
-         END IF
-   
-         IF ( nDTCE0 > 0 .AND. nDTCE0 <= 1500 ) THEN
-            DO iDTCE0=1, nDTCE0
-               iLayerDTCE0(iDTCE0) = DTCEStru%Lay(iDTCE0)
-               IF ( iLayerDTCE0(iDTCE0) < 1 .OR. iLayerDTCE0(iDTCE0) > 58 ) THEN
-                  WRITE(*,*) ERROR_BLOCK//'DTCE0 - iLayerDTCE0 '//ERROR_DOMAIN, iLayerDTCE0(iDTCE0)
-               END IF
-               iWireDTCE0(iDTCE0) = DTCEStru%Wir(iDTCE0)
-               IF ( iWireDTCE0(iDTCE0) < 1 .OR. iWireDTCE0(iDTCE0) > 378 ) THEN
-                  WRITE(*,*) ERROR_BLOCK//'DTCE0 - iWireDTCE0 '//ERROR_DOMAIN, iWireDTCE0(iDTCE0)
-               END IF
-               tDTCE0(iDTCE0) = DTCEStru%Time(iDTCE0)
-            END DO
-         ELSE
-            WRITE(*,*) ERROR_BLOCK//'DTCE0 - nDTCE0 '//ERROR_INDEX, nDTCE0
-            nDTCE0 = 0
+         STATUS = BLOCAT(IW, 'DCHR', 1, IND, INDDAT)
+         IF (STATUS.EQ.YESUCC) THEN
+            nDTCE0 = DTCEStru%NEle
+            IF ( nDTCE0 < 0 .OR. nDTCE0 > 1500 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'DTCE0 - nDTCE0 '//ERROR_DOMAIN, nDTCE0
+            END IF
+      
+            IF ( nDTCE0 > 0 .AND. nDTCE0 <= 1500 ) THEN
+               DO iDTCE0=1, nDTCE0
+                  iLayerDTCE0(iDTCE0) = DTCEStru%Lay(iDTCE0)
+                  IF ( iLayerDTCE0(iDTCE0) < 1 .OR. iLayerDTCE0(iDTCE0) > 58 ) THEN
+                     WRITE(*,*) ERROR_BLOCK//'DTCE0 - iLayerDTCE0 '//ERROR_DOMAIN, iLayerDTCE0(iDTCE0)
+                  END IF
+                  iWireDTCE0(iDTCE0) = DTCEStru%Wir(iDTCE0)
+                  IF ( iWireDTCE0(iDTCE0) < 1 .OR. iWireDTCE0(iDTCE0) > 378 ) THEN
+                     WRITE(*,*) ERROR_BLOCK//'DTCE0 - iWireDTCE0 '//ERROR_DOMAIN, iWireDTCE0(iDTCE0)
+                  END IF
+                  tDTCE0(iDTCE0) = DTCEStru%Time(iDTCE0)
+               END DO
+            ELSE
+               WRITE(*,*) ERROR_BLOCK//'DTCE0 - nDTCE0 '//ERROR_INDEX, nDTCE0
+               nDTCE0 = 0
+            END IF
          END IF
       END IF
 C-----------------------------------------------------------------------
