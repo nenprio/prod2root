@@ -2788,24 +2788,33 @@ C-----------------------------------------------------------------------
               QEne(iQELE) = 0.
               QTim(iQELE) = 0.
             END DO
-   
-            istat = GETQCAESTRU(Evt%Qele)
-   
-            nQELE = Evt%QELE%n
-            IF ( nQELE < 0 .OR. nQELE > 32 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'QELE - nQELE '//ERROR_DOMAIN, nQELE
+  
+            STATUS = BIGEST(IW, 'QCAE', BNKNUM)
+            IF (STATUS.EQ.YESUCC) THEN
+               STATUS = BLOCAT(IW, 'QCAE', BNKNUM, IND, INDDAT)
             END IF
-   
-            IF (nQELE > 0 .AND. nQELE <= 32) THEN
-               DO iQELE=1, nQELE
-                    QWed(iQELE) = Evt%QELE%wed(iQELE)
-                    QDet(iQELE) = Evt%QELE%det(iQELE)
-                    QEne(iQELE) = Evt%QELE%e(iQELE)
-                    QTim(iQELE) = Evt%QELE%t(iQELE)
-              END DO
+
+            IF (STATUS.EQ.YESUCC) THEN
+               ISTAT = GETQCAESTRU(Evt%Qele)
+      
+               nQELE = Evt%QELE%n
+               IF ( nQELE < 0 .OR. nQELE > 32 ) THEN
+                  WRITE(*,*) ERROR_BLOCK//'QELE - nQELE '//ERROR_DOMAIN, nQELE
+               END IF
+      
+               IF (nQELE > 0 .AND. nQELE <= 32) THEN
+                  DO iQELE=1, nQELE
+                       QWed(iQELE) = Evt%QELE%wed(iQELE)
+                       QDet(iQELE) = Evt%QELE%det(iQELE)
+                       QEne(iQELE) = Evt%QELE%e(iQELE)
+                       QTim(iQELE) = Evt%QELE%t(iQELE)
+                 END DO
+               ELSE
+                  WRITE(*,*) ERROR_BLOCK//'QELE - nQELE '//ERROR_INDEX, nQELE
+                  nQELE = 0
+               END IF
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'QELE - nQELE '//ERROR_INDEX, nQELE
-               nQELE = 0
+               WRITE(*,*) ERROR_MISS_DATA//'QELE'
             END IF
          ELSE
             WRITE(*,*) ERROR_MISS_DATA//'QELE'
