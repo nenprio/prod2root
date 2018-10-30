@@ -2225,6 +2225,9 @@ C-----------------------------------------------------------------------
 
          STATUS = BIGEST(IW, 'DEDX', BNKNUM)
          IF (STATUS.EQ.YESUCC) THEN
+            STATUS = BLOCAT(IW, 'DEDX', BNKNUM, IND, INDDAT)
+         END IF
+         IF (STATUS.EQ.YESUCC) THEN
             istat = DEDX2STRU_Reset(Evt%DEDX2STRU)
             istat = DEDX2STRU_GET(Evt%DEDX2STRU)
    
