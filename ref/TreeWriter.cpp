@@ -15,9 +15,6 @@ TreeWriter::TreeWriter() {
     outfile  = new TFile("sample.root", "recreate");    //Open or create file 
     fNewTree = new TTree("sample", "Event Infos");      //Create "sample" tree
  
-    // Print Header with Flags and values assigned
-    printHeaderFlags();
-
     // Block Info
     if(logicalToBool(sammenu_.infoFlag))        addBlockInfo();
     // Block Data
