@@ -423,62 +423,65 @@ C-----------------------------------------------------------------------
          END DO
 C
 C        ECLS has 2 banks, if at least 1 of them exists, then
-C        go ahed and call the get function. We don't split the
-C        filling of data because the get function
-C        is only one for both banks.
+C        go ahed and call the get function.
 C
-         STATUS = YENOBK
-         ISTAT = BLOCAT(IW, 'ECLS', 1, IND, INDDAT)
-         IF (ISTAT.EQ.YESUCC) THEN
-            STATUS = YESUCC
-         END IF
-         ISTAT = BLOCAT(IW, 'ECLS', 2, IND, INDDAT)
-         IF (ISTAT.EQ.YESUCC) THEN
-            STATUS = YESUCC
-         END IF
+         STATUS1 = BLOCAT(IW, 'ECLS', 1, IND, INDDAT)
+         STATUS2 = BLOCAT(IW, 'ECLS', 2, IND, INDDAT)
 
-         IF (STATUS.EQ.YESUCC) THEN
+         IF (STATUS.EQ.YESUCC .OR. STATUS1.EQ.YESUCC) THEN
             istat = GETECLS(evt%ecls)
+C            
+C           Fill variables from first bank, if it exist            
+C
+            IF (STATUS1.EQ.YESUCC) THEN
+               nEcls = evt%ecls%n
+               IF ( nEcls < 0 .OR. nEcls > 8 ) THEN
+                  WRITE(*,*) ERROR_BLOCK//'ECLS - nEcls '//ERROR_DOMAIN, nEcls
+               END IF
+      
+               IF (nEcls > 0 .AND. nEcls <= 8) THEN
+                  EclTrgw = evt%ecls%trigger
+                  EclFilfo = evt%ecls%filfo
+                  DO iecls = 1,necls
+                     EclWord(iecls) = evt%ecls%TotWord(iecls)
+                     EclStream(iecls) = evt%ecls%Stream(iecls)
+                     EclTagNum(iecls) = evt%ecls%TagNum(iecls)
+                     EclEvType(iecls) = evt%ecls%EvnTyp(iecls)
+                  END DO
+               ELSE
+                  WRITE(*,*) ERROR_BLOCK//'ECLS - nEcls '//ERROR_INDEX, nEcls
+                  nEcls = 0   !In this way we avoid negative index which 
+               END IF         !could create corrupted arrays of 
+                              !negative size in the ROOT Tree
+            END IF 
             
-            nEcls = evt%ecls%n
-            IF ( nEcls < 0 .OR. nEcls > 8 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'ECLS - nEcls '//ERROR_DOMAIN, nEcls
-            END IF
-   
-            IF (nEcls > 0 .AND. nEcls <= 8) THEN
-               EclTrgw = evt%ecls%trigger
-               EclFilfo = evt%ecls%filfo
-               DO iecls = 1,necls
-                  EclWord(iecls) = evt%ecls%TotWord(iecls)
-                  EclStream(iecls) = evt%ecls%Stream(iecls)
-                  EclTagNum(iecls) = evt%ecls%TagNum(iecls)
-                  EclEvType(iecls) = evt%ecls%EvnTyp(iecls)
-               END DO
-            ELSE
-               WRITE(*,*) ERROR_BLOCK//'ECLS - nEcls '//ERROR_INDEX, nEcls
-               nEcls = 0   !In this way we avoid negative index which 
-            END IF         !could create corrupted arrays of 
-                           !negative size in the ROOT Tree
-            
-            nEcls2 = evt%ecls%n2
-            IF ( nEcls2 < 0 .OR. nEcls2 > 8 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'ECLS - nEcls2 '//ERROR_DOMAIN, nEcls2
-            END IF
-   
-            IF (nEcls2 > 0 .AND. nEcls <= 8) THEN
-               EclTrgw2 = evt%ecls%trigger2
-               EclFilfo2 = evt%ecls%filfo2
-               DO iecls2=1,necls2
-                  EclWord2(iecls2) = evt%ecls%TotWord2(iecls2)
-                  EclStream2(iecls2) = evt%ecls%Stream2(iecls2)
-                  EclTagNum2(iecls2) = evt%ecls%TagNum2(iecls2)
-                  EclEvType2(iecls2) = evt%ecls%EvnTyp2(iecls2)
-               END DO
-            ELSE
-               WRITE(*,*) ERROR_BLOCK//'ECLS - nEcls2 '//ERROR_INDEX, nEcls2
-               nEcls2 = 0.
+C            
+C           Fill variables from second bank, if it exist            
+C
+            IF (STATUS2.EQ.YESUCC) THEN 
+               nEcls2 = evt%ecls%n2
+               IF ( nEcls2 < 0 .OR. nEcls2 > 8 ) THEN
+                  WRITE(*,*) ERROR_BLOCK//'ECLS - nEcls2 '//ERROR_DOMAIN, nEcls2
+               END IF
+      
+               IF (nEcls2 > 0 .AND. nEcls <= 8) THEN
+                  EclTrgw2 = evt%ecls%trigger2
+                  EclFilfo2 = evt%ecls%filfo2
+                  DO iecls2=1,necls2
+                     EclWord2(iecls2) = evt%ecls%TotWord2(iecls2)
+                     EclStream2(iecls2) = evt%ecls%Stream2(iecls2)
+                     EclTagNum2(iecls2) = evt%ecls%TagNum2(iecls2)
+                     EclEvType2(iecls2) = evt%ecls%EvnTyp2(iecls2)
+                  END DO
+               ELSE
+                  WRITE(*,*) ERROR_BLOCK//'ECLS - nEcls2 '//ERROR_INDEX, nEcls2
+                  nEcls2 = 0.
+               END IF
             END IF
          ELSE
+C
+C           Print out error message only if both banks are missing.
+C
             WRITE(*,*) ERROR_MISS_DATA//'ECLS'
          END IF
       END IF
