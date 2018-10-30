@@ -2833,9 +2833,9 @@ C-----------------------------------------------------------------------
               EQCal(iQCAL) = 0.
               TQCal(iQCAL) = 0.
             END DO
-  C
-  C         It reads QCAL Work Bank.
-  C
+C
+C           It reads QCAL Work Bank.
+C
             STATUS = BIGEST(IW, 'QWRK', BNKNUM)
             IF (STATUS.EQ.YESUCC) THEN
                STATUS = BLOCAT(IW, 'QWRK', BNKNUM, IND, INDDAT)
