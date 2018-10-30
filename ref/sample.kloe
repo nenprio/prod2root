@@ -521,7 +521,6 @@ C-----------------------------------------------------------------------
          STATUS = BLOCAT(IW,'CTRG', BANKNUM, IND, INDDAT)
          IF (STATUS.EQ.YESUCC) THEN
             istat = GETSEC2CLUSTRU(evt%s2clu)
-            write(*,*) "C2TRIG istat => ", istat
    
             NSec = Evt%S2CLU%nsect
             NSec_NoClu = Evt%S2CLU%nsect_noclu
@@ -661,113 +660,120 @@ C-----------------------------------------------------------------------
          DO iTORTA=1, 10
            Moka_T2Dsl(iTORTA) = 0.
          END DO
-C
-C        TODO: BLOCAT some data?
-C
-         istat = GETTRIGGER(evt%trg)
+         
+         STATUS = BIGEST(IW,'TPIE',BNKNUM)
+         IF (STATUS.EQ.YESUCC) THEN
+            ISTAT = BLOCAT(IW, 'TPIE', BNKNUM, IND, INDDAT)
+         ENDIF
 
-         tSpent = evt%trg%tspent
-         tDead = evt%trg%tdead
-         Type = evt%trg%type
-         IF ( Type < 0 .OR. Type > 7 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'TORTA - Type '//ERROR_DOMAIN, Type
+         IF (STATUS.EQ.YESUCC) THEN
+            ISTAT = GETTRIGGER(evt%trg)
+   
+            tSpent = evt%trg%tspent
+            tDead = evt%trg%tdead
+            Type = evt%trg%type
+            IF ( Type < 0 .OR. Type > 7 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'TORTA - Type '//ERROR_DOMAIN, Type
+            END IF
+            BPhi = evt%trg%bphi
+            IF ( BPhi < 0 .OR. BPhi > 3 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'TORTA - BPhi '//ERROR_DOMAIN, BPhi
+            END IF
+            EPhi = evt%trg%ephi
+            IF ( EPhi < 0 .OR. EPhi > 3 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'TORTA - EPhi '//ERROR_DOMAIN, EPhi
+            END IF
+            WPhi = evt%trg%wphi
+            IF ( WPhi < 0 .OR. WPhi > 3 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'TORTA - WPhi '//ERROR_DOMAIN, WPhi
+            END IF
+            BBha = evt%trg%bbha
+            IF ( BBha < 0 .OR. BBha > 3 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'TORTA - BBha '//ERROR_DOMAIN, BBha
+            END IF
+            EBha = evt%trg%ebha
+            IF ( EBha < 0 .OR. EBha > 3 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'TORTA - EBha '//ERROR_DOMAIN, EBha
+            END IF
+            WBha = evt%trg%wbha
+            IF ( WBha < 0 .OR. WBha > 3 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'TORTA - WBha '//ERROR_DOMAIN, WBha
+            END IF
+            BCos = evt%trg%bcos
+            IF ( BCos < 0 .OR. BCos > 3 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'TORTA - BCos '//ERROR_DOMAIN, BCos
+            END IF
+            ECos = evt%trg%ecos
+            IF ( ECos < 0 .OR. ECos > 3 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'TORTA - ECos '//ERROR_DOMAIN, ECos
+            END IF
+            WCos = evt%trg%wcos
+            IF ( WCos < 0 .OR. WCos > 3 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'TORTA - WCos '//ERROR_DOMAIN, WCos
+            END IF
+            E1W1_Dwn = evt%trg%e1w1_dwn
+            IF ( E1W1_Dwn < 0 .OR. E1W1_Dwn > 1 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'TORTA - E1W1_Dwn '//ERROR_DOMAIN, E1W1_Dwn
+            END IF
+            B1_Dwn = evt%trg%b1_dwn
+            IF ( B1_Dwn < 0 .OR. B1_Dwn > 1 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'TORTA - B1_Dwn '//ERROR_DOMAIN, B1_Dwn
+            END IF
+            T0d_Dwn = evt%trg%t0d_dwn
+            IF ( T0d_Dwn < 0 .OR. T0d_Dwn > 1 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'TORTA - T0d_Dwn '//ERROR_DOMAIN, T0d_Dwn
+            END IF
+            VetoCos = evt%trg%vetocos
+            IF ( VetoCos < 0 .OR. VetoCos > 1 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'TORTA - VetoCos '//ERROR_DOMAIN, VetoCos
+            END IF
+            VetoBha = evt%trg%vetobha
+            IF ( VetoBha < 0 .OR. VetoBha > 1 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'TORTA - VetoBha '//ERROR_DOMAIN, VetoBha
+            END IF
+            Bdw = evt%trg%bdw
+            IF ( Bdw < 0 .OR. Bdw > 1 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'TORTA - Bdw '//ERROR_DOMAIN, Bdw
+            END IF
+            Rephasing = evt%trg%rephasing
+            IF ( Rephasing < 0 .OR. Rephasing > 4096 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'TORTA - Rephasing '//ERROR_DOMAIN, Rephasing
+            END IF
+            TDC1_Pht1 = evt%trg%tdc1_pht1
+            IF ( TDC1_Pht1 < 0 .OR. TDC1_Pht1 > 4096 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'TORTA - TDC1_Pht1 '//ERROR_DOMAIN, TDC1_Pht1
+            END IF
+            Dt2_T1 = evt%trg%dt2_t1
+            IF ( Dt2_T1 < 0 .OR. Dt2_T1 > 4096 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'TORTA - Dt2_T1 '//ERROR_DOMAIN, Dt2_T1
+            END IF
+            Fiducial = evt%trg%fiducial
+            IF ( Fiducial < 0 .OR. Fiducial > 4096 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'TORTA - Fiducial '//ERROR_DOMAIN, Fiducial
+            END IF
+            T1c = evt%trg%t1c
+            IF ( T1c < 0 .OR. T1c > 4096 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'TORTA - T1c '//ERROR_DOMAIN, T1c
+            END IF
+            T1d = evt%trg%t1d
+            IF ( T1d < 0 .OR. T1d > 4096 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'TORTA - T1d '//ERROR_DOMAIN, T1d
+            END IF
+            T2d = evt%trg%t2d
+            IF ( T2d < 0 .OR. T2d > 4096 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'TORTA - T2d '//ERROR_DOMAIN, T2d
+            END IF
+            Tcr = evt%trg%tcr
+            IF ( Tcr < 0 .OR. Tcr > 4096 ) THEN
+               WRITE(*,*) ERROR_BLOCK//'TORTA - Tcr '//ERROR_DOMAIN, Tcr
+            END IF
+            TCaf_Tcrd = evt%trg%tcaf_tcrd
+            TCaf_T2d = evt%trg%tcaf_t2d
+            Moka_T2d = evt%trg%moka_t2d
+            Moka_T2Dsl = evt%trg%moka_t2dsl
+         ELSE
+            WRITE(*,*) ERROR_MISS_DATA//'TORTA'
          END IF
-         BPhi = evt%trg%bphi
-         IF ( BPhi < 0 .OR. BPhi > 3 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'TORTA - BPhi '//ERROR_DOMAIN, BPhi
-         END IF
-         EPhi = evt%trg%ephi
-         IF ( EPhi < 0 .OR. EPhi > 3 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'TORTA - EPhi '//ERROR_DOMAIN, EPhi
-         END IF
-         WPhi = evt%trg%wphi
-         IF ( WPhi < 0 .OR. WPhi > 3 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'TORTA - WPhi '//ERROR_DOMAIN, WPhi
-         END IF
-         BBha = evt%trg%bbha
-         IF ( BBha < 0 .OR. BBha > 3 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'TORTA - BBha '//ERROR_DOMAIN, BBha
-         END IF
-         EBha = evt%trg%ebha
-         IF ( EBha < 0 .OR. EBha > 3 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'TORTA - EBha '//ERROR_DOMAIN, EBha
-         END IF
-         WBha = evt%trg%wbha
-         IF ( WBha < 0 .OR. WBha > 3 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'TORTA - WBha '//ERROR_DOMAIN, WBha
-         END IF
-         BCos = evt%trg%bcos
-         IF ( BCos < 0 .OR. BCos > 3 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'TORTA - BCos '//ERROR_DOMAIN, BCos
-         END IF
-         ECos = evt%trg%ecos
-         IF ( ECos < 0 .OR. ECos > 3 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'TORTA - ECos '//ERROR_DOMAIN, ECos
-         END IF
-         WCos = evt%trg%wcos
-         IF ( WCos < 0 .OR. WCos > 3 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'TORTA - WCos '//ERROR_DOMAIN, WCos
-         END IF
-         E1W1_Dwn = evt%trg%e1w1_dwn
-         IF ( E1W1_Dwn < 0 .OR. E1W1_Dwn > 1 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'TORTA - E1W1_Dwn '//ERROR_DOMAIN, E1W1_Dwn
-         END IF
-         B1_Dwn = evt%trg%b1_dwn
-         IF ( B1_Dwn < 0 .OR. B1_Dwn > 1 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'TORTA - B1_Dwn '//ERROR_DOMAIN, B1_Dwn
-         END IF
-         T0d_Dwn = evt%trg%t0d_dwn
-         IF ( T0d_Dwn < 0 .OR. T0d_Dwn > 1 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'TORTA - T0d_Dwn '//ERROR_DOMAIN, T0d_Dwn
-         END IF
-         VetoCos = evt%trg%vetocos
-         IF ( VetoCos < 0 .OR. VetoCos > 1 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'TORTA - VetoCos '//ERROR_DOMAIN, VetoCos
-         END IF
-         VetoBha = evt%trg%vetobha
-         IF ( VetoBha < 0 .OR. VetoBha > 1 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'TORTA - VetoBha '//ERROR_DOMAIN, VetoBha
-         END IF
-         Bdw = evt%trg%bdw
-         IF ( Bdw < 0 .OR. Bdw > 1 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'TORTA - Bdw '//ERROR_DOMAIN, Bdw
-         END IF
-         Rephasing = evt%trg%rephasing
-         IF ( Rephasing < 0 .OR. Rephasing > 4096 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'TORTA - Rephasing '//ERROR_DOMAIN, Rephasing
-         END IF
-         TDC1_Pht1 = evt%trg%tdc1_pht1
-         IF ( TDC1_Pht1 < 0 .OR. TDC1_Pht1 > 4096 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'TORTA - TDC1_Pht1 '//ERROR_DOMAIN, TDC1_Pht1
-         END IF
-         Dt2_T1 = evt%trg%dt2_t1
-         IF ( Dt2_T1 < 0 .OR. Dt2_T1 > 4096 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'TORTA - Dt2_T1 '//ERROR_DOMAIN, Dt2_T1
-         END IF
-         Fiducial = evt%trg%fiducial
-         IF ( Fiducial < 0 .OR. Fiducial > 4096 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'TORTA - Fiducial '//ERROR_DOMAIN, Fiducial
-         END IF
-         T1c = evt%trg%t1c
-         IF ( T1c < 0 .OR. T1c > 4096 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'TORTA - T1c '//ERROR_DOMAIN, T1c
-         END IF
-         T1d = evt%trg%t1d
-         IF ( T1d < 0 .OR. T1d > 4096 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'TORTA - T1d '//ERROR_DOMAIN, T1d
-         END IF
-         T2d = evt%trg%t2d
-         IF ( T2d < 0 .OR. T2d > 4096 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'TORTA - T2d '//ERROR_DOMAIN, T2d
-         END IF
-         Tcr = evt%trg%tcr
-         IF ( Tcr < 0 .OR. Tcr > 4096 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'TORTA - Tcr '//ERROR_DOMAIN, Tcr
-         END IF
-         TCaf_Tcrd = evt%trg%tcaf_tcrd
-         TCaf_T2d = evt%trg%tcaf_t2d
-         Moka_T2d = evt%trg%moka_t2d
-         Moka_T2Dsl = evt%trg%moka_t2dsl
       END IF
 C-----------------------------------------------------------------------
 C Fill Block Tele
@@ -1303,7 +1309,6 @@ C-----------------------------------------------------------------------
          STATUS = BLOCAT(IW, 'DHRE', 1, IND, INDDAT1)
          if (STATUS.EQ.YESUCC) then
             istat = GETDHRESTRU(Evt%DHRE) 
-            write(*,*) "ISTAT => ", istat
    
             nDHRE = Evt%DHRE%nDHRE
             IF ( nDHRE < 0 .OR. nDHRE > 1500 ) THEN
@@ -2375,7 +2380,6 @@ C-----------------------------------------------------------------------
            END DO
   
            istat = GETMCSTRU(Evt%MC)
-           write(*,*) "ISTAT => ", istat
   
            nTMC = Evt%MC%ntrk
            IF ( nTMC < 0 .OR. nTMC > 50 ) THEN
@@ -2770,7 +2774,6 @@ C-----------------------------------------------------------------------
             END DO
    
             istat = GETQCAESTRU(Evt%Qele)
-            write(*,*) "ISTAT => ", istat
    
             nQELE = Evt%QELE%n
             IF ( nQELE < 0 .OR. nQELE > 32 ) THEN
@@ -2807,7 +2810,6 @@ C-----------------------------------------------------------------------
             END DO
    
             istat = GETQCALSTRU(evt%qcal)
-            write(*,*) "ISTAT => ", istat
    
             nQCal = Evt%Qcal%n
             IF ( nQCal < 0 .OR. nQCal > 32 ) THEN
