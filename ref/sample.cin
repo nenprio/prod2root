@@ -40,7 +40,7 @@ C MESSAGES DECLARATIONS
 C Follow the declaration of all the messages to print on std out
 C
         CHARACTER(len=10) :: ERROR_LINE
-        CHARACTER(len=60) :: ERROR_MC_DATA
+        CHARACTER(len=50) :: ERROR_MC_DATA
         CHARACTER(len=50) :: ERROR_MISS_DATA
         CHARACTER(len=10) :: ERROR_BLOCK
         CHARACTER(len=25) :: ERROR_INDEX
