@@ -56,11 +56,13 @@ C   4 - Value out of domain
 C   5 - MC flag inconsistency, explain better 
 C
       integer BPOSErrorCounter(5), GDHitErrorCounter(5)
+      integer EclsErrorCounter(5), TrigErrorCounter(5)
       
 C     Do we need a common for error counter or we manage the summary
 C     only by FORTRAN end routine? Now call C++ function to print 
 C     the summary
-      common /errorcounter/BPOSErrorCounter, GDHitErrorCounter
+      common /errorcounter/BPOSErrorCounter, GDHitErrorCounter,
+             EclsErrorCounter, TrigErrorCounter
       
 C
 C BLOCK STRUCTURE DECLARATIONS

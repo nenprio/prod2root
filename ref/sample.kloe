@@ -459,8 +459,12 @@ C           Fill variables from first bank, if it exist
 C
             IF (STATUS1.EQ.YESUCC) THEN
                nEcls = evt%ecls%n
+C
+C              TODO decide if remove this control on domain of index,
+C              it is redundant because we check later
+C
                IF ( nEcls < 0 .OR. nEcls > 8 ) THEN
-                  WRITE(*,*) ERROR_BLOCK//'ECLS - nEcls '//ERROR_DOMAIN, nEcls
+                  EclsErrorCounter(4) = EclsErrorCounter(4) + 1
                END IF
       
                IF (nEcls > 0 .AND. nEcls <= 8) THEN
@@ -473,7 +477,11 @@ C
                      EclEvType(iecls) = evt%ecls%EvnTyp(iecls)
                   END DO
                ELSE
-                  WRITE(*,*) ERROR_BLOCK//'ECLS - nEcls '//ERROR_INDEX, nEcls
+                  IF (nEcls == 0) THEN
+                     EclsErrorCounter(2) = EclsErrorCounter(2) + 1
+                  ELSE
+                     EclsErrorCounter(3) = EclsErrorCounter(3) + 1
+                  END IF
                   nEcls = 0   !In this way we avoid negative index which 
                END IF         !could create corrupted arrays of 
                               !negative size in the ROOT Tree
@@ -486,6 +494,7 @@ C
                nEcls2 = evt%ecls%n2
                IF ( nEcls2 < 0 .OR. nEcls2 > 8 ) THEN
                   WRITE(*,*) ERROR_BLOCK//'ECLS - nEcls2 '//ERROR_DOMAIN, nEcls2
+                  EclsErrorCounter(4) = EclsErrorCounter(4) + 1
                END IF
       
                IF (nEcls2 > 0 .AND. nEcls <= 8) THEN
@@ -498,7 +507,11 @@ C
                      EclEvType2(iecls2) = evt%ecls%EvnTyp2(iecls2)
                   END DO
                ELSE
-                  WRITE(*,*) ERROR_BLOCK//'ECLS - nEcls2 '//ERROR_INDEX, nEcls2
+                  IF (nEcls2 == 0) THEN
+                     EclsErrorCounter(2) = EclsErrorCounter(2) + 1
+                  ELSE
+                     EclsErrorCounter(3) = EclsErrorCounter(3) + 1
+                  END IF
                   nEcls2 = 0.
                END IF
             END IF
@@ -506,7 +519,7 @@ C
 C
 C           Print out error message only if both banks are missing.
 C
-            WRITE(*,*) ERROR_MISS_DATA//'ECLS'
+            EclsErrorCounter(1) = EclsErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
