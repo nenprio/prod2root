@@ -666,11 +666,15 @@ C-----------------------------------------------------------------------
                   Z_Piz(iPIZZETTA)   = Evt%Pizzetta%Z_Mod(iPIZZETTA)
                END DO
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'PIZZETTA - NPiz '//ERROR_INDEX, NPiz
+               IF (nPiz == 0) THEN
+                  PizzettaErrorCounter(2) = PizzettaErrorCounter(2) + 1
+               ELSE
+                  PizzettaErrorCounter(3) = PizzettaErrorCounter(3) + 1
+               END IF
                NPiz = 0.
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'PIZZETTA'
+            PizzettaErrorCounter(1) = PizzettaErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -821,7 +825,7 @@ C-----------------------------------------------------------------------
             Moka_T2d = evt%trg%moka_t2d
             Moka_T2Dsl = evt%trg%moka_t2dsl
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'TORTA'
+            TortaErrorCounter(1) = TortaErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------

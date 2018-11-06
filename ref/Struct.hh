@@ -122,6 +122,8 @@ extern "C" {
         int TrigErrorCounter[5];
         int C2TrigErrorCounter[5];
         int TellinaErrorCounter[5];
+        int PizzettaErrorCounter[5];
+        int TortaErrorCounter[5];
     }errorcounter_;
 }
 

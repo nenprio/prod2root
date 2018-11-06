@@ -58,13 +58,14 @@ C
       integer BPOSErrorCounter(5), GDHitErrorCounter(5)
       integer EclsErrorCounter(5), TrigErrorCounter(5)
       integer C2TrigErrorCounter(5), TellinaErrorCounter(5)
+      integer PizzettaErrorCounter(5), TortaErrorCounter(5)
       
 C     Do we need a common for error counter or we manage the summary
 C     only by FORTRAN end routine? Now call C++ function to print 
 C     the summary
       common /errorcounter/BPOSErrorCounter, GDHitErrorCounter,
      1       EclsErrorCounter, TrigErrorCounter,
-     1       C2TrigErrorCounter, TellinaErrorCounter
+     1       PizzettaErrorCounter, TortaErrorCounter
       
 C
 C BLOCK STRUCTURE DECLARATIONS
