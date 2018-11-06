@@ -1317,6 +1317,7 @@ TFile* TreeWriter::getTFile() {
 //
 // input:   -
 // output:  -
+// TODO: why create tree pointer and why don't use fnewtree created by constructor?
 void TreeWriter::fillTTree() {
     TTree *tree = (TTree*)outfile->Get("sample");
     tree->Fill();

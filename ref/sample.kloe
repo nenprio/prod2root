@@ -105,6 +105,8 @@ C
       Status = ANPIST(ANSUCC)
       istat = fillbposcommon(nrun)
 
+      WRITE(0,*) "[DEBUG] Try to write to std error"
+
       RETURN
       END
 C
@@ -268,7 +270,9 @@ C-----------------------------------------------------------------------
             Evt%Info%RunNumber = Nrun
          END IF
          Evt%Info%EventNumber = Nev
-           
+         
+         WRITE(*,*)"[Debug] Num Ev:", Nev
+  
          NumRun = Evt%Info%RunNumber
          NumEv = Evt%Info%EventNumber
          Pileup = Evt%Info%Pileup
@@ -335,26 +339,41 @@ C-----------------------------------------------------------------------
          Broots = 0.
          BrootsErr = 0.
 C
-C        TODO: BLOCAT some data?
-C
-         rstat = GETBPOS(Evt%Bpos)
- 
-         BPx = Evt%Bpos%px
-         BPy = Evt%Bpos%py
-         BPz = Evt%Bpos%pz
-         Bx = Evt%Bpos%x
-         By = Evt%Bpos%y
-         Bz = Evt%Bpos%z
-         BWidPx = Evt%Bpos%errpx
-         BWidPy = Evt%Bpos%errpy
-         BWidPz = Evt%Bpos%errpz
-         BSx = Evt%Bpos%errx
-         BSy = Evt%Bpos%erry
-         BSz = Evt%Bpos%errz
-         BLumx = Evt%Bpos%lumx
-         BLumz = Evt%Bpos%lumz
-         Broots = Evt%Bpos%Ene
-         BrootsErr = Evt%Bpos%ErrEne
+C        GETBPOS requires BPos and BMom banks.
+C   
+         STATUS = BIGEST(IW,'BPOS',BANKNUM)
+         IF (STATUS.EQ.YESUCC) THEN
+            STATUS = BLOCAT(IW,'BPOS',BANKNUM,IND1,INDDAT)
+         END IF
+         IF (STATUS.EQ.YESUCC) THEN
+            STATUS = BIGEST(IW,'BMOM',BANKNUM)
+         END IF
+         IF (STATUS.EQ.YESUCC) THEN
+            STATUS = BLOCAT(IW,'BMOM',BANKNUM,IND1,INDDAT)
+         END IF
+
+         IF (STATUS.EQ.YESUCC) THEN
+            rstat = GETBPOS(Evt%Bpos)
+    
+            BPx = Evt%Bpos%px
+            BPy = Evt%Bpos%py
+            BPz = Evt%Bpos%pz
+            Bx = Evt%Bpos%x
+            By = Evt%Bpos%y
+            Bz = Evt%Bpos%z
+            BWidPx = Evt%Bpos%errpx
+            BWidPy = Evt%Bpos%errpy
+            BWidPz = Evt%Bpos%errpz
+            BSx = Evt%Bpos%errx
+            BSy = Evt%Bpos%erry
+            BSz = Evt%Bpos%errz
+            BLumx = Evt%Bpos%lumx
+            BLumz = Evt%Bpos%lumz
+            Broots = Evt%Bpos%Ene
+            BrootsErr = Evt%Bpos%ErrEne
+         ELSE
+            WRITE(*,*) ERROR_MISS_DATA//'BPOS'
+         END IF
       END IF
 C-----------------------------------------------------------------------
 C Fill Block GDHit

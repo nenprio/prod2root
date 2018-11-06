@@ -69,7 +69,7 @@ if ( `uname` == 'OSF1' ) then
 endif
 if ( `uname` == 'AIX' && `uname -v` == 5) then
 #    set for = "xlf -qcharlen=32767 -qextname"
-   set for = "xlf -qarch=604 -O3 -qhsflt -qextname"
+   set for = "xlf -qarch=604 -O3 -qhsflt -qextname -static -lm -lc -bloadmap:map.txt"
 #   set for = "xlf -qcharlen=32767  "
    set forl = "-L/usr/xlmass/lib/aix51 -lmass"
 else if( `uname` == 'AIX' && `uname -v` == 7) then
