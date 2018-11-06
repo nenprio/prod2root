@@ -534,7 +534,7 @@ C-----------------------------------------------------------------------
             Trgw1 = IW( inddat+1 )
             Trgw2 = IW( inddat+2 )
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'TRIG'
+            TrigErrorCounter(1) = TrigErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
