@@ -30,8 +30,9 @@ $$include 'sample_talk.inc'
 C
 C==============================================================================
 C
-      write(*,*)"SAMIN"
       INTEGER i     ! Used to loop on error counter
+
+      write(*,*)"SAMIN"
 
       INFOFLAG      = .FALSE.
       DATAFLAG      = .FALSE.
@@ -2372,11 +2373,11 @@ C                   TODO
 C                   TODO
                   END IF
                   nPos(iiDPRS) =  Evt%DPRS%NPOS(iiDPRS)
-                  IF ( nPos(iDPRS) < 0 .OR. nPos(iDPRS) > 255 ) THEN
+                  IF ( nPos(iiDPRS) < 0 .OR. nPos(iiDPRS) > 255 ) THEN
 C                   TODO
                   END IF
                   nNeg(iiDPRS) =  Evt%DPRS%NNEG(iiDPRS)
-                  IF ( nNeg(iDPRS) < 0 .OR. nNeg(iDPRS) > 255 ) THEN
+                  IF ( nNeg(iiDPRS) < 0 .OR. nNeg(iiDPRS) > 255 ) THEN
 C                   TODO
                   END IF
                   xPCA(iiDPRS) =  Evt%DPRS%XPCA(iiDPRS)

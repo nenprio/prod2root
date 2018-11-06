@@ -62,7 +62,7 @@ C     Do we need a common for error counter or we manage the summary
 C     only by FORTRAN end routine? Now call C++ function to print 
 C     the summary
       common /errorcounter/BPOSErrorCounter, GDHitErrorCounter,
-             EclsErrorCounter, TrigErrorCounter
+     1       EclsErrorCounter, TrigErrorCounter
       
 C
 C BLOCK STRUCTURE DECLARATIONS

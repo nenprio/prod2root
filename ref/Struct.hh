@@ -104,7 +104,7 @@ extern "C"{
 extern "C" {
     extern struct {
         int MonteCarloFlag;
-    } sharedflags_;
+    }sharedflags_;
 }
 
 // Error counters for final summary
@@ -120,7 +120,7 @@ extern "C" {
         int GDHitErrorCounter[5];
         int EclsErrorCounter[5];
         int TrigErrorCounter[5];
-    }
+    }errorcounter_;
 }
 
 // Block:   evtinfo
