@@ -48,7 +48,7 @@ C
 C
 C ERROR STRUCTURE DECLARATIONS
 C Follow the declarations of counter-arrays for each block.
-C Each array has 5 counter, one for each type of error:
+C Each array has 5 counters, one for each type of error:
 C   1 - Missing bank
 C   2 - Empty data
 C   3 - Index not valid
