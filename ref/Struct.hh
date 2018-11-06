@@ -120,6 +120,8 @@ extern "C" {
         int GDHitErrorCounter[5];
         int EclsErrorCounter[5];
         int TrigErrorCounter[5];
+        int C2TrigErrorCounter[5];
+        int TellinaErrorCounter[5];
     }errorcounter_;
 }
 

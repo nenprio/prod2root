@@ -225,6 +225,12 @@ void TreeWriter::printSummary() {
     summary += Form("  TRIG   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
                     errorcounter_.TrigErrorCounter[0], errorcounter_.TrigErrorCounter[1], 
                     errorcounter_.TrigErrorCounter[2], errorcounter_.TrigErrorCounter[3], errorcounter_.TrigErrorCounter[4]);
+    summary += Form("  C2TRIG %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.C2TrigErrorCounter[0], errorcounter_.C2TrigErrorCounter[1], 
+                    errorcounter_.C2TrigErrorCounter[2], errorcounter_.C2TrigErrorCounter[3], errorcounter_.C2TrigErrorCounter[4]);
+    summary += Form("  TELLI  %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.TellinaErrorCounter[0], errorcounter_.TellinaErrorCounter[1], 
+                    errorcounter_.TellinaErrorCounter[2], errorcounter_.TellinaErrorCounter[3], errorcounter_.TellinaErrorCounter[4]);
     summary += "\n=============================================================================\n\n";
     summary += "  Err.1\t Missing at least one bank required.\n";
     summary += "  Err.2\t Banks exist but get function returns empty data.\n";

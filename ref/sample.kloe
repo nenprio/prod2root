@@ -575,11 +575,15 @@ C-----------------------------------------------------------------------
                   CosmAdd(iC2Trig) = Evt%S2CLU%CosmAdd(iC2Trig)
                END DO
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'C2TRIG - NClu2s '//ERROR_INDEX, NClu2s
+               IF (NClu2s == 0) THEN
+                  C2TrigErrorCounter(2) = C2TrigErrorCounter(2) + 1
+               ELSE
+                  C2TrigErrorCounter(3) = C2TrigErrorCounter(3) + 1
+               END IF
                NClu2s = 0.
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'C2TRG'
+            C2TrigErrorCounter(1) = C2TrigErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -601,8 +605,11 @@ C-----------------------------------------------------------------------
             ISTAT = GETTELLINA(Evt%Tellina) 
             
             NTel = Evt%Tellina%n
+C
+C           TODO should we remove this check? it seems redundant
+C
             IF ( NTel < 0 .OR. NTel > 300 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'TELLINA - NTel '//ERROR_DOMAIN, NTel
+               TellinaErrorCounter(4) = TellinaErrorCounter(4) + 1
             END IF
    
             IF (nTel > 0 .AND. nTel <= 300) THEN
@@ -618,11 +625,15 @@ C-----------------------------------------------------------------------
                     Tb_Tel(iTELLINA) = Evt%Tellina%Tb(iTELLINA)
               END DO
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'TELLINA - nTel '//ERROR_INDEX, nTel
+               IF (nTel == 0) THEN
+                  TellinaErrorCounter(2) = TellinaErrorCounter(2) + 1
+               ELSE
+                  TellinaErrorCounter(3) = TellinaErrorCounter(3) + 1
+               END IF
                nTel = 0.
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'TELLINA'
+            TellinaErrorCounter(1) = TellinaErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
