@@ -46,6 +46,23 @@ C
         CHARACTER(len=25) :: ERROR_INDEX
         CHARACTER(len=25) :: ERROR_DOMAIN
 C
+C ERROR STRUCTURE DECLARATIONS
+C Follow the declarations of counter-arrays for each block.
+C Each array has 5 counter, one for each type of error:
+C   1 - Missing bank
+C   2 - Empty data
+C   3 - Index not valid
+C   4 - Value out of domain
+C   5 - MC flag inconsistency, explain better 
+C
+      integer BPOSErrorCounter(5)
+      
+C     Do we need a common for error counter or we manage the summary
+C     only by FORTRAN end routine? Now call C++ function to print 
+C     the summary
+      common /errorcounter/BPOSErrorCounter
+      
+C
 C BLOCK STRUCTURE DECLARATIONS
 C Follow the declarations of all the variables filled by data
 C and the related common blocks.
