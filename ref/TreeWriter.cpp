@@ -216,15 +216,21 @@ void TreeWriter::printSummary() {
     summary += Form("  BPOS   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
                     errorcounter_.BPOSErrorCounter[0], errorcounter_.BPOSErrorCounter[1], 
                     errorcounter_.BPOSErrorCounter[2], errorcounter_.BPOSErrorCounter[3], errorcounter_.BPOSErrorCounter[4]);
-    summary += Form("  GDHit  %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+    summary += Form("  GDHIT  %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
                     errorcounter_.GDHitErrorCounter[0], errorcounter_.GDHitErrorCounter[1], 
                     errorcounter_.GDHitErrorCounter[2], errorcounter_.GDHitErrorCounter[3], errorcounter_.GDHitErrorCounter[4]);
+    summary += Form("  ECLS   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.EclsErrorCounter[0], errorcounter_.EclsErrorCounter[1], 
+                    errorcounter_.EclsErrorCounter[2], errorcounter_.EclsErrorCounter[3], errorcounter_.EclsErrorCounter[4]);
+    summary += Form("  TRIG   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.TrigErrorCounter[0], errorcounter_.TrigErrorCounter[1], 
+                    errorcounter_.TrigErrorCounter[2], errorcounter_.TrigErrorCounter[3], errorcounter_.TrigErrorCounter[4]);
     summary += "\n=============================================================================\n\n";
     summary += "  Err.1\t Missing at least one bank required.\n";
     summary += "  Err.2\t Banks exist but get function returns empty data.\n";
     summary += "  Err.3\t Get-function returns an invalid index\n\t\t(negative or bigger than expected).\n";
     summary += "  Err.4\t Get function returns a value out of domain for a variable.\n";
-    summary += "  Err.5\t TODO\n";
+    summary += "  Err.5\t Require MC data and newer blocks HETE, ITCE, ...\n";
     summary += "\n=============================================================================\n";
 
     // Print summary to std output
