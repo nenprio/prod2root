@@ -107,6 +107,22 @@ extern "C" {
     } sharedflags_;
 }
 
+// Error counters for final summary
+// Each array has 5 counters, one for each type of error:
+//   1 - Missing bank
+//   2 - Empty data
+//   3 - Index not valid
+//   4 - Value out of domain
+//   5 - MC flag inconsistency, explain better
+extern "C" {
+    extern struct {
+        int BPOSErrorCounter[5];
+        int GDHitErrorCounter[5];
+        int EclsErrorCounter[5];
+        int TrigErrorCounter[5];
+    }
+}
+
 // Block:   evtinfo
 extern "C"{
   extern struct{

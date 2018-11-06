@@ -8,6 +8,7 @@ class TreeWriter{
          TreeWriter();
          ~TreeWriter();
          void printHeaderFlags();
+         void printSummary();
          void addBlockInfo();
          void addBlockData();
          void addBlockEcl();

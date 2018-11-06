@@ -206,6 +206,31 @@ void TreeWriter::printHeaderFlags() {
     // Print to std output
     std::cout << header.Data() << std::endl;
 }
+
+void TreeWriter::printSummary() {
+    TString summary = "\n\n==========================================================================\n";
+    header +=         "\n                           PROD2ROOT SUMMARY\n";
+    header +=         "\n==========================================================================\n";
+    header +=         "\nBlock\tErr.1\tErr.2\tErr.3\tErr.4\tErr.5\n";
+    header +=         "\n==========================================================================\n";
+    summary += Form("BPOS\t%d\t%d\t%d\t%d\t%d\n", 
+                    errorcounter.BPOSErrorCounter[0], errorcounter.BPOSErrorCounter[1], 
+                    errorcounter.BPOSErrorCounter[2], errorcounter.BPOSErrorCounter[3], errorcounter.BPOSErrorCounter[4]);
+    summary += Form("GDHit\t%d\t%d\t%d\t%d\t%d\n", 
+                    errorcounter.GDHitErrorCounter[0], errorcounter.GDHitErrorCounter[1], 
+                    errorcounter.GDHitErrorCounter[2], errorcounter.GDHitErrorCounter[3], errorcounter.GDHitErrorCounter[4]);
+    summary += "\n==========================================================================\n";
+    summary += "\nErr.1\t Missing at least one bank required.\n";
+    summary += "\nErr.2\t Banks exist but get function returns empty data.\n";
+    summary += "\nErr.3\t Get function returns an index not valid (negative or bigger than expected).\n";
+    summary += "\nErr.4\t Get function reutrns a value out of domain for a variable.\n";
+    summary += "\nErr.5\t TODO\n";
+    summary += "\n==========================================================================\n";
+
+    // Print summary to std output
+    std::cout << summary.Data() << std::endl;
+}
+
 // Add to the tree all the branches related to the block Info.
 //
 // input:   -

@@ -29,6 +29,8 @@ void fillntu_(){
 // input:   -
 // output:  -
 void closetree_(){
+  writer->printSummary();   // Print the summary of execution errors
+
   delete writer;
   writer = NULL;
 }
