@@ -1095,7 +1095,6 @@ C
                 TBRPre(iPRECLU) = Evt%PreClu%TrmsB(iPRECLU)
               END DO
             ELSE
-              WRITE(*,*) ERROR_BLOCK//'PRECLU - NPClu '//ERROR_INDEX, NPClua
               IF (NPClu == 0) THEN
                  PreClusErrorCounter(2) = PreClusErrorCounter(2) + 1
               ELSE
@@ -1145,7 +1144,6 @@ C-----------------------------------------------------------------------
                   Z(iCWRK) = Evt%CWRK%Z(iCWRK)
                END DO
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'CWRK - NCHit '//ERROR_INDEX, NCHit
                IF (NCHit == 0) THEN
                   CWRKErrorCounter(2) = CWRKErrorCounter(2) + 1
                ELSE
@@ -1270,31 +1268,31 @@ C-----------------------------------------------------------------------
             
             nSmall = Evt%DTCE%nSmall
             IF ( nSmall < 0 .OR. nSmall > 1500 ) THEN
-               CWRKErrorCounter(4) = CWRKErrorCounter(4) + 1
+               DTCEErrorCounter(4) = DTCEErrorCounter(4) + 1
             END IF
       
             IF (nDTCE > 0 .AND. nDTCE <= 1500) THEN
                DO iDTCE=1, nDTCE
                   iLayerDTCE(iDTCE) = Evt%DTCE%iLayerDTCE(iDTCE)
                   IF ( iLayerDTCE(iDTCE) < 1 .OR. iLayerDTCE(iDTCE) > 58 ) THEN
-                     CWRKErrorCounter(4) = CWRKErrorCounter(4) + 1
+                     DTCEErrorCounter(4) = DTCEErrorCounter(4) + 1
                   END IF
                   iWireDTCE(iDTCE) = Evt%DTCE%iWireDTCE(iDTCE)
                   IF ( iWireDTCE(iDTCE) < 1 .OR. iWireDTCE(iDTCE) > 378 ) THEN
-                     CWRKErrorCounter(4) = CWRKErrorCounter(4) + 1
+                     DTCEErrorCounter(4) = DTCEErrorCounter(4) + 1
                   END IF
                   tDTCE(iDTCE) = Evt%DTCE%tDTCE(iDTCE)
                END DO
             ELSE
                IF (nDTCE == 0) THEN
-                  CWRKErrorCounter(2) = CWRKErrorCounter(2) + 1
+                  DTCEErrorCounter(2) = DTCEErrorCounter(2) + 1
                ELSE
-                  CWRKErrorCounter(3) = CWRKErrorCounter(3) + 1
+                  DTCEErrorCounter(3) = DTCEErrorCounter(3) + 1
                END IF
                nDTCE = 0
             END IF
          ELSE
-            CWRKErrorCounter(1) = CWRKErrorCounter(1) + 1
+            DTCEErrorCounter(1) = DTCEErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
