@@ -251,6 +251,9 @@ void TreeWriter::printSummary() {
     summary += Form("  TIME   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
                     errorcounter_.TimeErrorCounter[0], errorcounter_.TimeErrorCounter[1], 
                     errorcounter_.TimeErrorCounter[2], errorcounter_.TimeErrorCounter[3], errorcounter_.TimeErrorCounter[4]);
+    summary += Form("  CLUS   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.ClusErrorCounter[0], errorcounter_.ClusErrorCounter[1], 
+                    errorcounter_.ClusErrorCounter[2], errorcounter_.ClusErrorCounter[3], errorcounter_.ClusErrorCounter[4]);
     summary += "\n=============================================================================\n\n";
     summary += "  Err.1\t Missing at least one bank required.\n";
     summary += "  Err.2\t Banks exist but get function returns empty data.\n";

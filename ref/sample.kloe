@@ -994,11 +994,13 @@ C-----------------------------------------------------------------------
          STATUS = BLOCAT(IW, 'CLPS', 1, IND, INDDAT)
          IF (STATUS.EQ.YESUCC) THEN
             istat = GETCLUSTRU(Evt%Clu)
-      
+C
+C           TODO shoul I remove this check? is it redundant?
+C
             NClu = Evt%Clu%n 
             WRITE(*,*) "[DEBUG] NClu: ", NClu
             IF ( NClu < 0 .OR. NClu > 100 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'CLU - NClu '//ERROR_DOMAIN, NClu
+               ClusErrorCounter(4) = ClusErrorCounter(4) + 1
             END IF
             IF (NClu > 0 .AND. NClu <= 100) THEN
                DO iEVTCLU=1, NClu
@@ -1017,7 +1019,11 @@ C-----------------------------------------------------------------------
                   FlagCl(iEVTCLU) = Evt%Clu%Flag(iEVTCLU)
                END DO
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'CLUS - NClu '//ERROR_INDEX, NClu
+               IF (NClu == 0) THEN
+                  ClusErrorCounter(2) = ClusErrorCounter(2) + 1
+               ELSE
+                  ClusErrorCounter(3) = ClusErrorCounter(3) + 1
+               END IF
                NClu = 0.
             END IF
 C         
@@ -1034,49 +1040,55 @@ C
                  PNum3(iEVTCLUMC) = 0.
                  Pid3(iEVTCLUMC) = 0.
               END DO
-       
+C
+C             TODO should I remove this check? is it redundant?
+C
               NCluMc = Evt%Clu%nmc
               IF ( NCluMc < 0 .OR. NCluMc > 100 ) THEN
-                 WRITE(*,*) ERROR_BLOCK//'CLU - NCluMc '//ERROR_DOMAIN, NCluMc
+                 ClusErrorCounter(4) = ClusErrorCounter(4) + 1
               END IF
               IF (NCluMc > 0 .AND. NCluMc <= 100) THEN
                  DO iEVTCLUMC=1, NCluMc
                     NPar(iEVTCLUMC) = Evt%Clu%Npart(iEVTCLUMC)
                     IF ( NPar(iEVTCLUMC) < 0 .OR. NPar(iEVTCLUMC) > 10 ) THEN
-                       WRITE(*,*) ERROR_BLOCK//'CLUMC - NPar '//ERROR_DOMAIN, NPar(iEVTCLUMC)
+                       ClusErrorCounter(4) = ClusErrorCounter(4) + 1
                     END IF
                     PNum1(iEVTCLUMC) = Evt%Clu%part1(iEVTCLUMC)
                     IF ( PNum1(iEVTCLUMC) < 0 .OR. PNum1(iEVTCLUMC) > 100 ) THEN
-                       WRITE(*,*) ERROR_BLOCK//'CLUMC - PNum1 '//ERROR_DOMAIN, PNum1(iEVTCLUMC)
+                       ClusErrorCounter(4) = ClusErrorCounter(4) + 1
                     END IF
                     Pid1(iEVTCLUMC) = Evt%Clu%pid1(iEVTCLUMC)
                     IF ( Pid1(iEVTCLUMC) < 0 .OR. Pid1(iEVTCLUMC) > 100 ) THEN
-                       WRITE(*,*) ERROR_BLOCK//'CLUMC - Pid1 '//ERROR_DOMAIN, Pid1(iEVTCLUMC)
+                       ClusErrorCounter(4) = ClusErrorCounter(4) + 1
                     END IF
                     PNum2(iEVTCLUMC) = Evt%Clu%part2(iEVTCLUMC)
                     IF ( PNum2(iEVTCLUMC) < 0 .OR. PNum2(iEVTCLUMC) > 100 ) THEN
-                       WRITE(*,*) ERROR_BLOCK//'CLUMC - PNum2 '//ERROR_DOMAIN, PNum2(iEVTCLUMC)
+                       ClusErrorCounter(4) = ClusErrorCounter(4) + 1
                     END IF
                     Pid2(iEVTCLUMC) = Evt%Clu%pid2(iEVTCLUMC)
                     IF ( Pid2(iEVTCLUMC) < 0 .OR. Pid2(iEVTCLUMC) > 100 ) THEN
-                       WRITE(*,*) ERROR_BLOCK//'CLUMC - Pid2 '//ERROR_DOMAIN, Pid2(iEVTCLUMC)
+                       ClusErrorCounter(4) = ClusErrorCounter(4) + 1
                     END IF
                     PNum3(iEVTCLUMC) = Evt%Clu%part3(iEVTCLUMC)
                     IF ( PNum3(iEVTCLUMC) < 0 .OR. PNum3(iEVTCLUMC) > 100 ) THEN
-                       WRITE(*,*) ERROR_BLOCK//'CLUMC - PNum3 '//ERROR_DOMAIN, PNum3(iEVTCLUMC)
+                       ClusErrorCounter(4) = ClusErrorCounter(4) + 1
                     END IF
                     Pid3(iEVTCLUMC) = Evt%Clu%pid3(iEVTCLUMC)
                     IF ( Pid3(iEVTCLUMC) < 0 .OR. Pid3(iEVTCLUMC) > 100 ) THEN
-                       WRITE(*,*) ERROR_BLOCK//'CLUMC - Pid3 '//ERROR_DOMAIN, Pid3(iEVTCLUMC)
+                       ClusErrorCounter(4) = ClusErrorCounter(4) + 1
                     END IF
                  END DO
               ELSE
-                 WRITE(*,*) ERROR_BLOCK//'CLUS - NCluMc '//ERROR_INDEX, NCluMc
+                 IF (NClusMc == 0) THEN
+                    ClusErrorCounter(2) = ClusErrorCounter(2) + 1
+                 ELSE
+                    ClusErrorCounter(3) = ClusErrorCounter(3) + 1
+                 END IF
                  NCluMc = 0.
               END IF
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'CLUS'
+            ClusErrorCounter(1) = ClusErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------

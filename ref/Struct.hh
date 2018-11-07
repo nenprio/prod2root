@@ -128,6 +128,7 @@ extern "C" {
         int TeleErrorCounter[5];
         int PizzaErrorCounter[5];
         int TimeErrorCounter[5];
+        int ClusErrorCounter[5];
     }errorcounter_;
 }
 
