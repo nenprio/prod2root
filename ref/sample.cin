@@ -68,9 +68,8 @@ C     only by FORTRAN end routine? Now call C++ function to print
 C     the summary
       common /errorcounter/InfoErrorCounter, BPOSErrorCounter, 
      1       GDHitErrorCounter, EclsErrorCounter, TrigErrorCounter,
-     1       PizzettaErrorCounter, TortaErrorCounter
-     1       TeleErrorCounter, PizzaErrorCounter
-     1       TimeErrorCounter
+     1       PizzettaErrorCounter, TortaErrorCounter,
+     1       TeleErrorCounter, PizzaErrorCounter, TimeErrorCounter
       
 C
 C BLOCK STRUCTURE DECLARATIONS
