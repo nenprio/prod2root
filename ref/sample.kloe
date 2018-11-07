@@ -856,25 +856,25 @@ C-----------------------------------------------------------------------
       
             NTele = Evt%TELE%ntele
             IF ( NTele < 0 .OR. NTele > 300 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'TELE - NTele '//ERROR_DOMAIN, NTele
+               TeleErrorCounter(4) = TeleErrorCounter(4) + 1
             END IF
             IF (NTele > 0 .AND. NTele <= 300) THEN
               DO iEVTTELE=1, NTele
                  Det_Trg(iEVTTELE) = Evt%TELE%Det(iEVTTELE)
                  IF ( Det_Trg(iEVTTELE) < 0 .OR. Det_Trg(iEVTTELE) > 3 ) THEN
-                    WRITE(*,*) ERROR_BLOCK//'TELE - Det_Trg '//ERROR_DOMAIN, Det_Trg(iEVTTELE)
+                    TeleErrorCounter(4) = TeleErrorCounter(4) + 1
                  END IF
                  BitP(iEVTTELE) = Evt%TELE%Bitp(iEVTTELE)
                  IF ( BitP(iEVTTELE) < 0 .OR. BitP(iEVTTELE) > 1100 ) THEN
-                    WRITE(*,*) ERROR_BLOCK//'TELE - BitP '//ERROR_DOMAIN, BitP(iEVTTELE)
+                    TeleErrorCounter(4) = TeleErrorCounter(4) + 1
                  END IF
                  Sector(iEVTTELE) = Evt%TELE%Sector(iEVTTELE)
                  IF ( Sector(iEVTTELE) < 0 .OR. Sector(iEVTTELE) > 50 ) THEN
-                    WRITE(*,*) ERROR_BLOCK//'TELE - Sector '//ERROR_DOMAIN, Sector(iEVTTELE)
+                    TeleErrorCounter(4) = TeleErrorCounter(4) + 1
                  END IF
                  SerKind(iEVTTELE) = Evt%TELE%Serkind(iEVTTELE)
                  IF ( SerKind(iEVTTELE) < 0 .OR. SerKind(iEVTTELE) > 3 ) THEN
-                    WRITE(*,*) ERROR_BLOCK//'TELE - SerKind '//ERROR_DOMAIN, SerKind(iEVTTELE)
+                    TeleErrorCounter(4) = TeleErrorCounter(4) + 1
                  END IF
                  Ea_Trg(iEVTTELE) = Evt%TELE%Ea(iEVTTELE)
                  Eb_Trg(iEVTTELE) = Evt%TELE%Eb(iEVTTELE)
@@ -882,11 +882,15 @@ C-----------------------------------------------------------------------
                  Tb_Trg(iEVTTELE) = Evt%TELE%Tb(iEVTTELE)
               END DO
             ELSE
-              WRITE(*,*) ERROR_BLOCK//'TELE - NTele '//ERROR_INDEX, NTele
+              IF (NTele == 0) THEN
+                 TeleErrorCounter(2) = TeleErrorCounter(2) + 1
+              ELSE
+                 TeleErrorCounter(3) = TeleErrorCounter(3) + 1
+              END IF
               NTele = 0.
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'TELE'
+            TeleErrorCounter(1) = TeleErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -911,7 +915,7 @@ C-----------------------------------------------------------------------
       
             NPack = Evt%PIZZA%npizza
             IF ( NPack < 0 .OR. NPack > 300 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'CLU - NPack '//ERROR_DOMAIN, NPack
+               PizzaErrorCounter(4) = PizzaErrorCounter(4) + 1
             END IF
             IF (NPack > 0 .AND. NPack <= 300) THEN
               DO iPIZZA=1, NPack
@@ -924,11 +928,15 @@ C-----------------------------------------------------------------------
                 Z_mod(iPIZZA) = Evt%PIZZA%Z_mod(iPIZZA)
               END DO
             ELSE
-              WRITE(*,*) ERROR_BLOCK//'PIZZA - NPack '//ERROR_INDEX, NPack
+              IF (NPack == 0) THEN
+                 PizzaErrorCounter(2) = PizzaErrorCounter(2) + 1
+              ELSE
+                 PizzaErrorCounter(3) = PizzaErrorCounter(3) + 1
+              END IF
               NPack = 0.
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'PIZZA'
+            PizzaErrorCounter(1) = PizzaErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -959,7 +967,7 @@ C
          END IF
 
          IF (STATUS.NE.YESUCC) THEN
-            WRITE(*,*) ERROR_MISS_DATA//'TIME-T0'
+            TimeErrorCounter(1) = TimeErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------

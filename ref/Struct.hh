@@ -125,6 +125,9 @@ extern "C" {
         int TellinaErrorCounter[5];
         int PizzettaErrorCounter[5];
         int TortaErrorCounter[5];
+        int TeleErrorCounter[5];
+        int PizzaErrorCounter[5];
+        int TimeErrorCounter[5];
     }errorcounter_;
 }
 

@@ -240,6 +240,12 @@ void TreeWriter::printSummary() {
     summary += Form("  TORTA  %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
                     errorcounter_.TortaErrorCounter[0], errorcounter_.TortaErrorCounter[1], 
                     errorcounter_.TortaErrorCounter[2], errorcounter_.TortaErrorCounter[3], errorcounter_.TortaErrorCounter[4]);
+    summary += Form("  TELE   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.TeleErrorCounter[0], errorcounter_.TeleErrorCounter[1], 
+                    errorcounter_.TeleErrorCounter[2], errorcounter_.TeleErrorCounter[3], errorcounter_.TeleErrorCounter[4]);
+    summary += Form("  TIME   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.TimeErrorCounter[0], errorcounter_.TimeErrorCounter[1], 
+                    errorcounter_.TimeErrorCounter[2], errorcounter_.TimeErrorCounter[3], errorcounter_.TimeErrorCounter[4]);
     summary += "\n=============================================================================\n\n";
     summary += "  Err.1\t Missing at least one bank required.\n";
     summary += "  Err.2\t Banks exist but get function returns empty data.\n";
