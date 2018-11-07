@@ -74,7 +74,22 @@ C      write(*,*)"[SAMIN] BPOSFLAG: ", BPOSFLAG
 C      write(*,*)" "
 
       DO i=1, 5
+         InfoErrorCounter(i) = 0.
          BPOSErrorCounter(i) = 0.
+         GDHitErrorCounter(i) = 0.
+         EclsErrorCounter(i) = 0.
+         TrigErrorCounter(i) = 0.
+         C2TrigErrorCounter(i) = 0.
+         TellinaErrorCounter(i) = 0.
+         PizzettaErrorCounter(i) = 0.
+         TortaErrorCounter(i) = 0.
+         TeleErrorCounter(i) = 0.
+         TimeErrorCounter(i) = 0.
+         ClusErrorCounter(i) = 0.
+         PreClusErrorCounter(i) = 0.
+         CWRKErrorCounter(i) = 0.
+         CeleErrorCounter(i) = 0.
+         DTCEErrorCounter(i) = 0.
       END DO
 
       RETURN
