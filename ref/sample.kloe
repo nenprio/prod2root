@@ -1041,7 +1041,7 @@ C
                     END IF
                  END DO
               ELSE
-                 IF (NClusMc == 0) THEN
+                 IF (NCluMc == 0) THEN
                     ClusErrorCounter(2) = ClusErrorCounter(2) + 1
                  ELSE
                     ClusErrorCounter(3) = ClusErrorCounter(3) + 1
