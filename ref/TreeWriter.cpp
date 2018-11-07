@@ -4,6 +4,7 @@
 #include <TTree.h>
 #include "TreeWriter.hh"
 #include "Struct.hh"
+#include <TObjectTable.h>
 #include <typeinfo>
 
 // Creates the TreeWriter object, opens/creates output file
@@ -123,6 +124,10 @@ TreeWriter::TreeWriter() {
 
     // Write to the disk
     outfile->Write();
+
+    // ROOT Memory Profiling
+    // Only for debugging
+    gObjectTable->Print();
 }
 
 // Closes output file and deallocates variables from memory.
@@ -1371,6 +1376,10 @@ TFile* TreeWriter::getTFile() {
 // output:  -
 // TODO: why create tree pointer and why don't use fnewtree created by constructor?
 void TreeWriter::fillTTree() {
+    // ROOT Memory Profiling
+    // Only for debugging
+    gObjectTable->Print();
+
     TTree *tree = (TTree*)outfile->Get("sample");
     tree->Fill();
 }

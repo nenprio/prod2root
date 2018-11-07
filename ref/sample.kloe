@@ -996,6 +996,7 @@ C-----------------------------------------------------------------------
             istat = GETCLUSTRU(Evt%Clu)
       
             NClu = Evt%Clu%n 
+            WRITE(*,*) "[DEBUG] NClu: ", NClu
             IF ( NClu < 0 .OR. NClu > 100 ) THEN
                WRITE(*,*) ERROR_BLOCK//'CLU - NClu '//ERROR_DOMAIN, NClu
             END IF
@@ -1106,6 +1107,7 @@ C
             ISTAT = GETPRECLUSTRU(Evt%PreClu)
       
             NPClu = Evt%PreClu%n 
+            WRITE(*,*) "[DEBUG] NPClu: ", NPClu
             IF ( NPClu < 0 .OR. NPClu > 100 ) THEN
                WRITE(*,*) ERROR_BLOCK//'PRECLU - NPClu '//ERROR_DOMAIN, NPClu
             END IF
@@ -1152,6 +1154,7 @@ C-----------------------------------------------------------------------
             istat = GETCWRKSTRU(Evt%Cwrk)
       
             NCHit = Evt%CWRK%n 
+            WRITE(*,*) "[DEBUG] NCHit: ", NCHit
             IF ( NCHit < 0 .OR. NCHit > 2000 ) THEN
                WRITE(*,*) ERROR_BLOCK//'CLU - NCHit '//ERROR_DOMAIN, NCHit
             END IF
@@ -1206,6 +1209,7 @@ C-----------------------------------------------------------------------
             istat = GETCELESTRU(Evt%Cele)
    
             NCel = Evt%Cele%n 
+            WRITE(*,*) "[DEBUG] NCel: ", NCel
             IF ( NCel < 0 .OR. NCel > 2000 ) THEN
                WRITE(*,*) ERROR_BLOCK//'CELE - NCel '//ERROR_DOMAIN, NCel
             END IF
@@ -1283,6 +1287,7 @@ C-----------------------------------------------------------------------
             CALL GETDTCESTRU(Evt%DTCE)
       
             nDTCE = Evt%DTCE%nDTCE
+            WRITE(*,*) "[DEBUG] nDTCE: ", nDTCE
             IF ( nDTCE < 0 .OR. nDTCE > 1500 ) THEN
                WRITE(*,*) ERROR_BLOCK//'DTCE - nDTCE '//ERROR_DOMAIN, nDTCE
             END IF
@@ -1390,6 +1395,7 @@ C-----------------------------------------------------------------------
             istat = GETDHRESTRU(Evt%DHRE) 
    
             nDHRE = Evt%DHRE%nDHRE
+            WRITE(*,*) "[DEBUG] nDHRE: ", nDHRE
             IF ( nDHRE < 0 .OR. nDHRE > 1500 ) THEN
                WRITE(*,*) ERROR_BLOCK//'DHRE - nDHRE '//ERROR_DOMAIN, nDHRE
             END IF
@@ -1459,6 +1465,7 @@ C
             istat =  GETDHSPSTRU(evt%trk%n,evt%dhsp)
       
             nDHSP = Evt%DHSP%numDHSP
+            WRITE(*,*) "[DEBUG] nDHSP: ", nDHSP
             IF ( nDHSP < 0 .OR. nDHSP > 500 ) THEN
                WRITE(*,*) ERROR_BLOCK//'DHSP - nDHSP '//ERROR_DOMAIN, nDHSP
             END IF
@@ -1518,6 +1525,7 @@ C-----------------------------------------------------------------------
             ISTAT = TRKV2STRU(evt%vtx,evt%trkv,evt%trk,evt%trkmc)
    
             nTv = Evt%Trkv%n
+            WRITE(*,*) "[DEBUG] nTv: ", nTv
             IF ( nTv < 0 .OR. nTv > 30 ) THEN
                WRITE(*,*) ERROR_BLOCK//'TRKV - nTv '//ERROR_DOMAIN, nTv
             END IF
@@ -1587,6 +1595,7 @@ C-----------------------------------------------------------------------
             ISTAT = TRKV2STRU(evt%vtx,evt%trkv,evt%trk,evt%trkmc)
    
             nV = Evt%vtx%n
+            WRITE(*,*) "[DEBUG] nV: ", nV
             IF ( nV < 0 .OR. nV > 10 ) THEN
                WRITE(*,*) ERROR_BLOCK//'VTX - nV '//ERROR_DOMAIN, nV
             END IF
@@ -1680,6 +1689,7 @@ C-----------------------------------------------------------------------
             ISTAT = TRKV2STRU(evt%vtx,evt%trkv,evt%trk,evt%trkmc)
    
             nT = Evt%Trk%n
+            WRITE(*,*) "[DEBUG] nT: ", nT
             IF ( nT < 0 .OR. nT > 100 ) THEN
                WRITE(*,*) ERROR_BLOCK//'TRKS - nT '//ERROR_DOMAIN, nT
             END IF
@@ -1774,6 +1784,7 @@ C
               END DO
      
               nTfMC = Evt%TrkMC%n
+              WRITE(*,*) "[DEBUG] nTfMC: ", nTfMC
               IF ( nTfMC < 0 .OR. nTfMC > 100 ) THEN
                  WRITE(*,*) ERROR_BLOCK//'TRKS - nTfMC '//ERROR_DOMAIN, nTfMC
               END IF
@@ -1889,6 +1900,7 @@ C-----------------------------------------------------------------------
             ISTAT = TRKVOLD2STRU(evt%vtxold, evt%trkvold, evt%trkold, evt%trkmcold)
    
             nTVOld = Evt%TrkvOld%n
+            WRITE(*,*) "[DEBUG] nDHRE: ", nDHRE
             IF ( nTVOld < 0 .OR. nTVOld > 30 ) THEN
                WRITE(*,*) ERROR_BLOCK//'TRKVOLD - nTVOld '//ERROR_DOMAIN, nTVOld
             END IF
@@ -1958,6 +1970,7 @@ C-----------------------------------------------------------------------
             ISTAT = TRKVOLD2STRU(evt%vtxold, evt%trkvold, evt%trkold, evt%trkmcold)
    
             nVOld = Evt%vtxold%n
+            WRITE(*,*) "[DEBUG] nVOld: ", nVOld
             IF ( nVOld < 0 .OR. nVOld > 10 ) THEN
                WRITE(*,*) ERROR_BLOCK//'VTXOLD - nVOld '//ERROR_DOMAIN, nVOld
             END IF
@@ -2055,6 +2068,7 @@ C
             ISTAT = TRKVOLD2STRU(evt%vtxold, evt%trkvold, evt%trkold, evt%trkmcold)
    
             nTOld = Evt%Trkold%n
+            WRITE(*,*) "[DEBUG] nTOld: ", nTOld
             IF ( nTOld < 0 .OR. nTOld > 100 ) THEN
                WRITE(*,*) ERROR_BLOCK//'TRKOLD - nTOld '//ERROR_DOMAIN, nTOld
             END IF
@@ -2260,6 +2274,7 @@ C-----------------------------------------------------------------------
             ISTAT = DHIT_UPK(evt%dhit)
             
             nDHIT = Evt%DHIT%n
+            WRITE(*,*) "[DEBUG] nDHIT: ", nDHIT
             IF ( nDHIT < 0 .OR. nDHIT > 2500 ) THEN
                WRITE(*,*) ERROR_BLOCK//'DHIT - nDHIT '//ERROR_DOMAIN, nDHIT
             END IF
@@ -2319,6 +2334,7 @@ C-----------------------------------------------------------------------
             istat = DEDX2STRU_GET(Evt%DEDX2STRU)
    
             nDEDx = Evt%DEDX2STRU%numdedx
+            WRITE(*,*) "[DEBUG] nDEDx: ", nDEDx
             IF ( nDEDx < 0 .OR. nDEDx > 20 ) THEN
                WRITE(*,*) ERROR_BLOCK//'DEDX - nDEDx '//ERROR_DOMAIN, nDEDx
             END IF
@@ -2377,6 +2393,7 @@ C-----------------------------------------------------------------------
             ISTAT = GET_DPRS_STRUCT(Evt%DPRS)
    
             nDPRS =  Evt%DPRS%NDPRS
+            WRITE(*,*) "[DEBUG] nDPRS: ", nDPRS
             IF ( nDPRS < 0 .OR. nDPRS > 200 ) THEN
                WRITE(*,*) ERROR_BLOCK//'DPRS - nDPRS '//ERROR_DOMAIN, nDPRS
             END IF
@@ -2484,6 +2501,7 @@ C-----------------------------------------------------------------------
            istat = GETMCSTRU(Evt%MC)
   
            nTMC = Evt%MC%ntrk
+           WRITE(*,*) "[DEBUG] nTMC: ", nTMC
            IF ( nTMC < 0 .OR. nTMC > 50 ) THEN
               WRITE(*,*) ERROR_BLOCK//'GEANFI - nTMC '//ERROR_DOMAIN, nTMC
            END IF
@@ -2535,6 +2553,7 @@ C-----------------------------------------------------------------------
            END IF
   
            nVtxMC = Evt%MC%numvtx
+           WRITE(*,*) "[DEBUG] nVtxMC: ", nVtxMC
            IF ( nVtxMC < 0 .OR. nVtxMC > 30 ) THEN
               WRITE(*,*) ERROR_BLOCK//'GEANFI - nVtxMC '//ERROR_DOMAIN, nVtxMC
            END IF
@@ -2590,6 +2609,7 @@ C-----------------------------------------------------------------------
             ISTAT =  GETTCLOSTRU(evt%tclo)
    
             nTcl = Evt%Tclo%nt
+            WRITE(*,*) "[DEBUG] nTMC: ", nTMC
             IF ( nTcl < 0 .OR. nTcl > 40 ) THEN
                WRITE(*,*) ERROR_BLOCK//'TCLO - nTcl '//ERROR_DOMAIN, nTcl
             END IF
@@ -2650,6 +2670,7 @@ C-----------------------------------------------------------------------
             istat =  GETOLDTCLOSTRU(evt%tclold)
    
             nTclOld = Evt%Tclold%nt
+            WRITE(*,*) "[DEBUG] nTclOld: ", nTclOld
             IF ( nTclOld < 0 .OR. nTclOld > 40 ) THEN
                WRITE(*,*) ERROR_BLOCK//'TCLOLD - nTclOld '//ERROR_DOMAIN, nTclOld
             END IF
@@ -2707,6 +2728,7 @@ C-----------------------------------------------------------------------
             ISTAT = GETCFHISTRU(evt%cfhi)
    
             nFhi = Evt%CFHI%n
+            WRITE(*,*) "[DEBUG] nFhi: ", nFhi
             IF ( nFhi < 0 .OR. nFhi > 300 ) THEN
                WRITE(*,*) ERROR_BLOCK//'CFHI - nFhi '//ERROR_DOMAIN, nFhi
             END IF
@@ -2779,6 +2801,7 @@ C
                ISTAT = GETQIHISTRU(evt%qhit)
       
                nQIHI = Evt%QHIT%n
+               WRITE(*,*) "[DEBUG] nQIHI: ", nQIHI
                IF ( nQIHI < 0 .OR. nQIHI > 1000 ) THEN
                   WRITE(*,*) ERROR_BLOCK//'QIHI - nQIHI '//ERROR_DOMAIN, nQIHI
                END IF
@@ -2833,6 +2856,7 @@ C
          istat = TRKQ2STRU( evt%trk, evt%trkq )
 
          nTrkQ = Evt%TRKQ%n
+         WRITE(*,*) "[DEBUG] nTrkQ: ", nTrkQ
          IF ( nTrkQ < 0 .OR. nTrkQ > 100 ) THEN
             WRITE(*,*) ERROR_BLOCK//'TRKQ - nTrkQ '//ERROR_DOMAIN, nTrkQ
          END IF
@@ -2884,6 +2908,7 @@ C-----------------------------------------------------------------------
                ISTAT = GETQCAESTRU(Evt%Qele)
       
                nQELE = Evt%QELE%n
+               WRITE(*,*) "[DEBUG] nQELE: ", nQELE
                IF ( nQELE < 0 .OR. nQELE > 32 ) THEN
                   WRITE(*,*) ERROR_BLOCK//'QELE - nQELE '//ERROR_DOMAIN, nQELE
                END IF
@@ -2974,6 +2999,7 @@ C-----------------------------------------------------------------------
             ISTAT = GETNVO(evt%knvo,evt%vnvo,evt%vnvb,evt%invo)
    
             nKNVO = Evt%KNVO%n
+            WRITE(*,*) "[DEBUG] nKNVO: ", nKNVO
             IF ( nKNVO < 0 .OR. nKNVO > 40 ) THEN
                WRITE(*,*) ERROR_BLOCK//'KNVO - nKNVO '//ERROR_DOMAIN, nKNVO
             END IF
@@ -3017,6 +3043,7 @@ C-----------------------------------------------------------------------
             ISTAT = GETNVO(evt%knvo,evt%vnvo,evt%vnvb,evt%invo)
    
             nVNVO = Evt%VNVO%n
+            WRITE(*,*) "[DEBUG] nVNVO: ", nVNVO
             IF ( nVNVO < 0 .OR. nVNVO > 40 ) THEN
                WRITE(*,*) ERROR_BLOCK//'VNVO - nVNVO '//ERROR_DOMAIN, nVNVO
             END IF
@@ -3253,7 +3280,6 @@ C
                  CSMCt(iCSPSMC) = 0.
                  CSMCe(iCSPSMC) = 0.
                END DO
-
 C      
 C              In the get function are also accessed CHIT, CEKA, CEKE
 C              only for MC data. CEKA, CEKE are ignored by prod2ntu.
