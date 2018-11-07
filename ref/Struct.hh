@@ -116,6 +116,7 @@ extern "C" {
 //   5 - MC flag inconsistency, explain better
 extern "C" {
     extern struct {
+        int InfoErrorCounter[5];
         int BPOSErrorCounter[5];
         int GDHitErrorCounter[5];
         int EclsErrorCounter[5];

@@ -283,39 +283,39 @@ C-----------------------------------------------------------------------
          NumEv = Evt%Info%EventNumber
          Pileup = Evt%Info%Pileup
          IF ( Pileup < 0 .OR. Pileup > 1 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'INFO - Pileup '//ERROR_DOMAIN, Pileup
+            InfoErrorCounter(4) = InfoErrorCounter(4) + 1
          END IF
          GCod = Evt%Info%GenCod
          IF ( GCod < 0 .OR. GCod > 100 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'INFO - GCod '//ERROR_DOMAIN, GCod
+            InfoErrorCounter(4) = InfoErrorCounter(4) + 1
          END IF
          PhiD = Evt%Info%PhiDecay
          IF ( PhiD < 0 .OR. PhiD > 100 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'INFO - PhiD '//ERROR_DOMAIN, PhiD
+            InfoErrorCounter(4) = InfoErrorCounter(4) + 1
          END IF
          A1Typ = Evt%Info%A1type
          IF ( A1Typ < 0 .OR. A1Typ > 100 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'INFO - A1Typ '//ERROR_DOMAIN, A1Typ
+            InfoErrorCounter(4) = InfoErrorCounter(4) + 1
          END IF
          A2Typ = Evt%Info%A2type
          IF ( A2Typ < 0 .OR. A2Typ > 100 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'INFO - A2Typ '//ERROR_DOMAIN, A2Typ
+            InfoErrorCounter(4) = InfoErrorCounter(4) + 1
          END IF
          A3Typ = Evt%Info%A3type
          IF ( A3Typ < 0 .OR. A3Typ > 100 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'INFO - A3Typ '//ERROR_DOMAIN, A3Typ
+            InfoErrorCounter(4) = InfoErrorCounter(4) + 1
          END IF
          B1Typ = Evt%Info%B1type
          IF ( B1Typ < 0 .OR. B1Typ > 100 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'INFO - B1Typ '//ERROR_DOMAIN, B1Typ
+            InfoErrorCounter(4) = InfoErrorCounter(4) + 1
          END IF
          B2Typ = Evt%Info%B2type
          IF ( B2Typ < 0 .OR. B2Typ > 100 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'INFO - B2Typ '//ERROR_DOMAIN, B2Typ
+            InfoErrorCounter(4) = InfoErrorCounter(4) + 1
          END IF
          B3Typ = Evt%Info%B3type
          IF ( B3Typ < 0 .OR. B3Typ > 100 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'INFO - B3Typ '//ERROR_DOMAIN, B3Typ
+            InfoErrorCounter(4) = InfoErrorCounter(4) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -494,7 +494,6 @@ C
             IF (STATUS2.EQ.YESUCC) THEN 
                nEcls2 = evt%ecls%n2
                IF ( nEcls2 < 0 .OR. nEcls2 > 8 ) THEN
-                  WRITE(*,*) ERROR_BLOCK//'ECLS - nEcls2 '//ERROR_DOMAIN, nEcls2
                   EclsErrorCounter(4) = EclsErrorCounter(4) + 1
                END IF
       
@@ -617,7 +616,7 @@ C
                     Add_Tel(iTELLINA) = Evt%Tellina%add(iTELLINA)
                   Bitp_Tel(iTELLINA) = Evt%Tellina%Bitp(iTELLINA)
                   IF ( Bitp_Tel(iTELLINA) < 0 .OR. Bitp_Tel(iTELLINA) > 1100 ) THEN
-                     WRITE(*,*) ERROR_BLOCK//'TELLINA - Bitp_Tel '//ERROR_DOMAIN, Bitp_Tel
+                     TellinaErrorCounter(4) = TellinaErrorCounter(4) + 1
                   END IF
                     Ea_Tel(iTELLINA) = Evt%Tellina%Ea(iTELLINA)
                     Eb_Tel(iTELLINA) = Evt%Tellina%Eb(iTELLINA)
@@ -654,8 +653,11 @@ C-----------------------------------------------------------------------
             ISTAT = GETPIZZETTA(Evt%Pizzetta)
    
             NPiz = Evt%Pizzetta%n
+C
+C           TODO: should I remove this check? is it redundant?
+C
             IF ( NPiz < 0 .OR. NPiz > 300 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'PIZZETTA - NPiz '//ERROR_DOMAIN, NPiz
+               PizzettaErrorCounter(4) = PizzettaErrorCounter(4) + 1
             END IF
             IF (NPiz > 0 .AND. NPiz <= 300) THEN
                DO iPIZZETTA=1, NPiz
@@ -726,99 +728,99 @@ C-----------------------------------------------------------------------
             tDead = evt%trg%tdead
             Type = evt%trg%type
             IF ( Type < 0 .OR. Type > 7 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'TORTA - Type '//ERROR_DOMAIN, Type
+               TortaErrorCounter(4) = TortaErrorCounter(4) + 1
             END IF
             BPhi = evt%trg%bphi
             IF ( BPhi < 0 .OR. BPhi > 3 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'TORTA - BPhi '//ERROR_DOMAIN, BPhi
+               TortaErrorCounter(4) = TortaErrorCounter(4) + 1
             END IF
             EPhi = evt%trg%ephi
             IF ( EPhi < 0 .OR. EPhi > 3 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'TORTA - EPhi '//ERROR_DOMAIN, EPhi
+               TortaErrorCounter(4) = TortaErrorCounter(4) + 1
             END IF
             WPhi = evt%trg%wphi
             IF ( WPhi < 0 .OR. WPhi > 3 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'TORTA - WPhi '//ERROR_DOMAIN, WPhi
+               TortaErrorCounter(4) = TortaErrorCounter(4) + 1
             END IF
             BBha = evt%trg%bbha
             IF ( BBha < 0 .OR. BBha > 3 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'TORTA - BBha '//ERROR_DOMAIN, BBha
+               TortaErrorCounter(4) = TortaErrorCounter(4) + 1
             END IF
             EBha = evt%trg%ebha
             IF ( EBha < 0 .OR. EBha > 3 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'TORTA - EBha '//ERROR_DOMAIN, EBha
+               TortaErrorCounter(4) = TortaErrorCounter(4) + 1
             END IF
             WBha = evt%trg%wbha
             IF ( WBha < 0 .OR. WBha > 3 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'TORTA - WBha '//ERROR_DOMAIN, WBha
+               TortaErrorCounter(4) = TortaErrorCounter(4) + 1
             END IF
             BCos = evt%trg%bcos
             IF ( BCos < 0 .OR. BCos > 3 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'TORTA - BCos '//ERROR_DOMAIN, BCos
+               TortaErrorCounter(4) = TortaErrorCounter(4) + 1
             END IF
             ECos = evt%trg%ecos
             IF ( ECos < 0 .OR. ECos > 3 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'TORTA - ECos '//ERROR_DOMAIN, ECos
+               TortaErrorCounter(4) = TortaErrorCounter(4) + 1
             END IF
             WCos = evt%trg%wcos
             IF ( WCos < 0 .OR. WCos > 3 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'TORTA - WCos '//ERROR_DOMAIN, WCos
+               TortaErrorCounter(4) = TortaErrorCounter(4) + 1
             END IF
             E1W1_Dwn = evt%trg%e1w1_dwn
             IF ( E1W1_Dwn < 0 .OR. E1W1_Dwn > 1 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'TORTA - E1W1_Dwn '//ERROR_DOMAIN, E1W1_Dwn
+               TortaErrorCounter(4) = TortaErrorCounter(4) + 1
             END IF
             B1_Dwn = evt%trg%b1_dwn
             IF ( B1_Dwn < 0 .OR. B1_Dwn > 1 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'TORTA - B1_Dwn '//ERROR_DOMAIN, B1_Dwn
+               TortaErrorCounter(4) = TortaErrorCounter(4) + 1
             END IF
             T0d_Dwn = evt%trg%t0d_dwn
             IF ( T0d_Dwn < 0 .OR. T0d_Dwn > 1 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'TORTA - T0d_Dwn '//ERROR_DOMAIN, T0d_Dwn
+               TortaErrorCounter(4) = TortaErrorCounter(4) + 1
             END IF
             VetoCos = evt%trg%vetocos
             IF ( VetoCos < 0 .OR. VetoCos > 1 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'TORTA - VetoCos '//ERROR_DOMAIN, VetoCos
+               TortaErrorCounter(4) = TortaErrorCounter(4) + 1
             END IF
             VetoBha = evt%trg%vetobha
             IF ( VetoBha < 0 .OR. VetoBha > 1 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'TORTA - VetoBha '//ERROR_DOMAIN, VetoBha
+               TortaErrorCounter(4) = TortaErrorCounter(4) + 1
             END IF
             Bdw = evt%trg%bdw
             IF ( Bdw < 0 .OR. Bdw > 1 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'TORTA - Bdw '//ERROR_DOMAIN, Bdw
+               TortaErrorCounter(4) = TortaErrorCounter(4) + 1
             END IF
             Rephasing = evt%trg%rephasing
             IF ( Rephasing < 0 .OR. Rephasing > 4096 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'TORTA - Rephasing '//ERROR_DOMAIN, Rephasing
+               TortaErrorCounter(4) = TortaErrorCounter(4) + 1
             END IF
             TDC1_Pht1 = evt%trg%tdc1_pht1
             IF ( TDC1_Pht1 < 0 .OR. TDC1_Pht1 > 4096 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'TORTA - TDC1_Pht1 '//ERROR_DOMAIN, TDC1_Pht1
+               TortaErrorCounter(4) = TortaErrorCounter(4) + 1
             END IF
             Dt2_T1 = evt%trg%dt2_t1
             IF ( Dt2_T1 < 0 .OR. Dt2_T1 > 4096 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'TORTA - Dt2_T1 '//ERROR_DOMAIN, Dt2_T1
+               TortaErrorCounter(4) = TortaErrorCounter(4) + 1
             END IF
             Fiducial = evt%trg%fiducial
             IF ( Fiducial < 0 .OR. Fiducial > 4096 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'TORTA - Fiducial '//ERROR_DOMAIN, Fiducial
+               TortaErrorCounter(4) = TortaErrorCounter(4) + 1
             END IF
             T1c = evt%trg%t1c
             IF ( T1c < 0 .OR. T1c > 4096 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'TORTA - T1c '//ERROR_DOMAIN, T1c
+               TortaErrorCounter(4) = TortaErrorCounter(4) + 1
             END IF
             T1d = evt%trg%t1d
             IF ( T1d < 0 .OR. T1d > 4096 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'TORTA - T1d '//ERROR_DOMAIN, T1d
+               TortaErrorCounter(4) = TortaErrorCounter(4) + 1
             END IF
             T2d = evt%trg%t2d
             IF ( T2d < 0 .OR. T2d > 4096 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'TORTA - T2d '//ERROR_DOMAIN, T2d
+               TortaErrorCounter(4) = TortaErrorCounter(4) + 1
             END IF
             Tcr = evt%trg%tcr
             IF ( Tcr < 0 .OR. Tcr > 4096 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'TORTA - Tcr '//ERROR_DOMAIN, Tcr
+               TortaErrorCounter(4) = TortaErrorCounter(4) + 1
             END IF
             TCaf_Tcrd = evt%trg%tcaf_tcrd
             TCaf_T2d = evt%trg%tcaf_t2d

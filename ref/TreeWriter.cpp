@@ -213,6 +213,9 @@ void TreeWriter::printSummary() {
     summary +=         "\n=============================================================================\n";
     summary +=         "  Block  Err.1\t\tErr.2\t\tErr.3\t\tErr.4\t\tErr.5";
     summary +=         "\n=============================================================================\n";
+    summary += Form("  INFO   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.InfoErrorCounter[0], errorcounter_.InfoErrorCounter[1], 
+                    errorcounter_.InfoErrorCounter[2], errorcounter_.InfoErrorCounter[3], errorcounter_.InfoErrorCounter[4]);
     summary += Form("  BPOS   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
                     errorcounter_.BPOSErrorCounter[0], errorcounter_.BPOSErrorCounter[1], 
                     errorcounter_.BPOSErrorCounter[2], errorcounter_.BPOSErrorCounter[3], errorcounter_.BPOSErrorCounter[4]);
@@ -228,9 +231,15 @@ void TreeWriter::printSummary() {
     summary += Form("  C2TRIG %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
                     errorcounter_.C2TrigErrorCounter[0], errorcounter_.C2TrigErrorCounter[1], 
                     errorcounter_.C2TrigErrorCounter[2], errorcounter_.C2TrigErrorCounter[3], errorcounter_.C2TrigErrorCounter[4]);
-    summary += Form("  TELLI  %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+    summary += Form("  TELLIN %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
                     errorcounter_.TellinaErrorCounter[0], errorcounter_.TellinaErrorCounter[1], 
                     errorcounter_.TellinaErrorCounter[2], errorcounter_.TellinaErrorCounter[3], errorcounter_.TellinaErrorCounter[4]);
+    summary += Form("  PIZZET %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.PizzettaErrorCounter[0], errorcounter_.PizzettaErrorCounter[1], 
+                    errorcounter_.PizzettaErrorCounter[2], errorcounter_.PizzettaErrorCounter[3], errorcounter_.PizzettaErrorCounter[4]);
+    summary += Form("  TORTA  %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.TortaErrorCounter[0], errorcounter_.TortaErrorCounter[1], 
+                    errorcounter_.TortaErrorCounter[2], errorcounter_.TortaErrorCounter[3], errorcounter_.TortaErrorCounter[4]);
     summary += "\n=============================================================================\n\n";
     summary += "  Err.1\t Missing at least one bank required.\n";
     summary += "  Err.2\t Banks exist but get function returns empty data.\n";
