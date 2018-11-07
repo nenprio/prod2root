@@ -129,6 +129,10 @@ extern "C" {
         int PizzaErrorCounter[5];
         int TimeErrorCounter[5];
         int ClusErrorCounter[5];
+        int PreClusErrorCounter[5];
+        int CWRKErrorCounter[5];
+        int CeleErrorCounter[5];
+        int DTCEErrorCounter[5];
     }errorcounter_;
 }
 

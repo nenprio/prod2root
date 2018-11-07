@@ -460,13 +460,6 @@ C           Fill variables from first bank, if it exist
 C
             IF (STATUS1.EQ.YESUCC) THEN
                nEcls = evt%ecls%n
-C
-C              TODO decide if remove this control on domain of index,
-C              it is redundant because we check later
-C
-               IF ( nEcls < 0 .OR. nEcls > 8 ) THEN
-                  EclsErrorCounter(4) = EclsErrorCounter(4) + 1
-               END IF
       
                IF (nEcls > 0 .AND. nEcls <= 8) THEN
                   EclTrgw = evt%ecls%trigger
@@ -493,9 +486,6 @@ C           Fill variables from second bank, if it exist
 C
             IF (STATUS2.EQ.YESUCC) THEN 
                nEcls2 = evt%ecls%n2
-               IF ( nEcls2 < 0 .OR. nEcls2 > 8 ) THEN
-                  EclsErrorCounter(4) = EclsErrorCounter(4) + 1
-               END IF
       
                IF (nEcls2 > 0 .AND. nEcls <= 8) THEN
                   EclTrgw2 = evt%ecls%trigger2
@@ -604,12 +594,6 @@ C-----------------------------------------------------------------------
             ISTAT = GETTELLINA(Evt%Tellina) 
             
             NTel = Evt%Tellina%n
-C
-C           TODO should we remove this check? it seems redundant
-C
-            IF ( NTel < 0 .OR. NTel > 300 ) THEN
-               TellinaErrorCounter(4) = TellinaErrorCounter(4) + 1
-            END IF
    
             IF (nTel > 0 .AND. nTel <= 300) THEN
                DO iTELLINA=1, nTel
@@ -653,12 +637,6 @@ C-----------------------------------------------------------------------
             ISTAT = GETPIZZETTA(Evt%Pizzetta)
    
             NPiz = Evt%Pizzetta%n
-C
-C           TODO: should I remove this check? is it redundant?
-C
-            IF ( NPiz < 0 .OR. NPiz > 300 ) THEN
-               PizzettaErrorCounter(4) = PizzettaErrorCounter(4) + 1
-            END IF
             IF (NPiz > 0 .AND. NPiz <= 300) THEN
                DO iPIZZETTA=1, NPiz
                   Add_Piz(iPIZZETTA) = Evt%Pizzetta%Add(iPIZZETTA)
@@ -855,9 +833,6 @@ C-----------------------------------------------------------------------
             ISTAT = GETTELESTRU(Evt%TELE)
       
             NTele = Evt%TELE%ntele
-            IF ( NTele < 0 .OR. NTele > 300 ) THEN
-               TeleErrorCounter(4) = TeleErrorCounter(4) + 1
-            END IF
             IF (NTele > 0 .AND. NTele <= 300) THEN
               DO iEVTTELE=1, NTele
                  Det_Trg(iEVTTELE) = Evt%TELE%Det(iEVTTELE)
@@ -914,9 +889,6 @@ C-----------------------------------------------------------------------
             istat = GETPIZZASTRU(Evt%PIZZA)
       
             NPack = Evt%PIZZA%npizza
-            IF ( NPack < 0 .OR. NPack > 300 ) THEN
-               PizzaErrorCounter(4) = PizzaErrorCounter(4) + 1
-            END IF
             IF (NPack > 0 .AND. NPack <= 300) THEN
               DO iPIZZA=1, NPack
                 PakSect(iPIZZA) = Evt%PIZZA%sector(iPIZZA)
@@ -994,14 +966,9 @@ C-----------------------------------------------------------------------
          STATUS = BLOCAT(IW, 'CLPS', 1, IND, INDDAT)
          IF (STATUS.EQ.YESUCC) THEN
             istat = GETCLUSTRU(Evt%Clu)
-C
-C           TODO shoul I remove this check? is it redundant?
-C
+            
             NClu = Evt%Clu%n 
             WRITE(*,*) "[DEBUG] NClu: ", NClu
-            IF ( NClu < 0 .OR. NClu > 100 ) THEN
-               ClusErrorCounter(4) = ClusErrorCounter(4) + 1
-            END IF
             IF (NClu > 0 .AND. NClu <= 100) THEN
                DO iEVTCLU=1, NClu
                   EneCl(iEVTCLU) = Evt%Clu%E (iEVTCLU)
@@ -1040,13 +1007,8 @@ C
                  PNum3(iEVTCLUMC) = 0.
                  Pid3(iEVTCLUMC) = 0.
               END DO
-C
-C             TODO should I remove this check? is it redundant?
-C
+              
               NCluMc = Evt%Clu%nmc
-              IF ( NCluMc < 0 .OR. NCluMc > 100 ) THEN
-                 ClusErrorCounter(4) = ClusErrorCounter(4) + 1
-              END IF
               IF (NCluMc > 0 .AND. NCluMc <= 100) THEN
                  DO iEVTCLUMC=1, NCluMc
                     NPar(iEVTCLUMC) = Evt%Clu%Npart(iEVTCLUMC)
@@ -1120,9 +1082,6 @@ C
       
             NPClu = Evt%PreClu%n 
             WRITE(*,*) "[DEBUG] NPClu: ", NPClu
-            IF ( NPClu < 0 .OR. NPClu > 100 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'PRECLU - NPClu '//ERROR_DOMAIN, NPClu
-            END IF
             IF (NPClu > 0 .AND. NPClu <= 100) THEN
               DO iPRECLU=1, NPClu
                 EPre(iPRECLU) = Evt%PreClu%E (iPRECLU)
@@ -1136,11 +1095,16 @@ C
                 TBRPre(iPRECLU) = Evt%PreClu%TrmsB(iPRECLU)
               END DO
             ELSE
-              WRITE(*,*) ERROR_BLOCK//'PRECLU - NPClu '//ERROR_INDEX, NPClu
+              WRITE(*,*) ERROR_BLOCK//'PRECLU - NPClu '//ERROR_INDEX, NPClua
+              IF (NPClu == 0) THEN
+                 PreClusErrorCounter(2) = PreClusErrorCounter(2) + 1
+              ELSE
+                 PreClusErrorCounter(3) = PreClusErrorCounter(3) + 1
+              END IF
               NPClu = 0
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'PRECLUS'
+            PreClusErrorCounter(1) = PreClusErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -1167,9 +1131,6 @@ C-----------------------------------------------------------------------
       
             NCHit = Evt%CWRK%n 
             WRITE(*,*) "[DEBUG] NCHit: ", NCHit
-            IF ( NCHit < 0 .OR. NCHit > 2000 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'CLU - NCHit '//ERROR_DOMAIN, NCHit
-            END IF
             IF (NCHit > 0 .AND. NCHit <= 2000) THEN
                DO iCWRK=1, NCHit
                   IClu(iCWRK) = Evt%CWRK%icl(iCWRK)
@@ -1185,10 +1146,15 @@ C-----------------------------------------------------------------------
                END DO
             ELSE
                WRITE(*,*) ERROR_BLOCK//'CWRK - NCHit '//ERROR_INDEX, NCHit
+               IF (NCHit == 0) THEN
+                  CWRKErrorCounter(2) = CWRKErrorCounter(2) + 1
+               ELSE
+                  CWRKErrorCounter(3) = CWRKErrorCounter(3) + 1
+               END IF
                NCHit = 0
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'CWRK'
+            CWRKErrorCounter(1) = CWRKErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -1222,9 +1188,6 @@ C-----------------------------------------------------------------------
    
             NCel = Evt%Cele%n 
             WRITE(*,*) "[DEBUG] NCel: ", NCel
-            IF ( NCel < 0 .OR. NCel > 2000 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'CELE - NCel '//ERROR_DOMAIN, NCel
-            END IF
             IF ( NCel > 0 .AND. NCel <= 2000 ) THEN
                DO iCELE=1, NCel
                  ICl(iCELE) = Evt%Cele%icl(iCELE)
@@ -1238,7 +1201,11 @@ C-----------------------------------------------------------------------
                  Tb(iCELE) = Evt%Cele%tb(iCELE)
                END DO
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'CELE - NCel '//ERROR_INDEX, NCel
+               IF (NCel == 0) THEN
+                  CeleErrorCounter(2) = CeleErrorCounter(2) + 1
+               ELSE
+                  CeleErrorCounter(3) = CeleErrorCounter(3) + 1
+               END IF
                NCel = 0
             END IF
 C         
@@ -1258,10 +1225,6 @@ C
               END DO
         
               NCelMc = Evt%Cele%nmc
-              IF ( NCelMc < 0 .OR. NCelMc > 2000 ) THEN
-                 WRITE(*,*) ERROR_BLOCK//'CELE - NCelMc '//ERROR_DOMAIN, NCelMc
-              END IF
-        
               IF (NCelMc > 0 .AND. NCelMc <= 2000) THEN
                  DO iCELEMC=1, NCelMc
                     EMc(iCELEMC) = Evt%Cele%Etrue(iCELEMC)
@@ -1274,12 +1237,16 @@ C
                     NHit(iCELEMC) = Evt%Cele%numpar(iCELEMC)
                  END DO
               ELSE
-                 WRITE(*,*) ERROR_BLOCK//'CELE - NCelMc '//ERROR_INDEX, NCelMc
+                 IF (NCelMc == 0) THEN
+                    CeleErrorCounter(2) = CeleErrorCounter(2) + 1
+                 ELSE
+                    CeleErrorCounter(3) = CeleErrorCounter(3) + 1
+                 END IF
                  NCelMc = 0
               END IF
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'CELE'
+            CeleErrorCounter(1) = CeleErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -1300,32 +1267,34 @@ C-----------------------------------------------------------------------
       
             nDTCE = Evt%DTCE%nDTCE
             WRITE(*,*) "[DEBUG] nDTCE: ", nDTCE
-            IF ( nDTCE < 0 .OR. nDTCE > 1500 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'DTCE - nDTCE '//ERROR_DOMAIN, nDTCE
-            END IF
+            
             nSmall = Evt%DTCE%nSmall
             IF ( nSmall < 0 .OR. nSmall > 1500 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'DTCE - nSmall '//ERROR_DOMAIN, nSmall
+               CWRKErrorCounter(4) = CWRKErrorCounter(4) + 1
             END IF
       
             IF (nDTCE > 0 .AND. nDTCE <= 1500) THEN
                DO iDTCE=1, nDTCE
                   iLayerDTCE(iDTCE) = Evt%DTCE%iLayerDTCE(iDTCE)
                   IF ( iLayerDTCE(iDTCE) < 1 .OR. iLayerDTCE(iDTCE) > 58 ) THEN
-                     WRITE(*,*) ERROR_BLOCK//'DTCE - iLayerDTCE '//ERROR_DOMAIN, iLayerDTCE(iDTCE)
+                     CWRKErrorCounter(4) = CWRKErrorCounter(4) + 1
                   END IF
                   iWireDTCE(iDTCE) = Evt%DTCE%iWireDTCE(iDTCE)
                   IF ( iWireDTCE(iDTCE) < 1 .OR. iWireDTCE(iDTCE) > 378 ) THEN
-                    WRITE(*,*) ERROR_BLOCK//'DTCE - iWireDTCE '//ERROR_DOMAIN, iWireDTCE(iDTCE)
+                     CWRKErrorCounter(4) = CWRKErrorCounter(4) + 1
                   END IF
                   tDTCE(iDTCE) = Evt%DTCE%tDTCE(iDTCE)
                END DO
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'DTCE - nDTCE '//ERROR_INDEX, nDTCE
+               IF (nDTCE == 0) THEN
+                  CWRKErrorCounter(2) = CWRKErrorCounter(2) + 1
+               ELSE
+                  CWRKErrorCounter(3) = CWRKErrorCounter(3) + 1
+               END IF
                nDTCE = 0
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'DTCE'
+            CWRKErrorCounter(1) = CWRKErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------

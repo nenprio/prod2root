@@ -62,6 +62,8 @@ C
       integer PizzettaErrorCounter(5), TortaErrorCounter(5)
       integer TeleErrorCounter(5), PizzaErrorCounter(5)
       integer TimeErrorCounter(5), ClusErrorCounter(5)
+      integer PreClusErrorCounter(5), CWRKErrorCounter(5)
+      integer CeleErrorCounter(5), DTCEErrorCounter(5)
       
 C     Do we need a common for error counter or we manage the summary
 C     only by FORTRAN end routine? Now call C++ function to print 
@@ -70,7 +72,8 @@ C     the summary
      1       GDHitErrorCounter, EclsErrorCounter, TrigErrorCounter,
      1       PizzettaErrorCounter, TortaErrorCounter,
      1       TeleErrorCounter, PizzaErrorCounter, TimeErrorCounter,
-     1       ClusErrorCounter
+     1       ClusErrorCounter, PreClusErrorCounter, CWRKErrorCounter,
+     1       CeleErrorCounter, DTCEErrorCounter
       
 C
 C BLOCK STRUCTURE DECLARATIONS

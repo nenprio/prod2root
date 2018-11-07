@@ -254,12 +254,18 @@ void TreeWriter::printSummary() {
     summary += Form("  CLUS   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
                     errorcounter_.ClusErrorCounter[0], errorcounter_.ClusErrorCounter[1], 
                     errorcounter_.ClusErrorCounter[2], errorcounter_.ClusErrorCounter[3], errorcounter_.ClusErrorCounter[4]);
+    summary += Form("  PRECLU %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.PreClusErrorCounter[0], errorcounter_.PreClusErrorCounter[1], 
+                    errorcounter_.PreClusErrorCounter[2], errorcounter_.PreClusErrorCounter[3], errorcounter_.PreClusErrorCounter[4]);
+    summary += Form("  CWRK   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.CWRKErrorCounter[0], errorcounter_.CWRKErrorCounter[1], 
+                    errorcounter_.CWRKErrorCounter[2], errorcounter_.CWRKErrorCounter[3], errorcounter_.CWRKErrorCounter[4]);
     summary += "\n=============================================================================\n\n";
-    summary += "  Err.1\t Missing at least one bank required.\n";
+    summary += "  Err.1\t At least one bank required by the specified block is missing.\n";
     summary += "  Err.2\t Banks exist but get function returns empty data.\n";
     summary += "  Err.3\t Get-function returns an invalid index\n\t\t(negative or bigger than expected).\n";
     summary += "  Err.4\t Get function returns a value out of domain for a variable.\n";
-    summary += "  Err.5\t Require MC data and newer blocks HETE, ITCE, ...\n";
+    summary += "  Err.5\t Require MC data and newer blocks HETE, ITCE, ...TODO remove it\n";
     summary += "\n=============================================================================\n";
 
     // Print summary to std output
