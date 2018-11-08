@@ -1,5 +1,6 @@
 #include <iostream>
 #include <TROOT.h>
+#include <TSystem.h>
 #include <TBranch.h>
 #include <TTree.h>
 #include "TreeWriter.hh"
@@ -127,7 +128,7 @@ TreeWriter::TreeWriter() {
 
     // ROOT Memory Profiling
     // Only for debugging
-    gObjectTable->Print();
+    /* gObjectTable->Print(); */
 }
 
 // Closes output file and deallocates variables from memory.
@@ -1399,8 +1400,9 @@ TFile* TreeWriter::getTFile() {
 void TreeWriter::fillTTree() {
     // ROOT Memory Profiling
     // Only for debugging
-    gObjectTable->Print();
-
+    /* gObjectTable->Print(); */
+    float mem = GetMemory();
+    std::cout << "[Mem debug] Process memory: " << mem << " MB" << std::endl;
     TTree *tree = (TTree*)outfile->Get("sample");
     tree->Fill();
 }
@@ -1413,4 +1415,36 @@ bool TreeWriter::logicalToBool(int flag) {
     if (flag == 1)
         return true;
     return false;
+}
+
+Float_t TreeWriter::GetMemory()
+{
+
+// --- Program for extracting memory
+
+// AIX
+
+
+   Text_t* rstring = new Text_t[64];
+   Text_t* fstring = new Text_t[64];
+   FILE* fp;
+   Int_t info = 0;
+
+   sprintf(fstring, "ps -o vsz,pid | grep %d ",
+           gSystem->GetPid());
+
+   fp = popen(fstring, "r");
+   while (fp) {
+     if (!fgets(rstring, 64, fp)) break;
+
+     sscanf(rstring, "%d", &info);
+   }
+   pclose(fp);
+
+   delete [] fstring;
+   fstring = 0;
+   delete [] rstring;
+   rstring = 0;
+
+   return (Float_t(info) / 1000);
 }

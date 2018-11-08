@@ -64,6 +64,7 @@ class TreeWriter{
          TFile* getTFile();
          void fillTTree();
          bool logicalToBool(int flag);
+         Float_t GetMemory();
      private:
          TFile* outfile;
          TTree* fNewTree;

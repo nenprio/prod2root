@@ -44,6 +44,7 @@ C
       integer PreClusErrorCounter(5), CWRKErrorCounter(5)
       integer CeleErrorCounter(5), DTCEErrorCounter(5)
       integer DTCE0ErrorCounter(5), DCHitsErrorCounter(5)
+      integer DHREErrorCounter(5), DHSPErrorCounter(5)
 
       common /errorcounter/InfoErrorCounter, BPOSErrorCounter,
      1       GDHitErrorCounter, EclsErrorCounter, TrigErrorCounter,
@@ -52,4 +53,5 @@ C
      1       TeleErrorCounter, PizzaErrorCounter, TimeErrorCounter,
      1       ClusErrorCounter, PreClusErrorCounter, CWRKErrorCounter,
      1       CeleErrorCounter, DTCEErrorCounter,
-     1       DTCE0ErrorCounter, DCHitsErrorCounter
+     1       DTCE0ErrorCounter, DCHitsErrorCounter,
+     1       DHREErrorCounter, DHSPErrorCounter

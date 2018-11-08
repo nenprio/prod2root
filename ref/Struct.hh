@@ -135,6 +135,8 @@ extern "C" {
         int DTCEErrorCounter[5];
         int DTCE0ErrorCounter[5];
         int DCHitsErrorCounter[5];
+        int DHREErrorCounter[5];
+        int DHSPErrorCounter[5];
     }errorcounter_;
 }
 
