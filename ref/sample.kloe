@@ -27,6 +27,7 @@ C
 $$IMPLICIT
 $$include 'sample.inc'
 $$include 'sample_talk.inc'
+$$include 'sample_err.inc'
 C
 C==============================================================================
 C
@@ -91,6 +92,8 @@ C      write(*,*)" "
          CeleErrorCounter(i) = 0.
          DTCEErrorCounter(i) = 0.
       END DO
+
+C-----------------------------------------------------------------------------
 
       RETURN
       END
@@ -195,22 +198,10 @@ $$INCLUDE 'k$itls:raw2dtce.cin'
 
 $$include 'sample.inc'
 $$include 'sample_talk.inc'
-C
-C All the declarations are moved in sample.cin
-C What are the following lines? I maintain here at the moment to 
-C let fix the "RunNumber" issue. 
-C TODO: Move them to sample.cin
-C
-C NOTE1: trgwrd1/2 are used in block EVTTRG and if no other, 
-C they can be removed. Now they are commented
-C
+$$include 'sample_err.inc'
+      
       data OldRunNumber/0/
       save OldRunNumber
-C      Integer trgwrd1,trgwrd2,numdhit
-C      common /trgcom/trgwrd1,trgwrd2,numdhit
-C      Integer numdhit
-C      common /trgcom/numdhit
-C
 C=============================================================================
 C Start of Code:
 C=============================================================================
@@ -242,6 +233,7 @@ C
       ELSE
          MCFLAG_TG=0
       ENDIF
+      
 C-----------------------------------------------------------------------------
 C Fill event classification information
 C-----------------------------------------------------------------------------

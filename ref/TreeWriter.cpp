@@ -266,6 +266,12 @@ void TreeWriter::printSummary() {
     summary += Form("  DTCE   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
                     errorcounter_.DTCEErrorCounter[0], errorcounter_.DTCEErrorCounter[1], 
                     errorcounter_.DTCEErrorCounter[2], errorcounter_.DTCEErrorCounter[3], errorcounter_.DTCEErrorCounter[4]);
+    summary += Form("  DTCE0  %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.DTCE0ErrorCounter[0], errorcounter_.DTCE0ErrorCounter[1], 
+                    errorcounter_.DTCE0ErrorCounter[2], errorcounter_.DTCE0ErrorCounter[3], errorcounter_.DTCE0ErrorCounter[4]);
+    summary += Form("  DCHITS %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.DCHITSErrorCounter[0], errorcounter_.DCHITSErrorCounter[1], 
+                    errorcounter_.DCHITSErrorCounter[2], errorcounter_.DCHITSErrorCounter[3], errorcounter_.DCHITSErrorCounter[4]);
     summary += "\n=============================================================================\n\n";
     summary += "  Err.1\t At least one bank required by the specified block is missing.\n";
     summary += "  Err.2\t Banks exist but get function returns empty data.\n";

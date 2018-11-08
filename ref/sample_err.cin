@@ -1,0 +1,55 @@
+C=======================================================================
+C sample_err.cin
+C=======================================================================
+C
+C In this file, there are declarations of variables used to interact
+C with the user and communicate him eventually errors messages.
+C
+
+C
+C MESSAGES DECLARATIONS
+C Follow the declaration of all the messages to print on std out
+C Note: actually we are moving from verbose messages to a single
+C       final report of error counters. Then we are deleting this
+C       messages but still maintain their declarations.
+C
+      CHARACTER(len=10) :: ERROR_LINE
+      CHARACTER(len=50) :: ERROR_MC_DATA
+      CHARACTER(len=50) :: ERROR_MISS_DATA
+      CHARACTER(len=10) :: ERROR_BLOCK
+      CHARACTER(len=25) :: ERROR_INDEX
+      CHARACTER(len=25) :: ERROR_DOMAIN
+
+C
+C ERROR STRUCTURE DECLARATIONS
+C Follow the declarations of counter-arrays for each block.
+C Each array has 5 counters, one for each type of error:
+C   1 - Missing bank
+C   2 - Empty data
+C   3 - Index not valid
+C   4 - Value out of domain
+C   5 - MC flag inconsistency, explain better
+C
+C Finally, all these variables are in a common block to share
+C their value with the C++ code because the printing of summary
+C is implemented in C++.
+C
+      integer InfoErrorCounter(5)
+      integer BPOSErrorCounter(5), GDHitErrorCounter(5)
+      integer EclsErrorCounter(5), TrigErrorCounter(5)
+      integer C2TrigErrorCounter(5), TellinaErrorCounter(5)
+      integer PizzettaErrorCounter(5), TortaErrorCounter(5)
+      integer TeleErrorCounter(5), PizzaErrorCounter(5)
+      integer TimeErrorCounter(5), ClusErrorCounter(5)
+      integer PreClusErrorCounter(5), CWRKErrorCounter(5)
+      integer CeleErrorCounter(5), DTCEErrorCounter(5)
+      integer DTCE0ErrorCounter(5), DCHitsErrorCounter(5)
+
+      common /errorcounter/InfoErrorCounter, BPOSErrorCounter,
+     1       GDHitErrorCounter, EclsErrorCounter, TrigErrorCounter,
+     1       C2TrigErrorCounter, TellinaErrorCounter,
+     1       PizzettaErrorCounter, TortaErrorCounter,
+     1       TeleErrorCounter, PizzaErrorCounter, TimeErrorCounter,
+     1       ClusErrorCounter, PreClusErrorCounter, CWRKErrorCounter,
+     1       CeleErrorCounter, DTCEErrorCounter,
+     1       DTCE0ErrorCounter, DCHitsErrorCounter

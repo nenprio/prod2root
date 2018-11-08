@@ -6,74 +6,40 @@ C INITIAL DECLARATIONS
 C Follow the declarations of external functions 
 C and return variables used in sample.kloe to fill the data.
 C
-        REAL    rstat, GETBPOS
-        LOGICAL MONTECARLOFLAG
-        COMMON /SHAREDFLAGS/MONTECARLOFLAG
-        INTEGER istat, STATUS, STATUS1, STATUS2, ind, inddat1 
-        INTEGER NUMDHIT, MCFLAG_TG
-        INTEGER BNKNUM, ICURR, IND1, INDDAT, OldRunNumber
-        INTEGER MAKE_DCNH, MAKE_MDCN, T0GLRD, T0MCRD 
-        INTEGER GETCLUSTRU, GETMCSTRU, GETCELESTRU
-        INTEGER GETEVCL, GETCLUOSTRU
-        INTEGER TRKV2STRU, GETTCLOSTRU, GETCFHISTRU, BLOCAT
-        INTEGER PARSET, GETQIHISTRU, GETQCALSTRU
-        INTEGER GETQCAESTRU, GETDHSPSTRU, GETDHRESTRU
-        INTEGER GETTELESTRU, GETPRECLUSTRU
-        INTEGER GETPIZZASTRU, TPIE_UPK
-        INTEGER PIZZA_RESET, TORTA_RESET, TELE_RESET
-        INTEGER GET_DPRS_STRUCT, GETNVO
-        INTEGER GETECLO, GETCLUSTRUCORR
-        INTEGER BIGEST, BANKNUM, FILLBPOSCOMMON
-        INTEGER GETQCALTSTRU, GETQCTHSTRU, GETCCALTSTRU
-        INTEGER GETLETESTRU, ITCE_UPK
-        INTEGER GETHETESTRU, HETE_DUMP
-        INTEGER ANGIST, ANGOHS, ANGPAR, ANPTRG
-        INTEGER GETECLS, GETTIME, GETPIZZETTA
-        INTEGER GETTELLINA, GETCWRKSTRU, GETTRIGGER, TRKQ2STRU
-        INTEGER NCWRKHIT, J
-        INTEGER GETSEC2CLUSTRU
-        INTEGER GETCSPSSTRU, GETCLUOMCSTRU
-        INTEGER TRKVOLD2STRU, GETOLDTCLOSTRU, DHIT_RESET, DHIT_UPK
-        INTEGER DEDX2STRU_GET, DEDX2STRU_RESET
+C Note: MONTECARLOFLAG is a variables shared between FORTRAN and C++ 
+C       code because it is used in the booking phase to define the
+C       tree structure.
 C
-C MESSAGES DECLARATIONS
-C Follow the declaration of all the messages to print on std out
-C
-        CHARACTER(len=10) :: ERROR_LINE
-        CHARACTER(len=50) :: ERROR_MC_DATA
-        CHARACTER(len=50) :: ERROR_MISS_DATA
-        CHARACTER(len=10) :: ERROR_BLOCK
-        CHARACTER(len=25) :: ERROR_INDEX
-        CHARACTER(len=25) :: ERROR_DOMAIN
-C
-C ERROR STRUCTURE DECLARATIONS
-C Follow the declarations of counter-arrays for each block.
-C Each array has 5 counters, one for each type of error:
-C   1 - Missing bank
-C   2 - Empty data
-C   3 - Index not valid
-C   4 - Value out of domain
-C   5 - MC flag inconsistency, explain better 
-C
-      integer InfoErrorCounter(5)
-      integer BPOSErrorCounter(5), GDHitErrorCounter(5)
-      integer EclsErrorCounter(5), TrigErrorCounter(5)
-      integer C2TrigErrorCounter(5), TellinaErrorCounter(5)
-      integer PizzettaErrorCounter(5), TortaErrorCounter(5)
-      integer TeleErrorCounter(5), PizzaErrorCounter(5)
-      integer TimeErrorCounter(5), ClusErrorCounter(5)
-      integer PreClusErrorCounter(5), CWRKErrorCounter(5)
-      integer CeleErrorCounter(5), DTCEErrorCounter(5)
+      LOGICAL MONTECARLOFLAG
+      COMMON /SHAREDFLAGS/MONTECARLOFLAG
       
-C     Do we need a common for error counter or we manage the summary
-C     only by FORTRAN end routine? Now call C++ function to print 
-C     the summary
-      common /errorcounter/InfoErrorCounter, BPOSErrorCounter, 
-     1       GDHitErrorCounter, EclsErrorCounter, TrigErrorCounter,
-     1       PizzettaErrorCounter, TortaErrorCounter,
-     1       TeleErrorCounter, PizzaErrorCounter, TimeErrorCounter,
-     1       ClusErrorCounter, PreClusErrorCounter, CWRKErrorCounter,
-     1       CeleErrorCounter, DTCEErrorCounter
+      REAL    RSTAT, GETBPOS
+      INTEGER ISTAT, STATUS, STATUS1, STATUS2, IND, INDDAT1 
+      INTEGER NUMDHIT, MCFLAG_TG
+      INTEGER BNKNUM, ICURR, IND1, INDDAT, OldRunNumber
+      INTEGER MAKE_DCNH, MAKE_MDCN, T0GLRD, T0MCRD 
+      INTEGER GETCLUSTRU, GETMCSTRU, GETCELESTRU
+      INTEGER GETEVCL, GETCLUOSTRU
+      INTEGER TRKV2STRU, GETTCLOSTRU, GETCFHISTRU, BLOCAT
+      INTEGER PARSET, GETQIHISTRU, GETQCALSTRU
+      INTEGER GETQCAESTRU, GETDHSPSTRU, GETDHRESTRU
+      INTEGER GETTELESTRU, GETPRECLUSTRU
+      INTEGER GETPIZZASTRU, TPIE_UPK
+      INTEGER PIZZA_RESET, TORTA_RESET, TELE_RESET
+      INTEGER GET_DPRS_STRUCT, GETNVO
+      INTEGER GETECLO, GETCLUSTRUCORR
+      INTEGER BIGEST, BANKNUM, FILLBPOSCOMMON
+      INTEGER GETQCALTSTRU, GETQCTHSTRU, GETCCALTSTRU
+      INTEGER GETLETESTRU, ITCE_UPK
+      INTEGER GETHETESTRU, HETE_DUMP
+      INTEGER ANGIST, ANGOHS, ANGPAR, ANPTRG
+      INTEGER GETECLS, GETTIME, GETPIZZETTA
+      INTEGER GETTELLINA, GETCWRKSTRU, GETTRIGGER, TRKQ2STRU
+      INTEGER NCWRKHIT, J
+      INTEGER GETSEC2CLUSTRU
+      INTEGER GETCSPSSTRU, GETCLUOMCSTRU
+      INTEGER TRKVOLD2STRU, GETOLDTCLOSTRU, DHIT_RESET, DHIT_UPK
+      INTEGER DEDX2STRU_GET, DEDX2STRU_RESET
       
 C
 C BLOCK STRUCTURE DECLARATIONS
