@@ -1379,19 +1379,16 @@ C-----------------------------------------------------------------------
    
             nDHRE = Evt%DHRE%nDHRE
             WRITE(*,*) "[DEBUG] nDHRE: ", nDHRE
-            IF ( nDHRE < 0 .OR. nDHRE > 1500 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'DHRE - nDHRE '//ERROR_DOMAIN, nDHRE
-            END IF
    
             IF (nDHRE > 0 .AND. nDHRE <= 1500) THEN
                DO iDHRE=1, nDHRE
                   iLayerDHRE(iDHRE) = Evt%DHRE%iLayerDHRE(iDHRE)
                   IF ( iLayerDHRE(iDHRE) < 1 .OR. iLayerDHRE(iDHRE) > 58 ) THEN
-                     WRITE(*,*) ERROR_BLOCK//'DHRE - iLayerDHRE '//ERROR_DOMAIN, iLayerDHRE(iDHRE)
+                     DHREErrorCounter(4) = DHREErrorCounter(4) + 1
                   END IF
                   iWireDHRE(iDHRE) = Evt%DHRE%iWireDHRE(iDHRE)
                   IF ( iWireDHRE(iDHRE) < 1 .OR. iWireDHRE(iDHRE) > 378 ) THEN
-                     WRITE(*,*) ERROR_BLOCK//'DHRE - iWireDHRE '//ERROR_DOMAIN, iWireDHRE(iDHRE)
+                     DHREErrorCounter(4) = DHREErrorCounter(4) + 1
                   END IF
                     iTrkDHRE(iDHRE) = Evt%DHRE%iTrkDHRE(iDHRE)
                     rDHRE(iDHRE) = Evt%DHRE%rDHRE(iDHRE)
@@ -1399,10 +1396,15 @@ C-----------------------------------------------------------------------
               END DO
             ELSE
                WRITE(*,*) ERROR_BLOCK//'DHRE - nDHRE '//ERROR_INDEX, nDHRE
+               IF (nDHRE == 0) THEN
+                  DHREErrorCounter(2) = DHREErrorCounter(2) + 1
+               ELSE
+                  DHREErrorCounter(3) = DHREErrorCounter(3) + 1
+               END IF
                nDHRE = 0
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'DHRE'
+            DHREErrorCounter(1) = DHREErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -1449,9 +1451,6 @@ C
       
             nDHSP = Evt%DHSP%numDHSP
             WRITE(*,*) "[DEBUG] nDHSP: ", nDHSP
-            IF ( nDHSP < 0 .OR. nDHSP > 500 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'DHSP - nDHSP '//ERROR_DOMAIN, nDHSP
-            END IF
       
             IF (nDHSP > 0 .AND. nDHSP <= 500) THEN
               DO iDHSP=1, nDHSP
@@ -1467,10 +1466,15 @@ C
               END DO
             ELSE
                WRITE(*,*) ERROR_BLOCK//'DHSP - nDHSP '//ERROR_INDEX, nDHSP
+               IF (nDHSP == 0) THEN
+                  DHSPErrorCounter(2) = DHSPErrorCounter(2) + 1
+               ELSE
+                  DHSPErrorCounter(3) = DHSPErrorCounter(3) + 1
+               END IF
                nDHSP = 0
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'DHSP'
+            DHSPErrorCounter(1) = DHSPErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
