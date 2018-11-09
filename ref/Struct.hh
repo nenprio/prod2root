@@ -139,6 +139,8 @@ extern "C" {
         int DHSPErrorCounter[5];
         int TrkVErrorCounter[5];
         int VtxErrorCounter[5];
+        int TrksErrorCounter[5];
+        int TrkVOldErrorCounter[5];
     }errorcounter_;
 }
 

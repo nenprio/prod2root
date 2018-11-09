@@ -1677,9 +1677,6 @@ C-----------------------------------------------------------------------
    
             nT = Evt%Trk%n
             WRITE(*,*) "[DEBUG] nT: ", nT
-            IF ( nT < 0 .OR. nT > 100 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'TRKS - nT '//ERROR_DOMAIN, nT
-            END IF
    
             IF (nT > 0 .AND. nT <= 100) THEN
                DO iTRKS=1, nT
@@ -1724,7 +1721,11 @@ C-----------------------------------------------------------------------
                     Chi2Ms(iTRKS) = Evt%Trk%chi2ms(iTRKS)
               END DO
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'TRKS - nT '//ERROR_INDEX, nT
+               IF (nTfMC == 0) THEN
+                  TrksErrorCounter(2) = TrksErrorCounter(2) + 1
+               ELSE
+                  TrksErrorCounter(3) = TrksErrorCounter(3) + 1
+               END IF
                nT = 0
             END IF
    
@@ -1772,51 +1773,48 @@ C
      
               nTfMC = Evt%TrkMC%n
               WRITE(*,*) "[DEBUG] nTfMC: ", nTfMC
-              IF ( nTfMC < 0 .OR. nTfMC > 100 ) THEN
-                 WRITE(*,*) ERROR_BLOCK//'TRKS - nTfMC '//ERROR_DOMAIN, nTfMC
-              END IF
      
               IF (nTfMC > 0 .AND. nTfMC <= 100) THEN
                  DO iTRKMC=1, nTfMC
                     NConTr(iTRKMC) = Evt%TrkMC%ncontr(iTRKMC)
                     IF ( NConTr(iTRKMC) < 0 .OR. NConTr(iTRKMC) > 10 ) THEN
-                       WRITE(*,*) ERROR_BLOCK//'TRKS - NConTr '//ERROR_DOMAIN, NConTr(iTRKMC)
+                       TrksErrorCounter(4) = TrksErrorCounter(4) + 1
                     END IF
                     TrkIne1(iTRKMC) = Evt%TrkMC%kine1(iTRKMC)
                     IF ( TrkIne1(iTRKMC) < 0 .OR. TrkIne1(iTRKMC) > 100 ) THEN
-                       WRITE(*,*) ERROR_BLOCK//'TRKS - TrkIne1 '//ERROR_DOMAIN, TrkIne1(iTRKMC)
+                       TrksErrorCounter(4) = TrksErrorCounter(4) + 1
                     END IF
                     TrType1(iTRKMC) = Evt%TrkMC%type1(iTRKMC)
                     IF ( TrType1(iTRKMC) < 0 .OR. TrType1(iTRKMC) > 100 ) THEN
-                       WRITE(*,*) ERROR_BLOCK//'TRKS - TrType1 '//ERROR_DOMAIN, TrType1(iTRKMC)
+                       TrksErrorCounter(4) = TrksErrorCounter(4) + 1
                     END IF
                     TrHits1(iTRKMC) = Evt%TrkMC%hits1(iTRKMC)
                     IF ( TrHits1(iTRKMC) < 0 .OR. TrHits1(iTRKMC) > 1000 ) THEN
-                       WRITE(*,*) ERROR_BLOCK//'TRKS - TrHits1 '//ERROR_DOMAIN, TrHits1(iTRKMC)
+                       TrksErrorCounter(4) = TrksErrorCounter(4) + 1
                     END IF
                     TrkIne2(iTRKMC) = Evt%TrkMC%kine2(iTRKMC)
                     IF ( TrkIne2(iTRKMC) < 0 .OR. TrkIne2(iTRKMC) > 100 ) THEN
-                       WRITE(*,*) ERROR_BLOCK//'TRKS - TrkIne2 '//ERROR_DOMAIN, TrkIne2(iTRKMC)
+                       TrksErrorCounter(4) = TrksErrorCounter(4) + 1
                     END IF
                     TrType2(iTRKMC) = Evt%TrkMC%type2(iTRKMC)
                     IF ( TrType2(iTRKMC) < 0 .OR. TrType2(iTRKMC) > 100 ) THEN
-                       WRITE(*,*) ERROR_BLOCK//'TRKS - TrType2 '//ERROR_DOMAIN, TrType2(iTRKMC)
+                       TrksErrorCounter(4) = TrksErrorCounter(4) + 1
                     END IF
                     TrHits2(iTRKMC) = Evt%TrkMC%hits2(iTRKMC)
                     IF ( TrHits2(iTRKMC) < 0 .OR. TrHits2(iTRKMC) > 1000 ) THEN
-                       WRITE(*,*) ERROR_BLOCK//'TRKS - TrHits2 '//ERROR_DOMAIN, TrHits2(iTRKMC)
+                       TrksErrorCounter(4) = TrksErrorCounter(4) + 1
                     END IF
                     TrkIn3(iTRKMC) = Evt%TrkMC%kine3(iTRKMC)
                     IF ( TrkIn3(iTRKMC) < 0 .OR. TrkIn3(iTRKMC) > 100 ) THEN
-                       WRITE(*,*) ERROR_BLOCK//'TRKS - TrkIn3 '//ERROR_DOMAIN, TrkIn3(iTRKMC)
+                       TrksErrorCounter(4) = TrksErrorCounter(4) + 1
                     END IF
                     TrType3(iTRKMC) = Evt%TrkMC%type3(iTRKMC)
                     IF ( TrType3(iTRKMC) < 0 .OR. TrType3(iTRKMC) > 100 ) THEN
-                       WRITE(*,*) ERROR_BLOCK//'TRKS - TrType3 '//ERROR_DOMAIN, TrType3(iTRKMC)
+                       TrksErrorCounter(4) = TrksErrorCounter(4) + 1
                     END IF
                     TrHits3(iTRKMC) = Evt%TrkMC%hits3(iTRKMC)
                     IF ( TrHits3(iTRKMC) < 0 .OR. TrHits3(iTRKMC) > 1000 ) THEN
-                       WRITE(*,*) ERROR_BLOCK//'TRKS - TrHits3 '//ERROR_DOMAIN, TrHits3(iTRKMC)
+                       TrksErrorCounter(4) = TrksErrorCounter(4) + 1
                     END IF
                       xFMC(iTRKMC) = Evt%TrkMC%xfirst(iTRKMC)
                       yFMC(iTRKMC) = Evt%TrkMC%yfirst(iTRKMC)
@@ -1844,12 +1842,16 @@ C
                       PzLMC2(iTRKMC) = Evt%TrkMC%pzmclast(iTRKMC)
                 END DO
               ELSE
-                 WRITE(*,*) ERROR_BLOCK//'TRKS - nTfMC '//ERROR_INDEX, nTfMC
+                 IF (nTfMC == 0) THEN
+                    TrksErrorCounter(2) = TrksErrorCounter(2) + 1
+                 ELSE
+                    TrksErrorCounter(3) = TrksErrorCounter(3) + 1
+                 END IF
                  nTfMc = 0
               END IF
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'TRKS'
+            TrksErrorCounter(1) = TrksErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -1888,19 +1890,16 @@ C-----------------------------------------------------------------------
    
             nTVOld = Evt%TrkvOld%n
             WRITE(*,*) "[DEBUG] nDHRE: ", nDHRE
-            IF ( nTVOld < 0 .OR. nTVOld > 30 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'TRKVOLD - nTVOld '//ERROR_DOMAIN, nTVOld
-            END IF
    
             IF (nTVOld > 0 .AND. nTVOld <= 30) THEN
                DO iTRKVOLD=1, nTVOld
                   iVOld(iTRKVOLD) = Evt%TrkvOld%iv(iTRKVOLD)
                   IF ( iVOld(iTRKVOLD) < 0 .OR. iVOld(iTRKVOLD) > 30 ) THEN
-                     WRITE(*,*) ERROR_BLOCK//'TRKVOLD - iVOld '//ERROR_DOMAIN, iVOld(iTRKVOLD)
+                     TrkVOldErrorCounter(4) = TrkVOldErrorCounter(4) + 1
                   END IF
                   TrkNumVOld(iTRKVOLD) = Evt%Trkvold%trkpoi(iTRKVOLD)
                   IF ( TrkNumVOld(iTRKVOLD) < 0 .OR. TrkNumVOld(iTRKVOLD) > 999 ) THEN
-                     WRITE(*,*) ERROR_BLOCK//'TRKVOLD - TrkNumVOld '//ERROR_DOMAIN, TrkNumVOld(iTRKVOLD)
+                     TrkVOldErrorCounter(4) = TrkVOldErrorCounter(4) + 1
                   END IF
                     CurVOld(iTRKVOLD) = Evt%Trkvold%cur(iTRKVOLD)
                     PhiVOld(iTRKVOLD) = Evt%Trkvold%phi(iTRKVOLD)
@@ -1920,11 +1919,15 @@ C-----------------------------------------------------------------------
                     Cov33TVOld(iTRKVOLD) = Evt%Trkvold%cov33(iTRKVOLD)
               END DO
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'TRKVOLD - nTVOld '//ERROR_INDEX, nTVOld
+               IF (nTVOld == 0) THEN
+                  TrkVOldErrorCounter(2) = TrkVOldErrorCounter(2) + 1
+               ELSE
+                  TrkVOldErrorCounter(3) = TrkVOldErrorCounter(3) + 1
+               END IF
                nTVOld = 0
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'TRKVOLD'
+            TrkVOldErrorCounter(1) = TrkVOldErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------

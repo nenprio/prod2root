@@ -285,6 +285,12 @@ void TreeWriter::printSummary() {
     summary += Form("  VTX    %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
                     errorcounter_.VtxErrorCounter[0], errorcounter_.VtxErrorCounter[1], 
                     errorcounter_.VtxErrorCounter[2], errorcounter_.VtxErrorCounter[3], errorcounter_.VtxErrorCounter[4]);
+    summary += Form("  TRKS   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.TrksErrorCounter[0], errorcounter_.TrksErrorCounter[1], 
+                    errorcounter_.TrksErrorCounter[2], errorcounter_.TrksErrorCounter[3], errorcounter_.TrksErrorCounter[4]);
+    summary += Form("  TRVOLD %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.TrkVOldErrorCounter[0], errorcounter_.TrkVOldErrorCounter[1], 
+                    errorcounter_.TrkVOldErrorCounter[2], errorcounter_.TrkVOldErrorCounter[3], errorcounter_.TrkVOldErrorCounter[4]);
     summary += "\n=============================================================================\n\n";
     summary += "  Err.1\t At least one bank required by the specified block is missing.\n";
     summary += "  Err.2\t Banks exist but get function returns empty data.\n";
