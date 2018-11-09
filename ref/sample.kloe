@@ -1395,7 +1395,6 @@ C-----------------------------------------------------------------------
                     eDHRE(iDHRE) = Evt%DHRE%eDHRE(iDHRE)
               END DO
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'DHRE - nDHRE '//ERROR_INDEX, nDHRE
                IF (nDHRE == 0) THEN
                   DHREErrorCounter(2) = DHREErrorCounter(2) + 1
                ELSE
@@ -1465,7 +1464,6 @@ C
                  ZDh(iDHSP) = Evt%Dhsp%z(iDHSP)
               END DO
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'DHSP - nDHSP '//ERROR_INDEX, nDHSP
                IF (nDHSP == 0) THEN
                   DHSPErrorCounter(2) = DHSPErrorCounter(2) + 1
                ELSE
@@ -1513,19 +1511,16 @@ C-----------------------------------------------------------------------
    
             nTv = Evt%Trkv%n
             WRITE(*,*) "[DEBUG] nTv: ", nTv
-            IF ( nTv < 0 .OR. nTv > 30 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'TRKV - nTv '//ERROR_DOMAIN, nTv
-            END IF
    
             IF (nTv > 0 .AND. nTv <= 30) THEN
                DO iTRKV=1, nTv
                   iV(iTRKV) = Evt%Trkv%iv(iTRKV)
                   IF ( iV(iTRKV) < 0 .OR. iV(iTRKV) > 30 ) THEN
-                     WRITE(*,*) ERROR_BLOCK//'TRKV - iV '//ERROR_DOMAIN, iV(iTRKV)
+                     TrkVErrorCounter(4) = TrkVErrorCounter(4) + 1
                   END IF
                   TrkNumV(iTRKV) = Evt%Trkv%trkpoi(iTRKV)
                   IF ( TrkNumV(iTRKV) < 0 .OR. TrkNumV(iTRKV) > 999 ) THEN
-                     WRITE(*,*) ERROR_BLOCK//'TRKV - TrkNumV '//ERROR_DOMAIN, TrkNumV(iTRKV)
+                     TrkVErrorCounter(4) = TrkVErrorCounter(4) + 1
                   END IF
                     CurV(iTRKV) = Evt%Trkv%cur(iTRKV)
                     PhiV(iTRKV) = Evt%Trkv%phi(iTRKV)
@@ -1545,11 +1540,15 @@ C-----------------------------------------------------------------------
                     Cov33Tv(iTRKV) = Evt%Trkv%cov33(iTRKV)
               END DO
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'TRKV - nTv '//ERROR_INDEX, nTv
+               IF (nTv == 0) THEN
+                  TrkVErrorCounter(2) = TrkVErrorCounter(2) + 1
+               ELSE
+                  TrkVErrorCounter(3) = TrkVErrorCounter(2) + 1
+               END IF
                nTv = 0
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'TRKV'
+            TrkVErrorCounter(1) = TrkVErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -1583,35 +1582,36 @@ C-----------------------------------------------------------------------
    
             nV = Evt%vtx%n
             WRITE(*,*) "[DEBUG] nV: ", nV
-            IF ( nV < 0 .OR. nV > 10 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'VTX - nV '//ERROR_DOMAIN, nV
-            END IF
    
             IF (nV > 0 .AND. nV <= 10) THEN
                DO iVTX=1, nV
                   Vetx(iVTX) = Evt%Vtx%Ntrk(iVTX)
                   IF ( Vetx(iVTX) < 0 .OR. Vetx(iVTX) > 10 ) THEN
-                     WRITE(*,*) ERROR_BLOCK//'VTX - Vetx '//ERROR_DOMAIN, Vetx(iVTX)
+                     VtxErrorCounter(4) = VtxErrorCounter(4) + 1
                   END IF
-                    xV(iVTX) = Evt%Vtx%X(iVTX)
-                    yV(iVTX) = Evt%Vtx%Y(iVTX)
-                    zV(iVTX) = Evt%Vtx%Z(iVTX)
-                    ChiVtx(iVTX) = Evt%Vtx%Chi2(iVTX)
-                    QuaLv(iVTX) = Evt%Vtx%Qual(iVTX)
-                    FitiDv(iVTX) = Evt%Vtx%Fitid(iVTX)
-                    VTXCov1(iVTX) = Evt%Vtx%Cov1(iVTX)
-                    VTXCov2(iVTX) = Evt%Vtx%Cov2(iVTX)
-                    VTXCov3(iVTX) = Evt%Vtx%Cov3(iVTX)
-                    VTXCov4(iVTX) = Evt%Vtx%Cov4(iVTX)
-                    VTXCov5(iVTX) = Evt%Vtx%Cov5(iVTX)
-                    VTXCov6(iVTX) = Evt%Vtx%Cov6(iVTX)
+                  xV(iVTX) = Evt%Vtx%X(iVTX)
+                  yV(iVTX) = Evt%Vtx%Y(iVTX)
+                  zV(iVTX) = Evt%Vtx%Z(iVTX)
+                  ChiVtx(iVTX) = Evt%Vtx%Chi2(iVTX)
+                  QuaLv(iVTX) = Evt%Vtx%Qual(iVTX)
+                  FitiDv(iVTX) = Evt%Vtx%Fitid(iVTX)
+                  VTXCov1(iVTX) = Evt%Vtx%Cov1(iVTX)
+                  VTXCov2(iVTX) = Evt%Vtx%Cov2(iVTX)
+                  VTXCov3(iVTX) = Evt%Vtx%Cov3(iVTX)
+                  VTXCov4(iVTX) = Evt%Vtx%Cov4(iVTX)
+                  VTXCov5(iVTX) = Evt%Vtx%Cov5(iVTX)
+                  VTXCov6(iVTX) = Evt%Vtx%Cov6(iVTX)
               END DO
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'VTX - nV '//ERROR_INDEX, nV
+               IF (nV == 0) THEN
+                  VtxErrorCounter(2) = VtxErrorCounter(2) + 1
+               ELSE
+                  VtxErrorCounter(3) = VtxErrorCounter(3) + 1
+               END IF
                nV = 0
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'VTX'
+            VtxErrorCounter(1) = VtxErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
