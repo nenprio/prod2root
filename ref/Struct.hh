@@ -809,9 +809,9 @@ extern "C" {
     float PhiP[MaxNumDPRS];
     float CotP[MaxNumDPRS];
     float Qual[MaxNumDPRS];
-    unsigned int iPFl[MaxNumDPRS];
-    unsigned int PrKine[MaxNumDPRS];
-    unsigned int PrKHit[MaxNumDPRS];
+    int iPFl[MaxNumDPRS];
+    int PrKine[MaxNumDPRS];
+    int PrKHit[MaxNumDPRS];
   }dprs_;
 }
 

@@ -379,7 +379,7 @@ C
 C
 C  Block: dprs
 C
-      integer iiDPRS, nDPRS, iPFl(200), nView(200), iDPRS(200) 
+      integer iiDPRS, nDPRS, iPFl(200), nView(3), iDPRS(200) 
       integer DPRSVer(200), nPos(200), nNeg(200)
       integer PrKine(200), PrKHit(200)
       real xPCA(200), yPCA(200), zPCA(200), xLst(200), yLst(200)

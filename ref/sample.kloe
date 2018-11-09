@@ -2544,7 +2544,7 @@ C-----------------------------------------------------------------------
            IF ( nVtxMC < 0 .OR. nVtxMC > 30 ) THEN
               WRITE(*,*) ERROR_BLOCK//'GEANFI - nVtxMC '//ERROR_DOMAIN, nVtxMC
            END IF
-           IF (nVtxMC > 0 .AND. nVtxMC <= 50) THEN
+           IF (nVtxMC > 0 .AND. nVtxMC <= 30) THEN
               DO iMC=1, nVtxMC
                  KinMom(iMC) = Evt%MC%kinmom(iMC)
                  IF ( KinMom(iMC) < 0 .OR. KinMom(iMC) > 100 ) THEN
@@ -2827,11 +2827,11 @@ C-----------------------------------------------------------------------
          FlagQt = 0.
          DO iTRKQ=1, 100
            DO jTRKQ=1,2
-             DetQt(iTRKQ,jTRKQ) = 0.
-             WedQt(iTRKQ,jTRKQ) = 0.
-             xQt(iTRKQ,jTRKQ) = 0.
-             yQt(iTRKQ,jTRKQ) = 0.
-             zQt(iTRKQ,jTRKQ) = 0.
+             DetQt(jTRKQ, iTRKQ) = 0.
+             WedQt(jTRKQ, iTRKQ) = 0.
+             xQt(jTRKQ, iTRKQ) = 0.
+             yQt(jTRKQ, iTRKQ) = 0.
+             zQt(jTRKQ, iTRKQ) = 0.
            END DO
            ItrQt(iTRKQ) = 0.
          END DO
@@ -2852,11 +2852,11 @@ C
          IF (nTrkQ > 0 .AND. nTrkQ <= 100) THEN
            DO iTRKQ=1, nTrkQ
              DO jTRKQ=1, 2 
-               DetQt(iTRKQ,jTRKQ) = Evt%TRKQ%det(iTRKQ,jTRKQ)
-               WedQt(iTRKQ,jTRKQ) = Evt%TRKQ%wed(iTRKQ,jTRKQ)
-               xQt(iTRKQ,jTRKQ)   = Evt%TRKQ%xi(iTRKQ,jTRKQ)
-               yQt(iTRKQ,jTRKQ)   = Evt%TRKQ%yi(iTRKQ,jTRKQ)
-               zQt(iTRKQ,jTRKQ)   = Evt%TRKQ%zi(iTRKQ,jTRKQ)
+               DetQt(jTRKQ,iTRKQ) = Evt%TRKQ%det(jTRKQ,iTRKQ)
+               WedQt(jTRKQ,iTRKQ) = Evt%TRKQ%wed(jTRKQ,iTRKQ)
+               xQt(jTRKQ,iTRKQ)   = Evt%TRKQ%xi(jTRKQ,iTRKQ)
+               yQt(jTRKQ,iTRKQ)   = Evt%TRKQ%yi(jTRKQ,iTRKQ)
+               zQt(jTRKQ,iTRKQ)   = Evt%TRKQ%zi(jTRKQ,iTRKQ)
              END DO
              ItrQt(iTRKQ) = Evt%TRKQ%itrk(iTRKQ)
            END DO
