@@ -141,6 +141,16 @@ extern "C" {
         int VtxErrorCounter[5];
         int TrksErrorCounter[5];
         int TrkVOldErrorCounter[5];
+        int VtxOldErrorCounter[5];
+        int TrksOldErrorCounter[5];
+        int DHitErrorCounter[5];
+        int DEDxErrorCounter[5];
+        int DPRSErrorCounter[5];
+        int GeanfiErrorCounter[5];
+        int TcloErrorCounter[5];
+        int TclOldErrorCounter[5];
+        int CFhiErrorCounter[5];
+        int QihiErrorCounter[5];
     }errorcounter_;
 }
 

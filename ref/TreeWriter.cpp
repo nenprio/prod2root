@@ -291,6 +291,36 @@ void TreeWriter::printSummary() {
     summary += Form("  TRVOLD %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
                     errorcounter_.TrkVOldErrorCounter[0], errorcounter_.TrkVOldErrorCounter[1], 
                     errorcounter_.TrkVOldErrorCounter[2], errorcounter_.TrkVOldErrorCounter[3], errorcounter_.TrkVOldErrorCounter[4]);
+    summary += Form("  VTXOLD %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.VtxOldErrorCounter[0], errorcounter_.VtxOldErrorCounter[1], 
+                    errorcounter_.VtxOldErrorCounter[2], errorcounter_.VtxOldErrorCounter[3], errorcounter_.VtxOldErrorCounter[4]);
+    summary += Form("  TRKOLD %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.TrksOldErrorCounter[0], errorcounter_.TrksOldErrorCounter[1], 
+                    errorcounter_.TrksOldErrorCounter[2], errorcounter_.TrksOldErrorCounter[3], errorcounter_.TrksOldErrorCounter[4]);
+    summary += Form("  DHIT   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.DHitErrorCounter[0], errorcounter_.DHitErrorCounter[1], 
+                    errorcounter_.DHitErrorCounter[2], errorcounter_.DHitErrorCounter[3], errorcounter_.DHitErrorCounter[4]);
+    summary += Form("  DEDx   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.DEDxErrorCounter[0], errorcounter_.DEDxErrorCounter[1], 
+                    errorcounter_.DEDxErrorCounter[2], errorcounter_.DEDxErrorCounter[3], errorcounter_.DEDxErrorCounter[4]);
+    summary += Form("  DPRS   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.DPRSErrorCounter[0], errorcounter_.DPRSErrorCounter[1], 
+                    errorcounter_.DPRSErrorCounter[2], errorcounter_.DPRSErrorCounter[3], errorcounter_.DPRSErrorCounter[4]);
+    summary += Form("  GEANFI %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.GeanfiErrorCounter[0], errorcounter_.GeanfiErrorCounter[1], 
+                    errorcounter_.GeanfiErrorCounter[2], errorcounter_.GeanfiErrorCounter[3], errorcounter_.GeanfiErrorCounter[4]);
+    summary += Form("  TCLO   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.TcloErrorCounter[0], errorcounter_.TcloErrorCounter[1], 
+                    errorcounter_.TcloErrorCounter[2], errorcounter_.TcloErrorCounter[3], errorcounter_.TcloErrorCounter[4]);
+    summary += Form("  TCLOLD %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.TclOldErrorCounter[0], errorcounter_.TclOldErrorCounter[1], 
+                    errorcounter_.TclOldErrorCounter[2], errorcounter_.TclOldErrorCounter[3], errorcounter_.TclOldErrorCounter[4]);
+    summary += Form("  CFHI   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.CFhiErrorCounter[0], errorcounter_.CFhiErrorCounter[1], 
+                    errorcounter_.CFhiErrorCounter[2], errorcounter_.CFhiErrorCounter[3], errorcounter_.CFhiErrorCounter[4]);
+    summary += Form("  QIHI   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.QihiErrorCounter[0], errorcounter_.QihiErrorCounter[1], 
+                    errorcounter_.QihiErrorCounter[2], errorcounter_.QihiErrorCounter[3], errorcounter_.QihiErrorCounter[4]);
     summary += "\n=============================================================================\n\n";
     summary += "  Err.1\t At least one bank required by the specified block is missing.\n";
     summary += "  Err.2\t Banks exist but get function returns empty data.\n";

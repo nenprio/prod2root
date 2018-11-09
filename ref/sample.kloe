@@ -1961,35 +1961,36 @@ C-----------------------------------------------------------------------
    
             nVOld = Evt%vtxold%n
             WRITE(*,*) "[DEBUG] nVOld: ", nVOld
-            IF ( nVOld < 0 .OR. nVOld > 10 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'VTXOLD - nVOld '//ERROR_DOMAIN, nVOld
-            END IF
    
             IF (nVOld > 0 .AND. nVOld <= 10) THEN
                DO iVTXOLD=1, nVOld
                   VtxOld(iVTXOLD) = Evt%Vtxold%Ntrk(iVTXOLD)
                   IF ( VtxOld(iVTXOLD) < 0 .OR. VtxOld(iVTXOLD) > 10 ) THEN
-                     WRITE(*,*) ERROR_BLOCK//'VTXOLD - VtxOld '//ERROR_DOMAIN, VtxOld(iVTXOLD)
+                     VtxOldErrorCounter(4) = VtxOldErrorCounter(4) + 1
                   END IF
-                    xVOld(iVTXOLD) = Evt%Vtxold%X(iVTXOLD)
-                    yVOld(iVTXOLD) = Evt%Vtxold%Y(iVTXOLD)
-                    ZVOld(iVTXOLD) = Evt%Vtxold%Z(iVTXOLD)
-                    ChiVTxOld(iVTXOLD) = Evt%Vtxold%Chi2(iVTXOLD)
-                    QuaLVOld(iVTXOLD) = Evt%Vtxold%Qual(iVTXOLD)
-                    FitIdVOld(iVTXOLD) = Evt%Vtxold%Fitid(iVTXOLD)
-                    VtxCov1Old(iVTXOLD) = Evt%Vtxold%Cov1(iVTXOLD)
-                    VtxCov2Old(iVTXOLD) = Evt%Vtxold%Cov2(iVTXOLD)
-                    VtxCov3Old(iVTXOLD) = Evt%Vtxold%Cov3(iVTXOLD)
-                    VtxCov4Old(iVTXOLD) = Evt%Vtxold%Cov4(iVTXOLD)
-                    VtxCov5Old(iVTXOLD) = Evt%Vtxold%Cov5(iVTXOLD)
-                    VtxCov6Old(iVTXOLD) = Evt%Vtxold%Cov6(iVTXOLD)
-              END DO
+                  xVOld(iVTXOLD) = Evt%Vtxold%X(iVTXOLD)
+                  yVOld(iVTXOLD) = Evt%Vtxold%Y(iVTXOLD)
+                  ZVOld(iVTXOLD) = Evt%Vtxold%Z(iVTXOLD)
+                  ChiVTxOld(iVTXOLD) = Evt%Vtxold%Chi2(iVTXOLD)
+                  QuaLVOld(iVTXOLD) = Evt%Vtxold%Qual(iVTXOLD)
+                  FitIdVOld(iVTXOLD) = Evt%Vtxold%Fitid(iVTXOLD)
+                  VtxCov1Old(iVTXOLD) = Evt%Vtxold%Cov1(iVTXOLD)
+                  VtxCov2Old(iVTXOLD) = Evt%Vtxold%Cov2(iVTXOLD)
+                  VtxCov3Old(iVTXOLD) = Evt%Vtxold%Cov3(iVTXOLD)
+                  VtxCov4Old(iVTXOLD) = Evt%Vtxold%Cov4(iVTXOLD)
+                  VtxCov5Old(iVTXOLD) = Evt%Vtxold%Cov5(iVTXOLD)
+                  VtxCov6Old(iVTXOLD) = Evt%Vtxold%Cov6(iVTXOLD)
+               END DO
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'VTXOLD - nVOld '//ERROR_INDEX, nVOld
+               IF (nVOld == 0) THEN
+                  VtxOldErrorCounter(2) = VtxOldErrorCounter(2) + 1
+               ELSE
+                  VtxOldErrorCounter(3) = VtxOldErrorCounter(3) + 1
+               END IF
                nVOld = 0
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'VTXOLD'
+            VtxOldErrorCounter(1) = VtxOldErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2059,9 +2060,6 @@ C
    
             nTOld = Evt%Trkold%n
             WRITE(*,*) "[DEBUG] nTOld: ", nTOld
-            IF ( nTOld < 0 .OR. nTOld > 100 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'TRKOLD - nTOld '//ERROR_DOMAIN, nTOld
-            END IF
    
             IF (nTOld > 0 .AND. nTOld <= 100) THEN
                DO iTRKOLD=1, nTOld
@@ -2106,7 +2104,11 @@ C
                     Chi2MSOld(iTRKOLD) = Evt%Trkold%chi2ms(iTRKOLD)
               END DO
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'TRKOLD - nTOld '//ERROR_INDEX, nTOld
+               IF (nTOld == 0) THEN
+                  TrksOldErrorCounter(2) = TrksOldErrorCounter(2) + 1
+               ELSE
+                  TrksOldErrorCounter(3) = TrksOldErrorCounter(3) + 1
+               END IF
                nTOld = 0
             END IF
 C
@@ -2152,84 +2154,85 @@ C
               END DO
      
               nTfMCOld = Evt%Trkmcold%n
-              IF ( nTfMCOld < 0 .OR. nTfMCOld > 100 ) THEN
-                 WRITE(*,*) ERROR_BLOCK//'TRKOLD - nTfMCOld '//ERROR_DOMAIN, nTfMCOld
-              END IF
      
               IF (nTfMCOld > 0 .AND. nTfMCOld <= 100) THEN
                  DO iTRKMCOLD=1, nTfMCOld
                     nContrOld(iTRKMCOLD) = Evt%Trkmcold%ncontr(iTRKMCOLD)
                     IF ( nContrOld(iTRKMCOLD) < 0 .OR. nContrOld(iTRKMCOLD) > 10 ) THEN
-                       WRITE(*,*) ERROR_BLOCK//'TRKOLD - nContrOld '//ERROR_DOMAIN, nContrOld(iTRKMCOLD)
+                       TrksOldErrorCounter(4) = TrksOldErrorCounter(4) + 1
                     END IF
                     TrkIne1Old(iTRKMCOLD) = Evt%Trkmcold%kine1(iTRKMCOLD)
                     IF ( TrkIne1Old(iTRKMCOLD) < 0 .OR. TrkIne1Old(iTRKMCOLD) > 100 ) THEN
-                       WRITE(*,*) ERROR_BLOCK//'TRKOLD - TrkIne1Old '//ERROR_DOMAIN, TrkIne1Old(iTRKMCOLD)
+                       TrksOldErrorCounter(4) = TrksOldErrorCounter(4) + 1
                     END IF
                     TrType1Old(iTRKMCOLD) = Evt%Trkmcold%type1(iTRKMCOLD)
                     IF ( TrType1Old(iTRKMCOLD) < 0 .OR. TrType1Old(iTRKMCOLD) > 100 ) THEN
-                       WRITE(*,*) ERROR_BLOCK//'TRKOLD - TrType1Old '//ERROR_DOMAIN, TrType1Old(iTRKMCOLD)
+                       TrksOldErrorCounter(4) = TrksOldErrorCounter(4) + 1
                     END IF
                     TrHits1Old(iTRKMCOLD) = Evt%Trkmcold%hits1(iTRKMCOLD)
                     IF ( TrHits1Old(iTRKMCOLD) < 0 .OR. TrHits1Old(iTRKMCOLD) > 1000 ) THEN
-                       WRITE(*,*) ERROR_BLOCK//'TRKOLD - TrHits1Old '//ERROR_DOMAIN, TrHits1Old(iTRKMCOLD)
+                       TrksOldErrorCounter(4) = TrksOldErrorCounter(4) + 1
                     END IF
                     TrkIne2Old(iTRKMCOLD) = Evt%Trkmcold%kine2(iTRKMCOLD)
                     IF ( TrkIne2Old(iTRKMCOLD) < 0 .OR. TrkIne2Old(iTRKMCOLD) > 100 ) THEN
-                       WRITE(*,*) ERROR_BLOCK//'TRKOLD - TrkIne2Old '//ERROR_DOMAIN, TrkIne2Old(iTRKMCOLD)
+                       TrksOldErrorCounter(4) = TrksOldErrorCounter(4) + 1
                     END IF
                     TrType2Old(iTRKMCOLD) = Evt%Trkmcold%type2(iTRKMCOLD)
                     IF ( TrType2Old(iTRKMCOLD) < 0 .OR. TrType2Old(iTRKMCOLD) > 100 ) THEN
-                       WRITE(*,*) ERROR_BLOCK//'TRKOLD - TrType2Old '//ERROR_DOMAIN, TrType2Old(iTRKMCOLD)
+                       TrksOldErrorCounter(4) = TrksOldErrorCounter(4) + 1
                     END IF
                     TrHits2Old(iTRKMCOLD) = Evt%Trkmcold%hits2(iTRKMCOLD)
                     IF ( TrHits2Old(iTRKMCOLD) < 0 .OR. TrHits2Old(iTRKMCOLD) > 1000 ) THEN
-                       WRITE(*,*) ERROR_BLOCK//'TRKOLD - TrHits2Old '//ERROR_DOMAIN, TrHits2Old(iTRKMCOLD)
+                       TrksOldErrorCounter(4) = TrksOldErrorCounter(4) + 1
                     END IF
                     TrkIne3Old(iTRKMCOLD) = Evt%Trkmcold%kine3(iTRKMCOLD)
                     IF ( TrkIne3Old(iTRKMCOLD) < 0 .OR. TrkIne3Old(iTRKMCOLD) > 100 ) THEN
-                       WRITE(*,*) ERROR_BLOCK//'TRKOLD - TrkIne3Old '//ERROR_DOMAIN, TrkIne3Old(iTRKMCOLD)
+                       TrksOldErrorCounter(4) = TrksOldErrorCounter(4) + 1
                     END IF
                     TrType3Old(iTRKMCOLD) = Evt%Trkmcold%type3(iTRKMCOLD)
                     IF ( TrType3Old(iTRKMCOLD) < 0 .OR. TrType3Old(iTRKMCOLD) > 100 ) THEN
-                       WRITE(*,*) ERROR_BLOCK//'TRKOLD - TrType3Old '//ERROR_DOMAIN, TrType3Old(iTRKMCOLD)
+                       TrksOldErrorCounter(4) = TrksOldErrorCounter(4) + 1
                     END IF
                     TrHits3Old(iTRKMCOLD) = Evt%Trkmcold%hits3(iTRKMCOLD)
                     IF ( TrHits3Old(iTRKMCOLD) < 0 .OR. TrHits3Old(iTRKMCOLD) > 1000 ) THEN
-                       WRITE(*,*) ERROR_BLOCK//'TRKOLD - TrHits3Old '//ERROR_DOMAIN, TrHits3Old(iTRKMCOLD)
+                       TrksOldErrorCounter(4) = TrksOldErrorCounter(4) + 1
                     END IF
-                      xFMCOld(iTRKMCOLD) = Evt%Trkmcold%xfirst(iTRKMCOLD)
-                      yFMCOld(iTRKMCOLD) = Evt%Trkmcold%yfirst(iTRKMCOLD)
-                      zFMCOld(iTRKMCOLD) = Evt%Trkmcold%zfirst(iTRKMCOLD)
-                      PxFMCOld(iTRKMCOLD) = Evt%Trkmcold%pxfirst(iTRKMCOLD)
-                      PyFMCOld(iTRKMCOLD) = Evt%Trkmcold%pyfirst(iTRKMCOLD)
-                      PzFMCOld(iTRKMCOLD) = Evt%Trkmcold%pzfirst(iTRKMCOLD)
-                      xLMCOld(iTRKMCOLD) = Evt%Trkmcold%xlast(iTRKMCOLD)
-                      yLMCOld(iTRKMCOLD) = Evt%Trkmcold%ylast(iTRKMCOLD)
-                      zLMCOld(iTRKMCOLD) = Evt%Trkmcold%zlast(iTRKMCOLD)
-                      PxLMCOld(iTRKMCOLD) = Evt%Trkmcold%pxlast(iTRKMCOLD)
-                      PyLMCOld(iTRKMCOLD) = Evt%Trkmcold%pylast(iTRKMCOLD)
-                      PzLMCOld(iTRKMCOLD) = Evt%Trkmcold%pzlast(iTRKMCOLD)
-                      xFMC2Old(iTRKMCOLD) = Evt%Trkmcold%xmcfirst(iTRKMCOLD)
-                      yFMC2Old(iTRKMCOLD) = Evt%Trkmcold%ymcfirst(iTRKMCOLD)
-                      zFMC2Old(iTRKMCOLD) = Evt%Trkmcold%zmcfirst(iTRKMCOLD)
-                      PxFMC2Old(iTRKMCOLD) = Evt%Trkmcold%pxmcfirst(iTRKMCOLD)
-                      PyFMC2Old(iTRKMCOLD) = Evt%Trkmcold%pymcfirst(iTRKMCOLD)
-                      PzFMC2Old(iTRKMCOLD) = Evt%Trkmcold%pzmcfirst(iTRKMCOLD)
-                      xLMC2Old(iTRKMCOLD) = Evt%Trkmcold%xmclast(iTRKMCOLD)
-                      yLMC2Old(iTRKMCOLD) = Evt%Trkmcold%ymclast(iTRKMCOLD)
-                      zLMC2Old(iTRKMCOLD) = Evt%Trkmcold%zmclast(iTRKMCOLD)
-                      PxLMC2Old(iTRKMCOLD) = Evt%Trkmcold%pxmclast(iTRKMCOLD)
-                      PyLMC2Old(iTRKMCOLD) = Evt%Trkmcold%pymclast(iTRKMCOLD)
-                      PzLMC2Old(iTRKMCOLD) = Evt%Trkmcold%pzmclast(iTRKMCOLD)
+                    xFMCOld(iTRKMCOLD) = Evt%Trkmcold%xfirst(iTRKMCOLD)
+                    yFMCOld(iTRKMCOLD) = Evt%Trkmcold%yfirst(iTRKMCOLD)
+                    zFMCOld(iTRKMCOLD) = Evt%Trkmcold%zfirst(iTRKMCOLD)
+                    PxFMCOld(iTRKMCOLD) = Evt%Trkmcold%pxfirst(iTRKMCOLD)
+                    PyFMCOld(iTRKMCOLD) = Evt%Trkmcold%pyfirst(iTRKMCOLD)
+                    PzFMCOld(iTRKMCOLD) = Evt%Trkmcold%pzfirst(iTRKMCOLD)
+                    xLMCOld(iTRKMCOLD) = Evt%Trkmcold%xlast(iTRKMCOLD)
+                    yLMCOld(iTRKMCOLD) = Evt%Trkmcold%ylast(iTRKMCOLD)
+                    zLMCOld(iTRKMCOLD) = Evt%Trkmcold%zlast(iTRKMCOLD)
+                    PxLMCOld(iTRKMCOLD) = Evt%Trkmcold%pxlast(iTRKMCOLD)
+                    PyLMCOld(iTRKMCOLD) = Evt%Trkmcold%pylast(iTRKMCOLD)
+                    PzLMCOld(iTRKMCOLD) = Evt%Trkmcold%pzlast(iTRKMCOLD)
+                    xFMC2Old(iTRKMCOLD) = Evt%Trkmcold%xmcfirst(iTRKMCOLD)
+                    yFMC2Old(iTRKMCOLD) = Evt%Trkmcold%ymcfirst(iTRKMCOLD)
+                    zFMC2Old(iTRKMCOLD) = Evt%Trkmcold%zmcfirst(iTRKMCOLD)
+                    PxFMC2Old(iTRKMCOLD) = Evt%Trkmcold%pxmcfirst(iTRKMCOLD)
+                    PyFMC2Old(iTRKMCOLD) = Evt%Trkmcold%pymcfirst(iTRKMCOLD)
+                    PzFMC2Old(iTRKMCOLD) = Evt%Trkmcold%pzmcfirst(iTRKMCOLD)
+                    xLMC2Old(iTRKMCOLD) = Evt%Trkmcold%xmclast(iTRKMCOLD)
+                    yLMC2Old(iTRKMCOLD) = Evt%Trkmcold%ymclast(iTRKMCOLD)
+                    zLMC2Old(iTRKMCOLD) = Evt%Trkmcold%zmclast(iTRKMCOLD)
+                    PxLMC2Old(iTRKMCOLD) = Evt%Trkmcold%pxmclast(iTRKMCOLD)
+                    PyLMC2Old(iTRKMCOLD) = Evt%Trkmcold%pymclast(iTRKMCOLD)
+                    PzLMC2Old(iTRKMCOLD) = Evt%Trkmcold%pzmclast(iTRKMCOLD)
                 END DO
               ELSE
-                 WRITE(*,*) ERROR_BLOCK//'TRKOLD - nTfMCOld '//ERROR_INDEX, nTfMCOld
+                 IF (nTfMCOld == 0) THEN
+                    TrksOldErrorCounter(2) = TrksOldErrorCounter(2) + 1
+                 ELSE
+                    TrksOldErrorCounter(3) = TrksOldErrorCounter(3) + 1
+                 END IF
                  nTfMCOld = 0
               END IF
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'TRKOLD'
+            TrksOldErrorCounter(1) = TrksOldErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2265,9 +2268,6 @@ C-----------------------------------------------------------------------
             
             nDHIT = Evt%DHIT%n
             WRITE(*,*) "[DEBUG] nDHIT: ", nDHIT
-            IF ( nDHIT < 0 .OR. nDHIT > 2500 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'DHIT - nDHIT '//ERROR_DOMAIN, nDHIT
-            END IF
    
             IF (nDHIT > 0 .AND. nDHIT <= 2500) THEN
                DO iDHIT=1, nDHIT
@@ -2288,11 +2288,15 @@ C-----------------------------------------------------------------------
                     DHFlag(iDHIT) = Evt%DHIT%flag(iDHIT)
               END DO
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'DHIT - nDHIT '//ERROR_INDEX, nDHIT
+               IF (nDHIT == 0) THEN
+                  DHitErrorCounter(2) = DHitErrorCounter(2) + 1
+               ELSE
+                  DHitErrorCounter(3) = DHitErrorCounter(3) + 1
+               END IF
                nDHIT = 0
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'DHIT'
+            DHitErrorCounter(1) = DHitErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2325,9 +2329,6 @@ C-----------------------------------------------------------------------
    
             nDEDx = Evt%DEDX2STRU%numdedx
             WRITE(*,*) "[DEBUG] nDEDx: ", nDEDx
-            IF ( nDEDx < 0 .OR. nDEDx > 20 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'DEDX - nDEDx '//ERROR_DOMAIN, nDEDx
-            END IF
    
             IF (nDEDx > 0 .AND. nDEDx <= 20) THEN
               DO iiDEDX=1, nDEDx
@@ -2345,11 +2346,15 @@ C-----------------------------------------------------------------------
                  END DO
               END DO
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'DEDX - nDEDx '//ERROR_INDEX, nDEDx
+               IF (nDEDx == 0) THEN
+                  DEDxErrorCounter(2) = DEDxErrorCounter(2) + 1
+               ELSE
+                  DEDxErrorCounter(3) = DEDxErrorCounter(3) + 1
+               END IF
                nDEDx = 0
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'DEDX'
+            DEDxErrorCounter(1) = DEDxErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2384,33 +2389,30 @@ C-----------------------------------------------------------------------
    
             nDPRS =  Evt%DPRS%NDPRS
             WRITE(*,*) "[DEBUG] nDPRS: ", nDPRS
-            IF ( nDPRS < 0 .OR. nDPRS > 200 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'DPRS - nDPRS '//ERROR_DOMAIN, nDPRS
-            END IF
    
             IF (nDPRS > 0 .AND. nDPRS <= 200) THEN
                DO iiDPRS=1, 3
                   nView(iiDPRS) =  Evt%DPRS%NVIEW(iiDPRS)
                   IF ( nView(iiDPRS) < 0 .OR. nView(iiDPRS) > 255 ) THEN
-C                   TODO
+                     DPRSErrorCounter(4) = DPRSErrorCounter(4) + 1
                   END IF
                END DO
                DO iiDPRS=1, nDPRS
                   iDPRS(iiDPRS) =  Evt%DPRS%IDPRS(iiDPRS)
                   IF ( iDPRS(iiDPRS) < 0 .OR. iDPRS(iiDPRS) > 255 ) THEN
-C                   TODO                  
+                     DPRSErrorCounter(4) = DPRSErrorCounter(4) + 1
                   END IF
                   DPRSVer(iiDPRS) =  Evt%DPRS%VERS(iiDPRS)
                   IF ( DPRSVer(iiDPRS) < 0 .OR. DPRSVer(iiDPRS) > 255 ) THEN
-C                   TODO
+                     DPRSErrorCounter(4) = DPRSErrorCounter(4) + 1
                   END IF
                   nPos(iiDPRS) =  Evt%DPRS%NPOS(iiDPRS)
                   IF ( nPos(iiDPRS) < 0 .OR. nPos(iiDPRS) > 255 ) THEN
-C                   TODO
+                     DPRSErrorCounter(4) = DPRSErrorCounter(4) + 1
                   END IF
                   nNeg(iiDPRS) =  Evt%DPRS%NNEG(iiDPRS)
                   IF ( nNeg(iiDPRS) < 0 .OR. nNeg(iiDPRS) > 255 ) THEN
-C                   TODO
+                     DPRSErrorCounter(4) = DPRSErrorCounter(4) + 1
                   END IF
                   xPCA(iiDPRS) =  Evt%DPRS%XPCA(iiDPRS)
                   yPCA(iiDPRS) =  Evt%DPRS%YPCA(iiDPRS)
@@ -2424,23 +2426,27 @@ C                   TODO
                   Qual(iiDPRS) =  Evt%DPRS%QUAL(iiDPRS)
                   iPFl(iiDPRS) =  Evt%DPRS%IPFL(iiDPRS)
                   IF ( iPFl(iiDPRS) < 0 .OR. iPFl(iiDPRS) > 15 ) THEN
-C                   TODO   
+                     DPRSErrorCounter(4) = DPRSErrorCounter(4) + 1
                   END IF
                   PrKine(iiDPRS) =  Evt%DPRS%KINE(iiDPRS)
                   IF ( PrKine(iiDPRS) < 0 .OR. PrKine(iiDPRS) > 255 ) THEN
-C                   TODO
+                     DPRSErrorCounter(4) = DPRSErrorCounter(4) + 1
                   END IF
                   PrKHit(iiDPRS) =  Evt%DPRS%NHKINE(iiDPRS)
                   IF ( PrKHit(iiDPRS) < 0 .OR. PrKHit(iiDPRS) > 255 ) THEN
-C                   TODO
+                     DPRSErrorCounter(4) = DPRSErrorCounter(4) + 1
                   END IF
                END DO
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'DPRS - nDPRS '//ERROR_INDEX, nDPRS
+               IF (nDPRS == 0) THEN
+                 DPRSErrorCounter(2) = DPRSErrorCounter(2) + 1
+               ELSE
+                 DPRSErrorCounter(3) = DPRSErrorCounter(3) + 1
+               END IF
                nDPRS = 0
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'DPRS'
+            DPRSErrorCounter(1) = DPRSErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2487,28 +2493,27 @@ C-----------------------------------------------------------------------
              TOfVMC(iMC) = 0.
              nTvTx(iMC) = 0.
            END DO
-  
+C
+C          TODO: No blocat here?
+C
            istat = GETMCSTRU(Evt%MC)
   
            nTMC = Evt%MC%ntrk
            WRITE(*,*) "[DEBUG] nTMC: ", nTMC
-           IF ( nTMC < 0 .OR. nTMC > 50 ) THEN
-              WRITE(*,*) ERROR_BLOCK//'GEANFI - nTMC '//ERROR_DOMAIN, nTMC
-           END IF
   
            IF (nTMC > 0 .AND. nTMC <= 50) THEN
               DO iMC=1, nTMC
                  Kine(iMC) = Evt%MC%kin(iMC)
                  IF ( Kine(iMC) < 0 .OR. Kine(iMC) > 100 ) THEN
-                    WRITE(*,*) ERROR_BLOCK//'GEANFI - Kine '//ERROR_DOMAIN, Kine(iMC)
+                    GeanfiErrorCounter(4) = GeanfiErrorCounter(4) + 1
                  END IF
                  PidMC(iMC) = Evt%MC%pid(iMC)
                  IF ( PidMC(iMC) < 0 .OR. PidMC(iMC) > 100 ) THEN
-                    WRITE(*,*) ERROR_BLOCK//'GEANFI - PidMC '//ERROR_DOMAIN, PidMC(iMC)
+                    GeanfiErrorCounter(4) = GeanfiErrorCounter(4) + 1
                  END IF
                  VirMom(iMC) = Evt%MC%virmom(iMC)
                  IF ( VirMom(iMC) < 0 .OR. VirMom(iMC) > 100 ) THEN
-                    WRITE(*,*) ERROR_BLOCK//'GEANFI - VirMom '//ERROR_DOMAIN, VirMom(iMC)
+                    GeanfiErrorCounter(4) = GeanfiErrorCounter(4) + 1
                  END IF
                  PxMC(iMC) = Evt%MC%px(iMC)
                  PyMC(iMC) = Evt%MC%py(iMC)
@@ -2521,7 +2526,7 @@ C-----------------------------------------------------------------------
                  PhiMC(iMC) = Evt%MC%phi(iMC)
                  VtxMC(iMC) = Evt%MC%Indv(iMC)
                  IF ( VtxMC(iMC) < 0 .OR. VtxMC(iMC) > 100 ) THEN
-                    WRITE(*,*) ERROR_BLOCK//'GEANFI - VtxMC '//ERROR_DOMAIN, VtxMC(iMC)
+                    GeanfiErrorCounter(4) = GeanfiErrorCounter(4) + 1
                  END IF
                  nDchMC(iMC) = Evt%MC%ndchmc(iMC)
                  xFhMC(iMC) = Evt%MC%xfhmc(iMC)
@@ -2538,24 +2543,26 @@ C-----------------------------------------------------------------------
                  PzLhMC(iMC) = Evt%MC%pzlhmc(iMC)
               END DO
            ELSE
-              WRITE(*,*) ERROR_BLOCK//'GEANFI - nTMC '//ERROR_INDEX, nTMC
+              IF (nTMC == 0) THEN
+                 GeanfiErrorCounter(2) = GeanfiErrorCounter(2) + 1
+              ELSE
+                 GeanfiErrorCounter(3) = GeanfiErrorCounter(3) + 1
+              END IF
               nTMC = 0
            END IF
   
            nVtxMC = Evt%MC%numvtx
            WRITE(*,*) "[DEBUG] nVtxMC: ", nVtxMC
-           IF ( nVtxMC < 0 .OR. nVtxMC > 30 ) THEN
-              WRITE(*,*) ERROR_BLOCK//'GEANFI - nVtxMC '//ERROR_DOMAIN, nVtxMC
-           END IF
+           
            IF (nVtxMC > 0 .AND. nVtxMC <= 30) THEN
               DO iMC=1, nVtxMC
                  KinMom(iMC) = Evt%MC%kinmom(iMC)
                  IF ( KinMom(iMC) < 0 .OR. KinMom(iMC) > 100 ) THEN
-                    WRITE(*,*) ERROR_BLOCK//'GEANFI - KinMom '//ERROR_DOMAIN, KinMom(iMC)
+                    GeanfiErrorCounter(4) = GeanfiErrorCounter(4) + 1
                  END IF
                  Mother(iMC) = Evt%MC%mother(iMC)
                  IF ( Mother(iMC) < 0 .OR. Mother(iMC) > 100 ) THEN
-                    WRITE(*,*) ERROR_BLOCK//'GEANFI - Mother '//ERROR_DOMAIN, Mother(iMC)
+                    GeanfiErrorCounter(4) = GeanfiErrorCounter(4) + 1
                  END IF
                  xVMC(iMC) = Evt%MC%xv(iMC)
                  yVMC(iMC) = Evt%MC%yv(iMC)
@@ -2564,11 +2571,15 @@ C-----------------------------------------------------------------------
                  nTvTx(iMC) = Evt%MC%trkvtx(iMC)
               END DO
            ELSE
-              WRITE(*,*) ERROR_BLOCK//'GEANFI - nVtxMC '//ERROR_INDEX, nVtxMC
+              IF (nVtxMC == 0) THEN
+                 GeanfiErrorCounter(2) = GeanfiErrorCounter(2) + 1
+              ELSE
+                 GeanfiErrorCounter(3) = GeanfiErrorCounter(3) + 1
+              END IF
               nVtxMC = 0
            END IF
         ELSE
-              WRITE(*,*) ERROR_MC_DATA//'GEANFI'
+           GeanfiErrorCounter(5) = GeanfiErrorCounter(5) + 1
         END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2600,19 +2611,16 @@ C-----------------------------------------------------------------------
    
             nTcl = Evt%Tclo%nt
             WRITE(*,*) "[DEBUG] nTMC: ", nTMC
-            IF ( nTcl < 0 .OR. nTcl > 40 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'TCLO - nTcl '//ERROR_DOMAIN, nTcl
-            END IF
    
             IF (nTcl > 0 .AND. nTcl <= 40) THEN
                DO iTCLO=1, nTcl
                   AssTr(iTCLO) = Evt%Tclo%trknum(iTCLO)
                   IF ( AssTr(iTCLO) < 0 .OR. AssTr(iTCLO) > 999 ) THEN
-                     WRITE(*,*) ERROR_BLOCK//'TCLO - AssTr '//ERROR_DOMAIN, AssTr(iTCLO)
+                     TcloErrorCounter(4) = TcloErrorCounter(4) + 1
                   END IF
                   AssCl(iTCLO) = Evt%Tclo%clunum(iTCLO)
                   IF ( AssCl(iTCLO) < 0 .OR. AssCl(iTCLO) > 100 ) THEN
-                     WRITE(*,*) ERROR_BLOCK//'TCLO - AssCl '//ERROR_DOMAIN, AssCl(iTCLO)
+                     TcloErrorCounter(4) = TcloErrorCounter(4) + 1
                   END IF
                     VerVer(iTCLO) = Evt%Tclo%verver(iTCLO)
                     xExt(iTCLO) = Evt%Tclo%xext(iTCLO)
@@ -2625,11 +2633,15 @@ C-----------------------------------------------------------------------
                     ExtPz(iTCLO) = Evt%Tclo%pz(iTCLO)
               END DO
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'TCLO - nTcl '//ERROR_INDEX, nTcl
+               IF (nTcl == 0) THEN
+                  TcloErrorCounter(2) = TcloErrorCounter(2) + 1
+               ELSE
+                  TcloErrorCounter(3) = TcloErrorCounter(3) + 1
+               END IF
                nTcl = 0
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'TCLO'
+            TcloErrorCounter(1) = TcloErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2661,19 +2673,16 @@ C-----------------------------------------------------------------------
    
             nTclOld = Evt%Tclold%nt
             WRITE(*,*) "[DEBUG] nTclOld: ", nTclOld
-            IF ( nTclOld < 0 .OR. nTclOld > 40 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'TCLOLD - nTclOld '//ERROR_DOMAIN, nTclOld
-            END IF
    
             IF (nTclOld > 0 .AND. nTclOld <= 40) THEN
                DO iTCLOLD=1, nTclOld
                   AssTrOld(iTCLOLD) = Evt%Tclold%trknum(iTCLOLD)
                   IF ( AssTrOld(iTCLOLD) < 0 .OR. AssTrOld(iTCLOLD) > 999 ) THEN
-                     WRITE(*,*) ERROR_BLOCK//'TCLOLD - AssTrOld '//ERROR_DOMAIN, AssTrOld(iTCLOLD)
+                     TclOldErrorCounter(4) = TclOldErrorCounter(4) + 1
                   END IF
                   AssClOld(iTCLOLD) = Evt%Tclold%clunum(iTCLOLD)
                   IF ( AssClOld(iTCLOLD) < 0 .OR. AssClOld(iTCLOLD) > 100 ) THEN
-                     WRITE(*,*) ERROR_BLOCK//'TCLOLD - AssClOld '//ERROR_DOMAIN, AssClOld(iTCLOLD)
+                     TclOldErrorCounter(4) = TclOldErrorCounter(4) + 1
                   END IF
                     VerVerOld(iTCLOLD) = Evt%Tclold%verver(iTCLOLD)
                     xExtOld(iTCLOLD) = Evt%Tclold%xext(iTCLOLD)
@@ -2686,11 +2695,15 @@ C-----------------------------------------------------------------------
                     ExtPzOld(iTCLOLD) = Evt%Tclold%pz(iTCLOLD)
               END DO
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'TCLOLD - nTclOld '//ERROR_INDEX, nTclOld
+               IF (nTclOld == 0) THEN
+                  TclOldErrorCounter(2) = TclOldErrorCounter(2) + 1
+               ELSE
+                  TclOldErrorCounter(3) = TclOldErrorCounter(3) + 1
+               END IF
                nTclOld = 0
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'TCLOLD'
+            TclOldErrorCounter(1) = TclOldErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2719,43 +2732,44 @@ C-----------------------------------------------------------------------
    
             nFhi = Evt%CFHI%n
             WRITE(*,*) "[DEBUG] nFhi: ", nFhi
-            IF ( nFhi < 0 .OR. nFhi > 300 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'CFHI - nFhi '//ERROR_DOMAIN, nFhi
-            END IF
    
             IF (nFhi > 0 .AND. nFhi <= 300) THEN
                DO iCFHI=1, nFhi
                   PidFhi(iCFHI) = Evt%CFHI%pid(iCFHI)
                   IF ( PidFhi(iCFHI) < 0 .OR. PidFhi(iCFHI) > 100 ) THEN
-                     WRITE(*,*) ERROR_BLOCK//'CFHI - PidFhi '//ERROR_DOMAIN, PidFhi(iCFHI)
+                     CFhiErrorCounter(4) = CFhiErrorCounter(4) + 1
                   END IF
                   KinFhi(iCFHI) = Evt%CFHI%kinum(iCFHI)
                   IF ( KinFhi(iCFHI) < 0 .OR. KinFhi(iCFHI) > 100 ) THEN
-                     WRITE(*,*) ERROR_BLOCK//'CFHI - KinFhi '//ERROR_DOMAIN, KinFhi(iCFHI)
+                     CFhiErrorCounter(4) = CFhiErrorCounter(4) + 1
                   END IF
                   CelFhi(iCFHI) = Evt%CFHI%celadr(iCFHI)
                   IF ( CelFhi(iCFHI) < 0 .OR. CelFhi(iCFHI) > 4880 ) THEN
-                     WRITE(*,*) ERROR_BLOCK//'CFHI - CelFhi '//ERROR_DOMAIN, CelFhi(iCFHI)
+                     CFhiErrorCounter(4) = CFhiErrorCounter(4) + 1
                   END IF
                   FlgFhi(iCFHI) = Evt%CFHI%convfl(iCFHI)
                   IF ( FlgFhi(iCFHI) < 0 .OR. FlgFhi(iCFHI) > 1 ) THEN
-                     WRITE(*,*) ERROR_BLOCK//'CFHI - FlgFhi '//ERROR_DOMAIN, FlgFhi(iCFHI)
+                     CFhiErrorCounter(4) = CFhiErrorCounter(4) + 1
                   END IF
-                    xFhi(iCFHI) = Evt%CFHI%x(iCFHI)
-                    yFhi(iCFHI) = Evt%CFHI%y(iCFHI)
-                    zFhi(iCFHI) = Evt%CFHI%z(iCFHI)
-                    PxFhi(iCFHI) = Evt%CFHI%px(iCFHI)
-                    PyFhi(iCFHI) = Evt%CFHI%py(iCFHI)
-                    PzFhi(iCFHI) = Evt%CFHI%pz(iCFHI)
-                    TofFhi(iCFHI) = Evt%CFHI%tof(iCFHI)
-                    TLenFhi(iCFHI) = Evt%CFHI%tlen(iCFHI)
+                  xFhi(iCFHI) = Evt%CFHI%x(iCFHI)
+                  yFhi(iCFHI) = Evt%CFHI%y(iCFHI)
+                  zFhi(iCFHI) = Evt%CFHI%z(iCFHI)
+                  PxFhi(iCFHI) = Evt%CFHI%px(iCFHI)
+                  PyFhi(iCFHI) = Evt%CFHI%py(iCFHI)
+                  PzFhi(iCFHI) = Evt%CFHI%pz(iCFHI)
+                  TofFhi(iCFHI) = Evt%CFHI%tof(iCFHI)
+                  TLenFhi(iCFHI) = Evt%CFHI%tlen(iCFHI)
               END DO
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'CFHI - nFhi '//ERROR_INDEX, nFhi
+               IF (nFhi == 0) THEN
+                  CFhiErrorCounter(2) = CFhiErrorCounter(2) + 1
+               ELSE
+                  CFhiErrorCounter(3) = CFhiErrorCounter(3) + 1
+               END IF
                nFhi = 0
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'CFHI'
+            CFhiErrorCounter(1) = CFhiErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2792,9 +2806,6 @@ C
       
                nQIHI = Evt%QHIT%n
                WRITE(*,*) "[DEBUG] nQIHI: ", nQIHI
-               IF ( nQIHI < 0 .OR. nQIHI > 1000 ) THEN
-                  WRITE(*,*) ERROR_BLOCK//'QIHI - nQIHI '//ERROR_DOMAIN, nQIHI
-               END IF
       
                IF (nQIHI > 0 .AND. nQIHI <= 1000) THEN
                   DO iQIHI=1, nQIHI
@@ -2812,14 +2823,18 @@ C
                        TLenQIHI(iQIHI) = Evt%QHIT%trl(iQIHI)
                  END DO
                ELSE
-                  WRITE(*,*) ERROR_BLOCK//'QIHI - nQIHI '//ERROR_INDEX, nQIHI
+                  IF (nQIHI == 0) THEN
+                     QihiErrorCounter(2) = QihiErrorCounter(2) + 1
+                  ELSE
+                     QihiErrorCounter(3) = QihiErrorCounter(3) + 1
+                  END IF
                   nQIHI = 0
                END IF
             ELSE
-               WRITE(*,*) ERROR_MISS_DATA//'QIHI'
+               QihiErrorCounter(4) = QihiErrorCounter(4) + 1
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'QIHI'
+            QihiErrorCounter(5) = QihiErrorCounter(5) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------

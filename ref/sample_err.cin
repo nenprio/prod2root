@@ -47,6 +47,11 @@ C
       integer DHREErrorCounter(5), DHSPErrorCounter(5)
       integer TrkVErrorCounter(5), VtxErrorCounter(5)
       integer TrksErrorCounter(5), TrkVOldErrorCounter(5)
+      integer VtxOldErrorCounter(5), TrksOldErrorCounter(5)
+      integer DHitErrorCounter(5), DEDxErrorCounter(5)
+      integer DPRSErrorCounter(5), GeanfiErrorCounter(5)
+      integer TcloErrorCounter(5), TclOldErrorCounter(5)
+      integer CFhiErrorCounter(5), QihiErrorCounter(5)
 
       common /errorcounter/InfoErrorCounter, BPOSErrorCounter,
      1       GDHitErrorCounter, EclsErrorCounter, TrigErrorCounter,
@@ -58,4 +63,9 @@ C
      1       DTCE0ErrorCounter, DCHitsErrorCounter,
      1       DHREErrorCounter, DHSPErrorCounter,
      1       TrkVErrorCounter, VtxErrorCounter,
-     1       TrksErrorCounter, TrkVOldErrorCounter
+     1       TrksErrorCounter, TrkVOldErrorCounter,
+     1       VtxOldErrorCounter, TrksOldErrorCounter,
+     1       DHitErrorCounter, DEDxErrorCounter,
+     1       DPRSErrorCounter, GeanfiErrorCounter,
+     1       TcloErrorCounter, TclOldErrorCounter,
+     1       CFhiErrorCounter, QihiErrorCounter
