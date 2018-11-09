@@ -321,6 +321,27 @@ void TreeWriter::printSummary() {
     summary += Form("  QIHI   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
                     errorcounter_.QihiErrorCounter[0], errorcounter_.QihiErrorCounter[1], 
                     errorcounter_.QihiErrorCounter[2], errorcounter_.QihiErrorCounter[3], errorcounter_.QihiErrorCounter[4]);
+    summary += Form("  TRQ    %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.TrqErrorCounter[0], errorcounter_.TrqErrorCounter[1], 
+                    errorcounter_.TrqErrorCounter[2], errorcounter_.TrqErrorCounter[3], errorcounter_.TrqErrorCounter[4]);
+    summary += Form("  QELE   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.QeleErrorCounter[0], errorcounter_.QeleErrorCounter[1], 
+                    errorcounter_.QeleErrorCounter[2], errorcounter_.QeleErrorCounter[3], errorcounter_.QeleErrorCounter[4]);
+    summary += Form("  QCAL   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.QCalErrorCounter[0], errorcounter_.QCalErrorCounter[1], 
+                    errorcounter_.QCalErrorCounter[2], errorcounter_.QCalErrorCounter[3], errorcounter_.QCalErrorCounter[4]);
+    summary += Form("  KNVO   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.KNVOErrorCounter[0], errorcounter_.KNVOErrorCounter[1], 
+                    errorcounter_.KNVOErrorCounter[2], errorcounter_.KNVOErrorCounter[3], errorcounter_.KNVOErrorCounter[4]);
+    summary += Form("  VNVO   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.VNVOErrorCounter[0], errorcounter_.VNVOErrorCounter[1], 
+                    errorcounter_.VNVOErrorCounter[2], errorcounter_.VNVOErrorCounter[3], errorcounter_.VNVOErrorCounter[4]);
+    summary += Form("  VNVB   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.VNVBErrorCounter[0], errorcounter_.VNVBErrorCounter[1], 
+                    errorcounter_.VNVBErrorCounter[2], errorcounter_.VNVBErrorCounter[3], errorcounter_.VNVBErrorCounter[4]);
+    summary += Form("  INVO   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.INVOErrorCounter[0], errorcounter_.INVOErrorCounter[1], 
+                    errorcounter_.INVOErrorCounter[2], errorcounter_.INVOErrorCounter[3], errorcounter_.INVOErrorCounter[4]);
     summary += "\n=============================================================================\n\n";
     summary += "  Err.1\t At least one bank required by the specified block is missing.\n";
     summary += "  Err.2\t Banks exist but get function returns empty data.\n";

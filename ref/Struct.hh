@@ -151,6 +151,13 @@ extern "C" {
         int TclOldErrorCounter[5];
         int CFhiErrorCounter[5];
         int QihiErrorCounter[5];
+        int TrqErrorCounter[5];
+        int QeleErrorCounter[5];
+        int QCalErrorCounter[5];
+        int KNVOErrorCounter[5];
+        int VNVOErrorCounter[5];
+        int VNVBErrorCounter[5];
+        int INVOErrorCounter[5];
     }errorcounter_;
 }
 

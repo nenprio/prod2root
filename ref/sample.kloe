@@ -2862,9 +2862,6 @@ C
 
          nTrkQ = Evt%TRKQ%n
          WRITE(*,*) "[DEBUG] nTrkQ: ", nTrkQ
-         IF ( nTrkQ < 0 .OR. nTrkQ > 100 ) THEN
-            WRITE(*,*) ERROR_BLOCK//'TRKQ - nTrkQ '//ERROR_DOMAIN, nTrkQ
-         END IF
          FlagQt = Evt%TRKQ%flagqt
 
          IF (nTrkQ > 0 .AND. nTrkQ <= 100) THEN
@@ -2884,11 +2881,11 @@ C           Here we print IndexNotValid or MissingData error, according
 C           to the value of nTrkQ
 C
             IF (nTrkQ == 0) THEN
-               WRITE(*,*) ERROR_MISS_DATA//'TRKQ'
+               TrqErrorCounter(2) = TrqErrorCounter(2) + 1
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'TRKQ - nTrkQ '//ERROR_INDEX, nTrkQ
-               nTrkQ = 0
+               TrqErrorCounter(3) = TrqErrorCounter(3) + 1
             END IF
+            nTrkQ = 0
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2914,9 +2911,6 @@ C-----------------------------------------------------------------------
       
                nQELE = Evt%QELE%n
                WRITE(*,*) "[DEBUG] nQELE: ", nQELE
-               IF ( nQELE < 0 .OR. nQELE > 32 ) THEN
-                  WRITE(*,*) ERROR_BLOCK//'QELE - nQELE '//ERROR_DOMAIN, nQELE
-               END IF
       
                IF (nQELE > 0 .AND. nQELE <= 32) THEN
                   DO iQELE=1, nQELE
@@ -2926,14 +2920,18 @@ C-----------------------------------------------------------------------
                        QTim(iQELE) = Evt%QELE%t(iQELE)
                  END DO
                ELSE
-                  WRITE(*,*) ERROR_BLOCK//'QELE - nQELE '//ERROR_INDEX, nQELE
+                  IF (nQELE == 0) THEN
+                     QeleErrorCounter(2) = QeleErrorCounter(2) + 1
+                  ELSE
+                     QeleErrorCounter(3) = QeleErrorCounter(3) + 1
+                  END IF
                   nQELE = 0
                END IF
             ELSE
-               WRITE(*,*) ERROR_MISS_DATA//'QELE'
+               QeleErrorCounter(1) = QeleErrorCounter(1) + 1
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'QELE'
+            QeleErrorCounter(5) = QeleErrorCounter(5) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -2962,7 +2960,7 @@ C
       
                nQCal = Evt%Qcal%n
                IF ( nQCal < 0 .OR. nQCal > 32 ) THEN
-                  WRITE(*,*) ERROR_BLOCK//'QCAL - nQCal '//ERROR_DOMAIN, nQCal
+                  QCalErrorCounter(4) = QCalErrorCounter(4) + 1
                END IF
       
                IF (nQCal > 0 .AND. nQCal <= 32) THEN
@@ -2974,14 +2972,18 @@ C
                        TQCal(iQCAL) = Evt%Qcal%t(iQCAL)
                  END DO
                ELSE
-                  WRITE(*,*) ERROR_BLOCK//'QCAL - nQCal '//ERROR_INDEX, nQCal
+                  IF (nQCal == 0) THEN
+                     QCalErrorCounter(2) = QCalErrorCounter(2) + 1
+                  ELSE
+                     QCalErrorCounter(3) = QCalErrorCounter(3) + 1
+                  END IF
                   nQCal = 0
                END IF
             ELSE
-               WRITE(*,*) ERROR_MISS_DATA//'QCAL'
+               QCalErrorCounter(1) = QCalErrorCounter(1) + 1
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'QCAL'
+            QCalErrorCounter(5) = QCalErrorCounter(5) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -3005,9 +3007,6 @@ C-----------------------------------------------------------------------
    
             nKNVO = Evt%KNVO%n
             WRITE(*,*) "[DEBUG] nKNVO: ", nKNVO
-            IF ( nKNVO < 0 .OR. nKNVO > 40 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'KNVO - nKNVO '//ERROR_DOMAIN, nKNVO
-            END IF
    
             IF (nKNVO > 0 .AND. nKNVO <= 40) THEN
                DO iiKNVO=1, nKNVO
@@ -3020,11 +3019,15 @@ C-----------------------------------------------------------------------
                     nVnvKNVO(iiKNVO) = Evt%KNVO%vlinked(iiKNVO)
               END DO
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'KNVO - nKNVO '//ERROR_INDEX, nKNVO
+               IF (nKNVO == 0) THEN
+                  KNVOErrorCounter(2) = KNVOErrorCounter(2) + 1
+               ELSE
+                  KNVOErrorCounter(3) = KNVOErrorCounter(3) + 1
+               END IF
                nKNVO = 0
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'KNVO'
+            KNVOErrorCounter(1) = KNVOErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -3049,9 +3052,6 @@ C-----------------------------------------------------------------------
    
             nVNVO = Evt%VNVO%n
             WRITE(*,*) "[DEBUG] nVNVO: ", nVNVO
-            IF ( nVNVO < 0 .OR. nVNVO > 40 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'VNVO - nVNVO '//ERROR_DOMAIN, nVNVO
-            END IF
    
             IF (nVNVO > 0 .AND. nVNVO <= 40) THEN
                DO iiVNVO=1, nVNVO
@@ -3065,11 +3065,15 @@ C-----------------------------------------------------------------------
                     fBnkVNVO(iiVNVO) = Evt%VNVO%fknv(iiVNVO)
               END DO
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'VNVO - nVNVO '//ERROR_INDEX, nVNVO
+               IF (nVNVO == 0) THEN
+                  VNVOErrorCounter(2) = VNVOErrorCounter(2) + 1
+               ELSE
+                  VNVOErrorCounter(3) = VNVOErrorCounter(3) + 1
+               END IF
                nVNVO = 0
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'VNVO'
+            VNVOErrorCounter(1) = VNVOErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -3087,7 +3091,7 @@ C-----------------------------------------------------------------------
    
             nBnksVNVO = Evt%VNVB%n
             IF ( nBnksVNVO < 0 .OR. nBnksVNVO > 40 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'VNVB - nBnksVNVO '//ERROR_DOMAIN, nBnksVNVO
+               VNVBErrorCounter(4) = VNVBErrorCounter(4) + 1
             END IF
    
             IF (nBnksVNVO > 0 .AND. nBnksVNVO <= 40) THEN
@@ -3095,11 +3099,15 @@ C-----------------------------------------------------------------------
                     iBank(iVNVB) = Evt%VNVB%ibank(iVNVB)
               END DO
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'VNVB - nBnksVNVO '//ERROR_INDEX, nBnksVNVO
+               IF (nBnksVNVO == 0) THEN
+                  VNVBErrorCounter(2) = VNVBErrorCounter(2) + 1
+               ELSE
+                  VNVBErrorCounter(3) = VNVBErrorCounter(3) + 1
+               END IF
                nBnksVNVO = 0
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'VNVB'
+            VNVBErrorCounter(1) = VNVBErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -3122,9 +3130,6 @@ C-----------------------------------------------------------------------
             ISTAT = GETNVO(evt%knvo,evt%vnvo,evt%vnvb,evt%invo)
    
             nINVO = Evt%INVO%n
-            IF ( nINVO < 0 .OR. nINVO > 40 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'INVO - nINVO '//ERROR_DOMAIN, nINVO
-            END IF
    
             IF (nINVO > 0 .AND. nINVO <= 40) THEN
                DO iINVO=1, nINVO
@@ -3137,11 +3142,15 @@ C-----------------------------------------------------------------------
                     SigmaLk(iINVO) = Evt%INVO%sigmalk(iINVO)
               END DO
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'INVO - nINVO '//ERROR_INDEX, nINVO
+               IF (nINVO == 0) THEN
+                  INVOErrorCounter(2) = INVOErrorCounter(2) + 1
+               ELSE
+                  INVOErrorCounter(3) = INVOErrorCounter(3) + 1
+               END IF
                nINVO = 0
             END IF
          ELSE
-            WRITE(*,*) ERROR_MISS_DATA//'INVO'
+            INVOErrorCounter(1) = INVOErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
