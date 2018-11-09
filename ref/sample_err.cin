@@ -56,6 +56,11 @@ C
       integer QCalErrorCounter(5), KNVOErrorCounter(5)
       integer VNVOErrorCounter(5), VNVBErrorCounter(5)
       integer INVOErrorCounter(5)
+      integer EcloErrorCounter(5), CSPSErrorCounter(5)
+      integer CluoErrorCounter(5), QTeleErrorCounter(5)
+      integer QCTHErrorCounter(5), CCleErrorCounter(5)
+      integer LeteErrorCounter(5), ITCEErrorCounter(5)
+      integer HeteErrorCounter(5)
 
 
       common /errorcounter/InfoErrorCounter, BPOSErrorCounter,
@@ -76,4 +81,9 @@ C
      1       CFhiErrorCounter, QihiErrorCounter,
      1       TrqErrorCounter, QeleErrorCounter, QCalErrorCounter,
      1       KNVOErrorCounter, VNVOErrorCounter, 
-     1       VNVBErrorCounter, INVOErrorCounter
+     1       VNVBErrorCounter, INVOErrorCounter,
+     1       EcloErrorCounter, CSPSErrorCounter,
+     1       CluoErrorCounter, QTeleErrorCounter,
+     1       QCTHErrorCounter, CCleErrorCounter,
+     1       LeteErrorCounter, ITCEErrorCounter,
+     1       HeteErrorCounter

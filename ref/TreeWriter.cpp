@@ -342,6 +342,33 @@ void TreeWriter::printSummary() {
     summary += Form("  INVO   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
                     errorcounter_.INVOErrorCounter[0], errorcounter_.INVOErrorCounter[1], 
                     errorcounter_.INVOErrorCounter[2], errorcounter_.INVOErrorCounter[3], errorcounter_.INVOErrorCounter[4]);
+    summary += Form("  ECLO   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.EcloErrorCounter[0], errorcounter_.EcloErrorCounter[1], 
+                    errorcounter_.EcloErrorCounter[2], errorcounter_.EcloErrorCounter[3], errorcounter_.EcloErrorCounter[4]);
+    summary += Form("  CSPS   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.CSPSErrorCounter[0], errorcounter_.CSPSErrorCounter[1], 
+                    errorcounter_.CSPSErrorCounter[2], errorcounter_.CSPSErrorCounter[3], errorcounter_.CSPSErrorCounter[4]);
+    summary += Form("  CLUO   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.CluoErrorCounter[0], errorcounter_.CluoErrorCounter[1], 
+                    errorcounter_.CluoErrorCounter[2], errorcounter_.CluoErrorCounter[3], errorcounter_.CluoErrorCounter[4]);
+    summary += Form("  QTELE  %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.QTeleErrorCounter[0], errorcounter_.QTeleErrorCounter[1], 
+                    errorcounter_.QTeleErrorCounter[2], errorcounter_.QTeleErrorCounter[3], errorcounter_.QTeleErrorCounter[4]);
+    summary += Form("  QCTH   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.QCTHErrorCounter[0], errorcounter_.QCTHErrorCounter[1], 
+                    errorcounter_.QCTHErrorCounter[2], errorcounter_.QCTHErrorCounter[3], errorcounter_.QCTHErrorCounter[4]);
+    summary += Form("  CCLE   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.CCleErrorCounter[0], errorcounter_.CCleErrorCounter[1], 
+                    errorcounter_.CCleErrorCounter[2], errorcounter_.CCleErrorCounter[3], errorcounter_.CCleErrorCounter[4]);
+    summary += Form("  LETE   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.LeteErrorCounter[0], errorcounter_.LeteErrorCounter[1], 
+                    errorcounter_.LeteErrorCounter[2], errorcounter_.LeteErrorCounter[3], errorcounter_.LeteErrorCounter[4]);
+    summary += Form("  ITCE   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.ITCEErrorCounter[0], errorcounter_.ITCEErrorCounter[1], 
+                    errorcounter_.ITCEErrorCounter[2], errorcounter_.ITCEErrorCounter[3], errorcounter_.ITCEErrorCounter[4]);
+    summary += Form("  HETE   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.HeteErrorCounter[0], errorcounter_.HeteErrorCounter[1], 
+                    errorcounter_.HeteErrorCounter[2], errorcounter_.HeteErrorCounter[3], errorcounter_.HeteErrorCounter[4]);
     summary += "\n=============================================================================\n\n";
     summary += "  Err.1\t At least one bank required by the specified block is missing.\n";
     summary += "  Err.2\t Banks exist but get function returns empty data.\n";

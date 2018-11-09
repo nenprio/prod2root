@@ -158,6 +158,15 @@ extern "C" {
         int VNVOErrorCounter[5];
         int VNVBErrorCounter[5];
         int INVOErrorCounter[5];
+        int EcloErrorCounter[5];
+        int CSPSErrorCounter[5];
+        int CluoErrorCounter[5];
+        int QTeleErrorCounter[5];
+        int QCTHErrorCounter[5];
+        int CCleErrorCounter[5];
+        int LeteErrorCounter[5];
+        int ITCEErrorCounter[5];
+        int HeteErrorCounter[5];
     }errorcounter_;
 }
 

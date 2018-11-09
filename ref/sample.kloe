@@ -3090,6 +3090,7 @@ C-----------------------------------------------------------------------
             istat = GETNVO(evt%knvo,evt%vnvo,evt%vnvb,evt%invo)
    
             nBnksVNVO = Evt%VNVB%n
+            WRITE(*,*) "[DEBUG] nBnksVNVO: ", nBnksVNVO
             IF ( nBnksVNVO < 0 .OR. nBnksVNVO > 40 ) THEN
                VNVBErrorCounter(4) = VNVBErrorCounter(4) + 1
             END IF
@@ -3130,6 +3131,7 @@ C-----------------------------------------------------------------------
             ISTAT = GETNVO(evt%knvo,evt%vnvo,evt%vnvb,evt%invo)
    
             nINVO = Evt%INVO%n
+            WRITE(*,*) "[DEBUG] nINVO: ", nINVO
    
             IF (nINVO > 0 .AND. nINVO <= 40) THEN
                DO iINVO=1, nINVO
@@ -3182,9 +3184,7 @@ C-----------------------------------------------------------------------
             ISTAT = GETECLO(evt%eclo)
    
             nCli = Evt%eclo%n
-            IF ( nCli < 0 .OR. nCli > 100 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'ECLO - nCli '//ERROR_DOMAIN, nCli
-            END IF
+            WRITE(*,*) "[DEBUG] nCli: ", nCli
    
             IF (nCli > 0 .AND. nCli <= 100) THEN
                DO iECLO=1, nCli
@@ -3196,17 +3196,19 @@ C-----------------------------------------------------------------------
                     Algo(iECLO) = Evt%eclo%algo(iECLO)
               END DO
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'ECLO - nCli '//ERROR_INDEX, nCli
+               IF (nCli == 0) THEN
+                  EcloErrorCounter(2) = EcloErrorCounter(2) + 1
+               ELSE
+                  EcloErrorCounter(3) = EcloErrorCounter(3) + 1
+               END IF
                nCli = 0
             END IF
 
             STATUS = BLOCAT(IW, 'ECLO', 2, IND, INDDAT)
             IF (STATUS.EQ.YESUCC) THEN
                nCli2 = Evt%eclo%n2
-               IF ( nCli2 < 0 .OR. nCli2 > 100 ) THEN
-                  WRITE(*,*) ERROR_BLOCK//'ECLO - nCli2 '//ERROR_DOMAIN, nCli2
-               END IF
-      
+               WRITE(*,*) "[DEBUG] nCli2: ", nCli2
+
                IF (nCli2 > 0 .AND. nCli2 <= 100) THEN
                   DO iECLO2=1, nCli2
                        ECLOWord2(iECLO2) = Evt%eclo%totword2(iECLO2)
@@ -3217,14 +3219,20 @@ C-----------------------------------------------------------------------
                        Algo2(iECLO2) = Evt%eclo%algo2(iECLO2)
                  END DO
                ELSE
-                  WRITE(*,*) ERROR_BLOCK//'ECLO - nCli2 '//ERROR_INDEX, nCli2
+                  IF (nCli2 == 0) THEN
+                     EcloErrorCounter(2) = EcloErrorCounter(2) + 1
+                  ELSE
+                     EcloErrorCounter(3) = EcloErrorCounter(3) + 1
+                  END IF
                   nCli2 = 0
                END IF
-            ELSE 
-               WRITE(*,*) ERROR_MISS_DATA//'ECLO (ECLO2)'
+C If only the 2nd banks is missing, then it returns the relative
+C variables as empty. Then, I didn't increment the error counter.
+C            ELSE 
+C               EcloErrorCounter(1) = EcloErrorCounter(1) + 1
             END IF
          ELSE 
-            WRITE(*,*) ERROR_MISS_DATA//'ECLO'
+            EcloErrorCounter(1) = EcloErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -3254,9 +3262,7 @@ C-----------------------------------------------------------------------
             ISTAT = GETCSPSSTRU(0,EVT%CSPS,EVT%CSPSMC)
    
             nCS = Evt%CSPS%Ncel
-            IF ( nCS < 0 .OR. nCS > 2000 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'CSPS - nCS '//ERROR_DOMAIN, nCS
-            END IF
+            WRITE(*,*) "[DEBUG] nCS: ", nCS
    
             IF (nCS > 0 .AND. nCS <= 2000) THEN
                DO iCSPS=1, nCS
@@ -3276,7 +3282,11 @@ C-----------------------------------------------------------------------
                     CSz(iCSPS) = Evt%Csps%Z(iCSPS)
               END DO
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'CSPS - nCS '//ERROR_INDEX, nCS
+               IF (nCS == 0) THEN
+                  CSPSErrorCounter(2) = CSPSErrorCounter(2) + 1
+               ELSE
+                  CSPSErrorCounter(3) = CSPSErrorCounter(3) + 1
+               END IF
                nCS = 0
             END IF
 C         
@@ -3303,9 +3313,6 @@ C
                STATUS = BLOCAT(IW, 'CHIT', 1, IND, INDDAT)
                IF (STATUS.EQ.YESUCC) THEN
                   nCSMC = Evt%CSPSMC%Ncel
-                  IF ( nCSMC < 0 .OR. nCSMC > 2000 ) THEN
-                     WRITE(*,*) ERROR_BLOCK//'CSPS - nCSMC '//ERROR_DOMAIN, nCSMC
-                  END IF
          
                   IF (nCSMC > 0 .AND. nCSMC <= 2000) THEN
                      DO iCSPSMC=1, nCSMC
@@ -3319,15 +3326,19 @@ C
                           CSMCe(iCSPSMC) = Evt%CSPSMC%E(iCSPSMC)
                     END DO
                   ELSE
-                     WRITE(*,*) ERROR_BLOCK//'CSPS - nCSMC '//ERROR_INDEX, nCSMC
+                     IF (nCSMC == 0) THEN
+                        CSPSErrorCounter(2) = CSPSErrorCounter(2) + 1
+                     ELSE
+                        CSPSErrorCounter(3) = CSPSErrorCounter(3) + 1
+                     END IF
                      nCSMC = 0
                   END IF
                ELSE 
-                  WRITE(*,*) ERROR_MISS_DATA//'CSPS (CHIT)'
+                  CSPSErrorCounter(1) = CSPSErrorCounter(1) + 1
                END IF
             END IF
          ELSE 
-            WRITE(*,*) ERROR_MISS_DATA//'CSPS'
+            CSPSErrorCounter(1) = CSPSErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -3350,9 +3361,7 @@ C-----------------------------------------------------------------------
             ISTAT = GETCLUOSTRU(Evt%CLUO)
    
             nCluO = Evt%CLUO%N
-            IF ( nCluO < 0 .OR. nCluO > 100 ) THEN
-               WRITE(*,*) ERROR_BLOCK//'CLUO - nCluO '//ERROR_DOMAIN, nCluO
-            END IF
+            WRITE(*,*) "[DEBUG] nCluO: ", nCluO
    
             IF (nCluO > 0 .AND. nCluO <= 100) THEN
                DO iCLUO=1, nCluO
@@ -3365,7 +3374,11 @@ C-----------------------------------------------------------------------
                     CluT(iCLUO) = Evt%CLUO%T(iCLUO)
               END DO
             ELSE
-               WRITE(*,*) ERROR_BLOCK//'CLUO - nCluO '//ERROR_INDEX, nCluO
+               IF (nCluO == 0) THEN
+                  CluoErrorCounter(2) = CluoErrorCounter(2) + 1
+               ELSE
+                  CluoErrorCounter(3) = CluoErrorCounter(3) + 1
+               END IF
                nCluO = 0
             END IF
 C         
@@ -3389,9 +3402,6 @@ C
                   ISTAT = GETCLUOMCSTRU(Evt%CLUO)
          
                   nMCPar = Evt%CLUOMC%Npar
-                  IF ( nMCPar < 0 .OR. nMCPar > 100 ) THEN
-                     WRITE(*,*) ERROR_BLOCK//'CLUO - nMCPar '//ERROR_DOMAIN, nMCPar
-                  END IF
          
                   IF (nMCPar > 0 .AND. nMCPar <= 100) THEN
                      DO iCLUOMC=1, nMCPar
@@ -3405,15 +3415,19 @@ C
                           CluMCt(iCLUOMC) = Evt%CLUOMC%T(iCLUOMC)
                     END DO
                   ELSE
-                     WRITE(*,*) ERROR_BLOCK//'CLUO - nMCPar '//ERROR_INDEX, nMCPar
+                     IF (nMCPar == 0) THEN
+                        CluoErrorCounter(2) = CluoErrorCounter(2) + 1
+                     ELSE
+                        CluoErrorCounter(3) = CluoErrorCounter(3) + 1
+                     END IF
                      nMCPar = 0
                   END IF
                ELSE 
-                  WRITE(*,*) ERROR_MISS_DATA//'CLUO (CLMO)'
+                  CluoErrorCounter(1) = CluoErrorCounter(1) + 1
                END IF
             END IF
          ELSE 
-            WRITE(*,*) ERROR_MISS_DATA//'CLUO'
+            CluoErrorCounter(1) = CluoErrorCounter(1) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -3444,31 +3458,29 @@ C          Returns Largest Bank Number
               ISTAT = GETQCALTSTRU(Evt%QCALT)
      
               nQCalT = Evt%QCALT%NEle
-              IF ( nQCalT < 0 .OR. nQCalT > 1920 ) THEN
-                 WRITE(*,*) ERROR_BLOCK//'QTELE - nQCalT '//ERROR_DOMAIN, nQCalT
-              END IF
+              WRITE(*,*) "[DEBUG] nQCalT: ", nQCalT
      
               IF (nQCalT > 0 .AND. nQCalT <= 1920) THEN
                  DO iQTELE=1, nQCalT
                     QLte_Hit(iQTELE) = Evt%QCALT%Nhit(iQTELE)
                     IF ( QLte_Hit(iQTELE) < 0 .OR. QLte_Hit(iQTELE) > 5 ) THEN
-                       WRITE(*,*) ERROR_BLOCK//'QTELE - QLte_Hit '//ERROR_DOMAIN, QLte_Hit(iQTELE)
+                       QTeleErrorCounter(4) = QTeleErrorCounter(4) + 1
                     END IF
                     QLte_Det(iQTELE) = Evt%QCALT%Qdet(iQTELE)
                     IF ( QLte_Det(iQTELE) < 0 .OR. QLte_Det(iQTELE) > 2 ) THEN
-                       WRITE(*,*) ERROR_BLOCK//'QTELE - QLte_Det '//ERROR_DOMAIN, QLte_Det(iQTELE)
+                       QTeleErrorCounter(4) = QTeleErrorCounter(4) + 1
                     END IF
                     QLte_Mod(iQTELE) = Evt%QCALT%Qmod(iQTELE)
                     IF ( QLte_Mod(iQTELE) < 0 .OR. QLte_Mod(iQTELE) > 11 ) THEN
-                       WRITE(*,*) ERROR_BLOCK//'QTELE - QLte_Mod '//ERROR_DOMAIN, QLte_Mod(iQTELE)
+                       QTeleErrorCounter(4) = QTeleErrorCounter(4) + 1
                     END IF
                     QLte_Pla(iQTELE) = Evt%QCALT%Qpla(iQTELE)
                     IF ( QLte_Pla(iQTELE) < 0 .OR. QLte_Pla(iQTELE) > 4 ) THEN
-                       WRITE(*,*) ERROR_BLOCK//'QTELE - QLte_Pla '//ERROR_DOMAIN, QLte_Pla(iQTELE)
+                       QTeleErrorCounter(4) = QTeleErrorCounter(4) + 1
                     END IF
                     QLte_Til(iQTELE) = Evt%QCALT%Qtil(iQTELE)
                     IF ( QLte_Til(iQTELE) < 0 .OR. QLte_Til(iQTELE) > 15 ) THEN
-                       WRITE(*,*) ERROR_BLOCK//'QTELE - QLte_Til '//ERROR_DOMAIN, QLte_Til(iQTELE)
+                       QTeleErrorCounter(4) = QTeleErrorCounter(4) + 1
                     END IF
                     QLte_Tim1(iQTELE) = Evt%QCALT%Time(iQTELE, 1)
                     QLte_Tim2(iQTELE) = Evt%QCALT%Time(iQTELE, 2)
@@ -3477,14 +3489,18 @@ C          Returns Largest Bank Number
                     QLte_Tim5(iQTELE) = Evt%QCALT%Time(iQTELE, 5)
                 END DO
               ELSE
-                 WRITE(*,*) ERROR_BLOCK//'QTELE - nQCalT '//ERROR_INDEX, nQCalT
+                 IF (nQCalT == 0) THEN
+                    QTeleErrorCounter(2) = QTeleErrorCounter(2) + 1
+                 ELSE
+                    QTeleErrorCounter(3) = QTeleErrorCounter(3) + 1
+                 END IF
                  nQCalT = 0
               END IF
            ELSE 
-              WRITE(*,*) ERROR_MISS_DATA//'QTELE'
+              QTeleErrorCounter(1) = QTeleErrorCounter(1) + 1
            END IF
         ELSE
-           WRITE(*,*) ERROR_MISS_DATA//'QTELE'
+           QTeleErrorCounter(5) = QTeleErrorCounter(5) + 1
         END IF
       END IF
 C-----------------------------------------------------------------------
@@ -3510,15 +3526,13 @@ C-----------------------------------------------------------------------
                ISTAT = GETQCTHSTRU(Evt%QCALTHIT)
       
                nQCTHEle = Evt%QCALTHIT%Nele
-               IF ( nQCTHEle < 0 .OR. nQCTHEle > 1920 ) THEN
-                  WRITE(*,*) ERROR_BLOCK//'QCTH - nQCTHEle '//ERROR_DOMAIN, nQCTHEle
-               END IF
+               WRITE(*,*) "[DEBUG] nQCTHEle: ", nQCTHEle
       
                IF (nQCTHEle > 0 .AND. nQCTHEle <= 1920) THEN
                   DO iQCTH=1, nQCTHEle
                      nQCTHHit(iQCTH) = Evt%QCALTHIT%Nhit(iQCTH)
                      IF ( nQCTHHit(iQCTH) < 1 .OR. nQCTHHit(iQCTH) > 5 ) THEN
-                        WRITE(*,*) ERROR_BLOCK//'QCTH - nQCTHHit '//ERROR_DOMAIN, nQCTHHit(iQCTH)
+                        QCTHErrorCounter(4) = QCTHErrorCounter(4) + 1
                      END IF
                      QCTHx(iQCTH) = Evt%QCALTHIT%X(iQCTH)
                      QCTHy(iQCTH) = Evt%QCALTHIT%Y(iQCTH)
@@ -3530,15 +3544,19 @@ C-----------------------------------------------------------------------
                      Tim5(iQCTH) = Evt%QCALTHIT%Time(iQCTH, 5)
                  END DO
                ELSE
-                  WRITE(*,*) ERROR_BLOCK//'QCTH - nQCTHEle '//ERROR_INDEX, nQCTHEle
+                  IF (nQCTHEle == 0) THEN
+                     QCTHErrorCounter(2) = QCTHErrorCounter(2) + 1
+                  ELSE
+                     QCTHErrorCounter(3) = QCTHErrorCounter(3) + 1
+                  END IF
                   nQCTHEle = 0
                END IF
             ELSE
-               WRITE(*,*) ERROR_MISS_DATA//'QCTH'
+               QCTHErrorCounter(1) = QCTHErrorCounter(1) + 1
             END IF
          ELSE
 C           TODO: Should I remove this control?
-            WRITE(*,*) ERROR_MISS_DATA//'QCTH'
+            QCTHErrorCounter(5) = QCTHErrorCounter(5) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -3560,37 +3578,39 @@ C-----------------------------------------------------------------------
                ISTAT = GETCCALTSTRU(EVT%CCLE)
       
                nCCle = Evt%CCLE%NEle
-               IF ( nCCle < 0 .OR. nCCle > 96 ) THEN
-                  WRITE(*,*) ERROR_BLOCK//'CCLE - nCCle '//ERROR_DOMAIN, nCCle
-               END IF
+               WRITE(*,*) "[DEBUG] nCCle: ", nCCle
       
                IF (nCCle > 0 .AND. nCCle <= 96) THEN
                   DO iCCLE=1, nCCle
                      CCle_Cry(iCCLE) = Evt%CCLE%Cry(iCCLE)
                      IF ( CCle_Cry(iCCLE) < 0 .OR. CCle_Cry(iCCLE) > 96 ) THEN
-                        WRITE(*,*) ERROR_BLOCK//'CCLE - CCle_Cry '//ERROR_DOMAIN, CCle_Cry(iCCLE)
+                        CCleErrorCounter(4) = CCleErrorCounter(4) + 1
                      END IF
                        CCle_Det(iCCLE) = Evt%CCLE%Det(iCCLE)
                      CCle_Col(iCCLE) = Evt%CCLE%Col(iCCLE)
                      IF ( CCle_Col(iCCLE) < 0 .OR. CCle_Col(iCCLE) > 24 ) THEN
-                        WRITE(*,*) ERROR_BLOCK//'CCLE - CCle_Col '//ERROR_DOMAIN, CCle_Col(iCCLE)
+                        CCleErrorCounter(4) = CCleErrorCounter(4) + 1
                      END IF
                      CCle_Pla(iCCLE) = Evt%CCLE%Pla(iCCLE)
                      IF ( CCle_Pla(iCCLE) < 0 .OR. CCle_Pla(iCCLE) > 2 ) THEN
-                        WRITE(*,*) ERROR_BLOCK//'CCLE - CCle_Pla '//ERROR_DOMAIN, CCle_Pla(iCCLE)
+                        CCleErrorCounter(4) = CCleErrorCounter(4) + 1
                      END IF
                        CCle_Time(iCCLE) = Evt%CCLE%T(iCCLE)
                  END DO
                ELSE
-                  WRITE(*,*) ERROR_BLOCK//'CCLE - nCCle '//ERROR_INDEX, nCCle
+                  IF (nCCle == 0) THEN
+                     CCleErrorCounter(2) = CCleErrorCounter(2) + 1
+                  ELSE
+                     CCleErrorCounter(3) = CCleErrorCounter(3) + 1
+                  END IF
                   nCCle = 0
                END IF
             ELSE
-               WRITE(*,*) ERROR_MISS_DATA//'CCLE'
+               CCleErrorCounter(1) = CCleErrorCounter(1) + 1
             END IF
          ELSE
 C           TODO: Should I remove this control?
-            WRITE(*,*) ERROR_MISS_DATA//'CCLE'
+            CCleErrorCounter(5) = CCleErrorCounter(5) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -3615,38 +3635,39 @@ C-----------------------------------------------------------------------
       
                LeteCalib = Evt%LETE%Calib
                nLete = Evt%LETE%NEle
-               IF ( nLete < 0 .OR. nLete > 40 ) THEN
-                  WRITE(*,*) ERROR_BLOCK//'LETE - nLete '//ERROR_DOMAIN, nLete
-               END IF
+               WRITE(*,*) "[DEBUG] nLete: ", nLete
       
                IF (nLete > 0 .AND. nLete <= 40) THEN
                   DO iLETE=1, nLete
                      Lete_Cry(iLETE) = Evt%LETE%Cry(iLETE)
                      IF ( Lete_Cry(iLETE) < 0 .OR. Lete_Cry(iLETE) > 40 ) THEN
-                        WRITE(*,*) ERROR_BLOCK//'LETE - Lete_Cry '//ERROR_DOMAIN, Lete_Cry(iLETE)
+                        LeteErrorCounter(4) = LeteErrorCounter(4) + 1
                      END IF
                        Lete_Det(iLETE) = Evt%LETE%Det(iLETE)
                      Lete_Col(iLETE) = Evt%LETE%Col(iLETE)
                      IF ( Lete_Col(iLETE) < 0 .OR. Lete_Col(iLETE) > 4 ) THEN
-                        WRITE(*,*) ERROR_BLOCK//'LETE - Lete_Col '//ERROR_DOMAIN, Lete_Col(iLETE)
+                        LeteErrorCounter(4) = LeteErrorCounter(4) + 1
                      END IF
                      Lete_Pla(iLETE) = Evt%LETE%Pla(iLETE)
                      IF ( Lete_Pla(iLETE) < 0 .OR. Lete_Pla(iLETE) > 5 ) THEN
-                        WRITE(*,*) ERROR_BLOCK//'LETE - Lete_Pla '//ERROR_DOMAIN, Lete_Pla(iLETE)
+                        LeteErrorCounter(4) = LeteErrorCounter(4) + 1
                      END IF
                        Lete_E(iLETE) = Evt%LETE%E(iLETE)
                        Lete_Time(iLETE) = Evt%LETE%T(iLETE)
                   END DO
                ELSE
                   WRITE(*,*) ERROR_BLOCK//'LETE - nLete '//ERROR_INDEX, nLete
+                  IF (nLete == 0) THEN
+                  ELSE
+                  END IF
                   nLete = 0
                END IF
             ELSE
-               WRITE(*,*) ERROR_MISS_DATA//'LETE'
+               LeteErrorCounter(1) = LeteErrorCounter(1) + 1
             END IF
          ELSE
 C           TODO: Should I remove this control?
-            WRITE(*,*) ERROR_MISS_DATA//'LETE'
+            LeteErrorCounter(5) = LeteErrorCounter(5) + 1
          END IF
       END IF
 C-----------------------------------------------------------------------
