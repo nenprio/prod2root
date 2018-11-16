@@ -29,8 +29,18 @@ void fillntu_(){
 // input:   -
 // output:  -
 void closetree_(){
+  writer->printSummary();   // Print the summary of execution errors
+
   delete writer;
   writer = NULL;
+}
+
+// Print on std output the current configuration of flags.
+//
+// input:   -
+// output:  -
+void showheader_(){
+    writer->printHeaderFlags();
 }
 
 #endif

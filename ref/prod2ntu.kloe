@@ -152,30 +152,30 @@ c
 c
 
       PRECLUSFLAG= .false.
-      CLUSFLAG   = .true.
+      CLUSFLAG   = .false.
       CELEFLAG   = .false.
-      TRIGFLAG   = .true.
-      TRKSFLAG   = .true.
-      TRKVFLAG   = .true.
+      TRIGFLAG   = .false.
+      TRKSFLAG   = .false.
+      TRKVFLAG   = .false.
       DHSPFLAG   = .false.
-      DPRSFLAG   = .true.
-      TCLOFLAG   = .true.
+      DPRSFLAG   = .false.
+      TCLOFLAG   = .false.
       CFHIFLAG   = .false.
-      QCALFLAG   = .true.
+      QCALFLAG   = .false.
       GEANFIFLAG = .false.
       TELEFLAG   = .false.
-      NVOFLAG    = .true.
-      ECLOFLAG   = .true.
-      ECLSFLAG   = .true.
-      GDCHITFG   = .true.
-      T0FLAG     = .true.
-      BPOSFLAG   = .true.
+      NVOFLAG    = .false.
+      ECLOFLAG   = .false.
+      ECLSFLAG   = .false.
+      GDCHITFG   = .false.
+      T0FLAG     = .false.
+      BPOSFLAG   = .false.
       BENEFLAG   = .false.
       DTCEFLAG   = .false.
       DTCE0FLAG  = .false.
       DCnHitsFlag= .false.
       DHREFLAG   = .false.
-      C2TRFlag   = .TRUE.  ! By Default --> Misc/Palutan 24-1-02
+      C2TRFlag   = .false.  ! By Default --> Misc/Palutan 24-1-02
       CSPSFlag   = .false.
       CSPSMCFlag = .false.
       CLUOFlag   = .false.
@@ -191,7 +191,7 @@ Cms -- adding 15-1-2000 to separate Hits from Cele and
 Cms    reduce space!
 Cms    Adding also Energy Flag to use Fixene forever
 c
-      cwrkflag   = .true.
+      cwrkflag   = .false.
       enecorflag = .false.
 c
       QCALTELEFLAG = .false.
@@ -2623,34 +2623,35 @@ ckpm
 
         ELSE IF( Verb.EQ.'DEFA' )THEN
            write(6,*)' Setting Default Conditions !'
+           write(6,*)' Setting ALL FALSE Conditions !'
            PRECLUSFLAG= .false.
-           CLUSFLAG   = .true.
+           CLUSFLAG   = .false.
            CELEFLAG   = .false.
-           TRIGFLAG   = .true.
-           TRKSFLAG   = .true.
-           TRKVFLAG   = .true.
+           TRIGFLAG   = .false.
+           TRKSFLAG   = .false.
+           TRKVFLAG   = .false.
            DHSPFLAG   = .false.
-           DPRSFLAG   = .true.
+           DPRSFLAG   = .false.
            DTCEFLAG   = .false.
            DTCE0FLAG  = .false.
            DCnHitsFlag= .false.
            DHREFLAG   = .false.
-           TCLOFLAG   = .true.
+           TCLOFLAG   = .false.
            TCLOLDFLAG   = .false.
            CFHIFLAG   = .false.
-           QCALFLAG   = .true.
-           GEANFIFLAG = .true.
+           QCALFLAG   = .false.
+           GEANFIFLAG = .false.
            TELEFLAG   = .false.
-           NVOFLAG    = .true.
-           ECLOFLAG   = .true.
-           ECLSFLAG   = .true.
-           GDCHITFG   = .true.
-           BPOSFLAG   = .true.
+           NVOFLAG    = .false.
+           ECLOFLAG   = .false.
+           ECLSFLAG   = .false.
+           GDCHITFG   = .false.
+           BPOSFLAG   = .false.
 	   BENEFLAG   = .false.
-           T0FLAG     = .true.
-	   C2TRFLAG   = .true.
+           T0FLAG     = .false.
+	   C2TRFLAG   = .false.
 	   ENECORFLAG = .false.
-           CWRKFLAG   = .true.
+           CWRKFLAG   = .false.
 	   CSPSFLAG   = .false.
 	   CSPSMCFLAG = .false.
 	   CLUOFLAG   = .false.

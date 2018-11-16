@@ -1,9 +1,11 @@
 #include <iostream>
 #include <TROOT.h>
+#include <TSystem.h>
 #include <TBranch.h>
 #include <TTree.h>
 #include "TreeWriter.hh"
 #include "Struct.hh"
+#include <TObjectTable.h>
 #include <typeinfo>
 
 // Creates the TreeWriter object, opens/creates output file
@@ -15,9 +17,6 @@ TreeWriter::TreeWriter() {
     outfile  = new TFile("sample.root", "recreate");    //Open or create file 
     fNewTree = new TTree("sample", "Event Infos");      //Create "sample" tree
  
-    // Print Header with Flags and values assigned
-    printHeaderFlags();
-
     // Block Info
     if(logicalToBool(sammenu_.infoFlag))        addBlockInfo();
     // Block Data
@@ -46,20 +45,18 @@ TreeWriter::TreeWriter() {
     if(logicalToBool(sammenu_.timeFlag))        addBlockTime();
     // Block Clu
     if(logicalToBool(sammenu_.clusFlag))        addBlockClu();
-    // Block CluMC
-    if(logicalToBool(sammenu_.cluMCFlag))      addBlockCluMC();
     // Block PreClu
     if(logicalToBool(sammenu_.preclusFlag))     addBlockPreClu();
     // Block CWRK
     if(logicalToBool(sammenu_.cwrkFlag))        addBlockCWRK();
     // Block Cele
     if(logicalToBool(sammenu_.celeFlag))        addBlockCele();
-    // Block CeleMC
-    if(logicalToBool(sammenu_.celeMCFlag))      addBlockCeleMC();
     // Block DTCE
     if(logicalToBool(sammenu_.dtceFlag))        addBlockDTCE();
     // Block DTCE0
     if(logicalToBool(sammenu_.dtce0Flag))       addBlockDTCE0();
+    // Block DCHITS
+    if(logicalToBool(sammenu_.dchitsFlag))      addBlockDCHits();
     // Block DHRE
     if(logicalToBool(sammenu_.dhreFlag))        addBlockDHRE();
     // Block DHSP
@@ -70,16 +67,12 @@ TreeWriter::TreeWriter() {
     if(logicalToBool(sammenu_.vtxFlag))         addBlockVtx();
     // Block Trks
     if(logicalToBool(sammenu_.trksFlag))        addBlockTrkS();
-    // Block TrkMC
-    if(logicalToBool(sammenu_.trkMCFlag))       addBlockTrkMC();
     // Block TrkOld
     if(logicalToBool(sammenu_.trkvOldFlag))     addBlockTrkVOld();
     // Block VtxOld
     if(logicalToBool(sammenu_.vtxOldFlag))      addBlockVtxOld();
     // Block TrkOld
     if(logicalToBool(sammenu_.trksOldFlag))     addBlockTrkSOld();
-    // Block TrkMCOld
-    if(logicalToBool(sammenu_.trkMCFlag))       addBlockTrkMCOld();
     // Block DHIT
     if(logicalToBool(sammenu_.dhitFlag))        addBlockDHIT();
     // Block DEDx
@@ -87,6 +80,7 @@ TreeWriter::TreeWriter() {
     // Block DPRS
     if(logicalToBool(sammenu_.dprsFlag))        addBlockDPRS();
     // Block MC
+    // TODO: Change name MC to GEANFI to avoid trubles with montecarloflag
     if(logicalToBool(sammenu_.geanfiFlag))      addBlockMC();
     // Block TCLO
     if(logicalToBool(sammenu_.tcloFlag))        addBlockTCLO();
@@ -112,16 +106,10 @@ TreeWriter::TreeWriter() {
     if(logicalToBool(sammenu_.invoFlag))        addBlockINVO();
     // Block ECLO 
     if(logicalToBool(sammenu_.ecloFlag))        addBlockECLO();
-    // Block ECLO2 
-    if(logicalToBool(sammenu_.eclo2Flag))       addBlockECLO2();
     // Block CSPS 
     if(logicalToBool(sammenu_.cspsFlag))        addBlockCSPS();
-    // Block CSPSMC 
-    if(logicalToBool(sammenu_.cspsMCFlag))      addBlockCSPSMC();
     // Block CLUO 
     if(logicalToBool(sammenu_.cluoFlag))        addBlockCluO();
-    // Block CLUOMC 
-    if(logicalToBool(sammenu_.cluoMCFlag))      addBlockCluOMC();
     // Block QTELE
     if(logicalToBool(sammenu_.qteleFlag))       addBlockQTELE();
     // Block QCTH 
@@ -137,6 +125,10 @@ TreeWriter::TreeWriter() {
 
     // Write to the disk
     outfile->Write();
+
+    // ROOT Memory Profiling
+    // Only for debugging
+    /* gObjectTable->Print(); */
 }
 
 // Closes output file and deallocates variables from memory.
@@ -158,9 +150,9 @@ TreeWriter::~TreeWriter() {
 }
 
 void TreeWriter::printHeaderFlags() {
-    TString header = "\n==========================================================================\n";
-    header = "\n                                   FLAGS\n";
-    header = "\n==========================================================================\n";
+    TString header = "\n\n==========================================================================\n";
+    header +=        "\n                             PROD2ROOT FLAGS\n";
+    header +=        "\n==========================================================================\n";
     
     header += Form("INFO: %d ",      logicalToBool(sammenu_.infoFlag)); 
     header += Form("DATA: %d ",      logicalToBool(sammenu_.dataFlag));
@@ -176,55 +168,219 @@ void TreeWriter::printHeaderFlags() {
     header += Form("PIZZA: %d ",     logicalToBool(sammenu_.pizzaFlag));
     header += Form("TIME: %d ",      logicalToBool(sammenu_.timeFlag));
     header += Form("CLUS: %d ",      logicalToBool(sammenu_.clusFlag));
-    header += Form("CLUMC: %d ",     logicalToBool(sammenu_.cluMCFlag));
-    header += Form("PRECLUS: %d\n",  logicalToBool(sammenu_.preclusFlag));
-    header += Form("CWRK: %d ",      logicalToBool(sammenu_.cwrkFlag));
+    header += Form("PRECLUS: %d ",  logicalToBool(sammenu_.preclusFlag));
+    header += Form("CWRK: %d\n",      logicalToBool(sammenu_.cwrkFlag));
     header += Form("CELE: %d ",      logicalToBool(sammenu_.celeFlag));
-    header += Form("CELEMC: %d ",    logicalToBool(sammenu_.celeMCFlag));
     header += Form("DTCE: %d ",      logicalToBool(sammenu_.dtceFlag));
     header += Form("DTCE0: %d ",     logicalToBool(sammenu_.dtce0Flag));
     header += Form("DCHITS: %d ",    logicalToBool(sammenu_.dchitsFlag));
     header += Form("DHRE: %d ",      logicalToBool(sammenu_.dhreFlag));
-    header += Form("DHSP: %d\n",     logicalToBool(sammenu_.dhspFlag));
+    header += Form("DHSP: %d ",     logicalToBool(sammenu_.dhspFlag));
     header += Form("TRKV: %d ",      logicalToBool(sammenu_.trkvFlag));
-    header += Form("VTX: %d ",       logicalToBool(sammenu_.vtxFlag));
+    header += Form("VTX: %d\n",       logicalToBool(sammenu_.vtxFlag));
     header += Form("TRKS: %d ",      logicalToBool(sammenu_.trksFlag));
-    header += Form("TRKMC: %d ",     logicalToBool(sammenu_.trkMCFlag));
     header += Form("TRKVOLD: %d ",   logicalToBool(sammenu_.trkvOldFlag));
     header += Form("VTXOLD: %d ",    logicalToBool(sammenu_.vtxOldFlag));
     header += Form("TRKSOLD: %d ",   logicalToBool(sammenu_.trksOldFlag));
-    header += Form("TRKMCOLD: %d\n", logicalToBool(sammenu_.trkMCOldFlag));
     header += Form("DHIT: %d ",      logicalToBool(sammenu_.dhitFlag));
+    header += Form("DEDX: %d ",      logicalToBool(sammenu_.dedxFlag));
     header += Form("DPRS: %d ",      logicalToBool(sammenu_.dprsFlag));
-    header += Form("GEANFI: %d ",    logicalToBool(sammenu_.geanfiFlag));
+    header += Form("GEANFI: %d\n",    logicalToBool(sammenu_.geanfiFlag));
     header += Form("TCLO: %d ",      logicalToBool(sammenu_.tcloFlag));
     header += Form("TCOLD: %d ",     logicalToBool(sammenu_.tcloldFlag));
     header += Form("CFHI: %d ",      logicalToBool(sammenu_.cfhiFlag));
     header += Form("QIHI: %d ",      logicalToBool(sammenu_.qihiFlag));
     header += Form("TRKQ: %d ",      logicalToBool(sammenu_.trkqFlag));
-    header += Form("QELE: %d\n",     logicalToBool(sammenu_.qeleFlag));
+    header += Form("QELE: %d ",     logicalToBool(sammenu_.qeleFlag));
     header += Form("QCAL: %d ",      logicalToBool(sammenu_.qcalFlag));
     header += Form("KNVO: %d ",      logicalToBool(sammenu_.knvoFlag));
-    header += Form("VNVO: %d ",      logicalToBool(sammenu_.vnvoFlag));
+    header += Form("VNVO: %d\n",      logicalToBool(sammenu_.vnvoFlag));
     header += Form("VNVB: %d ",      logicalToBool(sammenu_.vnvbFlag));
     header += Form("INVO: %d ",      logicalToBool(sammenu_.invoFlag));
     header += Form("ECLO: %d ",      logicalToBool(sammenu_.ecloFlag));
-    header += Form("ECLO2: %d ",     logicalToBool(sammenu_.eclo2Flag));
-    header += Form("CSPS: %d",      logicalToBool(sammenu_.cspsFlag));
-    header += Form("CSPSMC: %d\n",    logicalToBool(sammenu_.cspsMCFlag));
+    header += Form("CSPS: %d ",       logicalToBool(sammenu_.cspsFlag));
     header += Form("CLUO: %d ",      logicalToBool(sammenu_.cluoFlag));
-    header += Form("CLUOMC: %d ",    logicalToBool(sammenu_.cluoMCFlag));
     header += Form("QTELE: %d ",     logicalToBool(sammenu_.qteleFlag));
     header += Form("QCTH: %d ",      logicalToBool(sammenu_.qcthFlag));
-    header += Form("CCLE: %d ",     logicalToBool(sammenu_.ccleFlag));
+    header += Form("CCLE: %d\n",     logicalToBool(sammenu_.ccleFlag));
     header += Form("LETE: %d ",      logicalToBool(sammenu_.leteFlag));
     header += Form("ITCE: %d ",      logicalToBool(sammenu_.itceFlag));
     header += Form("HETE: %d ",      logicalToBool(sammenu_.heteFlag));
+    header += Form("MCFLG: %d ",     logicalToBool(sammenu_.mcFlg));
     header += "\n==========================================================================\n";
     
     // Print to std output
     std::cout << header.Data() << std::endl;
 }
+
+void TreeWriter::printSummary() {
+    TString summary = "\n\n=============================================================================\n";
+    summary +=         "\n                           PROD2ROOT SUMMARY\n";
+    summary +=         "\n=============================================================================\n";
+    summary +=         "  Block  Err.1\t\tErr.2\t\tErr.3\t\tErr.4\t\tErr.5";
+    summary +=         "\n=============================================================================\n";
+    summary += Form("  INFO   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.InfoErrorCounter[0], errorcounter_.InfoErrorCounter[1], 
+                    errorcounter_.InfoErrorCounter[2], errorcounter_.InfoErrorCounter[3], errorcounter_.InfoErrorCounter[4]);
+    summary += Form("  BPOS   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.BPOSErrorCounter[0], errorcounter_.BPOSErrorCounter[1], 
+                    errorcounter_.BPOSErrorCounter[2], errorcounter_.BPOSErrorCounter[3], errorcounter_.BPOSErrorCounter[4]);
+    summary += Form("  GDHIT  %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.GDHitErrorCounter[0], errorcounter_.GDHitErrorCounter[1], 
+                    errorcounter_.GDHitErrorCounter[2], errorcounter_.GDHitErrorCounter[3], errorcounter_.GDHitErrorCounter[4]);
+    summary += Form("  ECLS   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.EclsErrorCounter[0], errorcounter_.EclsErrorCounter[1], 
+                    errorcounter_.EclsErrorCounter[2], errorcounter_.EclsErrorCounter[3], errorcounter_.EclsErrorCounter[4]);
+    summary += Form("  TRIG   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.TrigErrorCounter[0], errorcounter_.TrigErrorCounter[1], 
+                    errorcounter_.TrigErrorCounter[2], errorcounter_.TrigErrorCounter[3], errorcounter_.TrigErrorCounter[4]);
+    summary += Form("  C2TRIG %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.C2TrigErrorCounter[0], errorcounter_.C2TrigErrorCounter[1], 
+                    errorcounter_.C2TrigErrorCounter[2], errorcounter_.C2TrigErrorCounter[3], errorcounter_.C2TrigErrorCounter[4]);
+    summary += Form("  TELLIN %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.TellinaErrorCounter[0], errorcounter_.TellinaErrorCounter[1], 
+                    errorcounter_.TellinaErrorCounter[2], errorcounter_.TellinaErrorCounter[3], errorcounter_.TellinaErrorCounter[4]);
+    summary += Form("  PIZZET %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.PizzettaErrorCounter[0], errorcounter_.PizzettaErrorCounter[1], 
+                    errorcounter_.PizzettaErrorCounter[2], errorcounter_.PizzettaErrorCounter[3], errorcounter_.PizzettaErrorCounter[4]);
+    summary += Form("  TORTA  %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.TortaErrorCounter[0], errorcounter_.TortaErrorCounter[1], 
+                    errorcounter_.TortaErrorCounter[2], errorcounter_.TortaErrorCounter[3], errorcounter_.TortaErrorCounter[4]);
+    summary += Form("  TELE   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.TeleErrorCounter[0], errorcounter_.TeleErrorCounter[1], 
+                    errorcounter_.TeleErrorCounter[2], errorcounter_.TeleErrorCounter[3], errorcounter_.TeleErrorCounter[4]);
+    summary += Form("  TIME   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.TimeErrorCounter[0], errorcounter_.TimeErrorCounter[1], 
+                    errorcounter_.TimeErrorCounter[2], errorcounter_.TimeErrorCounter[3], errorcounter_.TimeErrorCounter[4]);
+    summary += Form("  CLUS   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.ClusErrorCounter[0], errorcounter_.ClusErrorCounter[1], 
+                    errorcounter_.ClusErrorCounter[2], errorcounter_.ClusErrorCounter[3], errorcounter_.ClusErrorCounter[4]);
+    summary += Form("  PRECLU %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.PreClusErrorCounter[0], errorcounter_.PreClusErrorCounter[1], 
+                    errorcounter_.PreClusErrorCounter[2], errorcounter_.PreClusErrorCounter[3], errorcounter_.PreClusErrorCounter[4]);
+    summary += Form("  CWRK   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.CWRKErrorCounter[0], errorcounter_.CWRKErrorCounter[1], 
+                    errorcounter_.CWRKErrorCounter[2], errorcounter_.CWRKErrorCounter[3], errorcounter_.CWRKErrorCounter[4]);
+    summary += Form("  CELE   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.CeleErrorCounter[0], errorcounter_.CeleErrorCounter[1], 
+                    errorcounter_.CeleErrorCounter[2], errorcounter_.CeleErrorCounter[3], errorcounter_.CeleErrorCounter[4]);
+    summary += Form("  DTCE   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.DTCEErrorCounter[0], errorcounter_.DTCEErrorCounter[1], 
+                    errorcounter_.DTCEErrorCounter[2], errorcounter_.DTCEErrorCounter[3], errorcounter_.DTCEErrorCounter[4]);
+    summary += Form("  DTCE0  %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.DTCE0ErrorCounter[0], errorcounter_.DTCE0ErrorCounter[1], 
+                    errorcounter_.DTCE0ErrorCounter[2], errorcounter_.DTCE0ErrorCounter[3], errorcounter_.DTCE0ErrorCounter[4]);
+    summary += Form("  DCHITS %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.DCHitsErrorCounter[0], errorcounter_.DCHitsErrorCounter[1], 
+                    errorcounter_.DCHitsErrorCounter[2], errorcounter_.DCHitsErrorCounter[3], errorcounter_.DCHitsErrorCounter[4]);
+    summary += Form("  DHRE   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.DHREErrorCounter[0], errorcounter_.DHREErrorCounter[1], 
+                    errorcounter_.DHREErrorCounter[2], errorcounter_.DHREErrorCounter[3], errorcounter_.DHREErrorCounter[4]);
+    summary += Form("  DHSP   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.DHSPErrorCounter[0], errorcounter_.DHSPErrorCounter[1], 
+                    errorcounter_.DHSPErrorCounter[2], errorcounter_.DHSPErrorCounter[3], errorcounter_.DHSPErrorCounter[4]);
+    summary += Form("  TRKV   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.TrkVErrorCounter[0], errorcounter_.TrkVErrorCounter[1], 
+                    errorcounter_.TrkVErrorCounter[2], errorcounter_.TrkVErrorCounter[3], errorcounter_.TrkVErrorCounter[4]);
+    summary += Form("  VTX    %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.VtxErrorCounter[0], errorcounter_.VtxErrorCounter[1], 
+                    errorcounter_.VtxErrorCounter[2], errorcounter_.VtxErrorCounter[3], errorcounter_.VtxErrorCounter[4]);
+    summary += Form("  TRKS   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.TrksErrorCounter[0], errorcounter_.TrksErrorCounter[1], 
+                    errorcounter_.TrksErrorCounter[2], errorcounter_.TrksErrorCounter[3], errorcounter_.TrksErrorCounter[4]);
+    summary += Form("  TRVOLD %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.TrkVOldErrorCounter[0], errorcounter_.TrkVOldErrorCounter[1], 
+                    errorcounter_.TrkVOldErrorCounter[2], errorcounter_.TrkVOldErrorCounter[3], errorcounter_.TrkVOldErrorCounter[4]);
+    summary += Form("  VTXOLD %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.VtxOldErrorCounter[0], errorcounter_.VtxOldErrorCounter[1], 
+                    errorcounter_.VtxOldErrorCounter[2], errorcounter_.VtxOldErrorCounter[3], errorcounter_.VtxOldErrorCounter[4]);
+    summary += Form("  TRKOLD %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.TrksOldErrorCounter[0], errorcounter_.TrksOldErrorCounter[1], 
+                    errorcounter_.TrksOldErrorCounter[2], errorcounter_.TrksOldErrorCounter[3], errorcounter_.TrksOldErrorCounter[4]);
+    summary += Form("  DHIT   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.DHitErrorCounter[0], errorcounter_.DHitErrorCounter[1], 
+                    errorcounter_.DHitErrorCounter[2], errorcounter_.DHitErrorCounter[3], errorcounter_.DHitErrorCounter[4]);
+    summary += Form("  DEDx   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.DEDxErrorCounter[0], errorcounter_.DEDxErrorCounter[1], 
+                    errorcounter_.DEDxErrorCounter[2], errorcounter_.DEDxErrorCounter[3], errorcounter_.DEDxErrorCounter[4]);
+    summary += Form("  DPRS   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.DPRSErrorCounter[0], errorcounter_.DPRSErrorCounter[1], 
+                    errorcounter_.DPRSErrorCounter[2], errorcounter_.DPRSErrorCounter[3], errorcounter_.DPRSErrorCounter[4]);
+    summary += Form("  GEANFI %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.GeanfiErrorCounter[0], errorcounter_.GeanfiErrorCounter[1], 
+                    errorcounter_.GeanfiErrorCounter[2], errorcounter_.GeanfiErrorCounter[3], errorcounter_.GeanfiErrorCounter[4]);
+    summary += Form("  TCLO   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.TcloErrorCounter[0], errorcounter_.TcloErrorCounter[1], 
+                    errorcounter_.TcloErrorCounter[2], errorcounter_.TcloErrorCounter[3], errorcounter_.TcloErrorCounter[4]);
+    summary += Form("  TCLOLD %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.TclOldErrorCounter[0], errorcounter_.TclOldErrorCounter[1], 
+                    errorcounter_.TclOldErrorCounter[2], errorcounter_.TclOldErrorCounter[3], errorcounter_.TclOldErrorCounter[4]);
+    summary += Form("  CFHI   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.CFhiErrorCounter[0], errorcounter_.CFhiErrorCounter[1], 
+                    errorcounter_.CFhiErrorCounter[2], errorcounter_.CFhiErrorCounter[3], errorcounter_.CFhiErrorCounter[4]);
+    summary += Form("  QIHI   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.QihiErrorCounter[0], errorcounter_.QihiErrorCounter[1], 
+                    errorcounter_.QihiErrorCounter[2], errorcounter_.QihiErrorCounter[3], errorcounter_.QihiErrorCounter[4]);
+    summary += Form("  TRQ    %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.TrqErrorCounter[0], errorcounter_.TrqErrorCounter[1], 
+                    errorcounter_.TrqErrorCounter[2], errorcounter_.TrqErrorCounter[3], errorcounter_.TrqErrorCounter[4]);
+    summary += Form("  QELE   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.QeleErrorCounter[0], errorcounter_.QeleErrorCounter[1], 
+                    errorcounter_.QeleErrorCounter[2], errorcounter_.QeleErrorCounter[3], errorcounter_.QeleErrorCounter[4]);
+    summary += Form("  QCAL   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.QCalErrorCounter[0], errorcounter_.QCalErrorCounter[1], 
+                    errorcounter_.QCalErrorCounter[2], errorcounter_.QCalErrorCounter[3], errorcounter_.QCalErrorCounter[4]);
+    summary += Form("  KNVO   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.KNVOErrorCounter[0], errorcounter_.KNVOErrorCounter[1], 
+                    errorcounter_.KNVOErrorCounter[2], errorcounter_.KNVOErrorCounter[3], errorcounter_.KNVOErrorCounter[4]);
+    summary += Form("  VNVO   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.VNVOErrorCounter[0], errorcounter_.VNVOErrorCounter[1], 
+                    errorcounter_.VNVOErrorCounter[2], errorcounter_.VNVOErrorCounter[3], errorcounter_.VNVOErrorCounter[4]);
+    summary += Form("  VNVB   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.VNVBErrorCounter[0], errorcounter_.VNVBErrorCounter[1], 
+                    errorcounter_.VNVBErrorCounter[2], errorcounter_.VNVBErrorCounter[3], errorcounter_.VNVBErrorCounter[4]);
+    summary += Form("  INVO   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.INVOErrorCounter[0], errorcounter_.INVOErrorCounter[1], 
+                    errorcounter_.INVOErrorCounter[2], errorcounter_.INVOErrorCounter[3], errorcounter_.INVOErrorCounter[4]);
+    summary += Form("  ECLO   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.EcloErrorCounter[0], errorcounter_.EcloErrorCounter[1], 
+                    errorcounter_.EcloErrorCounter[2], errorcounter_.EcloErrorCounter[3], errorcounter_.EcloErrorCounter[4]);
+    summary += Form("  CSPS   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.CSPSErrorCounter[0], errorcounter_.CSPSErrorCounter[1], 
+                    errorcounter_.CSPSErrorCounter[2], errorcounter_.CSPSErrorCounter[3], errorcounter_.CSPSErrorCounter[4]);
+    summary += Form("  CLUO   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.CluoErrorCounter[0], errorcounter_.CluoErrorCounter[1], 
+                    errorcounter_.CluoErrorCounter[2], errorcounter_.CluoErrorCounter[3], errorcounter_.CluoErrorCounter[4]);
+    summary += Form("  QTELE  %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.QTeleErrorCounter[0], errorcounter_.QTeleErrorCounter[1], 
+                    errorcounter_.QTeleErrorCounter[2], errorcounter_.QTeleErrorCounter[3], errorcounter_.QTeleErrorCounter[4]);
+    summary += Form("  QCTH   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.QCTHErrorCounter[0], errorcounter_.QCTHErrorCounter[1], 
+                    errorcounter_.QCTHErrorCounter[2], errorcounter_.QCTHErrorCounter[3], errorcounter_.QCTHErrorCounter[4]);
+    summary += Form("  CCLE   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.CCleErrorCounter[0], errorcounter_.CCleErrorCounter[1], 
+                    errorcounter_.CCleErrorCounter[2], errorcounter_.CCleErrorCounter[3], errorcounter_.CCleErrorCounter[4]);
+    summary += Form("  LETE   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.LeteErrorCounter[0], errorcounter_.LeteErrorCounter[1], 
+                    errorcounter_.LeteErrorCounter[2], errorcounter_.LeteErrorCounter[3], errorcounter_.LeteErrorCounter[4]);
+    summary += Form("  ITCE   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.ITCEErrorCounter[0], errorcounter_.ITCEErrorCounter[1], 
+                    errorcounter_.ITCEErrorCounter[2], errorcounter_.ITCEErrorCounter[3], errorcounter_.ITCEErrorCounter[4]);
+    summary += Form("  HETE   %d\t\t%d\t\t%d\t\t%d\t\t%d\n", 
+                    errorcounter_.HeteErrorCounter[0], errorcounter_.HeteErrorCounter[1], 
+                    errorcounter_.HeteErrorCounter[2], errorcounter_.HeteErrorCounter[3], errorcounter_.HeteErrorCounter[4]);
+    summary += "\n=============================================================================\n\n";
+    summary += "  Err.1\t At least one bank required by the specified block is missing.\n";
+    summary += "  Err.2\t Banks exist but get function returns empty data.\n";
+    summary += "  Err.3\t Get-function returns an invalid index\n\t\t(negative or bigger than expected).\n";
+    summary += "  Err.4\t Get function returns a value out of domain for a variable.\n";
+    summary += "  Err.5\t Require MC data and newer blocks HETE, ITCE, ...TODO remove it\n";
+    summary += "\n=============================================================================\n";
+
+    // Print summary to std output
+    std::cout << summary.Data() << std::endl;
+}
+
 // Add to the tree all the branches related to the block Info.
 //
 // input:   -
@@ -449,21 +605,6 @@ void TreeWriter::addBlockTime() {
     fNewTree->Branch("TBunch",     &evttime_.TBunch,     "TBunch/F");
 }
 
-// Add to the tree all the branches realted to the block CluMC.
-//
-// input:   -
-// output: -
-void TreeWriter::addBlockCluMC() {
-    fNewTree->Branch("nCluMC", &clumc_.NCluMc, "NCluMc/I");
-    fNewTree->Branch("nPar",   &clumc_.NPar,   "NPar[NCluMc]/I");
-    fNewTree->Branch("PNum1",  &clumc_.PNum1,  "PNum1[NCluMc]/I");
-    fNewTree->Branch("Pid1",   &clumc_.Pid1,   "Pid1[NCluMc]/I");
-    fNewTree->Branch("PNum2",  &clumc_.PNum2,  "PNum2[NCluMc]/I");
-    fNewTree->Branch("Pid2",   &clumc_.Pid2,   "Pid2[NCluMc]/I");
-    fNewTree->Branch("PNum3",  &clumc_.PNum3,  "PNum3[NCluMc]/I");
-    fNewTree->Branch("Pid3",   &clumc_.Pid3,   "Pid3[NCluMc]/I");
-}
-
 // Add to the tree all the branches realted to the block Clu.
 //
 // input:   -
@@ -483,6 +624,17 @@ void TreeWriter::addBlockClu() {
     fNewTree->Branch("ZrmsCl", &evtclu_.ZrmsCl, "ZrmsCl[NClu]/F");
     fNewTree->Branch("TrmsCl", &evtclu_.TrmsCl, "TrmsCl[NClu]/F");
     fNewTree->Branch("FlagCl", &evtclu_.FlagCl, "FlagCl[NClu]/I");
+    // Create MC leaves only if they exists
+    if (logicalToBool(sammenu_.mcFlg)) {
+        fNewTree->Branch("nCluMC", &evtclu_.NCluMc, "NCluMc/I");
+        fNewTree->Branch("nPar",   &evtclu_.NPar,   "NPar[NCluMc]/I");
+        fNewTree->Branch("PNum1",  &evtclu_.PNum1,  "PNum1[NCluMc]/I");
+        fNewTree->Branch("Pid1",   &evtclu_.Pid1,   "Pid1[NCluMc]/I");
+        fNewTree->Branch("PNum2",  &evtclu_.PNum2,  "PNum2[NCluMc]/I");
+        fNewTree->Branch("Pid2",   &evtclu_.Pid2,   "Pid2[NCluMc]/I");
+        fNewTree->Branch("PNum3",  &evtclu_.PNum3,  "PNum3[NCluMc]/I");
+        fNewTree->Branch("Pid3",   &evtclu_.Pid3,   "Pid3[NCluMc]/I");
+    }
 }
 
 // Add to the tree all the branches realted to the block PreClu.
@@ -535,22 +687,18 @@ void TreeWriter::addBlockCele() {
     fNewTree->Branch("Ta",      &cele_.Ta,      "Ta[NCel]/F");
     fNewTree->Branch("Eb",      &cele_.Eb,      "Eb[NCel]/F");
     fNewTree->Branch("Tb",      &cele_.Tb,      "Tb[NCel]/F");
-}
 
-// Add to the tree all the branches realted to the block CeleMC.
-//
-// input:	-
-// output: -
-void TreeWriter::addBlockCeleMC() {
-    fNewTree->Branch("nCelMc",  &celemc_.NCelMc,  "NCelMc/I");
-    fNewTree->Branch("EMc",     &celemc_.EMc,     "EMc[NCelMc]/F");
-    fNewTree->Branch("TMc",     &celemc_.TMc,     "TMc[NCelMc]/F");
-    fNewTree->Branch("XMc",     &celemc_.XMc,     "XMc[NCelMc]/F");
-    fNewTree->Branch("YMc",     &celemc_.YMc,     "YMc[NCelMc]/F");
-    fNewTree->Branch("ZMc",     &celemc_.ZMc,     "ZMc[NCelMc]/F");
-    fNewTree->Branch("PTyp",    &celemc_.PTyp,    "PTyp[NCelMc]/I");
-    fNewTree->Branch("KNum",    &celemc_.KNum,    "KNum[NCelMc]/I");
-    fNewTree->Branch("nHit",    &celemc_.NHit,    "NHit[NCelMc]/I");
+    if(logicalToBool(sammenu_.mcFlg)) {
+        fNewTree->Branch("nCelMc",  &cele_.NCelMc,  "NCelMc/I");
+        fNewTree->Branch("EMc",     &cele_.EMc,     "EMc[NCelMc]/F");
+        fNewTree->Branch("TMc",     &cele_.TMc,     "TMc[NCelMc]/F");
+        fNewTree->Branch("XMc",     &cele_.XMc,     "XMc[NCelMc]/F");
+        fNewTree->Branch("YMc",     &cele_.YMc,     "YMc[NCelMc]/F");
+        fNewTree->Branch("ZMc",     &cele_.ZMc,     "ZMc[NCelMc]/F");
+        fNewTree->Branch("PTyp",    &cele_.PTyp,    "PTyp[NCelMc]/I");
+        fNewTree->Branch("KNum",    &cele_.KNum,    "KNum[NCelMc]/I");
+        fNewTree->Branch("nHit",    &cele_.NHit,    "NHit[NCelMc]/I");
+    }
 }
 
 // Add to the tree all the branches realted to the block DTCE.
@@ -712,48 +860,42 @@ void TreeWriter::addBlockTrkS() {
     fNewTree->Branch("nMskInk", &trks_.nMskInk, "nMskInk[nT]/I");
     fNewTree->Branch("Chi2Fit", &trks_.Chi2Fit, "Chi2Fit[nT]/F");
     fNewTree->Branch("Chi2Ms",  &trks_.Chi2Ms,  "Chi2Ms[nT]/F");
-}
 
-// Add to the tree all the branches realted to the block TrkMC.
-//
-// input:	-
-// output: -
-void TreeWriter::addBlockTrkMC() {
-    fNewTree->Branch("nTfMC",   &trkmc_.nTfMC,   "nTfMC/I");
-    fNewTree->Branch("NConTr",  &trkmc_.NConTr,  "NConTr[nTfMC]/I");
-    fNewTree->Branch("TrkIne1", &trkmc_.TrkIne1, "TrkIne1[nTfMC]/I");
-    fNewTree->Branch("TrType1", &trkmc_.TrType1, "TrType1[nTfMC]/I");
-    fNewTree->Branch("TrHits1", &trkmc_.TrHits1, "TrHits1[nTfMC]/I");
-    fNewTree->Branch("TrkIne2", &trkmc_.TrkIne2, "TrkIne2[nTfMC]/I");
-    fNewTree->Branch("TrType2", &trkmc_.TrType2, "TrType2[nTfMC]/I");
-    fNewTree->Branch("TrHits2", &trkmc_.TrHits2, "TrHits2[nTfMC]/I");
-    fNewTree->Branch("TrkIn3",  &trkmc_.TrkIn3,  "TrkIn3[nTfMC]/I");
-    fNewTree->Branch("TrType3", &trkmc_.TrType3, "TrType3[nTfMC]/I");
-    fNewTree->Branch("TrHits3", &trkmc_.TrHits3, "TrHits3[nTfMC]/I");
-    fNewTree->Branch("xFMC",    &trkmc_.xFMC,    "xFMC[nTfMC]/F");
-    fNewTree->Branch("yFMC",    &trkmc_.yFMC,    "yFMC[nTfMC]/F");
-    fNewTree->Branch("zFMC",    &trkmc_.zFMC,    "zFMC[nTfMC]/F");
-    fNewTree->Branch("PxFMC",   &trkmc_.PxFMC,   "PxFMC[nTfMC]/F");
-    fNewTree->Branch("PyFMC",   &trkmc_.PyFMC,   "PyFMC[nTfMC]/F");
-    fNewTree->Branch("PzFMC",   &trkmc_.PzFMC,   "PzFMC[nTfMC]/F");
-    fNewTree->Branch("xLMC",    &trkmc_.xLMC,    "xLMC[nTfMC]/F");
-    fNewTree->Branch("yLMC",    &trkmc_.yLMC,    "yLMC[nTfMC]/F");
-    fNewTree->Branch("zLMC",    &trkmc_.zLMC,    "zLMC[nTfMC]/F");
-    fNewTree->Branch("PxLMC",   &trkmc_.PxLMC,   "PxLMC[nTfMC]/F");
-    fNewTree->Branch("PyLMC",   &trkmc_.PyLMC,   "PyLMC[nTfMC]/F");
-    fNewTree->Branch("PzLMC",   &trkmc_.PzLMC,   "PzLMC[nTfMC]/F");
-    fNewTree->Branch("xFMC2",   &trkmc_.xFMC2,   "xFMC2[nTfMC]/F");
-    fNewTree->Branch("yFMC2",   &trkmc_.yFMC2,   "yFMC2[nTfMC]/F");
-    fNewTree->Branch("zFMC2",   &trkmc_.zFMC2,   "zFMC2[nTfMC]/F");
-    fNewTree->Branch("PxFMC2",  &trkmc_.PxFMC2,  "PxFMC2[nTfMC]/F");
-    fNewTree->Branch("PyFMC2",  &trkmc_.PyFMC2,  "PyFMC2[nTfMC]/F");
-    fNewTree->Branch("PzFMC2",  &trkmc_.PzFMC2,  "PzFMC2[nTfMC]/F");
-    fNewTree->Branch("xLMC2",   &trkmc_.xLMC2,   "xLMC2[nTfMC]/F");
-    fNewTree->Branch("yLMC2",   &trkmc_.yLMC2,   "yLMC2[nTfMC]/F");
-    fNewTree->Branch("zLMC2",   &trkmc_.zLMC2,   "zLMC2[nTfMC]/F");
-    fNewTree->Branch("PxLMC2",  &trkmc_.PxLMC2,  "PxLMC2[nTfMC]/F");
-    fNewTree->Branch("PyLMC2",  &trkmc_.PyLMC2,  "PyLMC2[nTfMC]/F");
-    fNewTree->Branch("PzLMC2",  &trkmc_.PzLMC2,  "PzLMC2[nTfMC]/F");
+    fNewTree->Branch("nTfMC",   &trks_.nTfMC,   "nTfMC/I");
+    fNewTree->Branch("NConTr",  &trks_.NConTr,  "NConTr[nTfMC]/I");
+    fNewTree->Branch("TrkIne1", &trks_.TrkIne1, "TrkIne1[nTfMC]/I");
+    fNewTree->Branch("TrType1", &trks_.TrType1, "TrType1[nTfMC]/I");
+    fNewTree->Branch("TrHits1", &trks_.TrHits1, "TrHits1[nTfMC]/I");
+    fNewTree->Branch("TrkIne2", &trks_.TrkIne2, "TrkIne2[nTfMC]/I");
+    fNewTree->Branch("TrType2", &trks_.TrType2, "TrType2[nTfMC]/I");
+    fNewTree->Branch("TrHits2", &trks_.TrHits2, "TrHits2[nTfMC]/I");
+    fNewTree->Branch("TrkIn3",  &trks_.TrkIn3,  "TrkIn3[nTfMC]/I");
+    fNewTree->Branch("TrType3", &trks_.TrType3, "TrType3[nTfMC]/I");
+    fNewTree->Branch("TrHits3", &trks_.TrHits3, "TrHits3[nTfMC]/I");
+    fNewTree->Branch("xFMC",    &trks_.xFMC,    "xFMC[nTfMC]/F");
+    fNewTree->Branch("yFMC",    &trks_.yFMC,    "yFMC[nTfMC]/F");
+    fNewTree->Branch("zFMC",    &trks_.zFMC,    "zFMC[nTfMC]/F");
+    fNewTree->Branch("PxFMC",   &trks_.PxFMC,   "PxFMC[nTfMC]/F");
+    fNewTree->Branch("PyFMC",   &trks_.PyFMC,   "PyFMC[nTfMC]/F");
+    fNewTree->Branch("PzFMC",   &trks_.PzFMC,   "PzFMC[nTfMC]/F");
+    fNewTree->Branch("xLMC",    &trks_.xLMC,    "xLMC[nTfMC]/F");
+    fNewTree->Branch("yLMC",    &trks_.yLMC,    "yLMC[nTfMC]/F");
+    fNewTree->Branch("zLMC",    &trks_.zLMC,    "zLMC[nTfMC]/F");
+    fNewTree->Branch("PxLMC",   &trks_.PxLMC,   "PxLMC[nTfMC]/F");
+    fNewTree->Branch("PyLMC",   &trks_.PyLMC,   "PyLMC[nTfMC]/F");
+    fNewTree->Branch("PzLMC",   &trks_.PzLMC,   "PzLMC[nTfMC]/F");
+    fNewTree->Branch("xFMC2",   &trks_.xFMC2,   "xFMC2[nTfMC]/F");
+    fNewTree->Branch("yFMC2",   &trks_.yFMC2,   "yFMC2[nTfMC]/F");
+    fNewTree->Branch("zFMC2",   &trks_.zFMC2,   "zFMC2[nTfMC]/F");
+    fNewTree->Branch("PxFMC2",  &trks_.PxFMC2,  "PxFMC2[nTfMC]/F");
+    fNewTree->Branch("PyFMC2",  &trks_.PyFMC2,  "PyFMC2[nTfMC]/F");
+    fNewTree->Branch("PzFMC2",  &trks_.PzFMC2,  "PzFMC2[nTfMC]/F");
+    fNewTree->Branch("xLMC2",   &trks_.xLMC2,   "xLMC2[nTfMC]/F");
+    fNewTree->Branch("yLMC2",   &trks_.yLMC2,   "yLMC2[nTfMC]/F");
+    fNewTree->Branch("zLMC2",   &trks_.zLMC2,   "zLMC2[nTfMC]/F");
+    fNewTree->Branch("PxLMC2",  &trks_.PxLMC2,  "PxLMC2[nTfMC]/F");
+    fNewTree->Branch("PyLMC2",  &trks_.PyLMC2,  "PyLMC2[nTfMC]/F");
+    fNewTree->Branch("PzLMC2",  &trks_.PzLMC2,  "PzLMC2[nTfMC]/F");
 }
 
 // Add to the tree all the branches realted to the block TrkVOld.
@@ -844,52 +986,47 @@ void TreeWriter::addBlockTrkSOld() {
     fNewTree->Branch("CotPca2Old",  &trkold_.CotPca2Old,  "CotPca2Old[nTOld]/F");
     fNewTree->Branch("PhiPca2Old",  &trkold_.PhiPca2Old,  "PhiPca2Old[nTOld]/F");
     fNewTree->Branch("nPrhiTOld",   &trkold_.nPrhiTOld,   "nPrhiTOld[nTOld]/I");
-    fNewTree->Branch("nFifthITOld", &trkold_.nFifthITOld, "nFifthITOld[nTOld]/I");
+    fNewTree->Branch("nFitHitOld", &trkold_.nFitHitOld, "nFitHitOld[nTOld]/I");
     fNewTree->Branch("nMskInkOld",  &trkold_.nMskInkOld,  "nMskInkOld[nTOld]/I");
     fNewTree->Branch("Chi2FitOld",  &trkold_.Chi2FitOld,  "Chi2FitOld[nTOld]/F");
     fNewTree->Branch("Chi2MSOld",   &trkold_.Chi2MSOld,   "Chi2MSOld[nTOld]/F");
-}
-
-// Add to the tree all the branches realted to the block TrkMCOld.
-//
-// input:	-
-// output: -
-void TreeWriter::addBlockTrkMCOld() {
-    fNewTree->Branch("nTfMCOld",   &trkmcold_.nTfMCOld,   "nTfMCOld/I");
-    fNewTree->Branch("nContrOld",  &trkmcold_.nContrOld,  "nContrOld[nTfMCOld]/I");
-    fNewTree->Branch("TrkIne1Old", &trkmcold_.TrkIne1Old, "TrkIne1Old[nTfMCOld]/I");
-    fNewTree->Branch("TrType1Old", &trkmcold_.TrType1Old, "TrType1Old[nTfMCOld]/I");
-    fNewTree->Branch("TrHits1Old", &trkmcold_.TrHits1Old, "TrHits1Old[nTfMCOld]/I");
-    fNewTree->Branch("TrkIne2Old", &trkmcold_.TrkIne2Old, "TrkIne2Old[nTfMCOld]/I");
-    fNewTree->Branch("TrType2Old", &trkmcold_.TrType2Old, "TrType2Old[nTfMCOld]/I");
-    fNewTree->Branch("TrHits2Old", &trkmcold_.TrHits2Old, "TrHits2Old[nTfMCOld]/I");
-    fNewTree->Branch("TrkIne3Old", &trkmcold_.TrkIne3Old, "TrkIne3Old[nTfMCOld]/I");
-    fNewTree->Branch("TrType3Old", &trkmcold_.TrType3Old, "TrType3Old[nTfMCOld]/I");
-    fNewTree->Branch("TrHits3Old", &trkmcold_.TrHits3Old, "TrHits3Old[nTfMCOld]/I");
-    fNewTree->Branch("xFMCOld",    &trkmcold_.xFMCOld,    "xFMCOld[nTfMCOld]/F");
-    fNewTree->Branch("yFMCOld",    &trkmcold_.yFMCOld,    "yFMCOld[nTfMCOld]/F");
-    fNewTree->Branch("zFMCOld",    &trkmcold_.zFMCOld,    "zFMCOld[nTfMCOld]/F");
-    fNewTree->Branch("PxFMCOld",   &trkmcold_.PxFMCOld,   "PxFMCOld[nTfMCOld]/F");
-    fNewTree->Branch("PyFMCOld",   &trkmcold_.PyFMCOld,   "PyFMCOld[nTfMCOld]/F");
-    fNewTree->Branch("PzFMCOld",   &trkmcold_.PzFMCOld,   "PzFMCOld[nTfMCOld]/F");
-    fNewTree->Branch("xLMCOld",    &trkmcold_.xLMCOld,    "xLMCOld[nTfMCOld]/F");
-    fNewTree->Branch("yLMCOld",    &trkmcold_.yLMCOld,    "yLMCOld[nTfMCOld]/F");
-    fNewTree->Branch("zLMCOld",    &trkmcold_.zLMCOld,    "zLMCOld[nTfMCOld]/F");
-    fNewTree->Branch("PxLMCOld",   &trkmcold_.PxLMCOld,   "PxLMCOld[nTfMCOld]/F");
-    fNewTree->Branch("PyLMCOld",   &trkmcold_.PyLMCOld,   "PyLMCOld[nTfMCOld]/F");
-    fNewTree->Branch("PzLMCOld",   &trkmcold_.PzLMCOld,   "PzLMCOld[nTfMCOld]/F");
-    fNewTree->Branch("xFMC2Old",   &trkmcold_.xFMC2Old,   "xFMC2Old[nTfMCOld]/F");
-    fNewTree->Branch("yFMC2Old",   &trkmcold_.yFMC2Old,   "yFMC2Old[nTfMCOld]/F");
-    fNewTree->Branch("zFMC2Old",   &trkmcold_.zFMC2Old,   "zFMC2Old[nTfMCOld]/F");
-    fNewTree->Branch("PxFMC2Old",  &trkmcold_.PxFMC2Old,  "PxFMC2Old[nTfMCOld]/F");
-    fNewTree->Branch("PyFMC2Old",  &trkmcold_.PyFMC2Old,  "PyFMC2Old[nTfMCOld]/F");
-    fNewTree->Branch("PzFMC2Old",  &trkmcold_.PzFMC2Old,  "PzFMC2Old[nTfMCOld]/F");
-    fNewTree->Branch("xLMC2Old",   &trkmcold_.xLMC2Old,   "xLMC2Old[nTfMCOld]/F");
-    fNewTree->Branch("yLMC2Old",   &trkmcold_.yLMC2Old,   "yLMC2Old[nTfMCOld]/F");
-    fNewTree->Branch("zLMC2Old",   &trkmcold_.zLMC2Old,   "zLMC2Old[nTfMCOld]/F");
-    fNewTree->Branch("PxLMC2Old",  &trkmcold_.PxLMC2Old,  "PxLMC2Old[nTfMCOld]/F");
-    fNewTree->Branch("PyLMC2Old",  &trkmcold_.PyLMC2Old,  "PyLMC2Old[nTfMCOld]/F");
-    fNewTree->Branch("PzLMC2Old",  &trkmcold_.PzLMC2Old,  "PzLMC2Old[nTfMCOld]/F");
+    if (logicalToBool(sammenu_.mcFlg)) {
+        fNewTree->Branch("nTfMCOld",   &trkold_.nTfMCOld,   "nTfMCOld/I");
+        fNewTree->Branch("nContrOld",  &trkold_.nContrOld,  "nContrOld[nTfMCOld]/I");
+        fNewTree->Branch("TrkIne1Old", &trkold_.TrkIne1Old, "TrkIne1Old[nTfMCOld]/I");
+        fNewTree->Branch("TrType1Old", &trkold_.TrType1Old, "TrType1Old[nTfMCOld]/I");
+        fNewTree->Branch("TrHits1Old", &trkold_.TrHits1Old, "TrHits1Old[nTfMCOld]/I");
+        fNewTree->Branch("TrkIne2Old", &trkold_.TrkIne2Old, "TrkIne2Old[nTfMCOld]/I");
+        fNewTree->Branch("TrType2Old", &trkold_.TrType2Old, "TrType2Old[nTfMCOld]/I");
+        fNewTree->Branch("TrHits2Old", &trkold_.TrHits2Old, "TrHits2Old[nTfMCOld]/I");
+        fNewTree->Branch("TrkIne3Old", &trkold_.TrkIne3Old, "TrkIne3Old[nTfMCOld]/I");
+        fNewTree->Branch("TrType3Old", &trkold_.TrType3Old, "TrType3Old[nTfMCOld]/I");
+        fNewTree->Branch("TrHits3Old", &trkold_.TrHits3Old, "TrHits3Old[nTfMCOld]/I");
+        fNewTree->Branch("xFMCOld",    &trkold_.xFMCOld,    "xFMCOld[nTfMCOld]/F");
+        fNewTree->Branch("yFMCOld",    &trkold_.yFMCOld,    "yFMCOld[nTfMCOld]/F");
+        fNewTree->Branch("zFMCOld",    &trkold_.zFMCOld,    "zFMCOld[nTfMCOld]/F");
+        fNewTree->Branch("PxFMCOld",   &trkold_.PxFMCOld,   "PxFMCOld[nTfMCOld]/F");
+        fNewTree->Branch("PyFMCOld",   &trkold_.PyFMCOld,   "PyFMCOld[nTfMCOld]/F");
+        fNewTree->Branch("PzFMCOld",   &trkold_.PzFMCOld,   "PzFMCOld[nTfMCOld]/F");
+        fNewTree->Branch("xLMCOld",    &trkold_.xLMCOld,    "xLMCOld[nTfMCOld]/F");
+        fNewTree->Branch("yLMCOld",    &trkold_.yLMCOld,    "yLMCOld[nTfMCOld]/F");
+        fNewTree->Branch("zLMCOld",    &trkold_.zLMCOld,    "zLMCOld[nTfMCOld]/F");
+        fNewTree->Branch("PxLMCOld",   &trkold_.PxLMCOld,   "PxLMCOld[nTfMCOld]/F");
+        fNewTree->Branch("PyLMCOld",   &trkold_.PyLMCOld,   "PyLMCOld[nTfMCOld]/F");
+        fNewTree->Branch("PzLMCOld",   &trkold_.PzLMCOld,   "PzLMCOld[nTfMCOld]/F");
+        fNewTree->Branch("xFMC2Old",   &trkold_.xFMC2Old,   "xFMC2Old[nTfMCOld]/F");
+        fNewTree->Branch("yFMC2Old",   &trkold_.yFMC2Old,   "yFMC2Old[nTfMCOld]/F");
+        fNewTree->Branch("zFMC2Old",   &trkold_.zFMC2Old,   "zFMC2Old[nTfMCOld]/F");
+        fNewTree->Branch("PxFMC2Old",  &trkold_.PxFMC2Old,  "PxFMC2Old[nTfMCOld]/F");
+        fNewTree->Branch("PyFMC2Old",  &trkold_.PyFMC2Old,  "PyFMC2Old[nTfMCOld]/F");
+        fNewTree->Branch("PzFMC2Old",  &trkold_.PzFMC2Old,  "PzFMC2Old[nTfMCOld]/F");
+        fNewTree->Branch("xLMC2Old",   &trkold_.xLMC2Old,   "xLMC2Old[nTfMCOld]/F");
+        fNewTree->Branch("yLMC2Old",   &trkold_.yLMC2Old,   "yLMC2Old[nTfMCOld]/F");
+        fNewTree->Branch("zLMC2Old",   &trkold_.zLMC2Old,   "zLMC2Old[nTfMCOld]/F");
+        fNewTree->Branch("PxLMC2Old",  &trkold_.PxLMC2Old,  "PxLMC2Old[nTfMCOld]/F");
+        fNewTree->Branch("PyLMC2Old",  &trkold_.PyLMC2Old,  "PyLMC2Old[nTfMCOld]/F");
+        fNewTree->Branch("PzLMC2Old",  &trkold_.PzLMC2Old,  "PzLMC2Old[nTfMCOld]/F");
+    }
 }
 
 // Add to the tree all the branches realted to the block DHIT.
@@ -1179,27 +1316,20 @@ void TreeWriter::addBlockINVO() {
 // input:	-
 // output: -
 void TreeWriter::addBlockECLO() {
-    fNewTree->Branch("nCli",     &eclo_.nCli,     "nCli/I");
-    fNewTree->Branch("ECLOWord", &eclo_.ECLOWord, "ECLOWord[nCli]/I");
-    fNewTree->Branch("IdPart",   &eclo_.IdPart,   "IdPart[nCli]/I");
-    fNewTree->Branch("DtClpo",   &eclo_.DtClpo,   "DtClpo[nCli]/I");
-    fNewTree->Branch("DvVnpo",   &eclo_.DvVnpo,   "DvVnpo[nCli]/I");
-    fNewTree->Branch("Stre",     &eclo_.Stre,     "Stre[nCli]/I");
-    fNewTree->Branch("Algo",     &eclo_.Algo,     "Algo[nCli]/I");
-}
-
-// Add to the tree all the branches realted to the block ECLO2.
-//
-// input:	-
-// output: -
-void TreeWriter::addBlockECLO2() {
-    fNewTree->Branch("nCli2",     &eclo2_.nCli2,     "nCli2/I");
-    fNewTree->Branch("ECLOWord2", &eclo2_.ECLOWord2, "ECLOWord2[nCli2]/I");
-    fNewTree->Branch("IdPart2",   &eclo2_.IdPart2,   "IdPart2[nCli2]/I");
-    fNewTree->Branch("DtClpo2",   &eclo2_.DtClpo2,   "DtClpo2[nCli2]/I");
-    fNewTree->Branch("DvVnpo2",    &eclo2_.DvVnpo2,  "DvVnpo2[nCli2]/I");
-    fNewTree->Branch("Stre2",     &eclo2_.Stre2,     "Stre2[nCli2]/I");
-    fNewTree->Branch("Algo2",     &eclo2_.Algo2,     "Algo2[nCli2]/I");
+    fNewTree->Branch("nCli",      &eclo_.nCli,     "nCli/I");
+    fNewTree->Branch("ECLOWord",  &eclo_.ECLOWord, "ECLOWord[nCli]/I");
+    fNewTree->Branch("IdPart",    &eclo_.IdPart,   "IdPart[nCli]/I");
+    fNewTree->Branch("DtClpo",    &eclo_.DtClpo,   "DtClpo[nCli]/I");
+    fNewTree->Branch("DvVnpo",    &eclo_.DvVnpo,   "DvVnpo[nCli]/I");
+    fNewTree->Branch("Stre",      &eclo_.Stre,     "Stre[nCli]/I");
+    fNewTree->Branch("Algo",      &eclo_.Algo,     "Algo[nCli]/I");
+    fNewTree->Branch("nCli2",     &eclo_.nCli2,     "nCli2/I");
+    fNewTree->Branch("ECLOWord2", &eclo_.ECLOWord2, "ECLOWord2[nCli2]/I");
+    fNewTree->Branch("IdPart2",   &eclo_.IdPart2,   "IdPart2[nCli2]/I");
+    fNewTree->Branch("DtClpo2",   &eclo_.DtClpo2,   "DtClpo2[nCli2]/I");
+    fNewTree->Branch("DvVnpo2",   &eclo_.DvVnpo2,  "DvVnpo2[nCli2]/I");
+    fNewTree->Branch("Stre2",     &eclo_.Stre2,     "Stre2[nCli2]/I");
+    fNewTree->Branch("Algo2",     &eclo_.Algo2,     "Algo2[nCli2]/I");
 }
 
 // Add to the tree all the branches realted to the block CSPS.
@@ -1222,22 +1352,17 @@ void TreeWriter::addBlockCSPS() {
     fNewTree->Branch("CSx",   &csps_.CSx,   "CSx[nCS]/F");
     fNewTree->Branch("CSy",   &csps_.CSy,   "CSy[nCS]/F");
     fNewTree->Branch("CSz",   &csps_.CSz,   "CSz[nCS]/F");
-}
-
-// Add to the tree all the branches realted to the block CSPSMC.
-//
-// input:	-
-// output: -
-void TreeWriter::addBlockCSPSMC() {
-    fNewTree->Branch("nCSMC",    &cspsmc_.nCSMC,    "nCSMC/I");
-    fNewTree->Branch("CSMCKine", &cspsmc_.CSMCKine, "CSMCKine[nCSMC]/I");
-    fNewTree->Branch("CSMCPoi",  &cspsmc_.CSMCPoi,  "CSMCPoi[nCSMC]/I");
-    fNewTree->Branch("CSMCNHit", &cspsmc_.CSMCNHit, "CSMCNHit[nCSMC]/I");
-    fNewTree->Branch("CSMCx",    &cspsmc_.CSMCx,    "CSMCx[nCSMC]/F");
-    fNewTree->Branch("CSMCy",    &cspsmc_.CSMCy,    "CSMCy[nCSMC]/F");
-    fNewTree->Branch("CSMCz",    &cspsmc_.CSMCz,    "CSMCz[nCSMC]/F");
-    fNewTree->Branch("CSMCt",    &cspsmc_.CSMCt,    "CSMCt[nCSMC]/F");
-    fNewTree->Branch("CSMCe",    &cspsmc_.CSMCe,    "CSMCe[nCSMC]/F");
+    if(logicalToBool(sammenu_.mcFlg)) {
+        fNewTree->Branch("nCSMC",    &csps_.nCSMC,    "nCSMC/I");
+        fNewTree->Branch("CSMCKine", &csps_.CSMCKine, "CSMCKine[nCSMC]/I");
+        fNewTree->Branch("CSMCPoi",  &csps_.CSMCPoi,  "CSMCPoi[nCSMC]/I");
+        fNewTree->Branch("CSMCNHit", &csps_.CSMCNHit, "CSMCNHit[nCSMC]/I");
+        fNewTree->Branch("CSMCx",    &csps_.CSMCx,    "CSMCx[nCSMC]/F");
+        fNewTree->Branch("CSMCy",    &csps_.CSMCy,    "CSMCy[nCSMC]/F");
+        fNewTree->Branch("CSMCz",    &csps_.CSMCz,    "CSMCz[nCSMC]/F");
+        fNewTree->Branch("CSMCt",    &csps_.CSMCt,    "CSMCt[nCSMC]/F");
+        fNewTree->Branch("CSMCe",    &csps_.CSMCe,    "CSMCe[nCSMC]/F");
+    }
 }
 
 // Add to the tree all the branches realted to the block CLUO.
@@ -1253,22 +1378,18 @@ void TreeWriter::addBlockCluO() {
     fNewTree->Branch("CluY",   &cluo_.CluY,   "CluY[nCluO]/F");
     fNewTree->Branch("CluZ",   &cluo_.CluZ,   "CluZ[nCluO]/F");
     fNewTree->Branch("CluT",   &cluo_.CluT,   "CluT[nCluO]/F");
-}
-
-// Add to the tree all the branches realted to the block CLUOMC.
-//
-// input:	-
-// output: -
-void TreeWriter::addBlockCluOMC() {
-    fNewTree->Branch("nMCPar",   &cluomc_.nMCPar,   "nMCPar/I");
-    fNewTree->Branch("CluMCCel", &cluomc_.CluMCCel, "CluMCCel[nMCPar]/I");
-    fNewTree->Branch("CluMCiCl", &cluomc_.CluMCiCl, "CluMCiCl[nMCPar]/I");
-    fNewTree->Branch("CluMCKin", &cluomc_.CluMCKin, "CluMCKin[nMCPar]/I");
-    fNewTree->Branch("CluMCe",   &cluomc_.CluMCe,   "CluMCe[nMCPar]/F");
-    fNewTree->Branch("CluMCx",   &cluomc_.CluMCx,   "CluMCx[nMCPar]/F");
-    fNewTree->Branch("CluMCy",   &cluomc_.CluMCy,   "CluMCy[nMCPar]/F");
-    fNewTree->Branch("CluMCz",   &cluomc_.CluMCz,   "CluMCz[nMCPar]/F");
-    fNewTree->Branch("CluMCt",   &cluomc_.CluMCt,   "CluMCt[nMCPar]/F");
+    
+    if(logicalToBool(sammenu_.mcFlg)) { 
+        fNewTree->Branch("nMCPar",   &cluo_.nMCPar,   "nMCPar/I");
+        fNewTree->Branch("CluMCCel", &cluo_.CluMCCel, "CluMCCel[nMCPar]/I");
+        fNewTree->Branch("CluMCiCl", &cluo_.CluMCiCl, "CluMCiCl[nMCPar]/I");
+        fNewTree->Branch("CluMCKin", &cluo_.CluMCKin, "CluMCKin[nMCPar]/I");
+        fNewTree->Branch("CluMCe",   &cluo_.CluMCe,   "CluMCe[nMCPar]/F");
+        fNewTree->Branch("CluMCx",   &cluo_.CluMCx,   "CluMCx[nMCPar]/F");
+        fNewTree->Branch("CluMCy",   &cluo_.CluMCy,   "CluMCy[nMCPar]/F");
+        fNewTree->Branch("CluMCz",   &cluo_.CluMCz,   "CluMCz[nMCPar]/F");
+        fNewTree->Branch("CluMCt",   &cluo_.CluMCt,   "CluMCt[nMCPar]/F");
+    }
 }
 
 // Add to the tree all the branches realted to the block QTELE.
@@ -1371,7 +1492,13 @@ TFile* TreeWriter::getTFile() {
 //
 // input:   -
 // output:  -
+// TODO: why create tree pointer and why don't use fnewtree created by constructor?
 void TreeWriter::fillTTree() {
+    // ROOT Memory Profiling
+    // Only for debugging
+    /* gObjectTable->Print(); */
+    float mem = GetMemory();
+    std::cout << "[Mem debug] Process memory: " << mem << " MB" << std::endl;
     TTree *tree = (TTree*)outfile->Get("sample");
     tree->Fill();
 }
@@ -1384,4 +1511,36 @@ bool TreeWriter::logicalToBool(int flag) {
     if (flag == 1)
         return true;
     return false;
+}
+
+Float_t TreeWriter::GetMemory()
+{
+
+// --- Program for extracting memory
+
+// AIX
+
+
+   Text_t* rstring = new Text_t[64];
+   Text_t* fstring = new Text_t[64];
+   FILE* fp;
+   Int_t info = 0;
+
+   sprintf(fstring, "ps -o vsz,pid | grep %d ",
+           gSystem->GetPid());
+
+   fp = popen(fstring, "r");
+   while (fp) {
+     if (!fgets(rstring, 64, fp)) break;
+
+     sscanf(rstring, "%d", &info);
+   }
+   pclose(fp);
+
+   delete [] fstring;
+   fstring = 0;
+   delete [] rstring;
+   rstring = 0;
+
+   return (Float_t(info) / 1000);
 }

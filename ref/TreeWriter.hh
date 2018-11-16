@@ -8,6 +8,7 @@ class TreeWriter{
          TreeWriter();
          ~TreeWriter();
          void printHeaderFlags();
+         void printSummary();
          void addBlockInfo();
          void addBlockData();
          void addBlockEcl();
@@ -22,11 +23,9 @@ class TreeWriter{
          void addBlockTele();
          void addBlockPizza();
          void addBlockClu();
-         void addBlockCluMC();
          void addBlockPreClu();
          void addBlockCWRK();
          void addBlockCele();
-         void addBlockCeleMC();
          void addBlockDTCE();
          void addBlockDTCE0();
          void addBlockDCHits();
@@ -35,11 +34,9 @@ class TreeWriter{
          void addBlockTrkV();
          void addBlockVtx();
          void addBlockTrkS();
-         void addBlockTrkMC();
          void addBlockTrkVOld();
          void addBlockVtxOld();
          void addBlockTrkSOld();
-         void addBlockTrkMCOld();
          void addBlockDHIT();
          void addBlockDEDx();
          void addBlockDPRS();
@@ -56,11 +53,8 @@ class TreeWriter{
          void addBlockVNVB();
          void addBlockINVO();
          void addBlockECLO();
-         void addBlockECLO2();
          void addBlockCSPS();
-         void addBlockCSPSMC();
          void addBlockCluO();
-         void addBlockCluOMC();
          void addBlockQTELE();
          void addBlockQCTH();
          void addBlockCCLE();
@@ -70,6 +64,7 @@ class TreeWriter{
          TFile* getTFile();
          void fillTTree();
          bool logicalToBool(int flag);
+         Float_t GetMemory();
      private:
          TFile* outfile;
          TTree* fNewTree;

@@ -18,6 +18,7 @@ const int MaxNumTrk      = 100;
 const int MaxNumDHIT     = 2500;
 const int MaxRowsDEDx    = 20;
 const int MaxColsDEDx    = 100;
+const int FixNmDPRSNView = 3;
 const int MaxNumDPRS     = 200;
 const int MaxNTrkGen     = 50;
 const int MaxNVtxGen     = 30;
@@ -57,11 +58,9 @@ extern "C"{
     int pizzaFlag;
     int timeFlag;
     int clusFlag;
-    int cluMCFlag;
     int preclusFlag;
     int cwrkFlag;
     int celeFlag;
-    int celeMCFlag;
     int dtceFlag;
     int dtce0Flag;
     int dchitsFlag;
@@ -70,11 +69,9 @@ extern "C"{
     int trkvFlag;
     int vtxFlag;
     int trksFlag;
-    int trkMCFlag;
     int trkvOldFlag;
     int vtxOldFlag;
     int trksOldFlag;
-    int trkMCOldFlag;
     int dhitFlag;
     int dedxFlag;
     int dprsFlag;
@@ -91,18 +88,86 @@ extern "C"{
     int vnvbFlag;
     int invoFlag;
     int ecloFlag;
-    int eclo2Flag;
     int cspsFlag;
-    int cspsMCFlag;
     int cluoFlag;
-    int cluoMCFlag;
     int qteleFlag;
     int qcthFlag;
     int ccleFlag;
     int leteFlag;
     int itceFlag;
     int heteFlag;
+    int mcFlg;
   }sammenu_;
+}
+
+// Shared flags for control tree filling
+extern "C" {
+    extern struct {
+        int MonteCarloFlag;
+    }sharedflags_;
+}
+
+// Error counters for final summary
+// Each array has 5 counters, one for each type of error:
+//   1 - Missing bank
+//   2 - Empty data
+//   3 - Index not valid
+//   4 - Value out of domain
+//   5 - MC flag inconsistency, explain better
+extern "C" {
+    extern struct {
+        int InfoErrorCounter[5];
+        int BPOSErrorCounter[5];
+        int GDHitErrorCounter[5];
+        int EclsErrorCounter[5];
+        int TrigErrorCounter[5];
+        int C2TrigErrorCounter[5];
+        int TellinaErrorCounter[5];
+        int PizzettaErrorCounter[5];
+        int TortaErrorCounter[5];
+        int TeleErrorCounter[5];
+        int PizzaErrorCounter[5];
+        int TimeErrorCounter[5];
+        int ClusErrorCounter[5];
+        int PreClusErrorCounter[5];
+        int CWRKErrorCounter[5];
+        int CeleErrorCounter[5];
+        int DTCEErrorCounter[5];
+        int DTCE0ErrorCounter[5];
+        int DCHitsErrorCounter[5];
+        int DHREErrorCounter[5];
+        int DHSPErrorCounter[5];
+        int TrkVErrorCounter[5];
+        int VtxErrorCounter[5];
+        int TrksErrorCounter[5];
+        int TrkVOldErrorCounter[5];
+        int VtxOldErrorCounter[5];
+        int TrksOldErrorCounter[5];
+        int DHitErrorCounter[5];
+        int DEDxErrorCounter[5];
+        int DPRSErrorCounter[5];
+        int GeanfiErrorCounter[5];
+        int TcloErrorCounter[5];
+        int TclOldErrorCounter[5];
+        int CFhiErrorCounter[5];
+        int QihiErrorCounter[5];
+        int TrqErrorCounter[5];
+        int QeleErrorCounter[5];
+        int QCalErrorCounter[5];
+        int KNVOErrorCounter[5];
+        int VNVOErrorCounter[5];
+        int VNVBErrorCounter[5];
+        int INVOErrorCounter[5];
+        int EcloErrorCounter[5];
+        int CSPSErrorCounter[5];
+        int CluoErrorCounter[5];
+        int QTeleErrorCounter[5];
+        int QCTHErrorCounter[5];
+        int CCleErrorCounter[5];
+        int LeteErrorCounter[5];
+        int ITCEErrorCounter[5];
+        int HeteErrorCounter[5];
+    }errorcounter_;
 }
 
 // Block:   evtinfo
@@ -333,12 +398,6 @@ extern "C" {
     float ZrmsCl[MaxNumClu];
     float TrmsCl[MaxNumClu];
     int FlagCl[MaxNumClu];
-  }evtclu_;
-}
-
-// Block:   CluMC
-extern "C" {
-  extern struct {
     int NCluMc;
     int NPar[MaxNumClu];
     int PNum1[MaxNumClu];
@@ -347,7 +406,7 @@ extern "C" {
     int Pid2[MaxNumClu];
     int PNum3[MaxNumClu];
     int Pid3[MaxNumClu];
-  }clumc_;
+  }evtclu_;
 }
 
 // Block:   preclu
@@ -396,12 +455,6 @@ extern "C" {
     float Ta[NeleCluMax];
     float Eb[NeleCluMax];
     float Tb[NeleCluMax];
-  }cele_;
-}
-
-// Block:   celeMC
-extern "C" {
-  extern struct {
     int NCelMc;
     float EMc[NeleCluMax];
     float TMc[NeleCluMax];
@@ -411,7 +464,7 @@ extern "C" {
     int PTyp[NeleCluMax];
     int KNum[NeleCluMax];
     int NHit[NeleCluMax];
-  }celemc_;
+  }cele_;
 }
 
 // Block:   dtce
@@ -564,12 +617,6 @@ extern "C" {
     int nMskInk[MaxNumTrk];
     float Chi2Fit[MaxNumTrk];
     float Chi2Ms[MaxNumTrk];
-  }trks_;
-}
-
-// Block:   trkmc
-extern "C" {
-  extern struct {
     int nTfMC;
     int NConTr[MaxNumTrk];
     int TrkIne1[MaxNumTrk];
@@ -605,7 +652,7 @@ extern "C" {
     float PxLMC2[MaxNumTrk];
     float PyLMC2[MaxNumTrk];
     float PzLMC2[MaxNumTrk];
-  }trkmc_;
+  }trks_;
 }
 
 // Block:   trkvold
@@ -692,16 +739,10 @@ extern "C" {
     float CotPca2Old[MaxNumTrk];
     float PhiPca2Old[MaxNumTrk];
     int nPrhiTOld[MaxNumTrk];
-    int nFifthITOld[MaxNumTrk];
+    int nFitHitOld[MaxNumTrk];
     int nMskInkOld[MaxNumTrk];
     float Chi2FitOld[MaxNumTrk];
     float Chi2MSOld[MaxNumTrk];
-  }trkold_;
-}
-
-// Block:   trkmcold
-extern "C" {
-  extern struct {
     int nTfMCOld;
     int nContrOld[MaxNumTrk];
     int TrkIne1Old[MaxNumTrk];
@@ -737,7 +778,7 @@ extern "C" {
     float PxLMC2Old[MaxNumTrk];
     float PyLMC2Old[MaxNumTrk];
     float PzLMC2Old[MaxNumTrk];
-  }trkmcold_;
+  }trkold_;
 }
 
 // Block:   dhit
@@ -783,7 +824,7 @@ extern "C" {
 extern "C" {
   extern struct {
     unsigned int nDPRS;
-    unsigned int nView[MaxNumDPRS];
+    unsigned int nView[FixNmDPRSNView];
     unsigned int iDPRS[MaxNumDPRS];
     unsigned int DPRSVer[MaxNumDPRS];
     unsigned int nPos[MaxNumDPRS];
@@ -798,9 +839,9 @@ extern "C" {
     float PhiP[MaxNumDPRS];
     float CotP[MaxNumDPRS];
     float Qual[MaxNumDPRS];
-    unsigned int iPFl[MaxNumDPRS];
-    unsigned int PrKine[MaxNumDPRS];
-    unsigned int PrKHit[MaxNumDPRS];
+    int iPFl[MaxNumDPRS];
+    int PrKine[MaxNumDPRS];
+    int PrKHit[MaxNumDPRS];
   }dprs_;
 }
 
@@ -1017,12 +1058,6 @@ extern "C" {
     int DvVnpo[MaxNumCLINF];
     int Stre[MaxNumCLINF];
     int Algo[MaxNumCLINF];
-  }eclo_;
-}
-
-// Block:   eclo2
-extern "C" {
-  extern struct {
     int nCli2;
     int ECLOWord2[MaxNumCLINF];
     int IdPart2[MaxNumCLINF];
@@ -1030,7 +1065,7 @@ extern "C" {
     int DvVnpo2[MaxNumCLINF];
     int Stre2[MaxNumCLINF];
     int Algo2[MaxNumCLINF];
-  }eclo2_;
+  }eclo_;
 }
 
 // Block:   csps
@@ -1051,12 +1086,6 @@ extern "C" {
     float CSx[MaxNumHitClu];
     float CSy[MaxNumHitClu];
     float CSz[MaxNumHitClu];
-  }csps_;
-}
-
-// Block:   cspsmc
-extern "C" {
-  extern struct {
     int nCSMC;
     int CSMCKine[MaxNumHitClu];
     int CSMCPoi[MaxNumHitClu];
@@ -1066,7 +1095,7 @@ extern "C" {
     float CSMCz[MaxNumHitClu];
     float CSMCt[MaxNumHitClu];
     float CSMCe[MaxNumHitClu];
-  }cspsmc_;
+  }csps_;
 }
 
 // Block:   cluo
@@ -1080,12 +1109,6 @@ extern "C" {
     float CluY[MaxNumCluo];
     float CluZ[MaxNumCluo];
     float CluT[MaxNumCluo];
-  }cluo_;
-}
-
-// Block:   cluomc
-extern "C" {
-  extern struct {
     int nMCPar;
     int CluMCCel[MaxNumCluo];
     int CluMCiCl[MaxNumCluo];
@@ -1095,7 +1118,7 @@ extern "C" {
     float CluMCy[MaxNumCluo];
     float CluMCz[MaxNumCluo];
     float CluMCt[MaxNumCluo];
-  }cluomc_;
+  }cluo_;
 }
 
 // Block:   qtele

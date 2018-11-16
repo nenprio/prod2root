@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <string.h>
+#include <assert.h>
 #include <TFile.h>
 #include <TTree.h>
 #include <TBranch.h>
@@ -16,7 +17,9 @@
 //          outDir      directory where write the output files
 // output:  -
 OutputVerifier::OutputVerifier(const char *rFile, const char *hbFile, const char *outDir) {
-    println("[Info] OutputVerifier constructor");
+    assert(outDir!="");
+    assert(rootFile!="" || hbFile!="");
+
     const char *errorInputFile="[Error] An error occurs during checking on input file.\n\tVerify that the path given as first argument exists and it refers to a regular file.";
     const char *errorOutputDir="[Error] An error occurs during the checking on output directory.\n\tVerify that the dir already exists or that the writing permission are allowed and no name mismatch occurs with that path.";
     const char *errorOpenFile="[Error] An error occurs during the opening of input file.\n\tVerify that you can open the file as ROOT TFile.";
@@ -28,15 +31,13 @@ OutputVerifier::OutputVerifier(const char *rFile, const char *hbFile, const char
     outputDir    = outDir;
   
     // Check existance of input root file
-    if(checkIfFileExists(rootFile)==false) {
-        println(errorInputFile);
-        exit(1);
-    }
+    /* if(rootFile && checkIfFileExists(rootFile)==false) { */
+        /* println(errorInputFile); */
+    /* } */
     
     // Check existance of input hb file
-    if(checkIfFileExists(hbConvFile)==false) {
+    if(hbConvFile && (checkIfFileExists(hbConvFile)==false)) {
         println(errorInputFile);
-        exit(1);
     }
 
     // Create output dir if it doesn't exist
@@ -46,34 +47,30 @@ OutputVerifier::OutputVerifier(const char *rFile, const char *hbFile, const char
     }
 
     // Test if you can open the file
-    TFile *fRoot = new TFile(rootFile, "READ");
+    /* TFile *fRoot = new TFile(rootFile, "READ"); */
     TFile *fHB   = new TFile(hbConvFile, "READ");
 
-    if(fRoot->IsOpen() & fHB->IsOpen()){
-        println("[Debug] Open Input files.");
-    } else{
+    /* if(fRoot->IsOpen() && fHB->IsOpen()){ */
+    if(!fHB->IsOpen()){
         println(errorOpenFile);
-        exit(1);
     }
    
     // Test if you can open the tree
-    TTree *tRoot = (TTree*) fRoot->Get("sample");
+    /* TTree *tRoot = (TTree*) fRoot->Get("sample"); */
     TTree *tHB   = (TTree*) fHB->Get("PROD2NTU/h1");
     
-    if((tRoot!=0) & (tHB!=0)){
-        println("[Debug] Get Sample trees.");
-    } else {
+    /* if((tRoot!=0) & (tHB!=0)){ */
+    if(tHB==0){
         println(errorOpenTree);
-        exit(1);
     } 
     
     // Close the files
-    fRoot->Close();
+    /* fRoot->Close(); */
     fHB->Close();
-    if (fRoot) {
-        delete fRoot;
-        fRoot = NULL;
-    }
+    /* if (fRoot) { */
+    /*     delete fRoot; */
+    /*     fRoot = NULL; */
+    /* } */
     if (fHB) {
         delete fHB;
         fHB = NULL;
@@ -102,7 +99,7 @@ OutputVerifier::~OutputVerifier() {
         /* outputDir = NULL; */
     /* } */
 
-    println("[Info] Run ends. Memory released.");
+    /* println("[Info] Run ends. Memory released."); */
 }
 
 // Loop over the entries (events) and for each one,
@@ -120,6 +117,8 @@ void OutputVerifier::exportTreeToTxt(TTree *fTree) {
     TObjArray *leaves = fTree->GetListOfLeaves();
     Int_t nLeaves = leaves ? leaves->GetEntriesFast() : 0;
     
+    std::cout << "[Info] Export in " << outputDir;
+
     for(Int_t i=0; i<nEntries; i++) {
         name.Form("%s/%s%s%d.out", outputDir, fTree->GetName(), ENTRY_PREFIX, i); 
         currentFile = name.Data();
@@ -127,8 +126,6 @@ void OutputVerifier::exportTreeToTxt(TTree *fTree) {
         
         // Open the file stream
         myfile.open(currentFile.c_str());
-        
-        std::cout << "[Info] Export "<< currentFile << "." << std::endl; 
         
         for (int l=0;l<nLeaves;l++) {
             TLeaf *leaf = (TLeaf*)leaves->UncheckedAt(l);
@@ -138,6 +135,7 @@ void OutputVerifier::exportTreeToTxt(TTree *fTree) {
         // Close the file stream
         myfile.close();
     }
+    std::cout << std::endl; 
 }
 
 // Export content of tree in root file and

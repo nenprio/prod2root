@@ -34,25 +34,14 @@ ifeq ($(USER), eperez)
 endif           #eperez
 endif           #berducci
 
-OLDSHELL := SHELL
+# Change the default shell to csh
 SHELL := /usr/bin/tcsh
 
 # Initial target
 all: init_setup $(REF_DIR)/sample_bj.f $(REF_DIR)/sample.f $(REF_DIR)/prod2ntu.f $(REF_DIR)/newt0find.f final_setup
 
 init_setup:
-	set path = $(PATH_VAR)
-	shell $(PACKMAN) calib
-	shell $(PACKMAN) kid
-	shell $(SETUP) -e emc development
-	shell $(SETUP) -e tls development
-	shell $(SETUP) -e ecl development
-	shell $(SETUP) -e trk development
-	shell $(SETUP) -e trg development
-	set ROOTLIBS = $(shell root-config --libs)
-	export SAMPLE=$(SAMPLE_PATH)
-	export MYLIBS="$$ROOTLIBS -lm -lC -Wl,-bloadmap:map.txt"
-	rm -rf $(EXE_DIR)/sample.exe
+	source init_setup.csh
 
 print_info:
 	echo $(PATH_VAR)
@@ -85,7 +74,7 @@ $(REF_DIR)/sample_bj.kloe: $(DICT_DIR)/sample_bj.uic
 	cd $(MGR_DIR)
 	mv sample_bj.kloe $@
 
-.PHONY: clean
+.PHONY: clean init_setup final_setup print_info
 
 clean:
 	rm -ri $(REF_DIR)/*.f

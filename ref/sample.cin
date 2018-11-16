@@ -6,43 +6,41 @@ C INITIAL DECLARATIONS
 C Follow the declarations of external functions 
 C and return variables used in sample.kloe to fill the data.
 C
-        REAL    rstat, GETBPOS
-        LOGICAL MONTECARLOFLAG
-        INTEGER istat, STATUS 
-        INTEGER NUMDHIT, MCFLAG_TG
-        INTEGER BNKNUM, ICURR, IND1, INDDAT, OldRunNumber
-        INTEGER T0GLRD, T0MCRD 
-        INTEGER GETCLUSTRU, GETMCSTRU, GETCELESTRU
-        INTEGER GETEVCL, GETCLUOSTRU
-        INTEGER TRKV2STRU, GETTCLOSTRU, GETCFHISTRU, BLOCAT
-        INTEGER PARSET, GETQIHISTRU, GETQCALSTRU
-        INTEGER GETQCAESTRU, GETDHSPSTRU
-        INTEGER GETTELESTRU, GETPRECLUSTRU
-        INTEGER GETPIZZASTRU, TPIE_UPK
-        INTEGER PIZZA_RESET, TORTA_RESET, TELE_RESET
-        INTEGER GET_DPRS_STRUCT, GETNVO
-        INTEGER GETECLO, GETCLUSTRUCORR
-        INTEGER BIGEST, BANKNUM, FILLBPOSCOMMON
-        INTEGER GETQCALTSTRU, GETQCTHSTRU, GETCCALTSTRU
-        INTEGER GETLETESTRU, ITCE_UPK
-        INTEGER GETHETESTRU, HETE_DUMP
-        INTEGER ANGIST, ANGOHS, ANGPAR, ANPTRG
-        INTEGER GETECLS, GETTIME, GETPIZZETTA
-        INTEGER GETTELLINA, GETCWRKSTRU, GETTRIGGER, TRKQ2STRU
-        INTEGER NCWRKHIT, J
-        INTEGER GETSEC2CLUSTRU
-        INTEGER GETCSPSSTRU, GETCLUOMCSTRU
-        INTEGER TRKVOLD2STRU, GETOLDTCLOSTRU, DHIT_RESET, DHIT_UPK
-        INTEGER DEDX2STRU_GET, DEDX2STRU_RESET
+C Note: MONTECARLOFLAG is a variables shared between FORTRAN and C++ 
+C       code because it is used in the booking phase to define the
+C       tree structure.
 C
-C MESSAGES DECLARATIONS
-C Follow the declaration of all the messages to print on std out
-C
-        CHARACTER(len=10) :: ERROR_LINE
-        CHARACTER(len=60) :: ERROR_MC_DATA
-        CHARACTER(len=10) :: ERROR_BLOCK
-        CHARACTER(len=25) :: ERROR_INDEX
-        CHARACTER(len=25) :: ERROR_DOMAIN
+      LOGICAL MONTECARLOFLAG
+      COMMON /SHAREDFLAGS/MONTECARLOFLAG
+      
+      REAL    RSTAT, GETBPOS
+      INTEGER ISTAT, STATUS, STATUS1, STATUS2, IND, INDDAT1 
+      INTEGER NUMDHIT, MCFLAG_TG
+      INTEGER BNKNUM, ICURR, IND1, INDDAT, OldRunNumber
+      INTEGER MAKE_DCNH, MAKE_MDCN, T0GLRD, T0MCRD 
+      INTEGER GETCLUSTRU, GETMCSTRU, GETCELESTRU
+      INTEGER GETEVCL, GETCLUOSTRU
+      INTEGER TRKV2STRU, GETTCLOSTRU, GETCFHISTRU, BLOCAT
+      INTEGER PARSET, GETQIHISTRU, GETQCALSTRU
+      INTEGER GETQCAESTRU, GETDHSPSTRU, GETDHRESTRU
+      INTEGER GETTELESTRU, GETPRECLUSTRU
+      INTEGER GETPIZZASTRU, TPIE_UPK
+      INTEGER PIZZA_RESET, TORTA_RESET, TELE_RESET
+      INTEGER GET_DPRS_STRUCT, GETNVO
+      INTEGER GETECLO, GETCLUSTRUCORR
+      INTEGER BIGEST, BANKNUM, FILLBPOSCOMMON
+      INTEGER GETQCALTSTRU, GETQCTHSTRU, GETCCALTSTRU
+      INTEGER GETLETESTRU, ITCE_UPK
+      INTEGER GETHETESTRU, HETE_DUMP
+      INTEGER ANGIST, ANGOHS, ANGPAR, ANPTRG
+      INTEGER GETECLS, GETTIME, GETPIZZETTA
+      INTEGER GETTELLINA, GETCWRKSTRU, GETTRIGGER, TRKQ2STRU
+      INTEGER NCWRKHIT, J
+      INTEGER GETSEC2CLUSTRU
+      INTEGER GETCSPSSTRU, GETCLUOMCSTRU
+      INTEGER TRKVOLD2STRU, GETOLDTCLOSTRU, DHIT_RESET, DHIT_UPK
+      INTEGER DEDX2STRU_GET, DEDX2STRU_RESET
+      
 C
 C BLOCK STRUCTURE DECLARATIONS
 C Follow the declarations of all the variables filled by data
@@ -164,22 +162,18 @@ C
       common /pizza/NPack,PakSect,PakDet,PakSerk,
      1              Ea_Pack,Eb_Pack,E_Rec,Z_mod
 C
-C  Block: evtclu
+C  Block: Clus
 C
       integer iEVTCLU,NClu,FlagCl(100)
       real EneCl(100), TCl(100), XCl(100), YCl(100), ZCl(100)
       real XaCl(100), YaCl(100), ZaCl(100), XRmCl(100)
       real YRmsCl(100), ZrmsCl(100), TrmsCl(100)
-
-      common /evtclu/NClu,EneCl,TCl,XCl,YCl,ZCl,XaCl,YaCl,ZaCl,XRmCl,
-     1       YRmsCl,ZrmsCl,TrmsCl,FlagCl
-C
-C  Block: CluMC
-C
       integer iEVTCLUMC,NCluMc,NPar(100),PNum1(100), Pid1(100)
       integer PNum2(100), Pid2(100), PNum3(100), Pid3(100)
 
-      common /clumc/NCluMc,NPar,PNum1,Pid1,PNum2,Pid2,PNum3,Pid3
+      common /evtclu/NClu,EneCl,TCl,XCl,YCl,ZCl,XaCl,YaCl,ZaCl,XRmCl,
+     1       YRmsCl,ZrmsCl,TrmsCl,FlagCl,
+     1       NCluMc,NPar,PNum1,Pid1,PNum2,Pid2,PNum3,Pid3
 C
 C  Block: preclu
 C
@@ -203,16 +197,11 @@ C
       integer iCELE, NCel, ICl(2000), Det(2000)
       integer Wed(2000), Pla(2000), Col(2000)
       real Ea(2000), Ta(2000), Eb(2000), Tb(2000)
-
-      common /cele/NCel,ICl,Det,Wed,Pla,Col,Ea,Ta,Eb,Tb
-
-C
-C  Block: celeMC
-C
       integer iCELEMC, NCelMc, PTyp(2000), KNum(2000), NHit(2000)
       real EMc(2000), TMc(2000), XMc(2000), YMc(2000), ZMc(2000)
 
-      common /celemc/NCelMc,EMc,TMc,XMc,YMc,ZMc,PTyp,KNum,NHit
+      common /cele/NCel,ICl,Det,Wed,Pla,Col,Ea,Ta,Eb,Tb,
+     1       NCelMc,EMc,TMc,XMc,YMc,ZMc,PTyp,KNum,NHit
 C
 C  Block: dtce
 C
@@ -283,15 +272,6 @@ C
       real SCotG(100), SPhi(100), xLast(100), yLast(100), zLast(100)
       real xPca2(100), yPca2(100), zPca2(100), QTrk2(100), CotPca2(100)
       real PhiPca2(100), Chi2Fit(100), Chi2Ms(100)
-
-      common /trks/nT,TrkInd,TrkVer,Cur,Phi,Cot,Pxt,Pyt,Pzt,PMod,Len,
-     1       xFirst,yFirst,zFirst,CurLa,PhiLa,CotLa,PxtLa,PytLa,PztLa,
-     1       PModLa,SPca,SZeta,SCurV,SCotG,SPhi,xLast,yLast,zLast,xPca2,
-     1       yPca2,zPca2,QTrk2,CotPca2,PhiPca2,nPrHit,nFitHit,nMskInk,
-     1       Chi2Fit,Chi2Ms
-C
-C  Block: trkmc
-C
       integer iTRKMC, nTfMC, NConTr(100), TrkIne1(100), TrType1(100)
       integer TrHits1(100), TrkIne2(100), TrType2(100), TrHits2(100)
       integer TrkIn3(100), TrType3(100), TrHits3(100)
@@ -301,7 +281,12 @@ C
       real PxFMC2(100), PyFMC2(100), PzFMC2(100), xLMC2(100), yLMC2(100)
       real zLMC2(100), PxLMC2(100), PyLMC2(100), PzLMC2(100)
 
-      common /trkmc/nTfMC,NConTr,TrkIne1,TrType1,TrHits1,TrkIne2,
+      common /trks/nT,TrkInd,TrkVer,Cur,Phi,Cot,Pxt,Pyt,Pzt,PMod,Len,
+     1       xFirst,yFirst,zFirst,CurLa,PhiLa,CotLa,PxtLa,PytLa,PztLa,
+     1       PModLa,SPca,SZeta,SCurV,SCotG,SPhi,xLast,yLast,zLast,xPca2,
+     1       yPca2,zPca2,QTrk2,CotPca2,PhiPca2,nPrHit,nFitHit,nMskInk,
+     1       Chi2Fit,Chi2Ms,
+     1       nTfMC,NConTr,TrkIne1,TrType1,TrHits1,TrkIne2,
      1       TrType2,TrHits2,TrkIn3,TrType3,TrHits3,xFMC,yFMC,zFMC,
      1       PxFMC,PyFMC,PzFMC,xLMC,yLMC,zLMC,PxLMC,PyLMC,PzLMC,xFMC2,
      1       yFMC2,zFMC2,PxFMC2,PyFMC2,PzFMC2,xLMC2,yLMC2,zLMC2,PxLMC2,
@@ -334,7 +319,7 @@ C
 C  Block: trkold
 C
       integer iTRKOLD, nTOld, TrkIndOld(100), TrkVerOld(100)
-      integer nPrhiTOld(100), nFifthITOld(100), nMskInkOld(100)
+      integer nPrhiTOld(100), nFitHitOld(100), nMskInkOld(100)
       real CurOld(100), PhiOld(100), CotOld(100), PxTOld(100)
       real PyTOld(100), PzTOld(100), PModOld(100), LenOld(100)
       real xFirstOld(100), yFirstOld(100), zFirstOld(100), CurLaOld(100)
@@ -344,17 +329,6 @@ C
       real yLastOld(100), zLastOld(100), xPca2Old(100), yPca2Old(100)
       real zPca2Old(100), QTrk2Old(100), CotPca2Old(100), PhiPca2Old(100)
       real Chi2FitOld(100), Chi2MSOld(100)
-
-      common /trkold/nTOld,TrkIndOld,TrkVerOld,CurOld,PhiOld,CotOld,
-     1       PxTOld,PyTOld,PzTOld,PModOld,LenOld,xFirstOld,yFirstOld,
-     1       zFirstOld,CurLaOld,PhiLaOld,CotLaOld,PxTLaOld,PyTLaOld,
-     1       PzTLaOld,PModLaOld,SPcaOld,SZetaOld,SCurVOld,SCotGOld,
-     1       SPhiOld,xLastOld,yLastOld,zLastOld,xPca2Old,yPca2Old,
-     1       zPca2Old,QTrk2Old,CotPca2Old,PhiPca2Old,nPrhiTOld,
-     1       nFifthITOld,nMskInkOld,Chi2FitOld,Chi2MSOld
-C
-C  Block: trkmcold
-C
       integer iTRKMCOLD, nTfMCOld, nContrOld(100), TrkIne1Old(100)
       integer TrType1Old(100), TrHits1Old(100), TrkIne2Old(100)
       integer TrType2Old(100), TrHits2Old(100), TrkIne3Old(100)
@@ -366,7 +340,14 @@ C
       real PyFMC2Old(100), PzFMC2Old(100), xLMC2Old(100), yLMC2Old(100)
       real zLMC2Old(100), PxLMC2Old(100), PyLMC2Old(100), PzLMC2Old(100)
 
-      common /trkmcold/nTfMCOld,nContrOld,TrkIne1Old,TrType1Old,
+      common /trkold/nTOld,TrkIndOld,TrkVerOld,CurOld,PhiOld,CotOld,
+     1       PxTOld,PyTOld,PzTOld,PModOld,LenOld,xFirstOld,yFirstOld,
+     1       zFirstOld,CurLaOld,PhiLaOld,CotLaOld,PxTLaOld,PyTLaOld,
+     1       PzTLaOld,PModLaOld,SPcaOld,SZetaOld,SCurVOld,SCotGOld,
+     1       SPhiOld,xLastOld,yLastOld,zLastOld,xPca2Old,yPca2Old,
+     1       zPca2Old,QTrk2Old,CotPca2Old,PhiPca2Old,nPrhiTOld,
+     1       nFitHitOld,nMskInkOld,Chi2FitOld,Chi2MSOld,
+     1       nTfMCOld,nContrOld,TrkIne1Old,TrType1Old,
      1       TrHits1Old,TrkIne2Old,TrType2Old,TrHits2Old,TrkIne3Old,
      1       TrType3Old,TrHits3Old,xFMCOld,yFMCOld,zFMCOld,PxFMCOld,
      1       PyFMCOld,PzFMCOld,xLMCOld,yLMCOld,zLMCOld,PxLMCOld,PyLMCOld,
@@ -398,7 +379,7 @@ C
 C
 C  Block: dprs
 C
-      integer iiDPRS, nDPRS, iPFl(200), nView(200), iDPRS(200) 
+      integer iiDPRS, nDPRS, iPFl(200), nView(3), iDPRS(200) 
       integer DPRSVer(200), nPos(200), nNeg(200)
       integer PrKine(200), PrKHit(200)
       real xPCA(200), yPCA(200), zPCA(200), xLst(200), yLst(200)
@@ -522,15 +503,11 @@ C  Block: eclo
 C
       integer iECLO, nCli, ECLOWord(100), IdPart(100), DtClpo(100) 
       integer DvVnpo(100), Stre(100), Algo(100)
-
-      common /eclo/nCli,ECLOWord,IdPart,DtClpo,DvVnpo,Stre,Algo
-C
-C  Block: eclo2
-C
       integer iECLO2, nCli2, ECLOWord2(100), IdPart2(100), DtClpo2(100)
       integer DvVnpo2(100), Stre2(100), Algo2(100)
 
-      common /eclo2/nCli2,ECLOWord2,IdPart2,DtClpo2,DvVnpo2,Stre2,Algo2
+      common /eclo/nCli,ECLOWord,IdPart,DtClpo,DvVnpo,Stre,Algo,
+     1       nCli2,ECLOWord2,IdPart2,DtClpo2,DvVnpo2,Stre2,Algo2
 C
 C  Block: csps
 C
@@ -538,18 +515,14 @@ C
       integer CSAdd(2000), CSNhi(2000)
       real CSTa(2000), CSTb(2000), CSEa(2000), CSEb(2000), CST(2000)
       real CSE(2000), CSx(2000), CSy(2000), CSz(2000)
-
-      common /csps/nCS,CSClu,CSCel,CSFla,CSAdd,CSNhi,CSTa,CSTb,CSEa,
-     1       CSEb,CST,CSE,CSx,CSy,CSz
-C
-C  Block: cspsmc
-C
       integer iCSPSMC, nCSMC, CSMCKine(2000), CSMCPoi(2000)
       integer CSMCNHit(2000)
       real CSMCx(2000), CSMCy(2000), CSMCz(2000), CSMCt(2000)
       real CSMCe(2000)
 
-      common /cspsmc/nCSMC,CSMCKine,CSMCPoi,CSMCNHit,CSMCx,CSMCy,CSMCz,
+      common /csps/nCS,CSClu,CSCel,CSFla,CSAdd,CSNhi,CSTa,CSTb,CSEa,
+     1       CSEb,CST,CSE,CSx,CSy,CSz,
+     1       nCSMC,CSMCKine,CSMCPoi,CSMCNHit,CSMCx,CSMCy,CSMCz,
      1       CSMCt,CSMCe
 C
 C  Block: cluo
@@ -557,17 +530,13 @@ C
       integer iCLUO, nCluO, CluCel(100)
       real CluFl(100), CluE(100), CluX(100), CluY(100), CluZ(100)
       real CluT(100)
-
-      common /cluo/nCluO,CluCel,CluFl,CluE,CluX,CluY,CluZ,CluT
-C
-C  Block: cluomc
-C
       integer iCLUOMC, nMCPar, CluMCCel(100), CluMCiCl(100)
       integer CluMCKin(100)
       real CluMCe(100), CluMCx(100), CluMCy(100), CluMCz(100)
       real CluMCt(100)
 
-      common /cluomc/nMCPar,CluMCCel,CluMCiCl,CluMCKin,CluMCe,CluMCx,
+      common /cluo/nCluO,CluCel,CluFl,CluE,CluX,CluY,CluZ,CluT,
+     1       nMCPar,CluMCCel,CluMCiCl,CluMCKin,CluMCe,CluMCx,
      1       CluMCy,CluMCz,CluMCt
 C
 C  Block: qtele
