@@ -1,4 +1,3 @@
-
 C==============================================================================
 C  SAMPLE
 C==============================================================================
@@ -129,7 +128,7 @@ C
       Status = ANPIST(ANSUCC)
       istat = fillbposcommon(nrun)
 
-      WRITE(0,*) "[DEBUG] Try to write to std error"
+C      WRITE(0,*) "[DEBUG] Try to write to std error"
 
       RETURN
       END
@@ -211,7 +210,7 @@ C=============================================================================
       ERROR_BLOCK = ERROR_LINE//"Block "
       ERROR_INDEX = "Index not valid: "
       ERROR_DOMAIN = "Out of domain: "
-C      
+C
 C     Check if MC blocks are required and if they exist
 C     Otherwise print error message to alert that 
 C     MC blocks exist and they aren't required
@@ -284,7 +283,7 @@ C-----------------------------------------------------------------------
          END IF
          Evt%Info%EventNumber = Nev
          
-         WRITE(*,*)"[Debug] Num Ev:", Nev
+C         WRITE(*,*)"[Debug] Num Ev:", Nev
   
          NumRun = Evt%Info%RunNumber
          NumEv = Evt%Info%EventNumber
@@ -975,7 +974,7 @@ C-----------------------------------------------------------------------
             istat = GETCLUSTRU(Evt%Clu)
             
             NClu = Evt%Clu%n 
-            WRITE(*,*) "[DEBUG] NClu: ", NClu
+C            WRITE(*,*) "[DEBUG] NClu: ", NClu
             IF (NClu > 0 .AND. NClu <= 100) THEN
                DO iEVTCLU=1, NClu
                   EneCl(iEVTCLU) = Evt%Clu%E (iEVTCLU)
@@ -1088,7 +1087,7 @@ C
             ISTAT = GETPRECLUSTRU(Evt%PreClu)
       
             NPClu = Evt%PreClu%n 
-            WRITE(*,*) "[DEBUG] NPClu: ", NPClu
+C            WRITE(*,*) "[DEBUG] NPClu: ", NPClu
             IF (NPClu > 0 .AND. NPClu <= 100) THEN
               DO iPRECLU=1, NPClu
                 EPre(iPRECLU) = Evt%PreClu%E (iPRECLU)
@@ -1136,7 +1135,7 @@ C-----------------------------------------------------------------------
             istat = GETCWRKSTRU(Evt%Cwrk)
       
             NCHit = Evt%CWRK%n 
-            WRITE(*,*) "[DEBUG] NCHit: ", NCHit
+C            WRITE(*,*) "[DEBUG] NCHit: ", NCHit
             IF (NCHit > 0 .AND. NCHit <= 2000) THEN
                DO iCWRK=1, NCHit
                   IClu(iCWRK) = Evt%CWRK%icl(iCWRK)
@@ -1192,7 +1191,7 @@ C-----------------------------------------------------------------------
             istat = GETCELESTRU(Evt%Cele)
    
             NCel = Evt%Cele%n 
-            WRITE(*,*) "[DEBUG] NCel: ", NCel
+C            WRITE(*,*) "[DEBUG] NCel: ", NCel
             IF ( NCel > 0 .AND. NCel <= 2000 ) THEN
                DO iCELE=1, NCel
                  ICl(iCELE) = Evt%Cele%icl(iCELE)
@@ -1271,7 +1270,7 @@ C-----------------------------------------------------------------------
             CALL GETDTCESTRU(Evt%DTCE)
       
             nDTCE = Evt%DTCE%nDTCE
-            WRITE(*,*) "[DEBUG] nDTCE: ", nDTCE
+C            WRITE(*,*) "[DEBUG] nDTCE: ", nDTCE
             
             nSmall = Evt%DTCE%nSmall
             IF ( nSmall < 0 .OR. nSmall > 1500 ) THEN
@@ -1378,7 +1377,7 @@ C-----------------------------------------------------------------------
             istat = GETDHRESTRU(Evt%DHRE) 
    
             nDHRE = Evt%DHRE%nDHRE
-            WRITE(*,*) "[DEBUG] nDHRE: ", nDHRE
+C            WRITE(*,*) "[DEBUG] nDHRE: ", nDHRE
    
             IF (nDHRE > 0 .AND. nDHRE <= 1500) THEN
                DO iDHRE=1, nDHRE
@@ -1449,7 +1448,7 @@ C
             istat =  GETDHSPSTRU(evt%trk%n,evt%dhsp)
       
             nDHSP = Evt%DHSP%numDHSP
-            WRITE(*,*) "[DEBUG] nDHSP: ", nDHSP
+C            WRITE(*,*) "[DEBUG] nDHSP: ", nDHSP
       
             IF (nDHSP > 0 .AND. nDHSP <= 500) THEN
               DO iDHSP=1, nDHSP
@@ -1510,7 +1509,7 @@ C-----------------------------------------------------------------------
             ISTAT = TRKV2STRU(evt%vtx,evt%trkv,evt%trk,evt%trkmc)
    
             nTv = Evt%Trkv%n
-            WRITE(*,*) "[DEBUG] nTv: ", nTv
+C            WRITE(*,*) "[DEBUG] nTv: ", nTv
    
             IF (nTv > 0 .AND. nTv <= 30) THEN
                DO iTRKV=1, nTv
@@ -1581,7 +1580,7 @@ C-----------------------------------------------------------------------
             ISTAT = TRKV2STRU(evt%vtx,evt%trkv,evt%trk,evt%trkmc)
    
             nV = Evt%vtx%n
-            WRITE(*,*) "[DEBUG] nV: ", nV
+C            WRITE(*,*) "[DEBUG] nV: ", nV
    
             IF (nV > 0 .AND. nV <= 10) THEN
                DO iVTX=1, nV
@@ -1676,7 +1675,7 @@ C-----------------------------------------------------------------------
             ISTAT = TRKV2STRU(evt%vtx,evt%trkv,evt%trk,evt%trkmc)
    
             nT = Evt%Trk%n
-            WRITE(*,*) "[DEBUG] nT: ", nT
+C            WRITE(*,*) "[DEBUG] nT: ", nT
    
             IF (nT > 0 .AND. nT <= 100) THEN
                DO iTRKS=1, nT
@@ -1772,7 +1771,7 @@ C
               END DO
      
               nTfMC = Evt%TrkMC%n
-              WRITE(*,*) "[DEBUG] nTfMC: ", nTfMC
+C              WRITE(*,*) "[DEBUG] nTfMC: ", nTfMC
      
               IF (nTfMC > 0 .AND. nTfMC <= 100) THEN
                  DO iTRKMC=1, nTfMC
@@ -1889,7 +1888,7 @@ C-----------------------------------------------------------------------
             ISTAT = TRKVOLD2STRU(evt%vtxold, evt%trkvold, evt%trkold, evt%trkmcold)
    
             nTVOld = Evt%TrkvOld%n
-            WRITE(*,*) "[DEBUG] nDHRE: ", nDHRE
+C            WRITE(*,*) "[DEBUG] nDHRE: ", nDHRE
    
             IF (nTVOld > 0 .AND. nTVOld <= 30) THEN
                DO iTRKVOLD=1, nTVOld
@@ -1960,7 +1959,7 @@ C-----------------------------------------------------------------------
             ISTAT = TRKVOLD2STRU(evt%vtxold, evt%trkvold, evt%trkold, evt%trkmcold)
    
             nVOld = Evt%vtxold%n
-            WRITE(*,*) "[DEBUG] nVOld: ", nVOld
+C            WRITE(*,*) "[DEBUG] nVOld: ", nVOld
    
             IF (nVOld > 0 .AND. nVOld <= 10) THEN
                DO iVTXOLD=1, nVOld
@@ -2059,7 +2058,7 @@ C
             ISTAT = TRKVOLD2STRU(evt%vtxold, evt%trkvold, evt%trkold, evt%trkmcold)
    
             nTOld = Evt%Trkold%n
-            WRITE(*,*) "[DEBUG] nTOld: ", nTOld
+C            WRITE(*,*) "[DEBUG] nTOld: ", nTOld
    
             IF (nTOld > 0 .AND. nTOld <= 100) THEN
                DO iTRKOLD=1, nTOld
@@ -2267,7 +2266,7 @@ C-----------------------------------------------------------------------
             ISTAT = DHIT_UPK(evt%dhit)
             
             nDHIT = Evt%DHIT%n
-            WRITE(*,*) "[DEBUG] nDHIT: ", nDHIT
+C            WRITE(*,*) "[DEBUG] nDHIT: ", nDHIT
    
             IF (nDHIT > 0 .AND. nDHIT <= 2500) THEN
                DO iDHIT=1, nDHIT
@@ -2328,7 +2327,7 @@ C-----------------------------------------------------------------------
             istat = DEDX2STRU_GET(Evt%DEDX2STRU)
    
             nDEDx = Evt%DEDX2STRU%numdedx
-            WRITE(*,*) "[DEBUG] nDEDx: ", nDEDx
+C            WRITE(*,*) "[DEBUG] nDEDx: ", nDEDx
    
             IF (nDEDx > 0 .AND. nDEDx <= 20) THEN
               DO iiDEDX=1, nDEDx
@@ -2388,7 +2387,7 @@ C-----------------------------------------------------------------------
             ISTAT = GET_DPRS_STRUCT(Evt%DPRS)
    
             nDPRS =  Evt%DPRS%NDPRS
-            WRITE(*,*) "[DEBUG] nDPRS: ", nDPRS
+C            WRITE(*,*) "[DEBUG] nDPRS: ", nDPRS
    
             IF (nDPRS > 0 .AND. nDPRS <= 200) THEN
                DO iiDPRS=1, 3
@@ -2499,7 +2498,7 @@ C
            istat = GETMCSTRU(Evt%MC)
   
            nTMC = Evt%MC%ntrk
-           WRITE(*,*) "[DEBUG] nTMC: ", nTMC
+C           WRITE(*,*) "[DEBUG] nTMC: ", nTMC
   
            IF (nTMC > 0 .AND. nTMC <= 50) THEN
               DO iMC=1, nTMC
@@ -2552,7 +2551,7 @@ C
            END IF
   
            nVtxMC = Evt%MC%numvtx
-           WRITE(*,*) "[DEBUG] nVtxMC: ", nVtxMC
+C           WRITE(*,*) "[DEBUG] nVtxMC: ", nVtxMC
            
            IF (nVtxMC > 0 .AND. nVtxMC <= 30) THEN
               DO iMC=1, nVtxMC
@@ -2610,7 +2609,7 @@ C-----------------------------------------------------------------------
             ISTAT =  GETTCLOSTRU(evt%tclo)
    
             nTcl = Evt%Tclo%nt
-            WRITE(*,*) "[DEBUG] nTMC: ", nTMC
+C           WRITE(*,*) "[DEBUG] nTMC: ", nTMC
    
             IF (nTcl > 0 .AND. nTcl <= 40) THEN
                DO iTCLO=1, nTcl
@@ -2672,7 +2671,7 @@ C-----------------------------------------------------------------------
             istat =  GETOLDTCLOSTRU(evt%tclold)
    
             nTclOld = Evt%Tclold%nt
-            WRITE(*,*) "[DEBUG] nTclOld: ", nTclOld
+C           WRITE(*,*) "[DEBUG] nTclOld: ", nTclOld
    
             IF (nTclOld > 0 .AND. nTclOld <= 40) THEN
                DO iTCLOLD=1, nTclOld
@@ -2731,7 +2730,7 @@ C-----------------------------------------------------------------------
             ISTAT = GETCFHISTRU(evt%cfhi)
    
             nFhi = Evt%CFHI%n
-            WRITE(*,*) "[DEBUG] nFhi: ", nFhi
+C           WRITE(*,*) "[DEBUG] nFhi: ", nFhi
    
             IF (nFhi > 0 .AND. nFhi <= 300) THEN
                DO iCFHI=1, nFhi
@@ -2805,7 +2804,7 @@ C
                ISTAT = GETQIHISTRU(evt%qhit)
       
                nQIHI = Evt%QHIT%n
-               WRITE(*,*) "[DEBUG] nQIHI: ", nQIHI
+C               WRITE(*,*) "[DEBUG] nQIHI: ", nQIHI
       
                IF (nQIHI > 0 .AND. nQIHI <= 1000) THEN
                   DO iQIHI=1, nQIHI
@@ -2861,7 +2860,7 @@ C
          istat = TRKQ2STRU( evt%trk, evt%trkq )
 
          nTrkQ = Evt%TRKQ%n
-         WRITE(*,*) "[DEBUG] nTrkQ: ", nTrkQ
+C         WRITE(*,*) "[DEBUG] nTrkQ: ", nTrkQ
          FlagQt = Evt%TRKQ%flagqt
 
          IF (nTrkQ > 0 .AND. nTrkQ <= 100) THEN
@@ -2910,7 +2909,7 @@ C-----------------------------------------------------------------------
                ISTAT = GETQCAESTRU(Evt%Qele)
       
                nQELE = Evt%QELE%n
-               WRITE(*,*) "[DEBUG] nQELE: ", nQELE
+C               WRITE(*,*) "[DEBUG] nQELE: ", nQELE
       
                IF (nQELE > 0 .AND. nQELE <= 32) THEN
                   DO iQELE=1, nQELE
@@ -3006,7 +3005,7 @@ C-----------------------------------------------------------------------
             ISTAT = GETNVO(evt%knvo,evt%vnvo,evt%vnvb,evt%invo)
    
             nKNVO = Evt%KNVO%n
-            WRITE(*,*) "[DEBUG] nKNVO: ", nKNVO
+C            WRITE(*,*) "[DEBUG] nKNVO: ", nKNVO
    
             IF (nKNVO > 0 .AND. nKNVO <= 40) THEN
                DO iiKNVO=1, nKNVO
@@ -3051,7 +3050,7 @@ C-----------------------------------------------------------------------
             ISTAT = GETNVO(evt%knvo,evt%vnvo,evt%vnvb,evt%invo)
    
             nVNVO = Evt%VNVO%n
-            WRITE(*,*) "[DEBUG] nVNVO: ", nVNVO
+C            WRITE(*,*) "[DEBUG] nVNVO: ", nVNVO
    
             IF (nVNVO > 0 .AND. nVNVO <= 40) THEN
                DO iiVNVO=1, nVNVO
@@ -3090,7 +3089,7 @@ C-----------------------------------------------------------------------
             istat = GETNVO(evt%knvo,evt%vnvo,evt%vnvb,evt%invo)
    
             nBnksVNVO = Evt%VNVB%n
-            WRITE(*,*) "[DEBUG] nBnksVNVO: ", nBnksVNVO
+C            WRITE(*,*) "[DEBUG] nBnksVNVO: ", nBnksVNVO
             IF ( nBnksVNVO < 0 .OR. nBnksVNVO > 40 ) THEN
                VNVBErrorCounter(4) = VNVBErrorCounter(4) + 1
             END IF
@@ -3131,7 +3130,7 @@ C-----------------------------------------------------------------------
             ISTAT = GETNVO(evt%knvo,evt%vnvo,evt%vnvb,evt%invo)
    
             nINVO = Evt%INVO%n
-            WRITE(*,*) "[DEBUG] nINVO: ", nINVO
+C            WRITE(*,*) "[DEBUG] nINVO: ", nINVO
    
             IF (nINVO > 0 .AND. nINVO <= 40) THEN
                DO iINVO=1, nINVO
@@ -3184,7 +3183,7 @@ C-----------------------------------------------------------------------
             ISTAT = GETECLO(evt%eclo)
    
             nCli = Evt%eclo%n
-            WRITE(*,*) "[DEBUG] nCli: ", nCli
+C            WRITE(*,*) "[DEBUG] nCli: ", nCli
    
             IF (nCli > 0 .AND. nCli <= 100) THEN
                DO iECLO=1, nCli
@@ -3207,7 +3206,7 @@ C-----------------------------------------------------------------------
             STATUS = BLOCAT(IW, 'ECLO', 2, IND, INDDAT)
             IF (STATUS.EQ.YESUCC) THEN
                nCli2 = Evt%eclo%n2
-               WRITE(*,*) "[DEBUG] nCli2: ", nCli2
+C               WRITE(*,*) "[DEBUG] nCli2: ", nCli2
 
                IF (nCli2 > 0 .AND. nCli2 <= 100) THEN
                   DO iECLO2=1, nCli2
@@ -3262,7 +3261,7 @@ C-----------------------------------------------------------------------
             ISTAT = GETCSPSSTRU(0,EVT%CSPS,EVT%CSPSMC)
    
             nCS = Evt%CSPS%Ncel
-            WRITE(*,*) "[DEBUG] nCS: ", nCS
+C            WRITE(*,*) "[DEBUG] nCS: ", nCS
    
             IF (nCS > 0 .AND. nCS <= 2000) THEN
                DO iCSPS=1, nCS
@@ -3361,7 +3360,7 @@ C-----------------------------------------------------------------------
             ISTAT = GETCLUOSTRU(Evt%CLUO)
    
             nCluO = Evt%CLUO%N
-            WRITE(*,*) "[DEBUG] nCluO: ", nCluO
+C            WRITE(*,*) "[DEBUG] nCluO: ", nCluO
    
             IF (nCluO > 0 .AND. nCluO <= 100) THEN
                DO iCLUO=1, nCluO
@@ -3458,7 +3457,7 @@ C          Returns Largest Bank Number
               ISTAT = GETQCALTSTRU(Evt%QCALT)
      
               nQCalT = Evt%QCALT%NEle
-              WRITE(*,*) "[DEBUG] nQCalT: ", nQCalT
+C              WRITE(*,*) "[DEBUG] nQCalT: ", nQCalT
      
               IF (nQCalT > 0 .AND. nQCalT <= 1920) THEN
                  DO iQTELE=1, nQCalT
@@ -3526,7 +3525,7 @@ C-----------------------------------------------------------------------
                ISTAT = GETQCTHSTRU(Evt%QCALTHIT)
       
                nQCTHEle = Evt%QCALTHIT%Nele
-               WRITE(*,*) "[DEBUG] nQCTHEle: ", nQCTHEle
+C               WRITE(*,*) "[DEBUG] nQCTHEle: ", nQCTHEle
       
                IF (nQCTHEle > 0 .AND. nQCTHEle <= 1920) THEN
                   DO iQCTH=1, nQCTHEle
@@ -3578,7 +3577,7 @@ C-----------------------------------------------------------------------
                ISTAT = GETCCALTSTRU(EVT%CCLE)
       
                nCCle = Evt%CCLE%NEle
-               WRITE(*,*) "[DEBUG] nCCle: ", nCCle
+C               WRITE(*,*) "[DEBUG] nCCle: ", nCCle
       
                IF (nCCle > 0 .AND. nCCle <= 96) THEN
                   DO iCCLE=1, nCCle
@@ -3635,7 +3634,7 @@ C-----------------------------------------------------------------------
       
                LeteCalib = Evt%LETE%Calib
                nLete = Evt%LETE%NEle
-               WRITE(*,*) "[DEBUG] nLete: ", nLete
+C               WRITE(*,*) "[DEBUG] nLete: ", nLete
       
                IF (nLete > 0 .AND. nLete <= 40) THEN
                   DO iLETE=1, nLete
@@ -3656,7 +3655,7 @@ C-----------------------------------------------------------------------
                        Lete_Time(iLETE) = Evt%LETE%T(iLETE)
                   END DO
                ELSE
-                  WRITE(*,*) ERROR_BLOCK//'LETE - nLete '//ERROR_INDEX, nLete
+C                  WRITE(*,*) ERROR_BLOCK//'LETE - nLete '//ERROR_INDEX, nLete
                   IF (nLete == 0) THEN
                   ELSE
                   END IF
@@ -3690,7 +3689,7 @@ C-----------------------------------------------------------------------
       
                nITCE = Evt%itce%nitce
                IF ( nITCE < 0 .OR. nITCE > 4032 ) THEN
-                  WRITE(*,*) ERROR_BLOCK//'ITCE - nITCE '//ERROR_DOMAIN, nITCE
+C                  WRITE(*,*) ERROR_BLOCK//'ITCE - nITCE '//ERROR_DOMAIN, nITCE
                END IF
       
                IF (nITCE > 0 .AND. nITCE <= 4032) THEN
@@ -3702,15 +3701,15 @@ C-----------------------------------------------------------------------
                        IndItKine(iITCE) = Evt%itce%inditkine(iITCE)
                  END DO
                ELSE
-                  WRITE(*,*) ERROR_BLOCK//'ITCE - nITCE '//ERROR_INDEX, nITCE
+C                  WRITE(*,*) ERROR_BLOCK//'ITCE - nITCE '//ERROR_INDEX, nITCE
                   nITCE = 0
                END IF
             ELSE
-               WRITE(*,*) ERROR_MISS_DATA//'ITCE'
+C               WRITE(*,*) ERROR_MISS_DATA//'ITCE'
             END IF
          ELSE
 C           TODO: Should I remove this control?
-            WRITE(*,*) ERROR_MISS_DATA//'ITCE'
+C            WRITE(*,*) ERROR_MISS_DATA//'ITCE'
          END IF
       END IF
 C-----------------------------------------------------------------------
@@ -3732,35 +3731,35 @@ C-----------------------------------------------------------------------
    
                nHetDcs = Evt%hete%nhetdcs
                IF ( nHetDcs < 0 .OR. nHetDcs > 1920 ) THEN
-                  WRITE(*,*) ERROR_BLOCK//'HETE - nHetDcs '//ERROR_DOMAIN, nHetDcs
+C                  WRITE(*,*) ERROR_BLOCK//'HETE - nHetDcs '//ERROR_DOMAIN, nHetDcs
                END IF
       
                IF (nHetDcs > 0 .AND. nHetDcs <= 1920) THEN
                   DO iHETE=1, nHetDcs
                      HDet(iHETE) = Evt%hete%hdet(iHETE)
                      IF ( HDet(iHETE) < 1 .OR. HDet(iHETE) > 2 ) THEN
-                        WRITE(*,*) ERROR_BLOCK//'HETE - HDet '//ERROR_DOMAIN, HDet(iHETE)
+C                        WRITE(*,*) ERROR_BLOCK//'HETE - HDet '//ERROR_DOMAIN, HDet(iHETE)
                      END IF
                      HCol(iHETE) = Evt%hete%hcol(iHETE)
                      IF ( HCol(iHETE) < 1 .OR. HCol(iHETE) > 32 ) THEN
-                        WRITE(*,*) ERROR_BLOCK//'HETE - HCol '//ERROR_DOMAIN, HCol(iHETE)
+C                        WRITE(*,*) ERROR_BLOCK//'HETE - HCol '//ERROR_DOMAIN, HCol(iHETE)
                      END IF
                      nTurnHet(iHETE) = Evt%hete%nturnhet(iHETE)
                      IF ( nTurnHet(iHETE) < 1 .OR. nTurnHet(iHETE) > 4 ) THEN
-                        WRITE(*,*) ERROR_BLOCK//'HETE - nTurnHet '//ERROR_DOMAIN, nTurnHet(iHETE)
+C                        WRITE(*,*) ERROR_BLOCK//'HETE - nTurnHet '//ERROR_DOMAIN, nTurnHet(iHETE)
                      END IF
                        TimeHet(iHETE) = Evt%hete%timehet(iHETE)
                  END DO
                ELSE
-                  WRITE(*,*) ERROR_BLOCK//'HETE - nHetDcs '//ERROR_INDEX, nHetDcs
+C                  WRITE(*,*) ERROR_BLOCK//'HETE - nHetDcs '//ERROR_INDEX, nHetDcs
                   nHetDcs = 0
                END IF
             ELSE
-               WRITE(*,*) ERROR_MISS_DATA//'HETE'
+C               WRITE(*,*) ERROR_MISS_DATA//'HETE'
             END IF
          ELSE
 C           TODO: Should I remove this control?         
-            WRITE(*,*) ERROR_MISS_DATA//'HETE'
+C            WRITE(*,*) ERROR_MISS_DATA//'HETE'
          END IF
       END IF
 C-----------------------------------------------------------------------

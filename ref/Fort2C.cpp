@@ -4,6 +4,7 @@
 #include "Fort2C.hh"
 #include "TreeWriter.hh"
 #include "Struct.hh"
+#include "TString.h"
 
 //Declare the writer object as global
 TreeWriter *writer;
@@ -15,12 +16,20 @@ TreeWriter *writer;
 void inittree_(){
   writer = new TreeWriter();
 }
-
 // Invoke the method for filling the tree.
 //
 // input:   -
 // output:  -
 void fillntu_(){
+  // TFile *ftest = (TFile*)writer->getTFile();
+  
+  // TSeqCollection *files = gROOT->GetListOfFiles();
+  // TIter next(files);
+  
+  // while (TObject *tt = (next())) {
+  //   std::cout << "fillntu_ getlist " << tt->GetName() << std::endl;
+  // }
+  // std::cout<< "fillntu_ " << ftest->GetName() << std::endl; 
   writer->fillTTree();
 }
 

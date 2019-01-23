@@ -1,21 +1,30 @@
 !
-use prod2ntu sample
+!use sample prod2ntu
+use sample
 !
-talk sample info yes bpos yes gdhit yes ecls yes trig yes c2trg yes tellina yes pizzetta yes torta yes tele yes pizza yes time yes clus yes preclus yes cwrk yes cele yes dtce yes exit
-!
+talk sample info yes data yes bpos yes gdhit yes ecls yes trig yes c2trg yes tellina yes pizzetta yes torta yes tele yes pizza yes time yes clus yes preclus yes cwrk yes cele yes dtce yes exit
 talk sample dtc0 yes dchits yes dhre yes dhsp yes trv yes vtx yes trs yes trkvo yes vto yes trkso yes dedx yes dhit yes dprs yes geanfi yes tclo yes tcold yes cfhi yes qihi yes trkq yes exit
-!
 talk sample qele yes qcal yes knvo yes vnvo yes vnvb yes invo yes eclo yes csps yes cluo yes qtele yes qcth yes ccle yes lete yes itce yes hete yes mcflg no exit
-!
 talk sample show exit
-input url "dbdatarec:(run_nr=88220) and (stream_code='rad') and (version=37)"
+!
+!talk prod2ntu 1 yes 2 yes 3 yes 4 yes 5 yes 6 yes 7 yes 8 yes 9 yes 10 yes exit
+!talk prod2ntu 11 yes 12 yes 13 yes 14 yes 15 yes 16 yes 17 yes 18 yes 19 yes 20 yes exit
+!talk prod2ntu 21 yes 22 yes 23 yes 24 yes 25 yes 26 yes 27 yes 28 yes 29 yes 30 yes exit
+!talk prod2ntu 31 yes 32 yes 33 yes 34 yes 35 yes 36 yes 37 yes 38 yes 39 yes 40 yes exit
+!talk prod2ntu show exit
+!
+!input url "dbdatarec:(run_nr=88220) and (stream_code='rad') and (version=38)"
+input file "/recalled50b/rad088220N_ALL_f06_1_1_1_38.003"
+!input file "/recalled50b/rad089328N_ALL_f06_1_1_1_38.004"
 !
 hist open/file="./test.hbook"/max_nrec=60000
 hist on/mod=sample
-hist on/mod=prod2ntu
-beg/nev=10/rep=500000
+!hist on/mod=prod2ntu
+beg/rep=500000
 hist write
 hist close
 hist del
+!
+!
 show all
 exit

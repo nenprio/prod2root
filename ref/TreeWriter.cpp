@@ -16,7 +16,7 @@
 TreeWriter::TreeWriter() {
     outfile  = new TFile("sample.root", "recreate");    //Open or create file 
     fNewTree = new TTree("sample", "Event Infos");      //Create "sample" tree
- 
+    //    fNewTree->SetMaxTreeSize(2147); 
     // Block Info
     if(logicalToBool(sammenu_.infoFlag))        addBlockInfo();
     // Block Data
@@ -1492,15 +1492,18 @@ TFile* TreeWriter::getTFile() {
 //
 // input:   -
 // output:  -
-// TODO: why create tree pointer and why don't use fnewtree created by constructor?
 void TreeWriter::fillTTree() {
     // ROOT Memory Profiling
     // Only for debugging
     /* gObjectTable->Print(); */
-    float mem = GetMemory();
-    std::cout << "[Mem debug] Process memory: " << mem << " MB" << std::endl;
-    TTree *tree = (TTree*)outfile->Get("sample");
-    tree->Fill();
+  // std::cout << "Fill: "<< outfile->GetName() << std::endl;
+  // float mem = GetMemory();
+  // std::cout << "[Mem debug] Process memory: " << mem << " MB" << std::endl;
+  // TTree *tree = (TTree*)outfile->Get("sample");
+  // tree->Fill();
+  fNewTree->Fill();
+  outfile = fNewTree->GetCurrentFile();
+  }
 }
 
 // Convert the integer flag from FORTRAN to a boolean.
