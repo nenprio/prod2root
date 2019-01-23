@@ -1503,7 +1503,6 @@ void TreeWriter::fillTTree() {
   // tree->Fill();
   fNewTree->Fill();
   outfile = fNewTree->GetCurrentFile();
-  }
 }
 
 // Convert the integer flag from FORTRAN to a boolean.
