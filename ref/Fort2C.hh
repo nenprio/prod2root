@@ -4,6 +4,7 @@
 
 extern "C" void fillntu_();
 extern "C" void inittree_();
+extern "C" void initstruct_();
 extern "C" void closetree_();
 extern "C" void showheader_();
 

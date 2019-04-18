@@ -2,44 +2,44 @@
 #define STRUCT_HH
 // This header contains all the structs needed to 
 // write ntuple data to C++ format.
-
-const int MaxNumClu      = 100;
-const int MaxEclSize     = 8;
-const int MaxTrgChan     = 1000;
-const int TriggerElm     = 300;
-const int MaxNTele       = 300;
-const int MaxNPack       = 300;
-const int NeleCluMax     = 2000;
-const int NMaxDC         = 1500;
-const int MaxNumDHSP     = 500;
-const int MaxNumTrkV     = 30;
-const int MaxNumVtx      = 10;
-const int MaxNumTrk      = 100;
-const int MaxNumDHIT     = 2500;
-const int MaxRowsDEDx    = 20;
-const int MaxColsDEDx    = 100;
-const int FixNmDPRSNView = 3;
-const int MaxNumDPRS     = 200;
-const int MaxNTrkGen     = 50;
-const int MaxNVtxGen     = 30;
-const int MaxNumTCLO     = 40;
-const int MaxNumFirstHit = 300;
-const int MaxNumQIHI     = 1000;
-const int MaxRowsTrkQ    = 100;
-const int MaxColsTrkQ    = 2;
-const int MaxNumQCal     = 32;
-const int MaxNumKNVO     = 40;
-const int MaxNumVNVO     = 40;
-const int MaxNumVNVOb    = 40;
-const int MaxNumINVO     = 40;
-const int MaxNumCLINF    = 100;
-const int MaxNumHitClu   = 2000;
-const int MaxNumCluo     = 100;
-const int MaxNumQCalT    = 1920;
-const int MaxNumCCalT    = 96;
-const int MaxNumLete     = 40;
-const int MaxNumIT       = 4032;
-const int MaxNumHET      = 1920;
+const int scale          = 1;
+const int MaxNumClu      = scale*100;
+const int MaxEclSize     = scale*8;
+const int MaxTrgChan     = scale*1000;
+const int TriggerElm     = scale*300;
+const int MaxNTele       = scale*300;
+const int MaxNPack       = scale*300;
+const int NeleCluMax     = scale*2000;
+const int NMaxDC         = scale*1500;
+const int MaxNumDHSP     = scale*500;
+const int MaxNumTrkV     = scale*30;
+const int MaxNumVtx      = scale*10;
+const int MaxNumTrk      = scale*100;
+const int MaxNumDHIT     = scale*2500;
+const int MaxRowsDEDx    = scale*20;
+const int MaxColsDEDx    = scale*100;
+const int FixNmDPRSNView = scale*3;
+const int MaxNumDPRS     = scale*200;
+const int MaxNTrkGen     = scale*50;
+const int MaxNVtxGen     = scale*30;
+const int MaxNumTCLO     = scale*40;
+const int MaxNumFirstHit = scale*300;
+const int MaxNumQIHI     = scale*1000;
+const int MaxRowsTrkQ    = scale*100;
+const int MaxColsTrkQ    = scale*2;
+const int MaxNumQCal     = scale*32;
+const int MaxNumKNVO     = scale*40;
+const int MaxNumVNVO     = scale*40;
+const int MaxNumVNVOb    = scale*40;
+const int MaxNumINVO     = scale*40;
+const int MaxNumCLINF    = scale*100;
+const int MaxNumHitClu   = scale*2000;
+const int MaxNumCluo     = scale*100;
+const int MaxNumQCalT    = scale*1920;
+const int MaxNumCCalT    = scale*96;
+const int MaxNumLete     = scale*40;
+const int MaxNumIT       = scale*4032;
+const int MaxNumHET      = scale*1920;
 
 //Verb for Talk_to module
 extern "C"{
@@ -99,7 +99,6 @@ extern "C"{
     int mcFlg;
   }sammenu_;
 }
-
 // Shared flags for control tree filling
 extern "C" {
     extern struct {

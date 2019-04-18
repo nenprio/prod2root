@@ -211,6 +211,9 @@ C=============================================================================
       ERROR_INDEX = "Index not valid: "
       ERROR_DOMAIN = "Out of domain: "
 C
+C     Init structures
+      call initstruct()
+C
 C     Check if MC blocks are required and if they exist
 C     Otherwise print error message to alert that 
 C     MC blocks exist and they aren't required

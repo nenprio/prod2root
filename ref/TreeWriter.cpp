@@ -8,6 +8,7 @@
 #include <TObjectTable.h>
 #include <typeinfo>
 
+
 // Creates the TreeWriter object, opens/creates output file
 // and initializes the TTree structure.
 //
@@ -16,6 +17,7 @@
 TreeWriter::TreeWriter() {
     outfile  = new TFile("sample.root", "recreate");    //Open or create file 
     fNewTree = new TTree("sample", "Event Infos");      //Create "sample" tree
+    
     //    fNewTree->SetMaxTreeSize(2147); 
     // Block Info
     if(logicalToBool(sammenu_.infoFlag))        addBlockInfo();
@@ -136,17 +138,17 @@ TreeWriter::TreeWriter() {
 // input:   -
 // return:  -
 TreeWriter::~TreeWriter() {
-    /* if(fNewTree){ */
-      /* delete fNewTree; */
-      /* fNewTree = NULL; */
-    /* } */
+  if(fNewTree){
+    delete fNewTree; 
+    fNewTree = NULL; 
+  } 
 
-    if(outfile) {
-        outfile->Write(0,TObject::kOverwrite);
-        outfile->Close();
-        delete outfile;
-    	outfile = NULL;
-    }
+  if(outfile) {
+    outfile->Write(0,TObject::kOverwrite);
+    outfile->Close();
+    delete outfile;
+    outfile = NULL;
+  }
 }
 
 void TreeWriter::printHeaderFlags() {
@@ -1503,6 +1505,7 @@ void TreeWriter::fillTTree() {
   // tree->Fill();
   fNewTree->Fill();
   outfile = fNewTree->GetCurrentFile();
+  outfile->Write(0,TObject::kOverwrite);
 }
 
 // Convert the integer flag from FORTRAN to a boolean.

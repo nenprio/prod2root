@@ -13,11 +13,11 @@ talk sample show exit
 !talk prod2ntu 31 yes 32 yes 33 yes 34 yes 35 yes 36 yes 37 yes 38 yes 39 yes 40 yes exit
 !talk prod2ntu show exit
 !
-!input url "dbdatarec:(run_nr=88220) and (stream_code='rad') and (version=38)"
-input file "/recalled50b/rad088220N_ALL_f06_1_1_1_38.003"
+input url "dbdatarec:(run_nr=88220) and (stream_code='rad') and (version=38)"
+!input file "/recalled50b/rad088220N_ALL_f06_1_1_1_38.003"
 !input file "/recalled50b/rad089328N_ALL_f06_1_1_1_38.004"
 !
-hist open/file="./test.hbook"/max_nrec=60000
+hist open/file="./test1.hbook"/max_nrec=60000
 hist on/mod=sample
 !hist on/mod=prod2ntu
 beg/rep=500000
