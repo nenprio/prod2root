@@ -1504,8 +1504,9 @@ void TreeWriter::fillTTree() {
   // TTree *tree = (TTree*)outfile->Get("sample");
   // tree->Fill();
   fNewTree->Fill();
-  outfile = fNewTree->GetCurrentFile();
-  outfile->Write(0,TObject::kOverwrite);
+  //test performed to understand crash --> writing file every event
+  // outfile = fNewTree->GetCurrentFile();
+  // outfile->Write(0,TObject::kOverwrite);
 }
 
 // Convert the integer flag from FORTRAN to a boolean.
