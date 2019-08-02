@@ -17,8 +17,10 @@
 TreeWriter::TreeWriter() {
     outfile  = new TFile("sample.root", "recreate");    //Open or create file 
     fNewTree = new TTree("sample", "Event Infos");      //Create "sample" tree
-    
-    //    fNewTree->SetMaxTreeSize(2147); 
+    outfile->SetCompressionLevel(2);//from 0 = no-compresion to 9-maximum gzip
+    fNewTree->SetMaxTreeSize(1000*Long64_t(2000000000)); 
+
+
     // Block Info
     if(logicalToBool(sammenu_.infoFlag))        addBlockInfo();
     // Block Data

@@ -3847,7 +3847,7 @@ C
 C==============================================================================
 C
       Status=UIDFFI( 
-     $     '$SAMPLE/sample.uid'
+     $     '/gpfs/user/e/eperez/prod2root/ref/sample.uid'
      $     ,IGROUP,MENUF,N$A,N$A,MENUL,N$A )
       Status = UIUSGP(IGROUP,N$A)
  10   Status = UIACME(MENUF,Verb,N$A) ! Display menu
