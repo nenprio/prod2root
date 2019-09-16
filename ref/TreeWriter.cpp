@@ -140,16 +140,16 @@ TreeWriter::TreeWriter() {
 // input:   -
 // return:  -
 TreeWriter::~TreeWriter() {
-  if(fNewTree){
-    delete fNewTree; 
-    fNewTree = NULL; 
-  } 
+  // if(fNewTree){
+  //   delete fNewTree; 
+  //   fNewTree = NULL; 
+  // } 
 
   if(outfile) {
     outfile->Write(0,TObject::kOverwrite);
     outfile->Close();
-    delete outfile;
-    outfile = NULL;
+    //    delete outfile;
+    //outfile = NULL;
   }
 }
 
