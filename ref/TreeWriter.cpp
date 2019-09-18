@@ -19,8 +19,7 @@ TreeWriter::TreeWriter() {
     fNewTree = new TTree("sample", "Event Infos");      //Create "sample" tree
     outfile->SetCompressionLevel(2);//from 0 = no-compresion to 9-maximum gzip
     fNewTree->SetMaxTreeSize(1000*Long64_t(2000000000)); 
-
-
+    fNewTree->SetAutoSave(1500000);    
     // Block Info
     if(logicalToBool(sammenu_.infoFlag))        addBlockInfo();
     // Block Data
@@ -148,8 +147,8 @@ TreeWriter::~TreeWriter() {
   if(outfile) {
     outfile->Write(0,TObject::kOverwrite);
     outfile->Close();
-    //    delete outfile;
-    //outfile = NULL;
+    delete outfile;
+    outfile = NULL;
   }
 }
 
