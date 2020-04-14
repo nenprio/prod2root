@@ -1688,13 +1688,7 @@ C-----------------------------------------------------------------------
            Chi2Ms(iTRKS) = 0.
          END DO
 
-         STATUS = BIGEST(IW, 'DVFS', BNKNUM)
-         IF (STATUS.EQ.YESUCC) THEN
-            STATUS = BLOCAT(IW, 'DVFS', BNKNUM, IND, INDDAT)
-         END IF
-         IF (STATUS.EQ.YESUCC) THEN
-            STATUS = BIGEST(IW, 'DTFS', BNKNUM)
-         END IF
+         STATUS = BIGEST(IW, 'DTFS', BNKNUM)
          IF (STATUS.EQ.YESUCC) THEN
             STATUS = BLOCAT(IW, 'DTFS', BNKNUM, IND, INDDAT)
          END IF
@@ -2067,17 +2061,7 @@ C-----------------------------------------------------------------------
            Chi2MSOld(iTRKOLD) = 0.
          END DO
 
-C
-C        Trks and TrksMC require DVF1 and DTF1 banks,
-C        then here we check for both of them.
-C
-         STATUS = BIGEST(IW, 'DVF1', BNKNUM)
-         IF (STATUS.EQ.YESUCC) THEN
-            STATUS = BLOCAT(IW, 'DVF1', BNKNUM, IND, INDDAT)
-         END IF
-         IF (STATUS.EQ.YESUCC) THEN
-            STATUS = BIGEST(IW, 'DTF1', BNKNUM)
-         END IF
+         STATUS = BIGEST(IW, 'DTF1', BNKNUM)
          IF (STATUS.EQ.YESUCC) THEN
             STATUS = BLOCAT(IW, 'DTF1', BNKNUM, IND, INDDAT)
          END IF
