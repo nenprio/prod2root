@@ -424,8 +424,8 @@ void TreeWriter::addBlockInfo() {
 // input:   -
 // output:  -
 void TreeWriter::addBlockData() {
-    fNewTree->Branch("StreamNum",   &eventinfo_.StreamNum,  "StreamNum/I");
-    fNewTree->Branch("AlgoNum",     &eventinfo_.AlgoNum,    "AlgoNum/I");
+  //    fNewTree->Branch("StreamNum",   &eventinfo_.StreamNum,  "StreamNum/I");
+  //    fNewTree->Branch("AlgoNum",     &eventinfo_.AlgoNum,    "AlgoNum/I");
     fNewTree->Branch("TimeSec",     &eventinfo_.TimeSec,    "TimeSec/I");
     fNewTree->Branch("TimeMusec",   &eventinfo_.TimeMusec,  "TimeMusec/I");
     fNewTree->Branch("MCFlag",      &eventinfo_.McFlag,     "McFlag/I");
