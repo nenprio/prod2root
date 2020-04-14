@@ -952,7 +952,7 @@ void TreeWriter::addBlockVtxOld() {
     fNewTree->Branch("VtxOld",     &vtxold_.VtxOld,     "VtxOld[nVOld]/I");
     fNewTree->Branch("xVOld",      &vtxold_.xVOld,      "xVOld[nVOld]/F");
     fNewTree->Branch("yVOld",      &vtxold_.yVOld,      "yVOld[nVOld]/F");
-    fNewTree->Branch("ZVOld",      &vtxold_.ZVOld,      "ZVOld[nVOld]/F");
+    fNewTree->Branch("zVOld",      &vtxold_.ZVOld,      "zVOld[nVOld]/F");
     fNewTree->Branch("ChiVTxOld",  &vtxold_.ChiVTxOld,  "ChiVTxOld[nVOld]/F");
     fNewTree->Branch("QuaLVOld",   &vtxold_.QuaLVOld,   "QuaLVOld[nVOld]/I");
     fNewTree->Branch("FitIdVOld",  &vtxold_.FitIdVOld,  "FitIdVOld[nVOld]/I");

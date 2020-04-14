@@ -686,7 +686,7 @@ extern "C" {
     int VtxOld[MaxNumVtx];
     float xVOld[MaxNumVtx];
     float yVOld[MaxNumVtx];
-    float ZVOld[MaxNumVtx];
+    float zVOld[MaxNumVtx];
     float ChiVTxOld[MaxNumVtx];
     int QuaLVOld[MaxNumVtx];
     int FitIdVOld[MaxNumVtx];
