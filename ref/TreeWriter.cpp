@@ -7,19 +7,35 @@
 #include "Struct.hh"
 #include <TObjectTable.h>
 #include <typeinfo>
+#include <cstdlib>
+#include <cstdio>
+#include <stdlib.h>
+#include <stdio.h>
 
-
+int count = 0;
 // Creates the TreeWriter object, opens/creates output file
 // and initializes the TTree structure.
 //
 // input:   -
 // return:  -
 TreeWriter::TreeWriter() {
-    outfile  = new TFile("sample.root", "recreate");    //Open or create file 
-    fNewTree = new TTree("sample", "Event Infos");      //Create "sample" tree
-    outfile->SetCompressionLevel(2);//from 0 = no-compresion to 9-maximum gzip
-    fNewTree->SetMaxTreeSize(1000*Long64_t(2000000000)); 
-    fNewTree->SetAutoSave(1500000);    
+  char *filename = getenv("OUTFILE");
+  std::cout<<"envim " << filename << std::endl;
+  if(filename == NULL){
+    std::cout<<"mal"<<std::endl;
+    outfile  = new TFile("sample.root", "recreate");    //Open or create file
+}
+  else{
+    std::cout<<"bien"<<std::endl;
+    outfile  = new TFile(filename, "recreate");    //Open or create file
+  }
+  fNewTree = new TTree("sample", "Event Infos");      //Create "sample" tree
+  outfile->SetCompressionLevel(2);//from 0 = no-compresion to 9-maximum gzip
+  //fNewTree->SetMaxTreeSize(1000*Long64_t(2000000000)); 
+  //8GB maximum
+  fNewTree->SetMaxTreeSize(1000*Long64_t(8000000)); 
+
+  
     // Block Info
     if(logicalToBool(sammenu_.infoFlag))        addBlockInfo();
     // Block Data
@@ -128,10 +144,11 @@ TreeWriter::TreeWriter() {
 
     // Write to the disk
     outfile->Write();
-
+    //    fNewTree->Print();
     // ROOT Memory Profiling
     // Only for debugging
-    /* gObjectTable->Print(); */
+    //    gObjectTable->Print(); 
+    
 }
 
 // Closes output file and deallocates variables from memory.
@@ -411,7 +428,6 @@ void TreeWriter::addBlockData() {
     fNewTree->Branch("AlgoNum",     &eventinfo_.AlgoNum,    "AlgoNum/I");
     fNewTree->Branch("TimeSec",     &eventinfo_.TimeSec,    "TimeSec/I");
     fNewTree->Branch("TimeMusec",   &eventinfo_.TimeMusec,  "TimeMusec/I");
-    fNewTree->Branch("nDTCE",       &eventinfo_.Ndtce_copy, "Ndtce/I");
     fNewTree->Branch("MCFlag",      &eventinfo_.McFlag,     "McFlag/I");
     fNewTree->Branch("iPos",        &eventinfo_.IPos,       "IPos/F");
     fNewTree->Branch("iEle",        &eventinfo_.IEle,       "IEle/F");
@@ -1499,15 +1515,23 @@ void TreeWriter::fillTTree() {
     // ROOT Memory Profiling
     // Only for debugging
     /* gObjectTable->Print(); */
-  // std::cout << "Fill: "<< outfile->GetName() << std::endl;
-  // float mem = GetMemory();
-  // std::cout << "[Mem debug] Process memory: " << mem << " MB" << std::endl;
+  count++;
+  //  std::cout << "Fill: "<< outfile->GetName() << std::endl; 
   // TTree *tree = (TTree*)outfile->Get("sample");
   // tree->Fill();
   fNewTree->Fill();
   //test performed to understand crash --> writing file every event
   // outfile = fNewTree->GetCurrentFile();
-  // outfile->Write(0,TObject::kOverwrite);
+  // if(mem % 100 == 0)outfile->Write(0,TObject::kOverwrite);
+  if(count % 100000 == 0){
+    float mem = GetMemory();
+    std::cout << "[Mem debug] Process memory: " << mem << " MB" << std::endl;
+    
+      //AutoSave("fAutoFlush");
+    // outfile = fNewTree->GetCurrentFile();
+    // outfile->Write(0,TObject::kOverwrite);
+  }
+
 }
 
 // Convert the integer flag from FORTRAN to a boolean.

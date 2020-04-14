@@ -19,3 +19,5 @@ ref/BlockToRootParser/out
 testing*
 *main
 *export_root
+uic_tests
+

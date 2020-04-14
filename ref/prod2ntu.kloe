@@ -1979,7 +1979,7 @@ C
       INTEGER pizza_reset,torta_reset,tele_reset
       Integer GET_DPRS_STRUCT,GETNVO
       Integer GETECLO,T0GLRD,GETCLUSTRUCORR
-      INTEGER BIGEST,banknum, fillbposcommon
+      INTEGER BIGEST, BNUMB, banknum, fillbposcommon
       INTEGER GETQCALTSTRU,getqcthstru,GETCCALTSTRU,getletestru,itce_upk
       INTEGER gethetestru, hete_dump
 

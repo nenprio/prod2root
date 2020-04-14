@@ -264,12 +264,18 @@ C         ENDIF
             
 
          END IF
-        
-         icurr = IW(INDDAT+5)
-         IPos=iand(icurr,'FFFF'x)*1.e-4
-         IEle=(icurr/2**16)*1.e-4
-         Lumi= iw(inddat+6)*1.e-6         
       ENDIF
+C-----------------------------------------------------------------------
+C Fill Block Data
+C-----------------------------------------------------------------------
+
+	IF (DATAFLAG) THEN
+		ISTAT = BLOCAT(IW,'EVCL',BNKNUM,IND1,INDDAT )	
+		icurr = IW(INDDAT+5)
+		IPos=iand(icurr,'FFFF'x)*1.e-4
+		IEle=(icurr/2**16)*1.e-4
+		Lumi= iw(inddat+6)*1.e-6
+	END IF         
 C-----------------------------------------------------------------------
 C Fill Block Info
 C-----------------------------------------------------------------------
@@ -355,10 +361,12 @@ C-----------------------------------------------------------------------
          BrootsErr = 0.
 C
 C        GETBPOS requires BPos and BMom banks.
-C   
+C        EPR: There are runs where BPOS and BMOM are not present
+
          STATUS = BIGEST(IW,'BPOS',BANKNUM)
+
          IF (STATUS.EQ.YESUCC) THEN
-            STATUS = BLOCAT(IW,'BPOS',BANKNUM,IND1,INDDAT)
+	  STATUS = BLOCAT(IW,'BPOS',BANKNUM,IND1,INDDAT)
          END IF
          IF (STATUS.EQ.YESUCC) THEN
             STATUS = BIGEST(IW,'BMOM',BANKNUM)
@@ -369,7 +377,6 @@ C
 
          IF (STATUS.EQ.YESUCC) THEN
             rstat = GETBPOS(Evt%Bpos)
-    
             BPx = Evt%Bpos%px
             BPy = Evt%Bpos%py
             BPz = Evt%Bpos%pz
@@ -387,7 +394,25 @@ C
             Broots = Evt%Bpos%Ene
             BrootsErr = Evt%Bpos%ErrEne
          ELSE
+C EPR: needed to keep track of the runs where BPOS&BMOM are not present
             BPOSErrorCounter(1) = BPOSErrorCounter(1) + 1
+            rstat = GETBPOS(Evt%Bpos)
+            BPx = Evt%Bpos%px
+            BPy = Evt%Bpos%py
+            BPz = Evt%Bpos%pz
+            Bx = Evt%Bpos%x
+            By = Evt%Bpos%y
+            Bz = Evt%Bpos%z
+            BWidPx = Evt%Bpos%errpx
+            BWidPy = Evt%Bpos%errpy
+            BWidPz = Evt%Bpos%errpz
+            BSx = Evt%Bpos%errx
+            BSy = Evt%Bpos%erry
+            BSz = Evt%Bpos%errz
+            BLumx = Evt%Bpos%lumx
+            BLumz = Evt%Bpos%lumz
+            Broots = Evt%Bpos%Ene
+            BrootsErr = Evt%Bpos%ErrEne
          END IF
       END IF
 C-----------------------------------------------------------------------
