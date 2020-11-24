@@ -308,11 +308,11 @@ C
 C  Block: vtxold
 C
       integer iVTXOLD, nVOld, VtxOld(10), QuaLVOld(10), FitIdVOld(10)
-      real xVOld(10), yVOld(10), ZVOld(10), ChiVTxOld(10)
+      real xVOld(10), yVOld(10), zVOld(10), ChiVTxOld(10)
       real VtxCov1Old(10), VtxCov2Old(10), VtxCov3Old(10)
       real VtxCov4Old(10), VtxCov5Old(10), VtxCov6Old(10)
 
-      common /vtxold/nVOld,VtxOld,xVOld,yVOld,ZVOld,ChiVTxOld,QuaLVOld,
+      common /vtxold/nVOld,VtxOld,xVOld,yVOld,zVOld,ChiVTxOld,QuaLVOld,
      1       FitIdVOld,VtxCov1Old,VtxCov2Old,VtxCov3Old,VtxCov4Old,
      1       VtxCov5Old,VtxCov6Old
 C

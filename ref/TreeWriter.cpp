@@ -33,7 +33,7 @@ TreeWriter::TreeWriter() {
   outfile->SetCompressionLevel(2);//from 0 = no-compresion to 9-maximum gzip
   //fNewTree->SetMaxTreeSize(1000*Long64_t(2000000000)); 
   //8GB maximum
-  fNewTree->SetMaxTreeSize(1000*Long64_t(8000000)); 
+  fNewTree->SetMaxTreeSize(1000*Long64_t(9000000)); 
 
   
     // Block Info
@@ -439,14 +439,14 @@ void TreeWriter::addBlockData() {
 // input:   -
 // output:  -
 void TreeWriter::addBlockEcl() {
-    fNewTree->Branch("nEcls",     &evtecls_.NEcls,     "NEcls/I");
+    fNewTree->Branch("NEcls",     &evtecls_.NEcls,     "NEcls/I");
     fNewTree->Branch("EclStream", &evtecls_.EclStream, "EclStream[NEcls]/I");
     fNewTree->Branch("EclTrgw",   &evtecls_.EclTrgw,   "EclTrgw/I");
     fNewTree->Branch("EclFilfo",  &evtecls_.EclFilfo,  "EclFilfo/I");
     fNewTree->Branch("EclWord",   &evtecls_.EclWord,   "EclWord[NEcls]/I");
     fNewTree->Branch("EclTagNum", &evtecls_.EclTagNum, "EclTagNum[NEcls]/I");
     fNewTree->Branch("EclEvType", &evtecls_.EclEvType, "EclEvType[NEcls]/I");
-    fNewTree->Branch("nEcls2",    &evtecls_.NEcls2,     "NEcls2/I");
+    fNewTree->Branch("NEcls2",    &evtecls_.NEcls2,     "NEcls2/I");
     fNewTree->Branch("EclStream2",&evtecls_.EclStream2, "EclStream2[NEcls2]/I");
     fNewTree->Branch("EclTrgw2",  &evtecls_.EclTrgw2,   "EclTrgw2/I");
     fNewTree->Branch("EclFilfo2", &evtecls_.EclFilfo2,  "EclFilfo2/I");
@@ -952,7 +952,7 @@ void TreeWriter::addBlockVtxOld() {
     fNewTree->Branch("VtxOld",     &vtxold_.VtxOld,     "VtxOld[nVOld]/I");
     fNewTree->Branch("xVOld",      &vtxold_.xVOld,      "xVOld[nVOld]/F");
     fNewTree->Branch("yVOld",      &vtxold_.yVOld,      "yVOld[nVOld]/F");
-    fNewTree->Branch("zVOld",      &vtxold_.ZVOld,      "zVOld[nVOld]/F");
+    fNewTree->Branch("zVOld",      &vtxold_.zVOld,      "zVOld[nVOld]/F");
     fNewTree->Branch("ChiVTxOld",  &vtxold_.ChiVTxOld,  "ChiVTxOld[nVOld]/F");
     fNewTree->Branch("QuaLVOld",   &vtxold_.QuaLVOld,   "QuaLVOld[nVOld]/I");
     fNewTree->Branch("FitIdVOld",  &vtxold_.FitIdVOld,  "FitIdVOld[nVOld]/I");
