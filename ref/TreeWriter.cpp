@@ -31,9 +31,10 @@ TreeWriter::TreeWriter() {
   }
   fNewTree = new TTree("sample", "Event Infos");      //Create "sample" tree
   outfile->SetCompressionLevel(2);//from 0 = no-compresion to 9-maximum gzip
-  //fNewTree->SetMaxTreeSize(1000*Long64_t(2000000000)); 
+  //as big as possible to test the ufos
+  fNewTree->SetMaxTreeSize(1000*Long64_t(2000000000)); 
   //8GB maximum
-  fNewTree->SetMaxTreeSize(1000*Long64_t(9000000)); 
+  //fNewTree->SetMaxTreeSize(1000*Long64_t(9000000)); 
 
   
     // Block Info
