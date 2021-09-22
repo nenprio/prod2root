@@ -126,7 +126,11 @@ C
 C Put A_C Error Code to SUCCESS at Run_Init
 C
       Status = ANPIST(ANSUCC)
-      istat = fillbposcommon(nrun)
+      IF( exptyp.eq.exofsi )then !Simulation
+C       nothing
+      ELSE
+	istat = fillbposcommon(nrun)
+      ENDIF
 
 C      WRITE(0,*) "[DEBUG] Try to write to std error"
 
