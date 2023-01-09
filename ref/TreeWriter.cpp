@@ -29,7 +29,7 @@ TreeWriter::TreeWriter() {
     std::cout<<"bien"<<std::endl;
     outfile  = new TFile(filename, "recreate");    //Open or create file
   }
-  fNewTree = new TTree("sample", "Event Infos");      //Create "sample" tree
+  fNewTree = new TTree("h1", "Event Infos");      //Create "sample" tree
   outfile->SetCompressionLevel(2);//from 0 = no-compresion to 9-maximum gzip
   //as big as possible to test the ufos
   fNewTree->SetMaxTreeSize(1000*Long64_t(2000000000)); 

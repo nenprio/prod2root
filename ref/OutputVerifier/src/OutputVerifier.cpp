@@ -11,9 +11,9 @@
 #include "OutputVerifier.hh"
 
 // Create the object OutputVerifier. 
-// Pre-condition: the input file is a root file containing a tree with id "sample".
+// Pre-condition: the input file is a root file containing a tree with id "h1".
 //
-// input:   inFile      root file with "sample" tree
+// input:   inFile      root file with "h1" tree
 //          outDir      directory where write the output files
 // output:  -
 OutputVerifier::OutputVerifier(const char *rFile, const char *hbFile, const char *outDir) {
@@ -23,7 +23,7 @@ OutputVerifier::OutputVerifier(const char *rFile, const char *hbFile, const char
     const char *errorInputFile="[Error] An error occurs during checking on input file.\n\tVerify that the path given as first argument exists and it refers to a regular file.";
     const char *errorOutputDir="[Error] An error occurs during the checking on output directory.\n\tVerify that the dir already exists or that the writing permission are allowed and no name mismatch occurs with that path.";
     const char *errorOpenFile="[Error] An error occurs during the opening of input file.\n\tVerify that you can open the file as ROOT TFile.";
-    const char *errorOpenTree="[Error] An error occurs during the extraction of tree.\n\tVerify that the input file contains a tree with id \"sample\".";
+    const char *errorOpenTree="[Error] An error occurs during the extraction of tree.\n\tVerify that the input file contains a tree with id \"h1\".";
 
     ENTRY_PREFIX = "_event_";    
     rootFile     = rFile;    
@@ -56,7 +56,7 @@ OutputVerifier::OutputVerifier(const char *rFile, const char *hbFile, const char
     }
    
     // Test if you can open the tree
-    /* TTree *tRoot = (TTree*) fRoot->Get("sample"); */
+    /* TTree *tRoot = (TTree*) fRoot->Get("h1"); */
     TTree *tHB   = (TTree*) fHB->Get("PROD2NTU/h1");
     
     /* if((tRoot!=0) & (tHB!=0)){ */
@@ -145,7 +145,7 @@ void OutputVerifier::exportTreeToTxt(TTree *fTree) {
 // output: -
 void OutputVerifier::exportRootTree() {
     TFile *fRoot = new TFile(rootFile, "READ");
-    TTree *rTree = (TTree*) fRoot->Get("sample");
+    TTree *rTree = (TTree*) fRoot->Get("h1");
     exportTreeToTxt(rTree);
     
     fRoot->Close();
@@ -291,7 +291,7 @@ bool OutputVerifier::verify(int from, int to, bool printInfo) {
 /*     // First check: Number events of trees */
 /*     TFile *fRoot      = new TFile(rootFile,   "READ"); */
 /*     TFile *fHB        = new TFile(hbConvFile, "READ"); */
-/*     TTree *rTree      = (TTree*) fRoot->Get("sample"); */
+/*     TTree *rTree      = (TTree*) fRoot->Get("h1"); */
 /*     TTree *hbTree     = (TTree*) fHB->Get("PROD2NTU/h1"); */
 /*     Int_t rootEntries = rTree->GetEntries(); */
 /*     Int_t hbEntries   = hbTree->GetEntries(); */
